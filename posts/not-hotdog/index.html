@@ -12,7 +12,16 @@
     <p class="eyebrow">2026-08-31 · inaugural post</p>
     <h1>Let’s use compute!</h1>
     <p>Today we train Not Hotdog. A small model that says whether an image is a hot dog, or not.</p>
-    <p>It’s the gag from <em>Silicon Valley</em> — Jian-Yang’s SeeFood app. We’re not hosting HBO footage here. If you want the refresher, search “Silicon Valley not hotdog” on YouTube.</p>
+    <p>It’s the gag from <em>Silicon Valley</em> — Jian-Yang’s SeeFood app. HBO’s clip:</p>
+    <div class="video">
+      <iframe
+        src="https://www.youtube-nocookie.com/embed/ACmydtFDTGs"
+        title="Silicon Valley: Not Hotdog (Season 4 Episode 4 Clip) | HBO"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+    </div>
 
     <p>You can train it on <a href="https://compute.cx">compute.cx</a> in four steps:</p>
     <ol>
@@ -54,7 +63,7 @@ cd letsusecompute/posts/not-hotdog</code></pre>
 <pre><code class="language-none">Use SKILL.md in posts/not-hotdog to train the not-hotdog model on compute.cx.
 Dataset: theoriclabs/hot-dog-not-hot-dog
 Model: randomly initialized CNN, 3 conv blocks (~180k params), CrossEntropyLoss
-Train for 5 epochs at 128x128.
+Train for 50 epochs at 128x128.
 First dry-run train.py::train with --gpu cheap --provider vastai.
 Then run without --dry-run, show me the preflight GPU and dollar estimate, and ask before confirming spend.
 After success, list and download artifacts.</code></pre>
@@ -73,7 +82,7 @@ pip:         torchvision, datasets, huggingface_hub, Pillow
 secrets:     (none)</code></pre>
 
     <p>Then run for real. Prefer a cheap CUDA card. Default without <code>--gpu</code> is MI300X — too much machine for this toy.</p>
-<pre><code class="language-bash">compute run train.py::train --gpu vastai/RTX-3090 --timeout 1200 --wait</code></pre>
+<pre><code class="language-bash">compute run train.py::train --gpu vastai/RTX-3090 --timeout 1800 --wait</code></pre>
     <p>You’ll see a preflight quote before spend. Something like RTX-3090 at $0.15/hr, timeout budget of a few cents. Confirm if it looks right, or pass <code>--yes</code>.</p>
 <pre><code class="language-none">Run preflight (billed by started minute):
   provider:       vastai
@@ -88,12 +97,12 @@ secrets:     (none)</code></pre>
 compute artifacts get &lt;run_id&gt; &lt;artifact_id&gt; &lt;version&gt; --out ./weights</code></pre>
     <p>To keep a copy on Hugging Face, store a write token and run the secrets-backed entrypoint. Storing the secret is not enough — the function has to request it with <code>Secret.from_name("hf")</code>, or it never lands on the machine.</p>
 <pre><code class="language-bash">compute secrets set hf
-compute run train.py::train_and_push --gpu cheap --provider vastai --timeout 1200 --wait</code></pre>
+compute run train.py::train_and_push --gpu cheap --provider vastai --timeout 1800 --wait</code></pre>
     <p>This guide’s checkpoint: <a href="https://huggingface.co/theoriclabs/not-hotdog-cnn"><code>theoriclabs/not-hotdog-cnn</code></a>.</p>
 
     <p>Want to train longer? Raise <code>epochs</code> and <code>--timeout</code>. You pay for billed minutes. Data stays on Hugging Face — compute doesn’t keep a volume for you. No wandb in this guide. No hosted inference API in this guide either; download the weights and run them locally.</p>
 
-    <p>Sample predictions from a 5-epoch train — three from each pile, test set, same checkpoint.</p>
+    <p>Sample predictions from a 50-epoch train — three from each pile, test set, same checkpoint.</p>
     <img class="shot" src="../../assets/screenshots/pred-grid.jpg" alt="Six test images: three hot dogs and three not hot dogs, each with the model’s prediction" />
 
     <p class="note">Next time we’ll train something else. Same shape: short guide, real GPU, weights you can keep.</p>
