@@ -10,8 +10,7 @@ First up: Not Hotdog.
 
 A tiny CNN. Hot dog or not. The Silicon Valley gag, on a fresh cloud GPU, then the machine is gone.
 
-Guide: https://theoriclabs.github.io/letsusecompute/posts/not-hotdog/
-(soon: https://letsusecompute.com/posts/not-hotdog — DNS pending)
+Guide: http://letsusecompute.com/posts/not-hotdog
 
 Training files: https://github.com/theoriclabs/letsusecompute-not-hotdog
 Dataset: https://huggingface.co/datasets/theoriclabs/hot-dog-not-hot-dog
@@ -26,4 +25,4 @@ Four steps in the post: setup → data → model → train. Or hand the SKILL.md
 
 ---
 
-Notes for later posts: don’t promise Mon/Wed/Fri cadence until post #2 exists. Prefer the custom domain once Namecheap DNS points apex A records at GitHub Pages (185.199.108–111.153) and www CNAME at theoriclabs.github.io.
+Notes for later posts: don’t promise Mon/Wed/Fri cadence until post #2 exists. Switch the guide link to https:// once GitHub finishes the Pages cert (https_enforced is still off).
