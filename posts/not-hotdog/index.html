@@ -54,18 +54,21 @@ compute credits add 10</code></pre>
     <h3>Choose a loss function</h3>
     <p>Cross-entropy — the usual loss for a classifier. Two classes: <code>hot_dog</code> and <code>not_hot_dog</code>.</p>
     <h2>Train the model and validate</h2>
-    <p>Grab the training script. That’s the only file you need. Or hand <a href="https://compute.cx/SKILL.md">compute.cx/SKILL.md</a> to your agent.</p>
+    <p>Grab the training script. That’s the only file you need. Hand <a href="https://compute.cx/SKILL.md">compute.cx/SKILL.md</a> to your agent, plus the special instructions below.</p>
 <pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/not-hotdog/train.py -o train.py</code></pre>
     <p>Want to read it first? <a href="https://github.com/theoriclabs/letsusecompute/blob/main/posts/not-hotdog/train.py"><code>train.py</code></a>.</p>
 
     <h3>Not-hotdog training prompt</h3>
-<pre><code class="language-none">Use https://compute.cx/SKILL.md to train the not-hotdog model on compute.cx.
-Dataset: theoriclabs/hot-dog-not-hot-dog
-Model: randomly initialized CNN, 3 conv blocks (~180k params), CrossEntropyLoss
-Train for 50 epochs at 128x128.
-First dry-run train.py::train with --gpu cheap.
-Then run without --dry-run, show me the preflight GPU and dollar estimate, and ask before confirming spend.
-After success, list and download artifacts.</code></pre>
+<pre><code class="language-none">Use https://compute.cx/SKILL.md.
+
+Special instructions:
+- Download https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/not-hotdog/train.py as train.py. Do not invent a script.
+- Entrypoint: train.py::train
+- Dataset: theoriclabs/hot-dog-not-hot-dog (the script downloads it on the machine)
+- Randomly initialized CNN, ~93k params, CrossEntropyLoss, 50 epochs, 128x128
+- Use --gpu cheap. Do not pick H100 or MI300X.
+- Dry-run first. Then show the preflight quote and ask before confirming spend.
+- After success, show the printed loss/accuracy and download artifacts with compute artifacts list / get.</code></pre>
 
     <p>Dry-run first. It only prints the upload plan — no dollars yet.</p>
 <pre><code class="language-bash">compute run train.py::train --gpu cheap --dry-run</code></pre>
@@ -96,7 +99,8 @@ secrets:     (none)</code></pre>
 <pre><code class="language-bash">compute artifacts list &lt;run_id&gt;
 compute artifacts get &lt;run_id&gt; &lt;artifact_id&gt; &lt;version&gt; --out ./weights</code></pre>
     <p>Or skip training and take this guide’s checkpoint: <a href="https://huggingface.co/theoriclabs/not-hotdog-cnn"><code>theoriclabs/not-hotdog-cnn</code></a>.</p>
-    <p>After 50 epochs: train loss 0.566, test accuracy 58.8%.</p>
+    <p>After 50 epochs: train loss 0.566, test accuracy 58.8%. After 500 epochs on an A100 (<code>run_35edd3c1cde2359be45c8ceaffcd017e</code>): train loss ~0.0006, test accuracy 66.0% (best mid-run ~66.8% at epoch 225) — classic overfit; train collapses while test loss climbs.</p>
+    <img class="shot" src="../../assets/screenshots/not-hotdog-loss-curve-500.svg" alt="Train vs test loss over 500 epochs for the Not Hotdog CNN" />
     <img class="shot" src="../../assets/screenshots/pred-grid.jpg" alt="Six test images: three hot dogs and three not hot dogs, each with the model’s prediction" />
 
   </main>

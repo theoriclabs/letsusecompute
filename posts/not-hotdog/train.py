@@ -23,8 +23,14 @@ from typing import Any
 import compute
 
 app = compute.App("not-hotdog")
+# Pin cu124 wheels: many Vast consumer hosts still expose driver 12.4
+# (CUDA_VERSION 12040). Unpinned torchvision pulls a newer torch that
+# refuses to initialize on that driver.
 image = compute.Image.cuda_pytorch().pip_install(
-    "torchvision",
+    "--extra-index-url",
+    "https://download.pytorch.org/whl/cu124",
+    "torch==2.5.1+cu124",
+    "torchvision==0.20.1+cu124",
     "datasets",
     "huggingface_hub",
     "Pillow",
