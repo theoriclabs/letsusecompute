@@ -7,8 +7,8 @@ Weights land under ``$COMPUTE_ARTIFACT_DIR`` with a ``.compute-artifact.json``
 marker so ``compute artifacts get`` works after teardown. Optional Hub push
 when ``push_to_hub=True`` and an HF write token is available.
 
-    compute run train.py::train --gpu cheap --provider vastai --dry-run
-    compute run train.py::train --gpu cheap --provider vastai --timeout 1200 --wait
+    compute run train.py::train --gpu cheap --dry-run
+    compute run train.py::train --gpu cheap --timeout 1800 --wait
 """
 
 from __future__ import annotations
@@ -273,7 +273,7 @@ def _train_impl(
     write_artifact_marker(
         out_dir,
         name=ARTIFACT_NAME,
-        kind="model_weights",
+        kind="output",
         compatibility_key=f"not-hotdog-cnn-v1-{image_size}",
         metadata={
             "filename": weights_path.name,
@@ -325,10 +325,10 @@ def _train_impl(
 @app.function(
     gpu="RTX-3090",
     image=image,
-    timeout=1200,
+    timeout=1800,
 )
 def train(
-    epochs: int = 5,
+    epochs: int = 50,
     batch_size: int = 32,
     lr: float = 1e-3,
     image_size: int = 128,
@@ -357,11 +357,11 @@ def train(
 @app.function(
     gpu="RTX-3090",
     image=image,
-    timeout=1200,
+    timeout=1800,
     secrets=[hf_secret],
 )
 def train_and_push(
-    epochs: int = 5,
+    epochs: int = 50,
     batch_size: int = 32,
     lr: float = 1e-3,
     image_size: int = 128,

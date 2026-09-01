@@ -21,8 +21,8 @@ Repo: https://github.com/theoriclabs/letsusecompute
 
 - GPU runs spend prepaid credit. Confirm the quote.
 - `--dry-run` prints the AST upload plan only. **No quote, no machine.** To see GPU, time, and dollar estimate, run without `--dry-run` and read the preflight (cancel if you do not want to spend).
-- Prefer `--gpu cheap --provider vastai` for this tiny CNN. Do not default to MI300X.
-- Do not invent files. Use `train.py` from this folder.
+- Prefer `--gpu cheap` for this tiny CNN. The router usually picks Vast.ai RTX 3090. Do not default to MI300X.
+- Do not invent files. Use `train.py` from this folder, or curl it from the GitHub raw URL in the guide.
 - Do not paste API keys or secret values into chat.
 
 ## Steps
@@ -38,14 +38,14 @@ compute credits add 10
 2. Dry-run the payload:
 
 ```bash
-compute run train.py::train --gpu cheap --provider vastai --dry-run
+compute run train.py::train --gpu cheap --dry-run
 ```
 
 3. Start training (preflight prints provider, SKU, rate, estimate; confirm or pass `--yes`):
 
 ```bash
-compute run train.py::train --gpu cheap --provider vastai --timeout 1200 --wait \
-  --args '{"epochs":5,"batch_size":32,"image_size":128}'
+compute run train.py::train --gpu cheap --timeout 1800 --wait \
+  --args '{"epochs":50,"batch_size":32,"image_size":128}'
 ```
 
 4. After `succeeded`, download weights:
@@ -59,7 +59,7 @@ compute artifacts get <run_id> <artifact_id> <version> --out ./weights
 
 ```bash
 compute secrets set hf
-compute run train.py::train_and_push --gpu cheap --provider vastai --timeout 1200 --wait
+compute run train.py::train_and_push --gpu cheap --timeout 1800 --wait
 ```
 
 `train` does not request the secret, so readers can train on the public dataset without an HF token. `train_and_push` lists `secrets=[Secret.from_name("hf")]`; without that declaration the stored secret is never injected.
@@ -67,11 +67,11 @@ compute run train.py::train_and_push --gpu cheap --provider vastai --timeout 120
 ## Suggested prompt
 
 ```
-Use SKILL.md in posts/not-hotdog to train the not-hotdog model on compute.cx.
+Use https://compute.cx/SKILL.md to train the not-hotdog model on compute.cx.
 Dataset: theoriclabs/hot-dog-not-hot-dog
 Model: randomly initialized CNN, 3 conv blocks (~180k params), CrossEntropyLoss
-Train for 5 epochs at 128x128.
-First dry-run train.py::train with --gpu cheap --provider vastai.
+Train for 50 epochs at 128x128.
+First dry-run train.py::train with --gpu cheap.
 Then run without --dry-run, show me the preflight GPU and dollar estimate, and ask before confirming spend.
 After success, list and download artifacts.
 ```

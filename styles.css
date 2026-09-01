@@ -28,6 +28,7 @@ body {
 .wrap { max-width: 42rem; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
 .eyebrow { color: var(--muted); font-size: 0.95rem; margin: 0 0 0.5rem; }
 .eyebrow a { color: inherit; }
+.byline { color: var(--muted); font-size: 1rem; margin: -0.35rem 0 1.25rem; }
 h1 { font-size: 2.4rem; line-height: 1.1; margin: 0 0 0.75rem; font-weight: 700; }
 h2 { font-size: 1.45rem; margin: 2rem 0 0.75rem; }
 h3 { font-size: 1.15rem; margin: 1.5rem 0 0.5rem; }

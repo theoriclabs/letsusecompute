@@ -7,15 +7,14 @@ Guide: https://letsusecompute.com/posts/not-hotdog
 ## Quick start
 
 ```bash
-git clone https://github.com/theoriclabs/letsusecompute
-cd letsusecompute/posts/not-hotdog
+curl -fsSL https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/not-hotdog/train.py -o train.py
 
 curl -fsSL https://compute.cx/install.sh | sh
 compute setup
 compute credits add 10
 
-compute run train.py::train --gpu cheap --provider vastai --dry-run
-compute run train.py::train --gpu cheap --provider vastai --timeout 1200 --wait
+compute run train.py::train --gpu cheap --dry-run
+compute run train.py::train --gpu cheap --timeout 1800 --wait
 ```
 
 `--dry-run` only prints the upload plan. Cost and GPU show up on the real run, in the preflight quote, before you confirm spend.
@@ -24,7 +23,7 @@ To publish weights to Hugging Face, store a write token and use the secrets-back
 
 ```bash
 compute secrets set hf
-compute run train.py::train_and_push --gpu cheap --provider vastai --timeout 1200 --wait
+compute run train.py::train_and_push --gpu cheap --timeout 1800 --wait
 ```
 
 `compute secrets set hf` stores the token. `Secret.from_name("hf")` on `train_and_push` is what injects it into the job. Storing the secret alone does not put it on the machine.
@@ -40,7 +39,7 @@ compute artifacts get <run_id> <artifact_id> <version> --out ./weights
 
 - Randomly initialized CNN (~93k params): 3 conv blocks → adaptive pool → linear
 - Loss: cross-entropy
-- Default: 5 epochs, 128×128 images
+- Default: 50 epochs, 128×128 images
 - Dataset: [`theoriclabs/hot-dog-not-hot-dog`](https://huggingface.co/datasets/theoriclabs/hot-dog-not-hot-dog) (Food-101 binary cut; see dataset card)
 
 ## Agent path
