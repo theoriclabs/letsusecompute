@@ -49,9 +49,9 @@ compute credits add 10</code></pre>
     <p>In the training script, compute downloads the dataset on the machine during the run. You don’t upload images yourself.</p>
 
     <h2>Setup the model for training</h2>
-    <h3>Choosing a model architecture</h3>
-    <p>We'll take a randomly initialized CNN, for no particular reason. Three conv blocks, adaptive pool, linear head. About 180k parameters. No pretrained weights. Small on purpose.</p>
-    <h3>Choosing a loss function</h3>
+    <h3>Choose a model architecture</h3>
+    <p>We'll take a randomly initialized CNN.</p>
+    <h3>Choose a loss function</h3>
     <p>Cross-entropy — the usual loss for a classifier. Two classes: <code>hot_dog</code> and <code>not_hot_dog</code>.</p>
     <h2>Train the model and validate</h2>
     <p>Grab the training script. That’s the only file you need. Or hand <a href="https://compute.cx/SKILL.md">compute.cx/SKILL.md</a> to your agent.</p>
@@ -80,7 +80,7 @@ image:       cuda_pytorch
 pip:         torchvision, datasets, huggingface_hub, Pillow
 secrets:     (none)</code></pre>
 
-    <p>Then run for real. Pass <code>--gpu cheap</code> and let the router pick. For this tiny CNN, <code>cheap</code> usually lands on a Vast.ai RTX 3090 around $0.15/hr. <code>auto</code> can pick a faster card if it thinks you’ll finish sooner. Default without <code>--gpu</code> is MI300X — too much machine for this toy.</p>
+    <p>Then run for real. Pass <code>--gpu cheap</code> and let the router pick. For this tiny CNN, <code>cheap</code> usually lands on a Vast.ai RTX 3090 around $0.15/hr. <code>auto</code> can pick a faster card if it thinks you’ll finish sooner.</p>
 <pre><code class="language-bash">compute run train.py::train --gpu cheap --timeout 1800 --wait</code></pre>
     <p>You’ll see the pick and the dollar quote before spend. Confirm if it looks right, or pass <code>--yes</code>.</p>
 <pre><code class="language-none">Run preflight (billed by started minute):
@@ -91,18 +91,12 @@ secrets:     (none)</code></pre>
   timeout budget: 31 billed min → ≈ $0.08 total if the job runs to the timeout
   balance:        $9.16</code></pre>
 
-    <h3>Validating the results</h3>
-    <p>When the run succeeds, the machine is gone. Weights don’t live on the VM. The intended pull is artifacts:</p>
+    <h3>Validate the results</h3>
+    <p>With <code>--wait</code>, the run prints the numbers when it finishes — train loss and test accuracy. Pull the weights after that:</p>
 <pre><code class="language-bash">compute artifacts list &lt;run_id&gt;
 compute artifacts get &lt;run_id&gt; &lt;artifact_id&gt; &lt;version&gt; --out ./weights</code></pre>
-    <p>To keep a copy on Hugging Face, store a write token and run the secrets-backed entrypoint. Storing the secret is not enough — the function has to request it with <code>Secret.from_name("hf")</code>, or it never lands on the machine.</p>
-<pre><code class="language-bash">compute secrets set hf
-compute run train.py::train_and_push --gpu cheap --timeout 1800 --wait</code></pre>
-    <p>This guide’s checkpoint: <a href="https://huggingface.co/theoriclabs/not-hotdog-cnn"><code>theoriclabs/not-hotdog-cnn</code></a>.</p>
-
-    <p>Want to train longer? Raise <code>epochs</code> and <code>--timeout</code>. You pay for billed minutes. Data stays on Hugging Face — compute doesn’t keep a volume for you. No wandb in this guide. No hosted inference API in this guide either; download the weights and run them locally.</p>
-
-    <p>After 50 epochs, train loss was 0.566. Test accuracy was 58.8% — barely above chance. Fine for a tiny randomly initialized CNN on 500 photos. Sample predictions from that run — three from each pile, test set, same checkpoint.</p>
+    <p>Or skip training and take this guide’s checkpoint: <a href="https://huggingface.co/theoriclabs/not-hotdog-cnn"><code>theoriclabs/not-hotdog-cnn</code></a>.</p>
+    <p>After 50 epochs: train loss 0.566, test accuracy 58.8%.</p>
     <img class="shot" src="../../assets/screenshots/pred-grid.jpg" alt="Six test images: three hot dogs and three not hot dogs, each with the model’s prediction" />
 
   </main>

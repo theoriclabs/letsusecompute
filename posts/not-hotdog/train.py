@@ -112,10 +112,45 @@ def resolve_artifact_dirs(env: Mapping[str, str] | None = None) -> Path:
     return root
 
 
+def write_loss_curve(directory: Path, history: list[dict[str, float]]) -> Path:
+    """Write JSON + a tiny SVG of train/test loss. No extra deps."""
+    directory.mkdir(parents=True, exist_ok=True)
+    json_path = directory / "loss_curve.json"
+    json_path.write_text(json.dumps(history, indent=2) + "\n", encoding="utf-8")
+
+    width, height, pad = 720, 280, 36
+    losses = [row["train_loss"] for row in history] + [row["test_loss"] for row in history]
+    lo = min(losses) if losses else 0.0
+    hi = max(losses) if losses else 1.0
+    if hi <= lo:
+        hi = lo + 1e-6
+
+    def xy(index: int, value: float, count: int) -> str:
+        x = pad + (width - 2 * pad) * (index / max(count - 1, 1))
+        y = pad + (height - 2 * pad) * (1 - (value - lo) / (hi - lo))
+        return f"{x:.1f},{y:.1f}"
+
+    def polyline(key: str) -> str:
+        count = len(history)
+        pts = " ".join(xy(i, row[key], count) for i, row in enumerate(history))
+        return pts
+
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">
+  <rect width="100%" height="100%" fill="#fff"/>
+  <text x="{pad}" y="20" font-size="13" fill="#333">train loss (steel) vs test loss (orange)</text>
+  <polyline fill="none" stroke="#3d6b8a" stroke-width="2" points="{polyline("train_loss")}"/>
+  <polyline fill="none" stroke="#c45c26" stroke-width="2" points="{polyline("test_loss")}"/>
+  <text x="{pad}" y="{height - 8}" font-size="11" fill="#666">min {lo:.3f} · max {hi:.3f} · {len(history)} epochs</text>
+</svg>
+"""
+    (directory / "loss_curve.svg").write_text(svg, encoding="utf-8")
+    return json_path
+
+
 def _tiny_cnn(num_classes: int = 2):
     import torch.nn as nn
 
-    # ~180k params. Random init — no pretrained weights.
+    # ~93k params. Random init — no pretrained weights.
     return nn.Sequential(
         nn.Conv2d(3, 32, kernel_size=3, padding=1),
         nn.ReLU(inplace=True),
@@ -248,15 +283,30 @@ def _train_impl(
         model.eval()
         correct = 0
         total = 0
+        test_loss_sum = 0.0
         with torch.no_grad():
             for xb, yb in test_loader:
                 xb, yb = xb.to(device), yb.to(device)
-                pred = model(xb).argmax(dim=1)
+                logits = model(xb)
+                test_loss_sum += float(loss_fn(logits, yb).detach()) * xb.size(0)
+                pred = logits.argmax(dim=1)
                 correct += int((pred == yb).sum().item())
                 total += yb.size(0)
+        test_loss = test_loss_sum / max(total, 1)
         acc = correct / max(total, 1)
-        history.append({"epoch": epoch + 1, "train_loss": train_loss, "test_accuracy": acc})
-        print(f"epoch {epoch + 1}/{epochs} loss={train_loss:.4f} acc={acc:.4f}", flush=True)
+        history.append(
+            {
+                "epoch": epoch + 1,
+                "train_loss": train_loss,
+                "test_loss": test_loss,
+                "test_accuracy": acc,
+            }
+        )
+        print(
+            f"epoch {epoch + 1}/{epochs} "
+            f"train_loss={train_loss:.4f} test_loss={test_loss:.4f} acc={acc:.4f}",
+            flush=True,
+        )
 
     out_dir = resolve_artifact_dirs()
     weights_path = out_dir / "model.pt"
@@ -270,6 +320,7 @@ def _train_impl(
         },
         weights_path,
     )
+    write_loss_curve(out_dir, history)
     write_artifact_marker(
         out_dir,
         name=ARTIFACT_NAME,
