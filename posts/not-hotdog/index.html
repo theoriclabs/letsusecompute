@@ -24,7 +24,7 @@
 
     <h2>Setup compute</h2>
     <p>Create an account, install the CLI, add credits.</p>
-<pre><code>curl -fsSL https://compute.cx/install.sh | sh
+<pre><code class="language-bash">curl -fsSL https://compute.cx/install.sh | sh
 compute setup
 compute credits add 10</code></pre>
     <p>One active run per account. New accounts have a first-day spend cap. Balance at or under $1 blocks new runs.</p>
@@ -44,14 +44,14 @@ compute credits add 10</code></pre>
 
     <h2>Train the model and validate</h2>
     <p>Clone the site repo, then work from this post’s folder. Or hand the skill file to your agent.</p>
-<pre><code>git clone https://github.com/theoriclabs/letsusecompute
+<pre><code class="language-bash">git clone https://github.com/theoriclabs/letsusecompute
 cd letsusecompute/posts/not-hotdog</code></pre>
 
     <h3>Not-hotdog training files</h3>
     <p>Same repo as this site: <a href="https://github.com/theoriclabs/letsusecompute/tree/main/posts/not-hotdog"><code>posts/not-hotdog</code></a> — <code>train.py</code>, <code>SKILL.md</code>, README.</p>
 
     <h3>Not-hotdog training prompt</h3>
-<pre><code>Use SKILL.md in posts/not-hotdog to train the not-hotdog model on compute.cx.
+<pre><code class="language-none">Use SKILL.md in posts/not-hotdog to train the not-hotdog model on compute.cx.
 Dataset: theoriclabs/hot-dog-not-hot-dog
 Model: randomly initialized CNN, 3 conv blocks (~180k params), CrossEntropyLoss
 Train for 5 epochs at 128x128.
@@ -60,8 +60,8 @@ Then run without --dry-run, show me the preflight GPU and dollar estimate, and a
 After success, list and download artifacts.</code></pre>
 
     <p>Dry-run first. It only prints the upload plan — no dollars yet.</p>
-<pre><code>compute run train.py::train --gpu cheap --provider vastai --dry-run</code></pre>
-<pre><code>dry-run (local AST; no upload, no quote)
+<pre><code class="language-bash">compute run train.py::train --gpu cheap --provider vastai --dry-run</code></pre>
+<pre><code class="language-none">dry-run (local AST; no upload, no quote)
 entrypoint: train.py::train
 files:
   train.py
@@ -73,9 +73,9 @@ pip:         torchvision, datasets, huggingface_hub, Pillow
 secrets:     (none)</code></pre>
 
     <p>Then run for real. Prefer a cheap CUDA card. Default without <code>--gpu</code> is MI300X — too much machine for this toy.</p>
-<pre><code>compute run train.py::train --gpu vastai/RTX-3090 --timeout 1200 --wait</code></pre>
+<pre><code class="language-bash">compute run train.py::train --gpu vastai/RTX-3090 --timeout 1200 --wait</code></pre>
     <p>You’ll see a preflight quote before spend. Something like RTX-3090 at $0.15/hr, timeout budget of a few cents. Confirm if it looks right, or pass <code>--yes</code>.</p>
-<pre><code>Run preflight (billed by started minute):
+<pre><code class="language-none">Run preflight (billed by started minute):
   provider:       vastai
   sku:            RTX-3090
   locked rate:    $0.15/hr
@@ -84,10 +84,10 @@ secrets:     (none)</code></pre>
 
     <h3>Validating the results</h3>
     <p>When the run succeeds, the machine is gone. Weights don’t live on the VM. The intended pull is artifacts:</p>
-<pre><code>compute artifacts list &lt;run_id&gt;
+<pre><code class="language-bash">compute artifacts list &lt;run_id&gt;
 compute artifacts get &lt;run_id&gt; &lt;artifact_id&gt; &lt;version&gt; --out ./weights</code></pre>
     <p>To keep a copy on Hugging Face, store a write token and run the secrets-backed entrypoint. Storing the secret is not enough — the function has to request it with <code>Secret.from_name("hf")</code>, or it never lands on the machine.</p>
-<pre><code>compute secrets set hf
+<pre><code class="language-bash">compute secrets set hf
 compute run train.py::train_and_push --gpu cheap --provider vastai --timeout 1200 --wait</code></pre>
     <p>This guide’s checkpoint: <a href="https://huggingface.co/theoriclabs/not-hotdog-cnn"><code>theoriclabs/not-hotdog-cnn</code></a>.</p>
 
@@ -98,5 +98,6 @@ compute run train.py::train_and_push --gpu cheap --provider vastai --timeout 120
 
     <p class="note">Next time we’ll train something else. Same shape: short guide, real GPU, weights you can keep.</p>
   </main>
+  <script src="../../assets/cli-highlight.js"></script>
 </body>
 </html>
