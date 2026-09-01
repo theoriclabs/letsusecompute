@@ -83,10 +83,13 @@ secrets:     (none)</code></pre>
   balance:        $9.16</code></pre>
 
     <h3>Validating the results</h3>
-    <p>When the run succeeds, the machine is gone. Weights don’t live on the VM. Pull them with artifacts:</p>
+    <p>When the run succeeds, the machine is gone. Weights don’t live on the VM. The intended pull is artifacts:</p>
 <pre><code>compute artifacts list &lt;run_id&gt;
 compute artifacts get &lt;run_id&gt; &lt;artifact_id&gt; &lt;version&gt; --out ./weights</code></pre>
-    <p>We also published this guide’s checkpoint on Hugging Face: <a href="https://huggingface.co/theoriclabs/not-hotdog-cnn"><code>theoriclabs/not-hotdog-cnn</code></a>.</p>
+    <p>To keep a copy on Hugging Face, store a write token and run the secrets-backed entrypoint. Storing the secret is not enough — the function has to request it with <code>Secret.from_name("hf")</code>, or it never lands on the machine.</p>
+<pre><code>compute secrets set hf
+compute run train.py::train_and_push --gpu cheap --provider vastai --timeout 1200 --wait</code></pre>
+    <p>This guide’s checkpoint: <a href="https://huggingface.co/theoriclabs/not-hotdog-cnn"><code>theoriclabs/not-hotdog-cnn</code></a>.</p>
 
     <p>Want to train longer? Raise <code>epochs</code> and <code>--timeout</code>. You pay for billed minutes. Data stays on Hugging Face — compute doesn’t keep a volume for you. No wandb in this guide. No hosted inference API in this guide either; download the weights and run them locally.</p>
 
