@@ -4,11 +4,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Not Hotdog — Let’s use compute</title>
-  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="../../styles.css" />
 </head>
 <body>
   <main class="wrap">
-    <p><a class="back" href="/">← Let’s use compute</a></p>
+    <p><a class="back" href="../../">← Let’s use compute</a></p>
     <p class="eyebrow">2026-08-31 · inaugural post</p>
     <h1>Let’s use compute!</h1>
     <p>Today we train Not Hotdog. A small model that says whether an image is a hot dog, or not.</p>
@@ -90,8 +90,8 @@ compute artifacts get &lt;run_id&gt; &lt;artifact_id&gt; &lt;version&gt; --out .
     <p>Want to train longer? Raise <code>epochs</code> and <code>--timeout</code>. You pay for billed minutes. Data stays on Hugging Face — compute doesn’t keep a volume for you. No wandb in this guide. No hosted inference API in this guide either; download the weights and run them locally.</p>
 
     <p>Sample predictions from a 5-epoch train:</p>
-    <img class="shot" src="/assets/screenshots/pred-hot_dog-0.png" alt="Hot dog prediction example" />
-    <img class="shot" src="/assets/screenshots/pred-not_hot_dog-0.png" alt="Not hot dog prediction example" />
+    <img class="shot" src="../../assets/screenshots/pred-hot_dog-0.png" alt="Hot dog prediction example" />
+    <img class="shot" src="../../assets/screenshots/pred-not_hot_dog-0.png" alt="Not hot dog prediction example" />
 
     <p class="note">Next time we’ll train something else. Same shape: short guide, real GPU, weights you can keep.</p>
   </main>
