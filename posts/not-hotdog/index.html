@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Not Hotdog — Let’s use compute</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="wrap">
+    <p><a class="back" href="/">← Let’s use compute</a></p>
+    <p class="eyebrow">2026-08-31 · inaugural post</p>
+    <h1>Let’s use compute!</h1>
+    <p>Today we train Not Hotdog. A small model that says whether an image is a hot dog, or not.</p>
+    <p>It’s the gag from <em>Silicon Valley</em> — Jian-Yang’s SeeFood app. We’re not hosting HBO footage here. If you want the refresher, search “Silicon Valley not hotdog” on YouTube.</p>
+
+    <p>You can train it on <a href="https://compute.cx">compute.cx</a> in four steps:</p>
+    <ol>
+      <li>Setup compute</li>
+      <li>Prepare the data</li>
+      <li>Setup the model for training</li>
+      <li>Train the model and validate</li>
+    </ol>
+
+    <h2>Setup compute</h2>
+    <p>Create an account, install the CLI, add credits.</p>
+<pre><code>curl -fsSL https://compute.cx/install.sh | sh
+compute setup
+compute credits add 10</code></pre>
+    <p>One active run per account. New accounts have a first-day spend cap. Balance at or under $1 blocks new runs.</p>
+
+    <h2>Prepare the data</h2>
+    <p>We already prepared the data. Grab it from Hugging Face:</p>
+    <p><a href="https://huggingface.co/datasets/theoriclabs/hot-dog-not-hot-dog"><code>theoriclabs/hot-dog-not-hot-dog</code></a></p>
+    <p>It’s the Kaggle <a href="https://www.kaggle.com/datasets/dansbecker/hot-dog-not-hot-dog">dansbecker/hot-dog-not-hot-dog</a> cut — itself a binary slice of <strong>Food-101</strong> (Bossard, Guillaumin, Van Gool, ECCV 2014, ETH Zurich). Cite the paper; don’t claim we made the photos.</p>
+    <p>In the training script, compute downloads the dataset on the machine during the run. You don’t upload images yourself.</p>
+
+    <h2>Setup the model for training</h2>
+    <h3>Choosing a model architecture</h3>
+    <p>Randomly initialized CNN. Three conv blocks, adaptive pool, linear head. About 180k parameters. No pretrained weights. Small on purpose.</p>
+    <h3>Choosing a loss function</h3>
+    <p>Cross-entropy. Two classes: <code>hot_dog</code> and <code>not_hot_dog</code>.</p>
+
+    <h2>Train the model and validate</h2>
+    <p>Clone the training files, or hand the skill file to your agent.</p>
+<pre><code>git clone https://github.com/theoriclabs/letsusecompute-not-hotdog
+cd letsusecompute-not-hotdog</code></pre>
+
+    <h3>Not-hotdog training files</h3>
+    <p>Repo: <a href="https://github.com/theoriclabs/letsusecompute-not-hotdog">theoriclabs/letsusecompute-not-hotdog</a> — <code>train.py</code>, <code>SKILL.md</code>, README.</p>
+
+    <h3>Not-hotdog training prompt</h3>
+<pre><code>Use SKILL.md in this repo to train the not-hotdog model on compute.cx.
+Dataset: theoriclabs/hot-dog-not-hot-dog
+Model: randomly initialized CNN, 3 conv blocks (~180k params), CrossEntropyLoss
+Train for 5 epochs at 128x128.
+First dry-run train.py::train with --gpu cheap --provider vastai.
+Then run without --dry-run, show me the preflight GPU and dollar estimate, and ask before confirming spend.
+After success, list and download artifacts.</code></pre>
+
+    <p>Dry-run first. It only prints the upload plan — no dollars yet.</p>
+<pre><code>compute run train.py::train --gpu cheap --provider vastai --dry-run</code></pre>
+<pre><code>dry-run (local AST; no upload, no quote)
+entrypoint: train.py::train
+files:
+  train.py
+third-party: datasets, huggingface_hub, torch, torchvision
+gpu:         vastai/cheap
+timeout:     1200s
+image:       cuda_pytorch
+pip:         torchvision, datasets, huggingface_hub, Pillow
+secrets:     (none)</code></pre>
+
+    <p>Then run for real. Prefer a cheap CUDA card. Default without <code>--gpu</code> is MI300X — too much machine for this toy.</p>
+<pre><code>compute run train.py::train --gpu vastai/RTX-3090 --timeout 1200 --wait</code></pre>
+    <p>You’ll see a preflight quote before spend. Something like RTX-3090 at $0.15/hr, timeout budget of a few cents. Confirm if it looks right, or pass <code>--yes</code>.</p>
+<pre><code>Run preflight (billed by started minute):
+  provider:       vastai
+  sku:            RTX-3090
+  locked rate:    $0.15/hr
+  timeout budget: 21 billed min → ≈ $0.05 total if the job runs to the timeout
+  balance:        $9.16</code></pre>
+
+    <h3>Validating the results</h3>
+    <p>When the run succeeds, the machine is gone. Weights don’t live on the VM. Pull them with artifacts:</p>
+<pre><code>compute artifacts list &lt;run_id&gt;
+compute artifacts get &lt;run_id&gt; &lt;artifact_id&gt; &lt;version&gt; --out ./weights</code></pre>
+    <p>We also published this guide’s checkpoint on Hugging Face: <a href="https://huggingface.co/theoriclabs/not-hotdog-cnn"><code>theoriclabs/not-hotdog-cnn</code></a>.</p>
+
+    <p>Want to train longer? Raise <code>epochs</code> and <code>--timeout</code>. You pay for billed minutes. Data stays on Hugging Face — compute doesn’t keep a volume for you. No wandb in this guide. No hosted inference API in this guide either; download the weights and run them locally.</p>
+
+    <p>Sample predictions from a 5-epoch train:</p>
+    <img class="shot" src="/assets/screenshots/pred-hot_dog-0.png" alt="Hot dog prediction example" />
+    <img class="shot" src="/assets/screenshots/pred-not_hot_dog-0.png" alt="Not hot dog prediction example" />
+
+    <p class="note">Next time we’ll train something else. Same shape: short guide, real GPU, weights you can keep.</p>
+  </main>
+</body>
+</html>

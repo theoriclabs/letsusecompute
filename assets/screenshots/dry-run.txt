@@ -1,0 +1,11 @@
+dry-run (local AST; no upload, no quote)
+entrypoint: train.py::train
+files:
+  train.py
+third-party: datasets, huggingface_hub, torch, torchvision
+gpu:         vastai/RTX-3090
+timeout:     1200s
+image:       cuda_pytorch
+pip:         torchvision, datasets, huggingface_hub, Pillow
+secrets:     (none)
+Local AST plan only. No upload, quote, or machine. You are billed started minutes if you run for real.

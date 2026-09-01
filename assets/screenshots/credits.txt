@@ -1,0 +1,3 @@
+balance:          $9.16
+new runs:         allowed
+minimum top-up:   $10.00
