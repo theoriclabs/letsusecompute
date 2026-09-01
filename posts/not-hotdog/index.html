@@ -42,7 +42,8 @@ compute credits add 10</code></pre>
     <p>We already prepared the data. Grab it from Hugging Face:</p>
     <p><a href="https://huggingface.co/datasets/theoriclabs/hot-dog-not-hot-dog"><code>theoriclabs/hot-dog-not-hot-dog</code></a></p>
     <p>It’s the Kaggle <a href="https://www.kaggle.com/datasets/dansbecker/hot-dog-not-hot-dog">dansbecker/hot-dog-not-hot-dog</a> cut — itself a binary slice of <strong>Food-101</strong> (Bossard, Guillaumin, Van Gool, ECCV 2014, ETH Zurich). Cite the paper; don’t claim we made the photos.</p>
-    <img class="shot" src="../../assets/screenshots/hf-dataset.png" alt="Hugging Face dataset page for theoriclabs/hot-dog-not-hot-dog" />
+    <img class="shot" src="../../assets/screenshots/dataset-grid.jpg" alt="36 train images in a 6 by 6 grid: hot dogs on top, not hot dogs below" />
+    <p>A slice of the train set. Hot dogs on top, everything else below.</p>
     <p>In the training script, compute downloads the dataset on the machine during the run. You don’t upload images yourself.</p>
 
     <h2>Setup the model for training</h2>
