@@ -43,15 +43,15 @@ compute credits add 10</code></pre>
     <p>Cross-entropy. Two classes: <code>hot_dog</code> and <code>not_hot_dog</code>.</p>
 
     <h2>Train the model and validate</h2>
-    <p>Clone the training files, or hand the skill file to your agent.</p>
-<pre><code>git clone https://github.com/theoriclabs/letsusecompute-not-hotdog
-cd letsusecompute-not-hotdog</code></pre>
+    <p>Clone the site repo, then work from this post’s folder. Or hand the skill file to your agent.</p>
+<pre><code>git clone https://github.com/theoriclabs/letsusecompute
+cd letsusecompute/posts/not-hotdog</code></pre>
 
     <h3>Not-hotdog training files</h3>
-    <p>Repo: <a href="https://github.com/theoriclabs/letsusecompute-not-hotdog">theoriclabs/letsusecompute-not-hotdog</a> — <code>train.py</code>, <code>SKILL.md</code>, README.</p>
+    <p>Same repo as this site: <a href="https://github.com/theoriclabs/letsusecompute/tree/main/posts/not-hotdog"><code>posts/not-hotdog</code></a> — <code>train.py</code>, <code>SKILL.md</code>, README.</p>
 
     <h3>Not-hotdog training prompt</h3>
-<pre><code>Use SKILL.md in this repo to train the not-hotdog model on compute.cx.
+<pre><code>Use SKILL.md in posts/not-hotdog to train the not-hotdog model on compute.cx.
 Dataset: theoriclabs/hot-dog-not-hot-dog
 Model: randomly initialized CNN, 3 conv blocks (~180k params), CrossEntropyLoss
 Train for 5 epochs at 128x128.
@@ -93,9 +93,8 @@ compute run train.py::train_and_push --gpu cheap --provider vastai --timeout 120
 
     <p>Want to train longer? Raise <code>epochs</code> and <code>--timeout</code>. You pay for billed minutes. Data stays on Hugging Face — compute doesn’t keep a volume for you. No wandb in this guide. No hosted inference API in this guide either; download the weights and run them locally.</p>
 
-    <p>Sample predictions from a 5-epoch train:</p>
-    <img class="shot" src="../../assets/screenshots/pred-hot_dog-0.png" alt="Hot dog prediction example" />
-    <img class="shot" src="../../assets/screenshots/pred-not_hot_dog-0.png" alt="Not hot dog prediction example" />
+    <p>Sample predictions from a 5-epoch train — three from each pile, test set, same checkpoint.</p>
+    <img class="shot" src="../../assets/screenshots/pred-grid.jpg" alt="Six test images: three hot dogs and three not hot dogs, each with the model’s prediction" />
 
     <p class="note">Next time we’ll train something else. Same shape: short guide, real GPU, weights you can keep.</p>
   </main>

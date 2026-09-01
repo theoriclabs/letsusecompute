@@ -12,7 +12,7 @@ A tiny CNN. Hot dog or not. The Silicon Valley gag, on a fresh cloud GPU, then t
 
 Guide: http://letsusecompute.com/posts/not-hotdog
 
-Training files: https://github.com/theoriclabs/letsusecompute-not-hotdog
+Training files: https://github.com/theoriclabs/letsusecompute/tree/main/posts/not-hotdog
 Dataset: https://huggingface.co/datasets/theoriclabs/hot-dog-not-hot-dog
 Checkpoint: https://huggingface.co/theoriclabs/not-hotdog-cnn
 
