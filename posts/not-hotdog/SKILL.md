@@ -1,85 +1,41 @@
 ---
 name: not-hotdog-compute
 description: >-
-  Train the Not Hotdog CNN on compute.cx. Use when the user wants to run the
-  letsusecompute Not Hotdog guide, train a hot-dog classifier on a cloud GPU,
-  dry-run the payload, get a spend quote, or download trained weights.
+  Extra instructions for the letsusecompute Not Hotdog guide. Load
+  https://compute.cx/SKILL.md first, then apply the specials below.
 ---
 
-# Not Hotdog on compute.cx
+# Not Hotdog — extras on top of Compute
 
-Train a randomly initialized CNN (3 conv blocks, ~180k params, cross-entropy)
-on the binary hot-dog dataset. One fresh GPU per run. Weights come back via
-`compute artifacts get`.
+Canonical Compute skill: `https://compute.cx/SKILL.md`
 
-Dataset: `theoriclabs/hot-dog-not-hot-dog`  
-Script: `train.py::train` in this folder (`posts/not-hotdog`)  
-Human guide: https://letsusecompute.com/posts/not-hotdog
-Repo: https://github.com/theoriclabs/letsusecompute
+Use that skill for install, credit, dry-run, quotes, logs, artifacts, and MCP.
+This file is only the job-specific overlay.
 
-## Rules
+## Special instructions
 
-- GPU runs spend prepaid credit. Confirm the quote.
-- `--dry-run` prints the AST upload plan only. **No quote, no machine.** To see GPU, time, and dollar estimate, run without `--dry-run` and read the preflight (cancel if you do not want to spend).
-- Prefer `--gpu cheap` for this tiny CNN. The router usually picks Vast.ai RTX 3090. Do not default to MI300X.
-- Do not invent files. Use `train.py` from this folder, or curl it from the GitHub raw URL in the guide.
-- Do not paste API keys or secret values into chat.
+- Download `https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/not-hotdog/train.py` as `train.py`. Do not invent a script.
+- Entrypoint: `train.py::train`
+- Dataset: `theoriclabs/hot-dog-not-hot-dog` (the script downloads it on the machine)
+- Randomly initialized CNN, ~93k params, CrossEntropyLoss, 50 epochs, 128×128
+- Use `--gpu cheap`. Do not pick H100 or MI300X.
+- Dry-run first. Then show the preflight quote and ask before confirming spend.
+- After success, show the printed loss/accuracy and download artifacts with `compute artifacts list` / `get`.
 
-## Steps
-
-1. Install and sign in:
-
-```bash
-curl -fsSL https://compute.cx/install.sh | sh
-compute setup
-compute credits add 10
-```
-
-2. Dry-run the payload:
-
-```bash
-compute run train.py::train --gpu cheap --dry-run
-```
-
-3. Start training (preflight prints provider, SKU, rate, estimate; confirm or pass `--yes`):
-
-```bash
-compute run train.py::train --gpu cheap --timeout 1800 --wait \
-  --args '{"epochs":50,"batch_size":32,"image_size":128}'
-```
-
-4. After `succeeded`, download weights:
-
-```bash
-compute artifacts list <run_id>
-compute artifacts get <run_id> <artifact_id> <version> --out ./weights
-```
-
-5. Optional — publish the checkpoint to Hugging Face. The token must be stored **and** referenced:
-
-```bash
-compute secrets set hf
-compute run train.py::train_and_push --gpu cheap --timeout 1800 --wait
-```
-
-`train` does not request the secret, so readers can train on the public dataset without an HF token. `train_and_push` lists `secrets=[Secret.from_name("hf")]`; without that declaration the stored secret is never injected.
+Guide: https://letsusecompute.com/posts/not-hotdog  
+Published weights (skip training): https://huggingface.co/theoriclabs/not-hotdog-cnn
 
 ## Suggested prompt
 
 ```
-Use https://compute.cx/SKILL.md to train the not-hotdog model on compute.cx.
-Dataset: theoriclabs/hot-dog-not-hot-dog
-Model: randomly initialized CNN, 3 conv blocks (~180k params), CrossEntropyLoss
-Train for 50 epochs at 128x128.
-First dry-run train.py::train with --gpu cheap.
-Then run without --dry-run, show me the preflight GPU and dollar estimate, and ask before confirming spend.
-After success, list and download artifacts.
+Use https://compute.cx/SKILL.md.
+
+Special instructions:
+- Download https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/not-hotdog/train.py as train.py. Do not invent a script.
+- Entrypoint: train.py::train
+- Dataset: theoriclabs/hot-dog-not-hot-dog (the script downloads it on the machine)
+- Randomly initialized CNN, ~93k params, CrossEntropyLoss, 50 epochs, 128x128
+- Use --gpu cheap. Do not pick H100 or MI300X.
+- Dry-run first. Then show the preflight quote and ask before confirming spend.
+- After success, show the printed loss/accuracy and download artifacts with compute artifacts list / get.
 ```
-
-## Notes
-
-- Public dataset: no HF token required to train (`train.py::train`).
-- Hub publish needs `compute secrets set hf` plus `train.py::train_and_push`.
-- To train longer: raise `epochs` and `--timeout` (max 24h). You pay for billed minutes.
-- Data lives on Hugging Face, not on compute. Machines are ephemeral.
-- No wandb in this guide. No hosted inference API in this guide.
