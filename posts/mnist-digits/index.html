@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MNIST Digits — Let’s use compute</title>
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="../../assets/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="../../assets/favicon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+</head>
+<body>
+  <main class="wrap">
+    <p><a class="back" href="../../">← Let’s use compute</a></p>
+    <p class="eyebrow">2026-09-02 · post #2</p>
+    <h1>MNIST digits for under $1</h1>
+    <p class="byline">Harsh Gupta</p>
+    <p>Today's model is the smallest one that still counts as real training: a tiny CNN that reads handwritten digits, the MNIST dataset. It exists to prove the whole path — install, credit, dry-run, run, logs, artifacts — works end to end before we spend real money on anything bigger.</p>
+
+    <p>You can train it on <a href="https://compute.cx">compute.cx</a> in four steps:</p>
+    <ol>
+      <li>Setup compute</li>
+      <li>Prepare the data</li>
+      <li>Setup the model for training</li>
+      <li>Train the model and validate</li>
+    </ol>
+
+    <h2>Setup compute</h2>
+    <p>Create an account, install the CLI, add credits.</p>
+<pre><code class="language-bash">curl -fsSL https://compute.cx/install.sh | sh
+compute setup
+compute credits add 10</code></pre>
+
+    <h2>Prepare the data</h2>
+    <p>Nothing to prepare by hand. MNIST — 60,000 training images and 10,000 test images of handwritten digits 0–9, 28×28 grayscale — comes bundled with <code>torchvision</code>. The training script downloads it on the machine during the run. You don't upload anything.</p>
+
+    <h2>Setup the model for training</h2>
+    <h3>Choose a model architecture</h3>
+    <p>A small, randomly initialized CNN: two conv+pool blocks, then two linear layers. About 106k parameters — small enough that a handful of epochs on one cheap GPU is plenty.</p>
+    <h3>Choose a loss function</h3>
+    <p>Cross-entropy — the usual loss for a classifier. Ten classes, one per digit.</p>
+
+    <h2>Train the model and validate</h2>
+    <p>Grab the training script. That's the only file you need. Hand <a href="https://compute.cx/SKILL.md">compute.cx/SKILL.md</a> to your agent, plus the special instructions below.</p>
+<pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/mnist-digits/train.py -o train.py</code></pre>
+    <p>Want to read it first? <a href="https://github.com/theoriclabs/letsusecompute/blob/main/posts/mnist-digits/train.py"><code>train.py</code></a>.</p>
+
+    <h3>MNIST digits training prompt</h3>
+<pre><code class="language-none">Use https://compute.cx/SKILL.md.
+
+Special instructions:
+- Download https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/mnist-digits/train.py as train.py. Do not invent a script.
+- Entrypoint: train.py::train
+- Dataset: MNIST via torchvision.datasets.MNIST (the script downloads it on the machine)
+- Randomly initialized CNN, ~106k params, CrossEntropyLoss, 10 epochs, 28x28
+- Use --gpu cheap. Do not pick H100 or MI300X. Timeout 900.
+- Dry-run first. Then show the preflight quote and ask before confirming spend.
+- After success, show the printed loss/accuracy and download artifacts with compute artifacts list / get.</code></pre>
+
+    <p>Dry-run first. It only prints the upload plan — no dollars yet.</p>
+<pre><code class="language-bash">compute run train.py::train --gpu cheap --dry-run</code></pre>
+<pre><code class="language-none">dry-run (local AST; no upload, no quote)
+entrypoint: train.py::train
+files:
+  train.py
+third-party: huggingface_hub, torch, torchvision
+gpu:         cheap
+timeout:     900s
+image:       cuda_pytorch
+pip:         torchvision, huggingface_hub
+secrets:     (none)</code></pre>
+
+    <p>Then run for real. Pass <code>--gpu cheap</code> and let the router pick. For this tiny CNN, <code>cheap</code> usually lands on a Vast.ai RTX 3090.</p>
+<pre><code class="language-bash">compute run train.py::train --gpu cheap --timeout 900 --wait</code></pre>
+    <p>You'll see the pick and the dollar quote before spend. Confirm if it looks right, or pass <code>--yes</code>.</p>
+
+    <h3>Validate the results</h3>
+    <p>With <code>--wait</code>, the run prints train loss and test accuracy each epoch. This guide's run (<code>run_11d87f76dffbea350f2f7e75513aa25e</code>) landed on a Vast.ai RTX 3090, billed for 2 minutes, $0.01 total — out of the $3 budget for the whole issue. Test accuracy: 98.62% after 10 epochs, with a peak of 98.97% at epoch 5 and mild overfit afterward, the same shape as Not Hotdog's much bigger curve just far gentler at this scale.</p>
+    <img class="shot" src="../../assets/screenshots/mnist-digits-loss-curve.png" alt="Illustrative loss and accuracy curves for the MNIST digits CNN over 10 epochs, peaking at 98.97% test accuracy at epoch 5 and settling at 98.62% by epoch 10" />
+    <p><em>This chart is a reconstruction — illustrative of the recorded 98.62% final / 98.97% peak accuracy, not the exact original per-batch curve from the run.</em></p>
+    <p>Pull the weights while they're still around:</p>
+<pre><code class="language-bash">compute artifacts list run_11d87f76dffbea350f2f7e75513aa25e
+compute artifacts get run_11d87f76dffbea350f2f7e75513aa25e mnist-cnn 1 --out ./weights</code></pre>
+    <p>No Hugging Face token was set up for this run, so there's no Hub checkpoint to skip to this time — the weights only exist as that run's <code>mnist-cnn</code> artifact. Run <code>compute secrets set hf</code> and use <code>train.py::train_and_push</code> if you want one.</p>
+
+  </main>
+  <script src="../../assets/cli-highlight.js"></script>
+</body>
+</html>
