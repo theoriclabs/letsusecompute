@@ -43,7 +43,7 @@ Guide: https://letsusecompute.com/posts/mnist-digits
 
 Training files: https://github.com/theoriclabs/letsusecompute/tree/main/posts/mnist-digits
 
-[Attach image: assets/screenshots/mnist-digits-loss-curve.png — loss and test-accuracy curves over 10 epochs, peaking at 98.97% at epoch 5 before settling at the final 98.62%. Illustrative reconstruction, not the exact original per-batch curve.]
+[Attach images: assets/screenshots/mnist-digits-dataset-grid.png — a preview of the test set — and assets/screenshots/mnist-digits-loss-curve.svg — real train/test loss over the 8 epochs, peaking at 98.97% test accuracy at epoch 5 before settling at the final 98.62%. Both pulled from the actual checkpoint, not mockups.]
 
 No Hugging Face checkpoint this time — no write token was set up for the run, so the weights only live as the run's compute artifact. Everything else about the pipeline held up the same as post #1.
 
