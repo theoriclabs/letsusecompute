@@ -39,7 +39,7 @@ compute artifacts get <run_id> <artifact_id> <version> --out ./weights
 
 - Randomly initialized CNN (~106k params): 2 conv blocks → linear → linear
 - Loss: cross-entropy over 10 digit classes
-- Default: 10 epochs, 28×28 images, batch size 128
+- Default: 8 epochs, 28×28 images, batch size 128
 - Dataset: MNIST via `torchvision.datasets.MNIST` (downloaded on the machine, not uploaded by you)
 
 ## This guide's run
@@ -49,7 +49,7 @@ compute artifacts get <run_id> <artifact_id> <version> --out ./weights
 - Billed: 2 minutes, $0.01 total (of the $3 issue budget)
 - Test accuracy: 98.62% final (peak 98.97% at epoch 5, then mild overfit)
 
-This run used the plain `train` entrypoint — no Hugging Face write token was set up for it, so the weights exist only as the run's `mnist-cnn` compute artifact, not on the Hub. Run `compute secrets set hf` and use `train_and_push` if you want a Hub checkpoint.
+This run used the plain `train` entrypoint — no Hugging Face write token was set up for it, so the weights exist only as the run's `mnist-cnn` compute artifact, not on the Hub. Run `compute secrets set hf` and use `train_and_push` if you want a Hub checkpoint. The guide page shows real predictions and a real train/test loss curve pulled from that checkpoint, plus a preview of the test set — not mockups.
 
 ## Agent path
 
