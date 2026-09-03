@@ -321,7 +321,7 @@ def _train_impl(
     timeout=900,
 )
 def train(
-    epochs: int = 10,
+    epochs: int = 8,
     batch_size: int = 128,
     lr: float = 1e-3,
     max_train: int | None = None,
@@ -350,7 +350,7 @@ def train(
     secrets=[hf_secret],
 )
 def train_and_push(
-    epochs: int = 10,
+    epochs: int = 8,
     batch_size: int = 128,
     lr: float = 1e-3,
     max_train: int | None = None,

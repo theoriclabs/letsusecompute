@@ -17,7 +17,7 @@ This file is only the job-specific overlay.
 - Download `https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/mnist-digits/train.py` as `train.py`. Do not invent a script.
 - Entrypoint: `train.py::train`
 - Dataset: MNIST via `torchvision.datasets.MNIST` (the script downloads it on the machine)
-- Randomly initialized CNN, ~106k params, CrossEntropyLoss, 10 epochs, 28×28
+- Randomly initialized CNN, ~106k params, CrossEntropyLoss, 8 epochs, 28×28
 - Use `--gpu cheap`. Do not pick H100 or MI300X. Timeout `900`.
 - Dry-run first. Then show the preflight quote and ask before confirming spend.
 - After success, show the printed loss/accuracy and download artifacts with `compute artifacts list` / `get`.
@@ -34,7 +34,7 @@ Special instructions:
 - Download https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/mnist-digits/train.py as train.py. Do not invent a script.
 - Entrypoint: train.py::train
 - Dataset: MNIST via torchvision.datasets.MNIST (the script downloads it on the machine)
-- Randomly initialized CNN, ~106k params, CrossEntropyLoss, 10 epochs, 28x28
+- Randomly initialized CNN, ~106k params, CrossEntropyLoss, 8 epochs, 28x28
 - Use --gpu cheap. Do not pick H100 or MI300X. Timeout 900.
 - Dry-run first. Then show the preflight quote and ask before confirming spend.
 - After success, show the printed loss/accuracy and download artifacts with compute artifacts list / get.
