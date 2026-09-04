@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Face or Not — Let’s use compute</title>
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="../../assets/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="../../assets/favicon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <link rel="stylesheet" href="./styles-additions.css" />
+</head>
+<body>
+  <main class="wrap">
+    <p><a class="back" href="../../">← Let’s use compute</a></p>
+    <header class="article-header">
+      <p class="eyebrow">2026-09-04 · post #3</p>
+      <h1>Face or Not</h1>
+      <p class="byline">Harsh Gupta</p>
+      <p class="lede">A small CNN reached 87%. One validation-led correction reached 98.25% on the same 400-crop test benchmark. The two successful GPU runs cost $0.25 in total.</p>
+    </header>
+
+    <section aria-labelledby="problem">
+      <h2 id="problem">What are we classifying?</h2>
+      <p>Give the model a 128×128 image crop and it returns one of two labels: <code>face</code> or <code>no_face</code>. The label follows Open Images’ <code>Human face</code> annotation. This classifier does not scan a larger photo for faces, draw boxes, or identify anyone.</p>
+      <p>That narrow task is useful for a tutorial because the whole experiment fits on one page. It also forces us to get the evaluation split right before renting a GPU.</p>
+
+      <figure>
+        <img class="shot evidence" src="./assets/dataset_samples.png" width="1440" height="1060" alt="Eight labeled training crops: four crops labeled no face followed by four crops labeled face" loading="eager" decoding="async" fetchpriority="high" />
+        <figcaption>Eight deterministic examples from the training split. The pictures come from Open Images and are listed as CC BY 2.0. <a href="./assets/ATTRIBUTION.md">See the per-image credits and source links.</a></figcaption>
+      </figure>
+    </section>
+
+    <section aria-labelledby="dataset">
+      <h2 id="dataset">Curating 4,000 crops</h2>
+      <p>We built <a href="https://huggingface.co/datasets/theoriclabs/face-or-not"><code>theoriclabs/face-or-not</code></a> from the official Open Images validation set. Half of the rows are face crops. For each one, the builder takes the largest accepted <code>Human face</code> box, rejects group boxes, depictions, and boxes smaller than one percent of the source image, then adds 25% context around a square crop.</p>
+      <p>The other half come from images where a human verifier marked <code>Human face</code> absent. Those rows use a centered square. Every crop is resized to 128×128 RGB.</p>
+
+      <div class="table-wrap" role="region" aria-label="Dataset split counts" tabindex="0">
+        <table class="data-table">
+          <caption>Published dataset composition</caption>
+          <thead>
+            <tr>
+              <th scope="col">Split</th>
+              <th scope="col">No face</th>
+              <th scope="col">Face</th>
+              <th scope="col">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Train</th><td>1,600</td><td>1,600</td><td>3,200</td></tr>
+            <tr><th scope="row">Validation</th><td>200</td><td>200</td><td>400</td></tr>
+            <tr><th scope="row">Test</th><td>200</td><td>200</td><td>400</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>All 4,000 source image IDs are unique, so a photograph cannot leak from one split into another. Training uses the 3,200-row split. Validation chooses the checkpoint. The test set supplies one final measurement for each model.</p>
+
+      <figure>
+        <img class="shot evidence" src="./assets/task_flow.svg" width="1300" height="490" alt="Evaluation flow from 4,000 balanced source-disjoint crops to training, validation checkpoint selection, a held-out test pass, and the 95 percent publication gate" loading="lazy" decoding="async" />
+        <figcaption>The correction was chosen from training and validation curves. Its test pass was the second model measurement on this 400-crop benchmark.</figcaption>
+      </figure>
+
+      <aside class="note" aria-label="Dataset limitations">
+        <p>The labels and crops inherit Open Images’ mistakes and sampling choices. A manual check found a doll and a theatrical mask labeled <code>Human face</code>. The label also determines the crop method: faces are box-centered, while negatives use a centered square. A high score here does not establish performance on wide scenes, tiny faces, drawings, or a different image pipeline.</p>
+      </aside>
+
+      <p>Open Images lists the selected photographs under CC BY 2.0 and licenses its annotations under CC BY 4.0. Each row keeps the author, original links, license URL, image ID, and crop coordinates. Training pins dataset revision <code>7c81a2453be2cb48bb0b48192db91a826108e3de</code>; the <a href="https://huggingface.co/datasets/theoriclabs/face-or-not">dataset card</a> contains the full build recipe and license caveat.</p>
+    </section>
+
+    <section aria-labelledby="training">
+      <h2 id="training">Training the model</h2>
+      <p>The first run used a randomly initialized 315,426-parameter CNN. Its training and validation losses stayed close while validation accuracy was still improving, so the next attempt changed the representation instead of tuning against test examples.</p>
+      <p>The corrected model starts from torchvision’s ResNet18 <code>IMAGENET1K_V1</code> weights. It has 11,177,538 parameters. The first four epochs train only a new two-class head. From epoch five onward, <code>layer4</code> and the head train while the earlier layers and their batch-normalization state stay frozen. That leaves 8,394,754 trainable parameters in the second phase.</p>
+
+      <figure>
+        <img class="shot evidence" src="./assets/architecture.svg" width="1280" height="510" alt="Staged ResNet18 training: the stem through layer3 stay frozen, layer4 starts training at epoch five, and the two-class head trains throughout" loading="lazy" decoding="async" />
+        <figcaption>Four head-only warmup epochs, followed by <code>layer4</code> and head fine-tuning with AdamW and cosine learning-rate decay.</figcaption>
+      </figure>
+
+      <p>Light crop and color augmentation run on the training split. Checkpoint selection uses validation accuracy, with validation loss breaking ties. The run stops early after six epochs without an improvement and never exceeds 30 epochs.</p>
+
+      <h3>Run it on Compute</h3>
+      <p>Download the training file, install the CLI, and add prepaid credit:</p>
+<pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/face-or-not/train.py -o train.py
+
+curl -fsSL https://compute.cx/install.sh | sh
+compute setup
+compute credits add 10</code></pre>
+
+      <p>Dry-run checks the local payload without uploading it or creating a machine:</p>
+<pre><code class="language-bash">compute run train.py::train --gpu cheap --dry-run</code></pre>
+
+      <p>Then request a live quote. Compute shows the selected GPU, locked hourly rate, timeout-budget estimate, and balance before asking for confirmation.</p>
+<pre><code class="language-bash">compute run train.py::train --gpu cheap --timeout 1800 --wait</code></pre>
+
+      <p>The workload downloads the pinned dataset on the machine, trains, evaluates the selected checkpoint, and writes the model plus its evidence files as a Compute artifact.</p>
+    </section>
+
+    <section aria-labelledby="results">
+      <h2 id="results">Results</h2>
+
+      <h3>The 87% baseline</h3>
+      <p>Run <code>run_5e61db1cc0b501b3bfa6d18829669c62</code> used a RunPod NVIDIA A100 80GB PCIe and cost $0.12. The random CNN selected epoch 23 at 90.0% validation accuracy. On its one test pass it scored 87.0% accuracy, with 88.95% face precision, 84.5% recall, and 86.67% F1.</p>
+      <p>We chose the ResNet18 correction from the training and validation curves. The aggregate 87% test score was already known, but no held-out image, identity, or per-image prediction was inspected to choose the new architecture.</p>
+
+      <figure>
+        <img class="shot evidence" src="./assets/results/predictions.png" width="1280" height="1245" alt="Sixteen held-out predictions from the 87 percent random-CNN baseline, with eight errors first and eight close correct calls after them" loading="lazy" decoding="async" />
+        <figcaption><span class="figure-label">87% random-CNN baseline.</span> This error-first grid was made after the correction decision. It does not show predictions from the corrected ResNet18. <a href="./assets/results/PREDICTION_ATTRIBUTION.md">See the image credits and selection record.</a></figcaption>
+      </figure>
+
+      <h3>The corrected run</h3>
+      <p>Run <code>run_e1abf4b4c24a49baa0d8f62e2d94a3c3</code> used the same RunPod A100 class. It ran for 146.379 seconds, completed 23 epochs, and selected epoch 17 at 98.5% validation accuracy.</p>
+
+      <dl class="metrics" aria-label="Corrected model held-out metrics">
+        <div class="metric"><dt>Test accuracy</dt><dd>98.25%</dd></div>
+        <div class="metric"><dt>Face precision</dt><dd>98.98%</dd></div>
+        <div class="metric"><dt>Face recall</dt><dd>97.50%</dd></div>
+        <div class="metric"><dt>Face F1</dt><dd>98.24%</dd></div>
+      </dl>
+
+      <p>This is the second model evaluated on the same test benchmark. Its single test pass got 393 of 400 crops right: two false positives and five false negatives.</p>
+
+      <figure>
+        <img class="shot evidence" src="./assets/final-results/training_curves.svg" width="1200" height="620" alt="Corrected ResNet18 train and validation loss decline together over 23 epochs while validation accuracy rises above the 95 percent target; layer4 begins at epoch five and epoch 17 is selected" loading="lazy" decoding="async" />
+        <figcaption>Reconstructed from the 23 epoch rows in Compute’s archived logs. The logged losses have four decimal places of precision.</figcaption>
+      </figure>
+
+      <figure>
+        <img class="shot evidence matrix" src="./assets/final-results/confusion_matrix.svg" width="900" height="590" alt="Corrected held-out confusion matrix: 198 true negatives, 2 false positives, 5 false negatives, and 195 true positives" loading="lazy" decoding="async" />
+        <figcaption>Rendered from the exact aggregate metrics returned in the structured Compute result.</figcaption>
+      </figure>
+
+      <p>The receipt billed five minutes: $0.12 in provider usage and a $0.01 platform fee, for $0.13. Together, the baseline and correction cost $0.25.</p>
+
+      <aside class="note" aria-label="Provisioning failures">
+        <p>Two earlier Vast.ai allocations failed before training and billed $0.00. An RTX 3090 request received HTTP 410 (<code>rpt_7f235359c68c52af6b64e38981c832d7</code>), and an RTX 6000 Ada request found no interruptible offers (<code>rpt_e97eb68f61e64b002a2c6e5d74b7a56b</code>).</p>
+      </aside>
+
+      <h3>The missing checkpoint</h3>
+      <p>The corrected function returned success and named the directory where it had written <code>model.pt</code>, metrics, history, and held-out prediction records. After the machine terminated, <code>compute artifacts list</code> returned no artifact for the run.</p>
+      <p>The archived logs support the curves, and the structured result contains the exact aggregate metrics used in the confusion matrix. The absent artifact means we cannot verify or publish the exact checkpoint, inspect its per-image predictions, or claim that the baseline prediction grid came from the corrected model. Compute report <code>rpt_b40a746d9514b1a9b543ff003368fc7a</code> requests recovery from archived run storage.</p>
+      <p>That production report also led to a product fix. Compute now retries each persistence stage within a bounded window and reports the run as failed if declared artifacts still are not durable before teardown. The change prevents a future false success, but it cannot recreate the bytes destroyed with this machine.</p>
+
+      <p>For a run with a completed artifact record, retrieve the receipt and files with:</p>
+<pre><code class="language-bash">compute runs receipt &lt;run_id&gt;
+compute artifacts list &lt;run_id&gt;
+compute artifacts get &lt;run_id&gt; &lt;artifact_id&gt; &lt;version&gt; --out ./weights</code></pre>
+
+      <p>To train and publish a future qualifying checkpoint in one run, store a Hugging Face write token and use the publishing entrypoint:</p>
+<pre><code class="language-bash">compute secrets set hf
+compute run train.py::train_and_push --gpu cheap --timeout 1800 --wait</code></pre>
+      <p>We will not rerun this completed experiment to recreate the missing file. The exact 98.25% checkpoint remains unpublished until Compute can recover and verify it.</p>
+    </section>
+  </main>
+  <script src="../../assets/cli-highlight.js"></script>
+</body>
+</html>

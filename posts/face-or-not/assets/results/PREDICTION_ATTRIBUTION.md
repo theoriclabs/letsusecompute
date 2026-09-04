@@ -1,0 +1,24 @@
+# Prediction-grid attribution — 87% random-CNN baseline
+
+These held-out examples were selected automatically after the 87% random-CNN baseline test pass for reporting only. The label identifies the model that produced this grid; these images must not be attributed to another checkpoint. They were not used to choose the corrected architecture. Open Images lists every displayed source image under [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/).
+
+| # | true → predicted | title | author | source | license | Open Images ID |
+|---:|---|---|---|---|---|---|
+| 1 | `no_face → face` | D08_371_084 | [Fantake](https://www.flickr.com/people/chinaherald/) | [original](https://www.flickr.com/photos/chinaherald/8284744820) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `532c80c1cdd2eb92` |
+| 2 | `no_face → face` | Weenie | [Dave Walker](https://www.flickr.com/people/ffg/) | [original](https://www.flickr.com/photos/ffg/18884686322) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `84509e5e19e5457d` |
+| 3 | `face → no_face` | Cherry on Top | [Mark Mitchell](https://www.flickr.com/people/mmitchell/) | [original](https://www.flickr.com/photos/mmitchell/5701878214) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `2317fb15bcd3ce85` |
+| 4 | `face → no_face` | Olle Hexe | [Pixelteufel](https://www.flickr.com/people/99667320@N06/) | [original](https://www.flickr.com/photos/99667320@N06/9408681060) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `10c405ea867ec356` |
+| 5 | `no_face → face` | Eggs from the chickens next door. | [bookfinch](https://www.flickr.com/people/mamsy/) | [original](https://www.flickr.com/photos/mamsy/8400645732/) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `156c07f229206fde` |
+| 6 | `no_face → face` | 33. weervisserij - veel geep | [Jamez Lee S Hunter](https://www.flickr.com/people/90955024@N04/) | [original](https://www.flickr.com/photos/90955024@N04/8914737770) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `210ad5a32dc2a97c` |
+| 7 | `face → no_face` | Welcome Hailey Lynn | [Jen Parker](https://www.flickr.com/people/cheekybunnyjen/) | [original](https://www.flickr.com/photos/cheekybunnyjen/5604885531) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `e4a934834d2bba41` |
+| 8 | `no_face → face` | playing in the foog | [Gustavo Veríssimo](https://www.flickr.com/people/gustty/) | [original](https://www.flickr.com/photos/gustty/270378084) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `2c0968c9878c81db` |
+| 9 | `face → face` | MM00001948 | [Florida Keys--Public Libraries](https://www.flickr.com/people/keyslibraries/) | [original](https://www.flickr.com/photos/keyslibraries/3608093890) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `f78d56da46cbfb2e` |
+| 10 | `no_face → no_face` | Sunn O))) at Koko | [phorque](https://www.flickr.com/people/phorque/) | [original](https://www.flickr.com/photos/phorque/8285505468) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `c678d48f2d216643` |
+| 11 | `no_face → no_face` | Bilora Omega 40 - 2424 (6) | [The Photo Company NL](https://www.flickr.com/people/bilora/) | [original](https://www.flickr.com/photos/bilora/5692941620) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `e48f62b556e44db8` |
+| 12 | `face → face` | Testing the (Weaker) Laser | [Eugene Kim](https://www.flickr.com/people/eekim/) | [original](https://www.flickr.com/photos/eekim/3407857159) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `1cbf13ac0cb7030d` |
+| 13 | `face → face` | Ximena Boullosa | [Nicolás Boullosa](https://www.flickr.com/people/faircompanies/) | [original](https://www.flickr.com/photos/faircompanies/3819696604) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `618dbeb8fb32291f` |
+| 14 | `face → face` | 1a73 | [Janelle Spice](https://www.flickr.com/people/lacyjanelle/) | [original](https://www.flickr.com/photos/lacyjanelle/75534356) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `c32e6c767c7e5e0f` |
+| 15 | `face → face` | Jumping Out of a Plane, What What! | [Groupon](https://www.flickr.com/people/groupon/) | [original](https://www.flickr.com/photos/groupon/6150533461) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `f2e36a831907afff` |
+| 16 | `face → face` | Otvorenie centra diagnostiky a jednodňovej chirurgie v Malackách | [Bratislavská župa](https://www.flickr.com/people/fotopavolfreso/) | [original](https://www.flickr.com/photos/fotopavolfreso/6714242701) | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0/) | `1b062e5dfa472ddf` |
+
+Machine-readable attribution, probabilities, outcomes, crop coordinates, and decoded-pixel hashes are in [`prediction_attribution.jsonl`](./prediction_attribution.jsonl).

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img">
+<rect width="100%" height="100%" fill="#f5f1e8"/>
+<style>.title{font:700 38px system-ui,sans-serif;fill:#17201e}.head{font:700 20px system-ui,sans-serif;fill:#17201e}.body{font:15px system-ui,sans-serif;fill:#53605b}.axis{stroke:#89938e;stroke-width:1}.grid{stroke:#d7dbd8;stroke-width:1}</style>
+<text x="65" y="58" class="title">Training and validation history</text>
+<text x="85" y="105" class="head">Loss</text>
+<text x="650" y="105" class="head">Validation accuracy</text>
+<line x1="85" y1="130.0" x2="560" y2="130.0" class="grid"/>
+<text x="73" y="135.0" text-anchor="end" class="body">0.68</text>
+<line x1="650" y1="130.0" x2="1125" y2="130.0" class="grid"/>
+<text x="638" y="135.0" text-anchor="end" class="body">100%</text>
+<line x1="85" y1="208.0" x2="560" y2="208.0" class="grid"/>
+<text x="73" y="213.0" text-anchor="end" class="body">0.61</text>
+<line x1="650" y1="208.0" x2="1125" y2="208.0" class="grid"/>
+<text x="638" y="213.0" text-anchor="end" class="body">90%</text>
+<line x1="85" y1="286.0" x2="560" y2="286.0" class="grid"/>
+<text x="73" y="291.0" text-anchor="end" class="body">0.53</text>
+<line x1="650" y1="286.0" x2="1125" y2="286.0" class="grid"/>
+<text x="638" y="291.0" text-anchor="end" class="body">80%</text>
+<line x1="85" y1="364.0" x2="560" y2="364.0" class="grid"/>
+<text x="73" y="369.0" text-anchor="end" class="body">0.45</text>
+<line x1="650" y1="364.0" x2="1125" y2="364.0" class="grid"/>
+<text x="638" y="369.0" text-anchor="end" class="body">70%</text>
+<line x1="85" y1="442.0" x2="560" y2="442.0" class="grid"/>
+<text x="73" y="447.0" text-anchor="end" class="body">0.37</text>
+<line x1="650" y1="442.0" x2="1125" y2="442.0" class="grid"/>
+<text x="638" y="447.0" text-anchor="end" class="body">60%</text>
+<line x1="85" y1="520.0" x2="560" y2="520.0" class="grid"/>
+<text x="73" y="525.0" text-anchor="end" class="body">0.30</text>
+<line x1="650" y1="520.0" x2="1125" y2="520.0" class="grid"/>
+<text x="638" y="525.0" text-anchor="end" class="body">50%</text>
+<line x1="85" y1="520" x2="560" y2="520" class="axis"/>
+<text x="322.5" y="565" text-anchor="middle" class="body">epoch</text>
+<line x1="650" y1="520" x2="1125" y2="520" class="axis"/>
+<text x="887.5" y="565" text-anchor="middle" class="body">epoch</text>
+<polyline points="85.0,156.9 102.0,234.4 118.9,239.5 135.9,255.1 152.9,267.0 169.8,286.6 186.8,290.6 203.8,304.3 220.7,321.0 237.7,333.6 254.6,347.8 271.6,363.9 288.6,364.3 305.5,369.4 322.5,391.7 339.5,398.5 356.4,417.2 373.4,424.7 390.4,437.1 407.3,435.0 424.3,461.9 441.2,453.0 458.2,470.3 475.2,467.1 492.1,473.2 509.1,476.8 526.1,478.3 543.0,489.1 560.0,488.5" fill="none" stroke="#3d6b8a" stroke-width="4"/>
+<polyline points="85.0,213.0 102.0,213.6 118.9,232.8 135.9,265.1 152.9,267.3 169.8,311.0 186.8,292.2 203.8,326.0 220.7,243.0 237.7,298.9 254.6,297.9 271.6,371.9 288.6,362.7 305.5,185.8 322.5,410.0 339.5,429.8 356.4,414.3 373.4,446.7 390.4,428.8 407.3,451.7 424.3,473.2 441.2,464.3 458.2,493.1 475.2,477.8 492.1,489.1 509.1,473.8 526.1,481.3 543.0,488.5 560.0,486.0" fill="none" stroke="#c45c26" stroke-width="4"/>
+<polyline points="650.0,342.5 667.0,365.9 683.9,328.9 700.9,307.5 717.9,326.9 734.8,317.2 751.8,309.4 768.8,293.8 785.7,348.4 802.7,317.2 819.6,299.7 836.6,278.2 853.6,268.4 870.5,364.0 887.5,237.2 904.5,248.9 921.4,260.6 938.4,248.9 955.4,241.1 972.3,237.2 989.3,225.6 1006.2,227.5 1023.2,208.0 1040.2,221.7 1057.1,213.9 1074.1,219.7 1091.1,217.8 1108.0,210.0 1125.0,210.0" fill="none" stroke="#237a48" stroke-width="4"/>
+<line x1="650" y1="169.0" x2="1125" y2="169.0" stroke="#8c4b43" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="1121" y="160.0" text-anchor="end" class="body">95% target</text>
+<line x1="85" y1="582" x2="125" y2="582" stroke="#3d6b8a" stroke-width="4"/><text x="135" y="587" class="body">train loss</text>
+<line x1="245" y1="582" x2="285" y2="582" stroke="#c45c26" stroke-width="4"/><text x="295" y="587" class="body">validation loss</text>
+<line x1="650" y1="582" x2="690" y2="582" stroke="#237a48" stroke-width="4"/><text x="700" y="587" class="body">validation accuracy</text>
+<line x1="458.2" y1="130" x2="458.2" y2="520" stroke="#5b5a83" stroke-width="2" stroke-dasharray="4 5"/>
+<text x="463.2" y="148" class="body">best epoch 23</text>
+<line x1="1023.2" y1="130" x2="1023.2" y2="520" stroke="#5b5a83" stroke-width="2" stroke-dasharray="4 5"/>
+<text x="1028.2" y="148" class="body">best epoch 23</text>
+</svg>

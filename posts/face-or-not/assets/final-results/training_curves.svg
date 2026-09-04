@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img">
+<rect width="100%" height="100%" fill="#f5f1e8"/>
+<style>.title{font:700 38px system-ui,sans-serif;fill:#17201e}.head{font:700 20px system-ui,sans-serif;fill:#17201e}.body{font:15px system-ui,sans-serif;fill:#53605b}.axis{stroke:#89938e;stroke-width:1}.grid{stroke:#d7dbd8;stroke-width:1}</style>
+<text x="65" y="58" class="title">Training and validation history</text>
+<text x="85" y="105" class="head">Loss</text>
+<text x="650" y="105" class="head">Validation accuracy</text>
+<line x1="85" y1="130.0" x2="560" y2="130.0" class="grid"/>
+<text x="73" y="135.0" text-anchor="end" class="body">0.48</text>
+<line x1="650" y1="130.0" x2="1125" y2="130.0" class="grid"/>
+<text x="638" y="135.0" text-anchor="end" class="body">100%</text>
+<line x1="85" y1="208.0" x2="560" y2="208.0" class="grid"/>
+<text x="73" y="213.0" text-anchor="end" class="body">0.41</text>
+<line x1="650" y1="208.0" x2="1125" y2="208.0" class="grid"/>
+<text x="638" y="213.0" text-anchor="end" class="body">90%</text>
+<line x1="85" y1="286.0" x2="560" y2="286.0" class="grid"/>
+<text x="73" y="291.0" text-anchor="end" class="body">0.33</text>
+<line x1="650" y1="286.0" x2="1125" y2="286.0" class="grid"/>
+<text x="638" y="291.0" text-anchor="end" class="body">80%</text>
+<line x1="85" y1="364.0" x2="560" y2="364.0" class="grid"/>
+<text x="73" y="369.0" text-anchor="end" class="body">0.25</text>
+<line x1="650" y1="364.0" x2="1125" y2="364.0" class="grid"/>
+<text x="638" y="369.0" text-anchor="end" class="body">70%</text>
+<line x1="85" y1="442.0" x2="560" y2="442.0" class="grid"/>
+<text x="73" y="447.0" text-anchor="end" class="body">0.17</text>
+<line x1="650" y1="442.0" x2="1125" y2="442.0" class="grid"/>
+<text x="638" y="447.0" text-anchor="end" class="body">60%</text>
+<line x1="85" y1="520.0" x2="560" y2="520.0" class="grid"/>
+<text x="73" y="525.0" text-anchor="end" class="body">0.10</text>
+<line x1="650" y1="520.0" x2="1125" y2="520.0" class="grid"/>
+<text x="638" y="525.0" text-anchor="end" class="body">50%</text>
+<line x1="85" y1="520" x2="560" y2="520" class="axis"/>
+<text x="322.5" y="565" text-anchor="middle" class="body">epoch</text>
+<line x1="650" y1="520" x2="1125" y2="520" class="axis"/>
+<text x="887.5" y="565" text-anchor="middle" class="body">epoch</text>
+<polyline points="85.0,156.9 106.6,359.4 128.2,378.9 149.8,379.6 171.4,370.6 193.0,447.5 214.5,466.8 236.1,474.6 257.7,476.8 279.3,480.9 300.9,484.1 322.5,485.9 344.1,484.0 365.7,487.3 387.3,487.3 408.9,489.5 430.5,491.9 452.0,490.3 473.6,490.4 495.2,491.4 516.8,493.1 538.4,489.9 560.0,493.1" fill="none" stroke="#3d6b8a" stroke-width="4"/>
+<polyline points="85.0,394.9 106.6,418.4 128.2,423.8 149.8,425.5 171.4,417.9 193.0,419.4 214.5,425.4 236.1,429.6 257.7,437.1 279.3,431.5 300.9,437.3 322.5,438.5 344.1,441.8 365.7,444.9 387.3,444.2 408.9,444.3 430.5,445.5 452.0,442.7 473.6,443.6 495.2,443.5 516.8,445.1 538.4,444.6 560.0,443.3" fill="none" stroke="#c45c26" stroke-width="4"/>
+<polyline points="650.0,157.3 671.6,153.4 693.2,153.4 714.8,151.4 736.4,147.5 758.0,151.4 779.5,151.4 801.1,147.5 822.7,143.6 844.3,145.6 865.9,145.6 887.5,147.5 909.1,143.6 930.7,141.7 952.3,143.6 973.9,143.6 995.5,141.7 1017.0,143.6 1038.6,147.5 1060.2,145.6 1081.8,145.6 1103.4,145.6 1125.0,147.5" fill="none" stroke="#237a48" stroke-width="4"/>
+<line x1="650" y1="169.0" x2="1125" y2="169.0" stroke="#8c4b43" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="1121" y="160.0" text-anchor="end" class="body">95% target</text>
+<line x1="85" y1="582" x2="125" y2="582" stroke="#3d6b8a" stroke-width="4"/><text x="135" y="587" class="body">train loss</text>
+<line x1="245" y1="582" x2="285" y2="582" stroke="#c45c26" stroke-width="4"/><text x="295" y="587" class="body">validation loss</text>
+<line x1="650" y1="582" x2="690" y2="582" stroke="#237a48" stroke-width="4"/><text x="700" y="587" class="body">validation accuracy</text>
+<line x1="430.5" y1="130" x2="430.5" y2="520" stroke="#5b5a83" stroke-width="2" stroke-dasharray="4 5"/>
+<text x="435.5" y="148" class="body">best epoch 17</text>
+<line x1="995.5" y1="130" x2="995.5" y2="520" stroke="#5b5a83" stroke-width="2" stroke-dasharray="4 5"/>
+<text x="1000.5" y="148" class="body">best epoch 17</text>
+<line x1="171.4" y1="130" x2="171.4" y2="520" stroke="#b56b39" stroke-width="2" stroke-dasharray="9 6"/>
+<text x="176.4" y="170" class="body">layer4 starts, epoch 5</text>
+<line x1="736.4" y1="130" x2="736.4" y2="520" stroke="#b56b39" stroke-width="2" stroke-dasharray="9 6"/>
+<text x="741.4" y="170" class="body">layer4 starts, epoch 5</text>
+</svg>

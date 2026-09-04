@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="490" viewBox="0 0 1300 490" role="img">
+  <rect width="100%" height="100%" fill="#f5f1e8"/>
+  <style>
+    .title { font: 700 36px system-ui, sans-serif; fill: #17201e; }
+    .head { font: 700 19px system-ui, sans-serif; fill: #17201e; }
+    .body { font: 15px system-ui, sans-serif; fill: #53605b; }
+    .small { font: 13px system-ui, sans-serif; fill: #53605b; }
+    .arrow { stroke: #6c7772; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+  </style>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#6c7772"/></marker></defs>
+  <text x="60" y="62" class="title">Leakage-resistant evaluation flow</text>
+  <rect x="60" y="125" width="205" height="130" rx="18" fill="#fff" stroke="#436b58" stroke-width="3"/>
+  <text x="78" y="173" class="head">4,000 crops</text>
+  <text x="78" y="205" class="body">balanced + source-disjoint</text>
+  <path d="M272 190.0 H291" class="arrow"/>
+  <rect x="299" y="125" width="205" height="130" rx="18" fill="#fff" stroke="#436b58" stroke-width="3"/>
+  <text x="317" y="173" class="head">Train</text>
+  <text x="317" y="205" class="body">augment 3,200 rows</text>
+  <path d="M511 190.0 H530" class="arrow"/>
+  <rect x="538" y="125" width="205" height="130" rx="18" fill="#fff" stroke="#b56b39" stroke-width="3"/>
+  <text x="556" y="173" class="head">Validation</text>
+  <text x="556" y="205" class="body">select checkpoint</text>
+  <path d="M750 190.0 H769" class="arrow"/>
+  <rect x="777" y="125" width="205" height="130" rx="18" fill="#fff" stroke="#8c4b43" stroke-width="3"/>
+  <text x="795" y="173" class="head">Held-out test</text>
+  <text x="795" y="205" class="body">one pass per model</text>
+  <path d="M989 190.0 H1008" class="arrow"/>
+  <rect x="1016" y="125" width="205" height="130" rx="18" fill="#fff" stroke="#5b5a83" stroke-width="3"/>
+  <text x="1034" y="173" class="head">Artifact + gate</text>
+  <text x="1034" y="205" class="body">publish only at ≥95%</text>
+  <path d="M538 278 V336 H299 V278" stroke="#b56b39" stroke-width="3" stroke-dasharray="7 6" fill="none"/>
+  <text x="418" y="367" text-anchor="middle" class="body">training decisions use validation only</text>
+  <text x="60" y="438" class="small">Correction chosen from train/validation curves; its test pass is the second model measurement on this benchmark.</text>
+</svg>

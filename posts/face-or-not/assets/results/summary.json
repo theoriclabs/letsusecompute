@@ -1,0 +1,31 @@
+{
+  "artifact": "artifacts/run_5e61db1cc0b501b3bfa6d18829669c62",
+  "best_epoch": 23,
+  "best_validation_accuracy": 0.9,
+  "test": {
+    "loss": 0.36697494506835937,
+    "accuracy": 0.87,
+    "face_precision": 0.8894736842105263,
+    "face_recall": 0.845,
+    "face_f1": 0.8666666666666666,
+    "confusion_matrix": [
+      [
+        179,
+        21
+      ],
+      [
+        31,
+        169
+      ]
+    ]
+  },
+  "target_met": false,
+  "model_label": "87% random-CNN baseline",
+  "rendered_files": [
+    "training_curves.svg",
+    "confusion_matrix.svg",
+    "predictions.png",
+    "prediction_attribution.jsonl",
+    "PREDICTION_ATTRIBUTION.md"
+  ]
+}

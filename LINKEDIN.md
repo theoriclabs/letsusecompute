@@ -57,3 +57,27 @@ Four steps in the post: setup → data → model → train. Or hand the SKILL.md
 ---
 
 Notes for later posts: consider setting up an `hf` secret ahead of the next run so we can actually publish a Hub checkpoint instead of noting its absence twice in a row.
+
+## 2026-09-04 — Face or Not
+
+Draft (post when the live guide URL is the one you want people to open):
+
+---
+
+Face or not?
+
+For the third Let’s use compute post, I built a balanced dataset of 4,000 licensed Open Images crops and trained two models on fresh cloud GPUs.
+
+The first was a 315,426-parameter CNN trained from scratch. It reached 87% held-out accuracy for $0.12. Its training and validation curves suggested that the representation was the limit, so I made one correction using those curves: warm a ResNet18 classification head, then fine-tune only its last residual stage and the head.
+
+That run selected epoch 17 at 98.5% validation accuracy. On its one test pass it scored 98.25%, with 98.98% face precision and 97.5% recall. It was the second model measured on the same 400-crop test set. It ran on a RunPod A100 80GB PCIe for 146.379 seconds and cost $0.13. Total spend for both successful runs was $0.25.
+
+There was one sharp edge. The corrected run returned success and its metrics, but its Compute artifact never appeared after the machine terminated. The exact checkpoint and per-image prediction records are unavailable, so I have not published weights or presented the baseline prediction grid as if it came from the corrected model. The production report led to a Compute fix: declared artifacts must now become durable before a run can report success. Recovery of this run's original bytes remains pending.
+
+The post includes the dataset recipe, source-disjoint evaluation flow, real baseline mistakes, corrected training curves, the final confusion matrix, costs, and runnable commands:
+
+https://letsusecompute.com/posts/face-or-not
+
+#MachineLearning #GPUComputing
+
+---

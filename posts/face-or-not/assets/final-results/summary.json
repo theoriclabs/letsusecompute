@@ -1,0 +1,36 @@
+{
+  "run_id": "run_e1abf4b4c24a49baa0d8f62e2d94a3c3",
+  "source": "archived Compute logs and structured result",
+  "history_precision": "four decimal places, as emitted in logs",
+  "best_epoch": 17,
+  "best_validation_accuracy": 0.985,
+  "test": {
+    "loss": 0.16449657082557678,
+    "face_f1": 0.982367758186398,
+    "accuracy": 0.9825,
+    "face_recall": 0.975,
+    "face_precision": 0.9898477157360406,
+    "confusion_matrix": [
+      [
+        198,
+        2
+      ],
+      [
+        5,
+        195
+      ]
+    ]
+  },
+  "target_met": true,
+  "rendered_files": [
+    "training_curves.svg",
+    "confusion_matrix.svg",
+    "history.from-logs.json",
+    "metrics.from-result.json"
+  ],
+  "unavailable_files": {
+    "predictions.png": "Compute returned no artifact or prediction records",
+    "PREDICTION_ATTRIBUTION.md": "Compute returned no artifact or prediction records",
+    "model.pt": "Compute returned no completed artifact"
+  }
+}

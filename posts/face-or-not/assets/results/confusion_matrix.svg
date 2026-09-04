@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="590" viewBox="0 0 900 590" role="img">
+<rect width="100%" height="100%" fill="#f5f1e8"/>
+<style>.title{font:700 36px system-ui,sans-serif;fill:#17201e}.head{font:700 18px system-ui,sans-serif;fill:#17201e}.value{font:700 42px system-ui,sans-serif;fill:#17201e}.body{font:16px system-ui,sans-serif;fill:#35413d}.small{font:13px system-ui,sans-serif;fill:#35413d}</style>
+<text x="55" y="58" class="title">Held-out confusion matrix</text>
+<text x="55" y="92" class="body">accuracy 87.0% • 400 test crops • this model's one test pass</text>
+<text x="465" y="128" text-anchor="middle" class="head">Predicted label</text>
+<text x="337" y="150" text-anchor="middle" class="body">no face</text><text x="592" y="150" text-anchor="middle" class="body">face</text>
+<text x="105" y="320" transform="rotate(-90 105 320)" text-anchor="middle" class="head">True label</text>
+<text x="205" y="238" text-anchor="end" class="body">no face</text><text x="205" y="413" text-anchor="end" class="body">face</text>
+<rect x="225" y="160" width="225" height="145" rx="18" fill="#35618f" fill-opacity="0.860"/><text x="337.5" y="224" text-anchor="middle" class="value">179</text><text x="337.5" y="255" text-anchor="middle" class="body">89.5% of row</text><text x="337.5" y="282" text-anchor="middle" class="small">true negative</text><rect x="480" y="160" width="225" height="145" rx="18" fill="#35618f" fill-opacity="0.224"/><text x="592.5" y="224" text-anchor="middle" class="value">21</text><text x="592.5" y="255" text-anchor="middle" class="body">10.5% of row</text><text x="592.5" y="282" text-anchor="middle" class="small">false positive</text><rect x="225" y="335" width="225" height="145" rx="18" fill="#35618f" fill-opacity="0.265"/><text x="337.5" y="399" text-anchor="middle" class="value">31</text><text x="337.5" y="430" text-anchor="middle" class="body">15.5% of row</text><text x="337.5" y="457" text-anchor="middle" class="small">false negative</text><rect x="480" y="335" width="225" height="145" rx="18" fill="#35618f" fill-opacity="0.820"/><text x="592.5" y="399" text-anchor="middle" class="value">169</text><text x="592.5" y="430" text-anchor="middle" class="body">84.5% of row</text><text x="592.5" y="457" text-anchor="middle" class="small">true positive</text>
+</svg>
