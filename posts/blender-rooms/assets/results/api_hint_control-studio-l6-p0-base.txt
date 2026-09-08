@@ -1,0 +1,120 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# Helper function to create a beveled cube
+def create_beveled_cube(location, size, color, name, bevel=0.01):
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    bpy.context.collection.objects.link(obj)
+    
+    mesh = obj.data
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = (color[0], color[1], color[2], 1.0)
+    mat.diffuse_color = (color[0], color[1], color[2], 1.0) # Compatibility note
+    obj.data.materials.append(mat)
+    
+    # Apply bevel modifier
+    mod = obj.modifiers.new(name="edge", type="BEVEL")
+    mod.width = bevel
+    mod.segments = 1
+    
+    return obj
+
+# Helper function to create a beveled cylinder (for lamp/plant)
+def create_beveled_cylinder(location, radius, height, color, name, bevel=0.01):
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    bpy.context.collection.objects.link(obj)
+    
+    mesh = obj.data
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = (color[0], color[1], color[2], 1.0)
+    mat.diffuse_color = (color[0], color[1], color[2], 1.0)
+    obj.data.materials.append(mat)
+    
+    mod = obj.modifiers.new(name="edge", type="BEVEL")
+    mod.width = bevel
+    mod.segments = 1
+    
+    return obj
+
+# --- Room Geometry ---
+# Floor
+floor = create_beveled_cube((0, 0, 0.1), (5.6, 5.6, 0.2), (0.91, 0.68, 0.50), "floor", bevel=0.02)
+# Back Wall
+wall_back = create_beveled_cube((0, 2.7, 1.7), (5.6, 0.15, 3.0), (0.85, 0.75, 0.65), "wall_back", bevel=0.02)
+# Left Wall
+wall_side = create_beveled_cube((-2.7, 0, 1.7), (0.15, 5.6, 3.0), (0.85, 0.75, 0.65), "wall_side", bevel=0.02)
+
+# --- Palette ---
+# Sage: 91aa8a
+SAGE = (0.57, 0.67, 0.54)
+# Warm Oak: e8dfcd
+OAK = (0.91, 0.87, 0.80)
+# Dark Wood: 9b704d
+DARK_WOOD = (0.61, 0.44, 0.30)
+# Cream: e2b96b
+CREAM = (0.89, 0.73, 0.42)
+
+# --- Furniture: Desk Area (Front Left) ---
+# Desk
+desk = create_beveled_cube((-1.2, 0.5, 0.25), (1.9, 0.6, 0.75), OAK, "desk_frame", bevel=0.02)
+# Desk Top
+desk_top = create_beveled_cube((-1.2, 0.5, 0.95), (1.9, 0.58, 0.02), DARK_WOOD, "desk_top", bevel=0.01)
+# Monitor Stand
+monitor_stand = create_beveled_cube((-0.6, 0.5, 0.35), (0.3, 0.3, 0.4), OAK, "monitor_stand", bevel=0.01)
+# Monitor
+monitor = create_beveled_cube((-0.6, 0.5, 1.05), (0.28, 0.4, 0.02), (0.1, 0.1, 0.1), "monitor_screen", bevel=0.005)
+# Keyboard Tray
+keyboard_tray = create_beveled_cube((-0.6, 0.5, 0.65), (0.3, 0.15, 0.02), DARK_WOOD, "keyboard_tray", bevel=0.005)
+
+# --- Furniture: Chair (Facing Desk) ---
+chair = create_beveled_cube((0.8, 0.5, 0.25), (0.5, 0.5, 0.8), OAK, "chair_frame", bevel=0.02)
+chair_seat = create_beveled_cube((0.8, 0.5, 0.55), (0.45, 0.45, 0.02), DARK_WOOD, "chair_seat", bevel=0.01)
+chair_back = create_beveled_cube((0.8, 0.5, 0.85), (0.45, 0.4, 0.3), DARK_WOOD, "chair_back", bevel=0.01)
+
+# --- Furniture: Bookcase (Back Wall, Left) ---
+bookcase = create_beveled_cube((-1.5, 2.7, 1.7), (1.2, 2.0, 0.15), DARK_WOOD, "bookcase_frame", bevel=0.02)
+# Shelves
+for i in range(4):
+    shelf_z = 1.7 + (i * 0.45)
+    shelf = create_beveled_cube((-1.5, 2.7, shelf_z), (1.18, 0.02, 0.1), OAK, f"bookcase_shelf_{i}", bevel=0.01)
+# Books (Simple blocks)
+for i in range(12):
+    x = -1.5 + (i % 4) * 0.25
+    z = 1.7 + ((i // 4) * 0.45) + 0.01
+    color = SAGE if i % 2 == 0 else CREAM
+    book = create_beveled_cube((x, 2.7, z), (0.08, 0.02, 0.15), color, f"book_{i}", bevel=0.005)
+
+# --- Furniture: Storage Cabinet (Back Wall, Right) ---
+cabinet = create_beveled_cube((1.5, 2.7, 1.7), (0.8, 1.2, 0.15), DARK_WOOD, "cabinet_frame", bevel=0.02)
+# Doors
+door_left = create_beveled_cube((1.5, 2.7, 1.75), (0.38, 1.15, 0.01), OAK, "cabinet_door_left", bevel=0.01)
+door_right = create_beveled_cube((1.5, 2.7, 2.05), (0.38, 1.15, 0.01), OAK, "cabinet_door_right", bevel=0.01)
+# Drawers
+drawer_top = create_beveled_cube((1.5, 2.7, 1.85), (0.78, 0.3, 0.02), DARK_WOOD, "cabinet_drawer_top", bevel=0.005)
+drawer_bot = create_beveled_cube((1.5, 2.7, 2.15), (0.78, 0.3, 0.02), DARK_WOOD, "cabinet_drawer_bot", bevel=0.005)
+
+# --- Furniture: Rug (Center) ---
+rug = create_beveled_cube((0, 0, 0.21), (2.5, 2.5, 0.02), SAGE, "rug", bevel=0.01)
+
+# --- Furniture: Standing Lamp (Corner) ---
+lamp_base = create_beveled_cube((2.2, 0.5, 0.25), (0.3, 0.3, 0.05), OAK, "lamp_base", bevel=0.01)
+lamp_stand = create_beveled_cylinder((2.2, 0.5, 0.6), 0.05, 1.2, OAK, "lamp_stand", bevel=0.005)
+lamp_shade = create_beveled_cube((2.2, 0.5, 1.8), (0.4, 0.4, 0.02), CREAM, "lamp_shade", bevel=0.005)
+
+# --- Furniture: Plant (Corner) ---
+plant_pot = create_beveled_cube((2.2, 0.5, 0.25), (0.2, 0.2, 0.1), DARK_WOOD, "plant_pot", bevel=0.01)
+plant_stem = create_beveled_cylinder((2.2, 0.5, 0.4), 0.03, 0.4, (0.2, 0.5, 0.2), "plant_stem", bevel=0.005)
+plant_leaves = create_beveled_cube((2.2, 0.5, 0.7), (0.3, 0.3, 0.02), (0.2, 0.5, 0.2), "plant_leaves", bevel=0.005)
+
+# --- Finalize ---
+bpy.context.view_layer.update()

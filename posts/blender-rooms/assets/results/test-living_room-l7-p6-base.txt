@@ -1,0 +1,203 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_cube(location, size, name, color, bevel=0.01):
+    """Creates a low-poly cube with a small bevel."""
+    bpy.ops.mesh.primitive_cube_add(location=location, size=size[0])
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    # Apply bevel
+    bpy.ops.object.shade_smooth()
+    bpy.ops.object.modifier_add(type='BEVEL')
+    mod = obj.modifiers[-1]
+    mod.bevel_depth = bevel
+    mod.bevel_segments = 1
+    
+    # Material
+    mat_name = name + "_mat"
+    if mat_name not in bpy.data.materials:
+        mat = bpy.data.materials.new(name=mat_name)
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        bsdf.inputs['Roughness'].default_value = 0.8
+        mat.node_tree.links.new(bsdf.inputs['Base Color'], bsdf.inputs['Base Color']) # Fix link logic if needed, usually direct
+        # Correct linking for new node
+        bsdf.inputs['Base Color'].default_value = color
+    else:
+        mat = bpy.data.materials[mat_name]
+    
+    obj.data.materials.append(mat)
+    return obj
+
+def create_cylinder(location, radius, height, name, color, bevel=0.01):
+    """Creates a low-poly cylinder."""
+    bpy.ops.mesh.primitive_cylinder_add(location=location, radius=radius, depth=height)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    bpy.ops.object.shade_smooth()
+    bpy.ops.object.modifier_add(type='BEVEL')
+    mod = obj.modifiers[-1]
+    mod.bevel_depth = bevel
+    mod.bevel_segments = 1
+    
+    mat_name = name + "_mat"
+    if mat_name not in bpy.data.materials:
+        mat = bpy.data.materials.new(name=mat_name)
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        mat.node_tree.links.new(bsdf.inputs['Base Color'], bsdf.inputs['Base Color'])
+    else:
+        mat = bpy.data.materials[mat_name]
+    
+    obj.data.materials.append(mat)
+    return obj
+
+# --- Palette ---
+# Rose: c28e98, Ivory: f0e6d6, Wood: 9d7454, Sage: 83a29a
+COLOR_ROSE = (0.757, 0.557, 0.600)
+COLOR_IVORY = (0.941, 0.902, 0.839)
+COLOR_WOOD = (0.616, 0.455, 0.329)
+COLOR_SAGE = (0.514, 0.635, 0.596)
+
+# --- Room Structure ---
+
+# Floor
+floor_loc = (0, 0, 0.1)
+floor_size = (5.6, 5.6, 0.2)
+floor = create_cube(floor_loc, floor_size, "floor", COLOR_IVORY)
+
+# Back Wall
+wall_back_loc = (0, 2.7, 1.7)
+wall_back_size = (5.6, 0.15, 3.0)
+wall_back = create_cube(wall_back_loc, wall_back_size, "wall_back", COLOR_SAGE)
+
+# Left Wall
+wall_side_loc = (-2.7, 0, 1.7)
+wall_side_size = (0.15, 5.6, 3.0)
+wall_side = create_cube(wall_side_loc, wall_side_size, "wall_side", COLOR_SAGE)
+
+# --- Furniture Generation ---
+
+# 1. Sofa (2.4m wide, Rose/Ivory/Wood)
+# Position: Front Right area, facing left-ish
+sofa_x = 2.0
+sofa_z = 0.5
+sofa_y = 0.0
+
+# Sofa Base
+sofa_base = create_cube((sofa_x, sofa_y, 0.2), (2.4, 0.8, 0.2), "sofa_base", COLOR_WOOD)
+# Sofa Back
+sofa_back = create_cube((sofa_x, sofa_y + 0.4, 0.4), (2.4, 0.1, 0.4), "sofa_back", COLOR_ROSE)
+# Sofa Seat
+sofa_seat = create_cube((sofa_x, sofa_y + 0.4, 0.2), (2.4, 0.6, 0.1), "sofa_seat", COLOR_IVORY)
+# Armrests
+arm_l = create_cube((sofa_x - 0.4, sofa_y + 0.4, 0.2), (0.2, 0.8, 0.2), "sofa_arm_l", COLOR_WOOD)
+arm_r = create_cube((sofa_x + 1.8, sofa_y + 0.4, 0.2), (0.2, 0.8, 0.2), "sofa_arm_r", COLOR_WOOD)
+# Cushions
+cush_l = create_cube((sofa_x - 0.6, sofa_y + 0.5, 0.2), (0.6, 0.5, 0.1), "sofa_cush_l", COLOR_ROSE)
+cush_r = create_cube((sofa_x + 1.2, sofa_y + 0.5, 0.2), (0.6, 0.5, 0.1), "sofa_cush_r", COLOR_ROSE)
+
+# 2. Accent Chair (Arm-free, Rose/Sage)
+# Position: Front Left, facing right
+chair_x = -1.5
+chair_z = 0.5
+chair_y = 0.0
+
+# Chair Base
+chair_base = create_cube((chair_x, chair_y, 0.2), (0.6, 0.6, 0.2), "chair_base", COLOR_WOOD)
+# Chair Seat
+chair_seat = create_cube((chair_x, chair_y + 0.4, 0.2), (0.5, 0.5, 0.1), "chair_seat", COLOR_SAGE)
+# Chair Back
+chair_back = create_cube((chair_x, chair_y + 0.4, 0.4), (0.5, 0.6, 0.4), "chair_back", COLOR_ROSE)
+
+# 3. Coffee Table (Low, Wood/Ivory)
+# Position: Center Front
+table_x = 0.0
+table_z = 1.2
+table_y = 0.0
+
+table_top = create_cube((table_x, table_y, 0.2), (1.0, 0.6, 0.2), "table_top", COLOR_WOOD)
+table_legs = []
+for i in range(4):
+    lx = table_x + (0.5 if i%2 else -0.5)
+    lz = table_z + (0.3 if i<2 else -0.3)
+    leg = create_cube((lx, table_y, 0.1), (0.05, 0.05, 0.1), f"table_leg_{i}", COLOR_WOOD)
+    table_legs.append(leg)
+
+# Books on table
+book1 = create_cube((table_x - 0.2, table_y + 0.1, 0.2), (0.15, 0.05, 0.05), "book_1", COLOR_ROSE)
+book2 = create_cube((table_x + 0.1, table_y + 0.1, 0.2), (0.15, 0.05, 0.05), "book_2", COLOR_SAGE)
+
+# 4. Media Cabinet & TV (Left Wall Zone)
+# Cabinet
+cabinet_x = -2.5
+cabinet_z = 1.5
+cabinet_y = 0.0
+cabinet_w = 1.2
+cabinet_d = 0.4
+cabinet_h = 0.8
+
+cabinet_body = create_cube((cabinet_x, cabinet_y, 0.2), (cabinet_w, cabinet_d, cabinet_h), "cabinet_body", COLOR_WOOD)
+cabinet_top = create_cube((cabinet_x, cabinet_y + cabinet_h, 0.2), (cabinet_w, cabinet_d, 0.1), "cabinet_top", COLOR_IVORY)
+
+# TV
+tv_x = cabinet_x + cabinet_w/2
+tv_y = cabinet_y + cabinet_h + 0.05
+tv_z = cabinet_z + 0.05
+tv_w = 0.8
+tv_h = 0.5
+tv_d = 0.05
+tv = create_cube((tv_x, tv_y, tv_z), (tv_w, tv_h, tv_d), "tv_screen", COLOR_SAGE)
+
+# 5. Rug
+rug_x = 0.0
+rug_z = 0.8
+rug_y = 0.0
+rug_size = (2.0, 1.5, 0.02)
+rug = create_cube((rug_x, rug_y, rug_z), rug_size, "rug", COLOR_SAGE)
+
+# 6. Lamp (Floor Lamp)
+lamp_x = 1.5
+lamp_z = 1.5
+lamp_y = 0.0
+
+lamp_base = create_cube((lamp_x, lamp_y, 0.2), (0.2, 0.2, 0.2), "lamp_base", COLOR_WOOD)
+lamp_stand = create_cylinder((lamp_x, lamp_y + 0.2, 0.2), 0.03, 1.2, "lamp_stand", COLOR_WOOD)
+lamp_shade = create_cylinder((lamp_x, lamp_y + 1.2, 0.2), 0.15, 0.2, "lamp_shade", COLOR_IVORY)
+
+# 7. Plant
+plant_x = -1.0
+plant_z = 1.8
+plant_y = 0.0
+
+pot = create_cube((plant_x, plant_y, 0.2), (0.3, 0.3, 0.1), "plant_pot", COLOR_WOOD)
+plant_stem = create_cylinder((plant_x, plant_y + 0.15, 0.2), 0.02, 0.4, "plant_stem", COLOR_SAGE)
+plant_leaves = create_cube((plant_x, plant_y + 0.5, 0.2), (0.4, 0.4, 0.1), "plant_leaves", COLOR_SAGE)
+
+# --- Final Cleanup & Settings ---
+# Ensure all objects are in the scene
+for obj in bpy.data.objects:
+    if obj.name not in ["floor", "wall_back", "wall_side"]:
+        bpy.context.collection.objects.link(obj)
+
+# Select all for shading
+bpy.ops.object.select_all(action='DESELECT')
+for obj in bpy.data.objects:
+    obj.select_set(True)
+bpy.context.view_layer.objects.active = floor
+bpy.ops.object.shade_smooth()
+
+# Set active object for camera/lighting context if needed (though prompt says renderer supplies them)
+bpy.context.view_layer.objects.active = floor

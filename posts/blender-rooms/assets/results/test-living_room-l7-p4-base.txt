@@ -1,0 +1,242 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+COLORS = {
+    'forest_green': (0.4, 0.54, 0.47),   # 668b79
+    'blush': (0.94, 0.85, 0.82),          # eedacf
+    'wood_dark': (0.54, 0.41, 0.32),      # 8d6951
+    'wood_light': (0.83, 0.64, 0.37),     # d4a25f
+    'cream': (0.98, 0.98, 0.96),          # Off-white/Cream
+    'black': (0.1, 0.1, 0.1)
+}
+
+def create_material(name, color):
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    bsdf.inputs['Metallic'].default_value = 0.0
+    return mat
+
+def create_mesh(name, vertices, edges, faces, material_name):
+    obj = bpy.data.objects.new(name, None)
+    bpy.context.collection.objects.link(obj)
+    
+    mesh = bpy.data.meshes.new(name)
+    mesh.from_pydata(vertices, edges, faces)
+    mesh.update_calc()
+    
+    # Apply scale to fix potential float issues
+    obj.scale = (1, 1, 1)
+    
+    mat = bpy.data.materials.get(material_name)
+    if not mat:
+        mat = create_material(name + "_mat", (0.5, 0.5, 0.5))
+    
+    obj.data.materials.append(mat)
+    return obj
+
+def create_box(name, loc, size, mat_name):
+    verts = [
+        (0, 0, 0), (size[0], 0, 0), (size[0], size[1], 0), (0, size[1], 0),
+        (0, 0, size[2]), (size[0], 0, size[2]), (size[0], size[1], size[2]), (0, size[1], size[2])
+    ]
+    edges = [
+        (0, 1), (1, 2), (2, 3), (3, 0),
+        (4, 5), (5, 6), (6, 7), (7, 4),
+        (0, 4), (1, 5), (2, 6), (3, 7)
+    ]
+    faces = [(0, 1, 2, 3), (4, 5, 6, 7), (0, 1, 5, 4), (2, 3, 7, 6), (0, 3, 7, 4), (1, 2, 6, 5)]
+    return create_mesh(name, verts, edges, faces, mat_name)
+
+def create_cylinder(name, loc, radius, height, segments=16, mat_name=None):
+    verts = []
+    edges = []
+    faces = []
+    
+    for i in range(segments + 1):
+        angle = 2 * math.pi * i / segments
+        x = radius * math.cos(angle)
+        z = radius * math.sin(angle)
+        verts.append((x, 0, z))
+        verts.append((x, height, z))
+    
+    for i in range(segments):
+        v1 = i
+        v2 = i + 1
+        v3 = v2 + segments
+        v4 = v1 + segments
+        edges.append((v1, v2))
+        edges.append((v3, v4))
+        edges.append((v1, v4))
+        edges.append((v2, v3))
+        faces.append((v1, v2, v3, v4))
+        
+    obj = create_mesh(name, verts, edges, faces, mat_name if mat_name else "cyl_mat")
+    obj.location = loc
+    return obj
+
+# --- Scene Setup ---
+# Floor
+floor = create_box("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), "floor_mat")
+floor.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = COLORS['blush']
+
+# Walls
+wall_back = create_box("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), "wall_mat")
+wall_back.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = COLORS['forest_green']
+
+wall_side = create_box("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), "wall_mat")
+wall_side.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = COLORS['forest_green']
+
+# --- Furniture Helpers ---
+
+def make_sofa():
+    # Sofa Frame
+    frame = create_box("sofa_frame", (0, 0.4, 0.2), (2.4, 0.9, 0.2), "wood_dark")
+    # Backrest
+    back = create_box("sofa_back", (0, 1.1, 0.2), (2.4, 0.6, 0.2), "wood_dark")
+    # Arms
+    arm_l = create_box("sofa_arm_l", (-1.2, 0.4, 0.2), (0.2, 0.9, 0.2), "wood_dark")
+    arm_r = create_box("sofa_arm_r", (1.2, 0.4, 0.2), (0.2, 0.9, 0.2), "wood_dark")
+    # Cushions
+    cushion_l = create_box("sofa_cush_l", (-0.8, 0.4, 0.2), (0.8, 0.8, 0.2), COLORS['blush'])
+    cushion_r = create_box("sofa_cush_r", (0.8, 0.4, 0.2), (0.8, 0.8, 0.2), COLORS['blush'])
+    cushion_m = create_box("sofa_cush_m", (0, 0.4, 0.2), (0.8, 0.8, 0.2), COLORS['blush'])
+    
+    # Group
+    col = bpy.data.collections.new("sofa_group")
+    bpy.context.scene.collection.children.link(col)
+    for obj in [frame, back, arm_l, arm_r, cushion_l, cushion_r, cushion_m]:
+        col.objects.link(obj)
+    return col
+
+def make_chair():
+    # Frame
+    frame = create_box("chair_frame", (0, 0.4, 0.2), (0.8, 0.8, 0.2), "wood_dark")
+    # Back
+    back = create_box("chair_back", (0, 1.0, 0.2), (0.8, 0.6, 0.2), "wood_dark")
+    # Seat
+    seat = create_box("chair_seat", (0, 0.4, 0.2), (0.8, 0.6, 0.2), COLORS['blush'])
+    # Legs
+    leg_fl = create_box("chair_leg_fl", (-0.3, 0.2, 0.2), (0.1, 0.2, 0.1), "wood_dark")
+    leg_fr = create_box("chair_leg_fr", (0.3, 0.2, 0.2), (0.1, 0.2, 0.1), "wood_dark")
+    leg_bl = create_box("chair_leg_bl", (-0.3, 0.2, 0.2), (0.1, 0.2, 0.1), "wood_dark")
+    leg_br = create_box("chair_leg_br", (0.3, 0.2, 0.2), (0.1, 0.2, 0.1), "wood_dark")
+    
+    col = bpy.data.collections.new("chair_group")
+    bpy.context.scene.collection.children.link(col)
+    for obj in [frame, back, seat, leg_fl, leg_fr, leg_bl, leg_br]:
+        col.objects.link(obj)
+    return col
+
+def make_table():
+    # Top
+    top = create_box("table_top", (0, 0.4, 0.2), (1.0, 0.6, 0.05), COLORS['wood_light'])
+    # Legs
+    leg_fl = create_box("table_leg_fl", (-0.3, 0.2, 0.2), (0.1, 0.2, 0.1), "wood_dark")
+    leg_fr = create_box("table_leg_fr", (0.3, 0.2, 0.2), (0.1, 0.2, 0.1), "wood_dark")
+    leg_bl = create_box("table_leg_bl", (-0.3, 0.2, 0.2), (0.1, 0.2, 0.1), "wood_dark")
+    leg_br = create_box("table_leg_br", (0.3, 0.2, 0.2), (0.1, 0.2, 0.1), "wood_dark")
+    
+    col = bpy.data.collections.new("table_group")
+    bpy.context.scene.collection.children.link(col)
+    for obj in [top, leg_fl, leg_fr, leg_bl, leg_br]:
+        col.objects.link(obj)
+    return col
+
+def make_tv_stand():
+    # Base
+    base = create_box("tv_base", (0, 0.2, 0.2), (1.2, 0.4, 0.2), "wood_dark")
+    # Shelves
+    shelf_t = create_box("tv_shelf_t", (0, 0.4, 0.2), (1.2, 0.2, 0.05), "wood_light")
+    shelf_b = create_box("tv_shelf_b", (0, 0.2, 0.2), (1.2, 0.2, 0.05), "wood_light")
+    # TV
+    tv = create_box("tv_screen", (0, 0.6, 0.2), (0.8, 0.5, 0.05), (0.05, 0.05, 0.05)) # Dark grey/black
+    tv.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = (0.1, 0.1, 0.1)
+    
+    col = bpy.data.collections.new("tv_stand_group")
+    bpy.context.scene.collection.children.link(col)
+    for obj in [base, shelf_t, shelf_b, tv]:
+        col.objects.link(obj)
+    return col
+
+def make_rug():
+    # Low poly rug shape
+    verts = [
+        (0, 0, 0), (1.5, 0, 0), (1.5, 1.5, 0), (0, 1.5, 0),
+        (0, 0, 0.02), (1.5, 0, 0.02), (1.5, 1.5, 0.02), (0, 1.5, 0.02)
+    ]
+    edges = [
+        (0, 1), (1, 2), (2, 3), (3, 0),
+        (4, 5), (5, 6), (6, 7), (7, 4),
+        (0, 4), (1, 5), (2, 6), (3, 7)
+    ]
+    faces = [(0, 1, 2, 3), (4, 5, 6, 7), (0, 1, 5, 4), (2, 3, 7, 6), (0, 3, 7, 4), (1, 2, 6, 5)]
+    obj = create_mesh("rug", verts, edges, faces, "rug_mat")
+    obj.location = (0.5, 0.5, 0.01)
+    obj.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = COLORS['wood_light']
+    return obj
+
+def make_lamp():
+    # Base
+    base = create_box("lamp_base", (0, 0.1, 0.1), (0.15, 0.15, 0.15), "wood_dark")
+    # Stem
+    stem = create_box("lamp_stem", (0, 0.4, 0.1), (0.05, 0.3, 0.05), "metal_mat")
+    # Shade
+    shade_verts = [
+        (0, 0, 0), (0.1, 0, 0), (0.1, 0.1, 0), (0, 0.1, 0),
+        (0, 0, 0.1), (0.1, 0, 0.1), (0.1, 0.1, 0.1), (0, 0.1, 0.1)
+    ]
+    shade_edges = [
+        (0, 1), (1, 2), (2, 3), (3, 0),
+        (4, 5), (5, 6), (6, 7), (7, 4),
+        (0, 4), (1, 5), (2, 6), (3, 7)
+    ]
+    shade_faces = [(0, 1, 2, 3), (4, 5, 6, 7), (0, 1, 5, 4), (2, 3, 7, 6), (0, 3, 7, 4), (1, 2, 6, 5)]
+    shade = create_mesh("lamp_shade", shade_verts, shade_edges, shade_faces, "lamp_mat")
+    shade.location = (0, 0.55, 0.05)
+    shade.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = COLORS['cream']
+    
+    col = bpy.data.collections.new("lamp_group")
+    bpy.context.scene.collection.children.link(col)
+    for obj in [base, stem, shade]:
+        col.objects.link(obj)
+    return col
+
+def make_plant():
+    # Pot
+    pot = create_box("plant_pot", (0, 0.1, 0.1), (0.3, 0.3, 0.15), "wood_dark")
+    # Leaves (Low poly approximation)
+    leaf_verts = [
+        (0, 0, 0), (0.1, 0.1, 0.1), (-0.1, 0.1, 0.1),
+        (0, 0, 0.1), (0.1, 0.1, 0.1), (0.1, 0.2, 0.1),
+        (0, 0, 0), (-0.1, 0.1, 0.1), (-0.1, 0.2, 0.1),
+        (0, 0, 0.1), (-0.1, 0.1, 0.1), (-0.1, 0.2, 0.1), (-0.1, 0.1, 0.1)
+    ]
+    leaf_edges = [
+        (0, 1), (1, 2), (2, 3), (3, 0),
+        (4, 5), (5, 6), (6, 7), (7, 4),
+        (0, 4), (1, 5), (2, 6), (3, 7)
+    ]
+    leaf_faces = [(0, 1, 2, 3), (4, 5, 6, 7), (0, 1, 5, 4), (2, 3, 7, 6), (0, 3, 7, 4), (1, 2, 6, 5)]
+    leaf = create_mesh("plant_leaf", leaf_verts, leaf_edges, leaf_faces, "plant_mat")
+    leaf.location = (0, 0.25, 0.05)
+    leaf.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = (0.2, 0.6, 0.2)
+    
+    col = bpy.data.collections.new("plant_group")
+    bpy.context.scene.collection.children.link(col)
+    for obj in [pot, leaf]:
+        col.objects.link(obj)
+    return col
+
+# --- Layout Construction ---
+
+# 1. Sofa (Front Center)
+sofa = make_sofa()
+sofa.location = (0, 0.

@@ -1,0 +1,126 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_box(name, loc, size, rot=(0,0,0), color=(1,1,1), bevel=0.01):
+    bpy.ops.mesh.primitive_cube_add(size=1, location=loc, rotation=rot)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    obj.data.bevel_depth = bevel
+    obj.data.bevel_resolution = 1
+    
+    mat = bpy.data.materials.new(name=name + "_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.8
+    obj.data.materials.append(mat)
+    return obj
+
+def create_cylinder(name, loc, radius, height, rot=(0,0,0), color=(1,1,1), bevel=0.01):
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=loc, rotation=rot)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    obj.data.bevel_depth = bevel
+    obj.data.bevel_resolution = 1
+    
+    mat = bpy.data.materials.new(name=name + "_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.8
+    obj.data.materials.append(mat)
+    return obj
+
+# --- Scene Setup ---
+
+# Define Palette
+COLORS = {
+    "terracotta": (0xbd, 0x79, 0x63, 255) / 255.0,
+    "sand": (0xed, 0xdd, 0xb0, 255) / 255.0,
+    "wood_dark": (0x8b, 0x66, 0x50, 255) / 255.0,
+    "wood_light": (0xc4, 0xa4, 0x84, 255) / 255.0,
+    "green": (0x7d, 0x9a, 0x8c, 255) / 255.0,
+    "cream": (0xf5, 0xf5, 0xe0, 255) / 255.0,
+    "accent_red": (0xd6, 0x5a, 0x4b, 255) / 255.0,
+    "black": (0.1, 0.1, 0.1, 1.0)
+}
+
+# --- Architecture ---
+
+# Floor
+floor = create_box("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), color=COLORS["terracotta"])
+
+# Back Wall
+wall_back = create_box("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), color=COLORS["terracotta"])
+
+# Left Wall
+wall_side = create_box("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), color=COLORS["terracotta"])
+
+# --- Furniture Generation ---
+
+# 1. Sofa (2.4m wide, terracotta/sand/wood)
+# Position: Front Left area, facing right
+sofa_loc = (0.5, 1.2, 0.25)
+sofa_base = create_box("sofa_base", sofa_loc, (2.4, 0.9, 0.4), color=COLORS["wood_dark"])
+sofa_cushion = create_box("sofa_cushion", (0.5, 1.2, 0.55), (2.4, 0.8, 0.3), color=COLORS["terracotta"])
+sofa_arm_l = create_box("sofa_arm_l", (0.5, 1.2, 0.4), (0.15, 0.9, 0.4), color=COLORS["wood_dark"])
+sofa_arm_r = create_box("sofa_arm_r", (2.95, 1.2, 0.4), (0.15, 0.9, 0.4), color=COLORS["wood_dark"])
+# Cushion details
+sofa_cushion_l = create_box("sofa_cushion_l", (0.5, 1.2, 0.55), (0.8, 0.8, 0.3), color=COLORS["sand"])
+sofa_cushion_r = create_box("sofa_cushion_r", (2.15, 1.2, 0.55), (0.8, 0.8, 0.3), color=COLORS["sand"])
+
+# 2. Coffee Table (Low, wood frame, cream top)
+table_loc = (0.5, -0.5, 0.25)
+table_legs = create_box("table_legs", table_loc, (0.8, 0.8, 0.4), color=COLORS["wood_dark"])
+table_top = create_box("table_top", (0.5, -0.5, 0.45), (0.8, 0.8, 0.1), color=COLORS["cream"])
+# Books
+book1 = create_box("book1", (0.5, -0.5, 0.5), (0.1, 0.05, 0.02), color=COLORS["accent_red"])
+book2 = create_box("book2", (0.5, -0.5, 0.5), (0.1, 0.05, 0.02), color=COLORS["wood_light"])
+book3 = create_box("book3", (0.5, -0.5, 0.5), (0.1, 0.05, 0.02), color=COLORS["terracotta"])
+
+# 3. Accent Chair (Arm-free, green/wood)
+chair_loc = (-1.5, 1.2, 0.25)
+chair_legs = create_box("chair_legs", chair_loc, (0.5, 0.5, 0.4), color=COLORS["wood_dark"])
+chair_seat = create_box("chair_seat", chair_loc, (0.5, 0.5, 0.15), color=COLORS["terracotta"])
+chair_back = create_box("chair_back", chair_loc, (0.5, 0.6, 0.4), color=COLORS["green"])
+
+# 4. Media Cabinet & TV (Left wall zone)
+cabinet_loc = (-2.5, 0.5, 1.7)
+cabinet_base = create_box("cabinet_base", cabinet_loc, (1.2, 0.6, 0.4), color=COLORS["wood_dark"])
+cabinet_top = create_box("cabinet_top", cabinet_loc, (1.2, 0.6, 0.1), color=COLORS["wood_light"])
+# TV
+tv_loc = (-2.5, 0.5, 1.85)
+tv_stand = create_box("tv_stand", tv_loc, (0.8, 0.1, 0.1), color=COLORS["wood_dark"])
+tv_screen = create_box("tv_screen", tv_loc, (0.8, 0.4, 0.02), color=(0.05, 0.05, 0.05, 1.0))
+
+# 5. Rug (Terracotta/Sand pattern)
+rug_loc = (0.5, 0.0, 0.2)
+rug = create_box("rug", rug_loc, (2.0, 1.5, 0.02), color=COLORS["sand"])
+
+# 6. Lamp (Floor lamp, cream/green)
+lamp_loc = (-1.0, -1.0, 0.25)
+lamp_base = create_box("lamp_base", lamp_loc, (0.15, 0.15, 0.15), color=COLORS["wood_light"])
+lamp_post = create_box("lamp_post", lamp_loc, (0.15, 0.15, 1.2), color=COLORS["wood_light"])
+lamp_shade = create_box("lamp_shade", lamp_loc, (0.2, 0.2, 0.1), color=COLORS["cream"])
+
+# 7. Plant (Corner)
+plant_loc = (-2.5, 1.5, 1.7)
+plant_pot = create_box("plant_pot", plant_loc, (0.3, 0.3, 0.15), color=COLORS["wood_dark"])
+plant_leaves = create_box("plant_leaves", plant_loc, (0.3, 0.3, 0.4), color=COLORS["green"])
+
+# --- Final Cleanup & Optimization ---
+# Ensure all objects are in the scene
+for obj in bpy.data.objects:
+    if obj.name not in ["floor", "wall_back", "wall_side"]:
+        bpy.context.collection.objects.link(obj)
+
+# Select all for potential future operations (though not needed here)
+bpy.ops.object.select_all(action='DESELECT')

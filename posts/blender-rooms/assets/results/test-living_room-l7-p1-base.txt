@@ -1,0 +1,189 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+COLORS = {
+    'dusty_blue': (0.529, 0.620, 0.678),   # 859eae
+    'cream': (0.933, 0.902, 0.824),        # ece3d0
+    'warm_wood': (0.608, 0.451, 0.353),    # 9b7359
+    'accent_terracotta': (0.796, 0.545, 0.459) # cb8d74
+}
+
+# Helper to create a mesh with bevels
+def create_beveled_box(location, size, thickness, color, name, bevel_width=0.02, bevel_depth=0.01):
+    bpy.ops.mesh.primitive_cube_add(size=1, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    obj.data.color_attributes.new(name="Col", domain='POINT', type='COLOR')
+    obj.data.color_attributes["Col"].data[0].color = color
+    
+    # Apply scale to get correct size
+    obj.scale = (size[0], size[1], size[2])
+    obj.data.update_from_object(obj)
+    
+    # Bevel edges
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='SELECT')
+    bpy.ops.mesh.bevel(width=bevel_width, segments=1, profile=bevel_depth)
+    bpy.ops.object.mode_set(mode='OBJECT')
+    
+    return obj
+
+# --- Scene Setup ---
+# Floor
+floor_loc = (0, 0, 0.1)
+floor_size = (5.6, 5.6, 0.2)
+floor = create_beveled_box(floor_loc, floor_size, 0.01, COLORS['cream'], "floor", bevel_width=0.01)
+
+# Walls
+wall_back_loc = (0, 2.7, 1.7)
+wall_back_size = (5.6, 0.15, 3.0)
+wall_back = create_beveled_box(wall_back_loc, wall_back_size, 0.01, COLORS['dusty_blue'], "wall_back")
+
+wall_side_loc = (-2.7, 0, 1.7)
+wall_side_size = (0.15, 5.6, 3.0)
+wall_side = create_beveled_box(wall_side_loc, wall_side_size, 0.01, COLORS['dusty_blue'], "wall_side")
+
+# --- Furniture Generation ---
+
+# 1. Sofa (2.4m wide, against back wall, slightly left)
+# Position: Centered on back wall, shifted left to leave space for TV on right
+sofa_x = -1.2 # Center of sofa
+sofa_z = 1.7 + 0.15 + 0.05 # On floor, slightly in front of wall
+sofa_y = 0.1 # Thickness
+
+# Sofa Frame
+sofa_frame = create_beveled_box((sofa_x, sofa_y, sofa_z), (2.4, 0.8, 0.6), 0.05, COLORS['warm_wood'], "sofa_frame")
+
+# Sofa Cushions (Seat)
+cushion_y = sofa_y + 0.05
+cushion_z = sofa_z + 0.05
+cushion_w = 2.2 # Slightly smaller than frame
+cushion_d = 0.5
+cushion_h = 0.4
+cushion = create_beveled_box((sofa_x, cushion_y, cushion_z), (cushion_w, cushion_d, cushion_h), 0.02, COLORS['accent_terracotta'], "sofa_cushion")
+
+# Sofa Arms (Left and Right)
+arm_w = 0.2
+arm_d = 0.6
+arm_h = 0.6
+arm_y = cushion_y + 0.02
+arm_z = cushion_z + 0.02
+arm_color = COLORS['warm_wood']
+
+arm_left = create_beveled_box((sofa_x - 1.1, arm_y, arm_z), (arm_w, arm_d, arm_h), 0.02, arm_color, "sofa_arm_left")
+arm_right = create_beveled_box((sofa_x + 1.1, arm_y, arm_z), (arm_w, arm_d, arm_h), 0.02, arm_color, "sofa_arm_right")
+
+# 2. Coffee Table (Low, in front of sofa)
+table_x = 0
+table_y = 0.4
+table_z = sofa_z + 0.6 + 0.05
+table_size = (1.2, 0.6, 0.4)
+table = create_beveled_box((table_x, table_y, table_z), table_size, 0.05, COLORS['warm_wood'], "coffee_table_top")
+table_legs = []
+for i in range(4):
+    lx = table_x - table_size[0]/2 + 0.1 + (i%2)*0.8
+    ly = table_y - 0.1
+    lz = table_z - 0.1
+    lg = create_beveled_box((lx, ly, lz), (0.08, 0.08, 0.4), 0.02, COLORS['warm_wood'], f"coffee_table_leg_{i}")
+    table_legs.append(lg)
+
+# Books on table
+book_y = table_y + 0.02
+book_z = table_z + 0.02
+for i in range(3):
+    bx = table_x - 0.2 + i * 0.35
+    bh = 0.05 + (i * 0.02)
+    bw = 0.15
+    bd = 0.2
+    book = create_beveled_box((bx, book_y, book_z), (bw, bd, bh), 0.01, COLORS['dusty_blue'], f"book_{i}")
+
+# 3. Accent Chair (Arm-free, front corner open area)
+# Position: Front right area
+chair_x = 1.5
+chair_y = 0.5
+chair_z = 3.5
+chair_color = COLORS['accent_terracotta']
+
+# Chair Frame (Wood)
+chair_frame = create_beveled_box((chair_x, chair_y, chair_z), (0.6, 0.6, 0.8), 0.05, COLORS['warm_wood'], "chair_frame")
+
+# Seat
+seat_y = chair_y + 0.05
+seat_z = chair_z + 0.05
+seat = create_beveled_box((chair_x, seat_y, seat_z), (0.5, 0.5, 0.4), 0.02, chair_color, "chair_seat")
+
+# Back
+back_y = seat_y + 0.02
+back_z = seat_z - 0.02
+back = create_beveled_box((chair_x, back_y, back_z), (0.5, 0.5, 0.6), 0.02, chair_color, "chair_back")
+
+# 4. TV and Media Cabinet (Left wall)
+# Cabinet
+cabinet_x = -2.7 + 0.05 # Against left wall
+cabinet_y = 0.1
+cabinet_z = 1.7 + 0.05
+cabinet_w = 1.8
+cabinet_d = 0.6
+cabinet_h = 0.8
+cabinet = create_beveled_box((cabinet_x, cabinet_y, cabinet_z), (cabinet_w, cabinet_d, cabinet_h), 0.05, COLORS['warm_wood'], "media_cabinet")
+
+# TV Stand Top
+tv_top = create_beveled_box((cabinet_x, cabinet_y + 0.02, cabinet_z + 0.02), (cabinet_w, cabinet_d, 0.05), 0.01, COLORS['warm_wood'], "tv_stand_top")
+
+# TV
+tv_x = cabinet_x + cabinet_w/2
+tv_y = cabinet_y + 0.05
+tv_z = cabinet_z + 0.05
+tv_w = 1.0
+tv_h = 0.6
+tv_d = 0.05
+tv = create_beveled_box((tv_x, tv_y, tv_z), (tv_w, tv_h, tv_d), 0.01, COLORS['dusty_blue'], "television")
+# TV Screen (Black)
+screen = create_beveled_box((tv_x, tv_y + 0.01, tv_z + 0.01), (tv_w, tv_h - 0.02, 0.01), 0.005, (0.0, 0.0, 0.0), "tv_screen")
+
+# 5. Rug (Under sofa and table)
+rug_x = -0.6
+rug_y = 0.1
+rug_z = 1.7 + 0.15 + 0.05 + 0.3 # In front of wall
+rug_size = (2.6, 1.4, 0.02)
+rug = create_beveled_box((rug_x, rug_y, rug_z), rug_size, 0.005, COLORS['accent_terracotta'], "rug")
+
+# 6. Lamp (Corner)
+lamp_x = -2.0
+lamp_y = 0.8
+lamp_z = 3.0
+lamp_base = create_beveled_box((lamp_x, 0.1, lamp_z), (0.2, 0.2, 0.2), 0.02, COLORS['warm_wood'], "lamp_base")
+lamp_stand = create_beveled_box((lamp_x, 0.3, lamp_z), (0.05, 0.05, 1.2), 0.01, COLORS['warm_wood'], "lamp_stand")
+lamp_shade = create_beveled_box((lamp_x, 1.2, lamp_z), (0.4, 0.4, 0.1), 0.01, COLORS['cream'], "lamp_shade")
+
+# 7. Plant (Corner near lamp)
+plant_x = -2.2
+plant_y = 0.5
+plant_z = 3.2
+pot = create_beveled_box((plant_x, 0.1, plant_z), (0.3, 0.3, 0.15), 0.02, COLORS['warm_wood'], "plant_pot")
+leaves = create_beveled_box((plant_x, 0.4, plant_z), (0.4, 0.4, 0.4), 0.01, (0.2, 0.6, 0.2), "plant_leaves")
+
+# --- Cleanup and Optimization ---
+# Select all objects and apply transforms
+for obj in bpy.data.objects:
+    obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+
+# Delete temporary construction objects if any (none added explicitly beyond helpers)
+# Ensure clean mesh data
+for obj in bpy.data.objects:
+    if obj.type == 'MESH':
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='SELECT')
+        bpy.ops.mesh.remove_doubles(threshold=0.001)
+        bpy.ops.object.mode_set(mode='OBJECT')
+
+# Final selection cleanup
+bpy.ops.object.select_all(action='DESELECT')

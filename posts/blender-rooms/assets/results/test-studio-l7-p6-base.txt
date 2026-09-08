@@ -1,0 +1,158 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_box(name, loc, size, color, bevel=0.01):
+    """Creates a low-poly box mesh with a small bevel."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    # Apply scale to ensure correct dimensions before material assignment
+    bpy.ops.object.transform_apply(scale=True)
+    
+    # Set color
+    mat = bpy.data.materials.new(name=name + "_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.8
+    bsdf.inputs['Metallic'].default_value = 0.0
+    
+    obj.data.materials.append(mat)
+    
+    # Apply bevel
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        obj.modifiers[-1].bevel_depth = bevel
+        obj.modifiers[-1].bevel_resolution = 1
+    
+    return obj
+
+def create_cylinder(name, loc, radius, height, color, segments=16, bevel=0.01):
+    """Creates a low-poly cylinder."""
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    bpy.ops.object.transform_apply(scale=True)
+    
+    mat = bpy.data.materials.new(name=name + "_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    obj.data.materials.append(mat)
+    
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        obj.modifiers[-1].bevel_depth = bevel
+        obj.modifiers[-1].bevel_resolution = 1
+    
+    return obj
+
+def create_plane(name, loc, size, color, bevel=0.01):
+    """Creates a low-poly plane (for rugs, etc.)."""
+    bpy.ops.mesh.primitive_plane_add(size=1, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    bpy.ops.object.transform_apply(scale=True)
+    
+    mat = bpy.data.materials.new(name=name + "_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.9
+    obj.data.materials.append(mat)
+    
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        obj.modifiers[-1].bevel_depth = bevel
+        obj.modifiers[-1].bevel_resolution = 1
+    
+    return obj
+
+# --- Palette ---
+# Rose: c28e98, Ivory: f0e6d6, Wood: 9d7454, Sage: 83a29a
+COLOR_ROSE = (0.76, 0.55, 0.60)
+COLOR_IVORY = (0.94, 0.90, 0.84)
+COLOR_WOOD = (0.61, 0.45, 0.33)
+COLOR_SAGE = (0.51, 0.63, 0.60)
+
+# --- Room Structure ---
+
+# Floor
+floor = create_box("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), COLOR_IVORY)
+
+# Back Wall
+wall_back = create_box("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), COLOR_SAGE)
+
+# Left Wall
+wall_side = create_box("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), COLOR_SAGE)
+
+# --- Furniture Layout ---
+# Layout Variation 8: Storage/Work along left wall, front corner open.
+# Palette: Rose textiles, Wood frames, Cream highlights.
+
+# 1. Desk (Left Wall area)
+# Base
+desk_base = create_box("desk_base", (-1.8, 0.5, 0.2), (1.8, 0.8, 0.05), COLOR_WOOD)
+# Top
+desk_top = create_box("desk_top", (-1.8, 0.5, 0.75), (1.8, 0.8, 0.05), COLOR_IVORY)
+# Legs
+for leg_loc in [(-1.8, 0.5, 0.2), (-1.8, 0.5+0.8, 0.2), (-1.8+1.8, 0.5, 0.2), (-1.8+1.8, 0.5+0.8, 0.2)]:
+    leg = create_box("desk_leg", leg_loc, (0.05, 0.05, 0.75), COLOR_WOOD)
+
+# 2. Monitor
+monitor_stand = create_box("monitor_stand", (-1.8+0.9, 0.5, 0.75), (0.1, 0.1, 0.05), COLOR_WOOD)
+monitor_screen = create_box("monitor_screen", (-1.8+0.9, 0.5, 0.85), (0.4, 0.3, 0.02), COLOR_IVORY)
+
+# 3. Keyboard
+keyboard = create_box("keyboard", (-1.8+0.9, 0.5, 0.75), (0.3, 0.15, 0.02), COLOR_IVORY)
+
+# 4. Chair (Facing desk)
+chair_seat = create_box("chair_seat", (-1.8+0.9, 0.5, 0.2), (0.5, 0.5, 0.05), COLOR_ROSE)
+chair_back = create_box("chair_back", (-1.8+0.9, 0.5, 0.2), (0.5, 0.6, 0.3), COLOR_ROSE)
+chair_legs = create_box("chair_legs", (-1.8+0.9, 0.5, 0.2), (0.5, 0.5, 0.2), COLOR_WOOD)
+
+# 5. Bookcase (Left Wall, behind desk)
+# Frame
+bookcase_frame = create_box("bookcase_frame", (-2.7, 0.5, 0.2), (0.15, 2.0, 2.5), COLOR_WOOD)
+# Shelves
+shelf_locs = [(-2.7, 0.5, 0.7), (-2.7, 0.5, 1.2), (-2.7, 0.5, 1.7)]
+for sl in shelf_locs:
+    shelf = create_box("bookcase_shelf", sl, (0.15, 1.8, 0.05), COLOR_WOOD)
+# Books (Simple colored blocks)
+for i in range(5):
+    book = create_box(f"bookcase_book_{i}", (-2.7, 0.5, 0.7 + (i*0.2)), (0.05, 0.05, 0.2), COLOR_ROSE)
+for i in range(5):
+    book = create_box(f"bookcase_book_2_{i}", (-2.7, 0.5, 1.2 + (i*0.2)), (0.05, 0.05, 0.2), COLOR_SAGE)
+
+# 6. Storage Cabinet (Left Wall, further back)
+cabinet_base = create_box("cabinet_base", (-2.7, 0.5, 0.2), (0.15, 0.8, 1.0), COLOR_WOOD)
+cabinet_top = create_box("cabinet_top", (-2.7, 0.5, 0.2), (0.15, 0.8, 0.05), COLOR_IVORY)
+cabinet_door = create_box("cabinet_door", (-2.7, 0.5, 0.2), (0.15, 0.7, 0.05), COLOR_ROSE)
+
+# 7. Rug (Front corner open area)
+rug = create_plane("rug", (0, 0, 0.02), (2.0, 2.0), COLOR_SAGE)
+
+# 8. Standing Lamp (Right side of room)
+lamp_base = create_box("lamp_base", (1.5, 0.5, 0.2), (0.1, 0.1, 0.05), COLOR_WOOD)
+lamp_post = create_cylinder("lamp_post", (1.5, 0.5, 0.2), 0.03, 1.2, COLOR_IVORY)
+lamp_shade = create_box("lamp_shade", (1.5, 0.5, 1.2), (0.4, 0.4, 0.05), COLOR_ROSE)
+
+# 9. Plant (Corner)
+plant_pot = create_box("plant_pot", (2.0, 0.5, 0.2), (0.2, 0.2, 0.05), COLOR_WOOD)
+plant_leaves = create_box("plant_leaves", (2.0, 0.5, 0.2), (0.2, 0.2, 0.3), COLOR_SAGE)
+
+# --- Final Cleanup ---
+bpy.ops.object.select_all(action='DESELECT')
+bpy.context.scene.collection.objects.active = floor
+bpy.context.view_layer.objects.active = floor

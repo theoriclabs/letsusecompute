@@ -1,0 +1,15 @@
+{
+  "purpose": "Separate Blender API compatibility from the broader SFT effect after the primary test recipe was frozen.",
+  "basis": "Original validation logs: RGB assigned to RGBA inputs, removed MeshEdge.bevel_weight, undefined helper variable, and unnecessary scene configuration.",
+  "split": "validation",
+  "count": 8,
+  "policies": [
+    "base",
+    "same saved SFT adapter"
+  ],
+  "common_change": "Identical Blender 4.5 API hints appended to both system prompts; no geometry thresholds, code outputs, or model weights changed.",
+  "decoding": "greedy, 4096 new tokens, batch size 8",
+  "status": "prepared before control outputs; post-hoc diagnostic, not a replacement primary test",
+  "budget": "Fresh receipt-based quote; no extra funding; at most 1800-second GPU timeout.",
+  "interpretation_caveat": "Original validation generations used batch 1; this diagnostic used batch 8 and an appended system instruction. It establishes failure under the variant, without isolating prompt from batching effects."
+}

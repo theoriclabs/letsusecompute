@@ -1,0 +1,186 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+COLORS = {
+    'dusty_blue': (0.529, 0.620, 0.678),   # 859eae
+    'cream': (0.933, 0.902, 0.824),        # ece3d0
+    'warm_wood': (0.608, 0.451, 0.365),    # 9b7359
+    'accent_terra': (0.796, 0.553, 0.467), # cb8d74
+}
+
+# Helper to create a mesh with bevels
+def create_beveled_box(location, size, color, bevel_depth=0.01, bevel_width=0.005, name_prefix=""):
+    bpy.ops.mesh.primitive_cube_add(size=1, location=location)
+    obj = bpy.context.active_object
+    obj.name = f"{name_prefix}_box"
+    obj.data.name = f"{name_prefix}_mesh"
+    obj.data.color_attributes.new(name="Color", domain='POINT', namespace="mat")
+    obj.data.color_attributes["Color"].data[0].color = color
+    
+    # Apply bevel
+    bpy.ops.object.shade_smooth()
+    bpy.ops.object.modifier_add(type='BEVEL')
+    obj.modifiers["Bevel"].depth = bevel_depth
+    obj.modifiers["Bevel"].width = bevel_width
+    obj.modifiers["Bevel"].segments = 1
+    
+    return obj
+
+# Helper to create a plane (for rugs, mats)
+def create_plane(location, size, color, name_prefix=""):
+    bpy.ops.mesh.primitive_plane_add(size=1, location=location)
+    obj = bpy.context.active_object
+    obj.name = f"{name_prefix}_plane"
+    obj.data.name = f"{name_prefix}_mesh"
+    obj.data.color_attributes.new(name="Color", domain='POINT', namespace="mat")
+    obj.data.color_attributes["Color"].data[0].color = color
+    bpy.ops.object.shade_smooth()
+    return obj
+
+# --- Scene Setup ---
+# Floor
+floor_loc = (0, 0, 0.1)
+floor_size = (5.6, 5.6, 0.2)
+floor = create_beveled_box(floor_loc, floor_size, COLORS['cream'], name_prefix="floor")
+floor.scale = (floor_size[0]/2, floor_size[1]/2, floor_size[2]/2) # Scale from center
+
+# Walls
+wall_back_loc = (0, 2.7, 1.7)
+wall_back_size = (5.6, 0.15, 3.0)
+wall_back = create_beveled_box(wall_back_loc, wall_back_size, COLORS['dusty_blue'], name_prefix="wall_back")
+wall_back.scale = (wall_back_size[0]/2, wall_back_size[1]/2, wall_back_size[2]/2)
+
+wall_side_loc = (-2.7, 0, 1.7)
+wall_side_size = (0.15, 5.6, 3.0)
+wall_side = create_beveled_box(wall_side_loc, wall_side_size, COLORS['dusty_blue'], name_prefix="wall_side")
+wall_side.scale = (wall_side_size[0]/2, wall_side_size[1]/2, wall_side_size[2]/2)
+
+# --- Furniture: Desk Area (Front Right) ---
+# Desk
+desk_loc = (1.2, -1.2, 0.25)
+desk_size = (2.0, 0.8, 0.8)
+desk = create_beveled_box(desk_loc, desk_size, COLORS['warm_wood'], name_prefix="desk")
+desk.scale = (desk_size[0]/2, desk_size[1]/2, desk_size[2]/2)
+
+# Desk Legs
+leg_positions = [(-0.4, -0.4), (0.4, -0.4), (-0.4, 0.4), (0.4, 0.4)]
+for i, pos in enumerate(leg_positions):
+    leg_loc = (desk_loc[0] + pos[0], desk_loc[1] + pos[1], desk_size[2]/2 + 0.05)
+    leg = create_beveled_box(leg_loc, (0.08, 0.08, 0.8), COLORS['warm_wood'], name_prefix=f"desk_leg_{i}")
+    leg.scale = (0.04, 0.04, 0.4)
+
+# Monitor
+monitor_loc = (0.0, -0.3, 0.25 + 0.8 + 0.05)
+monitor = create_beveled_box(monitor_loc, (0.6, 0.4, 0.05), (0.1, 0.1, 0.1), name_prefix="monitor")
+monitor.scale = (0.3, 0.2, 0.025)
+# Screen bezel
+monitor_frame = create_beveled_box(monitor_loc, (0.62, 0.42, 0.06), (0.1, 0.1, 0.1), name_prefix="monitor_frame")
+monitor_frame.scale = (0.31, 0.21, 0.03)
+# Screen glass
+monitor_screen = create_beveled_box(monitor_loc, (0.58, 0.38, 0.001), (0.2, 0.2, 0.2), name_prefix="monitor_screen")
+monitor_screen.scale = (0.29, 0.19, 0.0005)
+
+# Keyboard
+kb_loc = (0.0, 0.3, 0.25 + 0.8 + 0.05)
+kb = create_beveled_box(kb_loc, (0.4, 0.15, 0.02), COLORS['cream'], name_prefix="keyboard")
+kb.scale = (0.2, 0.075, 0.01)
+
+# --- Furniture: Chair (Facing Desk) ---
+chair_loc = (1.2, 1.0, 0.25)
+# Seat
+seat = create_beveled_box(chair_loc, (0.5, 0.5, 0.05), COLORS['accent_terra'], name_prefix="chair_seat")
+seat.scale = (0.25, 0.25, 0.025)
+# Back
+back = create_beveled_box(chair_loc, (0.5, 0.6, 0.05), COLORS['accent_terra'], name_prefix="chair_back")
+back.scale = (0.25, 0.3, 0.025)
+back.location = (chair_loc[0], chair_loc[1] + 0.25, chair_loc[2] + 0.05)
+# Legs
+for i, pos in enumerate(leg_positions):
+    leg_loc = (chair_loc[0] + pos[0], chair_loc[1] + pos[1], 0.05)
+    leg = create_beveled_box(leg_loc, (0.06, 0.06, 0.4), COLORS['warm_wood'], name_prefix=f"chair_leg_{i}")
+    leg.scale = (0.03, 0.03, 0.2)
+
+# --- Furniture: Bookcase (Left Wall) ---
+bookcase_loc = (-2.0, 0.0, 1.7)
+bookcase_size = (0.8, 2.0, 2.0)
+bookcase = create_beveled_box(bookcase_loc, bookcase_size, COLORS['warm_wood'], name_prefix="bookcase")
+bookcase.scale = (bookcase_size[0]/2, bookcase_size[1]/2, bookcase_size[2]/2)
+
+# Shelves (4 levels)
+shelf_thickness = 0.05
+shelf_height = 0.15
+for i in range(4):
+    shelf_y = i * shelf_height + 0.1
+    shelf_loc = (bookcase_loc[0], bookcase_loc[1] + shelf_y, bookcase_loc[2] + shelf_thickness/2)
+    shelf = create_beveled_box(shelf_loc, (0.75, 0.05, 1.95), COLORS['cream'], name_prefix=f"bookcase_shelf_{i}")
+    shelf.scale = (0.375, 0.025, 0.975)
+    
+    # Books on shelf
+    num_books = 5
+    book_width = 0.08
+    book_height = 0.12
+    book_depth = 0.04
+    for j in range(num_books):
+        book_x = (j - num_books/2) * (book_width + 0.02)
+        book_loc = (shelf_loc[0] + book_x, shelf_loc[1], shelf_loc[2])
+        book = create_beveled_box(book_loc, (book_width, book_height, book_depth), COLORS['dusty_blue'], name_prefix=f"book_{i}_{j}")
+        book.scale = (book_width/2, book_height/2, book_depth/2)
+
+# --- Furniture: Storage Cabinet (Left Wall, next to bookcase) ---
+cabinet_loc = (-2.0, -1.0, 1.7)
+cabinet_size = (0.8, 0.9, 1.0)
+cabinet = create_beveled_box(cabinet_loc, cabinet_size, COLORS['warm_wood'], name_prefix="cabinet")
+cabinet.scale = (cabinet_size[0]/2, cabinet_size[1]/2, cabinet_size[2]/2)
+
+# Cabinet Doors
+door_height = 0.45
+door_width = 0.38
+for i in range(2):
+    door_y = i * door_height + 0.05
+    door_loc = (cabinet_loc[0], cabinet_loc[1] + door_y, cabinet_loc[2] + 0.05)
+    door = create_beveled_box(door_loc, (door_width, door_height, 0.02), COLORS['cream'], name_prefix=f"cabinet_door_{i}")
+    door.scale = (door_width/2, door_height/2, 0.01)
+
+# --- Furniture: Rug ---
+rug_loc = (0.0, 0.0, 0.2)
+rug_size = (2.0, 2.0)
+rug = create_plane(rug_loc, rug_size, COLORS['accent_terra'], name_prefix="rug")
+rug.scale = (rug_size[0]/2, rug_size[1]/2)
+
+# --- Furniture: Standing Lamp (Corner) ---
+lamp_loc = (1.8, 1.8, 0.25)
+# Base
+lamp_base = create_beveled_box(lamp_loc, (0.2, 0.2, 0.1), COLORS['warm_wood'], name_prefix="lamp_base")
+lamp_base.scale = (0.1, 0.1, 0.05)
+# Pole
+lamp_pole = create_beveled_box(lamp_loc, (0.02, 0.02, 1.5), COLORS['warm_wood'], name_prefix="lamp_pole")
+lamp_pole.scale = (0.01, 0.01, 0.75)
+# Shade
+lamp_shade = create_beveled_box(lamp_loc, (0.4, 0.4, 0.1), COLORS['cream'], name_prefix="lamp_shade")
+lamp_shade.scale = (0.2, 0.2, 0.05)
+lamp_shade.location = (lamp_loc[0], lamp_loc[1] + 1.5, lamp_loc[2] + 0.05)
+
+# --- Furniture: Plant (Corner) ---
+plant_loc = (-2.0, 1.8, 0.25)
+# Pot
+plant_pot = create_beveled_box(plant_loc, (0.3, 0.3, 0.1), COLORS['warm_wood'], name_prefix="plant_pot")
+plant_pot.scale = (0.15, 0.15, 0.05)
+# Leaves
+for i in range(3):
+    leaf_loc = (plant_loc[0] + math.sin(i)*0.1, plant_loc[1] + math.cos(i)*0.1, plant_loc[2] + 0.1 + i*0.1)
+    leaf = create_beveled_box(leaf_loc, (0.1, 0.1, 0.1), COLORS['dusty_blue'], name_prefix=f"plant_leaf_{i}")
+    leaf.scale = (0.05, 0.05, 0.05)
+
+# --- Final Cleanup ---
+bpy.ops.object.select_all(action='DESELECT')
+for obj in bpy.data.objects:
+    obj.select_set(True)
+bpy.context.view_layer.objects.active = floor
+bpy.ops.object.select_all(action='DESELECT')
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.mode_set(mode='OBJECT')

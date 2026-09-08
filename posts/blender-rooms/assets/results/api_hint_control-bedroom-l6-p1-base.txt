@@ -1,0 +1,143 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# Helper function to create a beveled cube
+def create_beveled_cube(location, size, color, name, bevel=0.02):
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    bpy.context.collection.objects.link(obj)
+    
+    mesh = obj.data
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = (color[0], color[1], color[2], 1.0)
+    mat.diffuse_color = (color[0], color[1], color[2], 1.0) # Compatibility note
+    obj.data.materials.append(mat)
+    
+    # Create cube
+    bpy.ops.mesh.primitive_cube_add(size=1, location=location)
+    bpy.context.active_object.name = name
+    bpy.context.view_layer.objects.active = obj
+    
+    # Apply bevel
+    mod = obj.modifiers.new(name="bevel", type="BEVEL")
+    mod.width = bevel
+    mod.segments = 1
+    
+    return obj
+
+# Helper function to create a beveled cylinder (for lamp base/pot)
+def create_beveled_cylinder(location, radius, height, color, name, bevel=0.02):
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    bpy.context.collection.objects.link(obj)
+    
+    mesh = obj.data
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = (color[0], color[1], color[2], 1.0)
+    mat.diffuse_color = (color[0], color[1], color[2], 1.0)
+    obj.data.materials.append(mat)
+    
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=location)
+    bpy.context.active_object.name = name
+    bpy.context.view_layer.objects.active = obj
+    
+    mod = obj.modifiers.new(name="bevel", type="BEVEL")
+    mod.width = bevel
+    mod.segments = 1
+    
+    return obj
+
+# Helper function to create a beveled plane (for rug, art)
+def create_beveled_plane(location, size, color, name, bevel=0.02):
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    bpy.context.collection.objects.link(obj)
+    
+    mesh = obj.data
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = (color[0], color[1], color[2], 1.0)
+    mat.diffuse_color = (color[0], color[1], color[2], 1.0)
+    obj.data.materials.append(mat)
+    
+    bpy.ops.mesh.primitive_plane_add(size=1, location=location)
+    bpy.ops.object.transform_scale(scale=(size[0], size[1], 1), center='MEDIAN')
+    bpy.context.active_object.name = name
+    bpy.context.view_layer.objects.active = obj
+    
+    mod = obj.modifiers.new(name="bevel", type="BEVEL")
+    mod.width = bevel
+    mod.segments = 1
+    
+    return obj
+
+# --- Room Structure ---
+# Floor
+floor = create_beveled_cube((0, 0, 0.1), (5.6, 5.6, 0.2), (0.94, 0.94, 0.94), "floor", bevel=0.05)
+# Back Wall
+wall_back = create_beveled_cube((0, 2.7, 1.7), (5.6, 0.15, 3.0), (0.94, 0.94, 0.94), "wall_back", bevel=0.05)
+# Left Wall
+wall_side = create_beveled_cube((-2.7, 0, 1.7), (0.15, 5.6, 3.0), (0.94, 0.94, 0.94), "wall_side", bevel=0.05)
+
+# --- Furniture Palette ---
+# Dusty Blue: 859eae -> (0.529, 0.620, 0.671)
+# Cream: ece3d0 -> (0.922, 0.902, 0.824)
+# Warm Wood: 9b7359 -> (0.608, 0.451, 0.349)
+# Accent Red: cb8d74 -> (0.796, 0.553, 0.455)
+
+# 1. Bed (1.6m wide)
+# Frame
+bed_frame = create_beveled_cube((0, -0.8, 0.2), (1.6, 2.0, 0.1), (0.608, 0.451, 0.349), "bed_frame")
+# Mattress
+bed_mattress = create_beveled_cube((0, -0.8, 0.45), (1.6, 2.0, 0.15), (0.529, 0.620, 0.671), "bed_mattress")
+# Pillow 1
+pillow_1 = create_beveled_cube((-0.4, -0.8, 0.55), (0.5, 0.6, 0.1), (0.922, 0.902, 0.824), "pillow_1")
+# Pillow 2
+pillow_2 = create_beveled_cube((0.4, -0.8, 0.55), (0.5, 0.6, 0.1), (0.922, 0.902, 0.824), "pillow_2")
+# Blanket (folded)
+blanket = create_beveled_cube((0, -0.8, 0.55), (1.4, 0.8, 0.05), (0.796, 0.553, 0.455), "bed_blanket")
+
+# 2. Bedside Cabinet
+cabinet = create_beveled_cube((1.8, -0.8, 0.2), (0.6, 0.6, 0.6), (0.608, 0.451, 0.349), "cabinet")
+# Cabinet Top
+cabinet_top = create_beveled_cube((1.8, -0.8, 0.8), (0.6, 0.5, 0.05), (0.922, 0.902, 0.824), "cabinet_top")
+
+# 3. Lamp
+lamp_base = create_beveled_cylinder((1.95, -0.8, 0.8), 0.1, 0.1, (0.608, 0.451, 0.349), "lamp_base")
+lamp_stand = create_beveled_cube((1.95, -0.8, 0.9), (0.05, 0.2, 0.05), (0.608, 0.451, 0.349), "lamp_stand")
+lamp_shade = create_beveled_cube((1.95, -0.8, 1.05), (0.3, 0.3, 0.05), (0.922, 0.902, 0.824), "lamp_shade")
+
+# 4. Two-Door Wardrobe
+wardrobe_body = create_beveled_cube((0, 1.0, 0.2), (1.2, 2.0, 2.0), (0.608, 0.451, 0.349), "wardrobe_body")
+# Door 1
+door_1 = create_beveled_cube((0, 1.0, 1.0), (0.6, 2.0, 0.05), (0.796, 0.553, 0.455), "wardrobe_door_1")
+# Door 2
+door_2 = create_beveled_cube((0.6, 1.0, 1.0), (0.6, 2.0, 0.05), (0.796, 0.553, 0.455), "wardrobe_door_2")
+# Handle 1
+handle_1 = create_beveled_cube((0.3, 1.0, 1.0), (0.02, 0.8, 0.02), (0.922, 0.902, 0.824), "wardrobe_handle_1")
+# Handle 2
+handle_2 = create_beveled_cube((0.9, 1.0, 1.0), (0.02, 0.8, 0.02), (0.922, 0.902, 0.824), "wardrobe_handle_2")
+
+# 5. Rug
+rug = create_beveled_plane((0, 0.5, 0.2), (2.0, 1.5), (0.922, 0.902, 0.824), "rug")
+
+# 6. Potted Plant
+pot = create_beveled_cylinder((2.5, 0.5, 0.2), 0.15, 0.15, (0.608, 0.451, 0.349), "plant_pot")
+plant_stem = create_beveled_cube((2.5, 0.5, 0.35), (0.05, 0.3, 0.05), (0.608, 0.451, 0.349), "plant_stem")
+plant_leaves = create_beveled_cube((2.5, 0.5, 0.5), (0.3, 0.3, 0.05), (0.529, 0.620, 0.671), "plant_leaves")
+
+# 7. Framed Art
+art_frame = create_beveled_cube((0, 2.7, 1.7), (0.05, 0.8, 0.05), (0.922, 0.902, 0.824), "art_frame")
+art_canvas = create_beveled_cube((0, 2.7, 1.7), (0.7, 0.6, 0.02), (0.796, 0.553, 0.455), "art_canvas")
+
+# --- Finalize ---
+bpy.context.view_layer.update()

@@ -1,0 +1,158 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_cube(name, loc, size, color, bevel=0.01):
+    """Creates a low-poly cube with a small bevel."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = loc
+    obj.rotation_euler = (math.radians(90), 0, 0)  # Align Z up
+    obj.active_material = create_material(color)
+    
+    mesh = obj.data
+    verts = [
+        (size[0]/2, size[1]/2, size[2]/2),
+        (-size[0]/2, size[1]/2, size[2]/2),
+        (-size[0]/2, -size[1]/2, size[2]/2),
+        (size[0]/2, -size[1]/2, size[2]/2),
+        (size[0]/2, size[1]/2, -size[2]/2),
+        (-size[0]/2, size[1]/2, -size[2]/2),
+        (-size[0]/2, -size[1]/2, -size[2]/2),
+        (size[0]/2, -size[1]/2, -size[2]/2)
+    ]
+    faces = [
+        (0, 1, 2, 3), # Top
+        (5, 4, 0, 1), # Front
+        (5, 1, 2, 6), # Right
+        (3, 2, 6, 7), # Back
+        (7, 6, 5, 4), # Left
+        (3, 0, 4, 7)  # Bottom
+    ]
+    
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    
+    # Apply bevel modifier
+    mod = mesh.modifiers.new(name="Bevel", type='BEVEL')
+    mod.width = bevel
+    mod.angle = math.radians(45)
+    mod.limit_method = 'ANGLE'
+    mod.limit_angle = math.radians(45)
+    
+    bpy.context.scene.objects.link(obj)
+    return obj
+
+def create_material(color_hex):
+    mat = bpy.data.materials.new(name=f"mat_{color_hex}")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = [int(x, 16)/255 for x in color_hex[1:].hex()]
+    bsdf.inputs['Roughness'].default_value = 0.7
+    bsdf.inputs['Metallic'].default_value = 0.0
+    return mat
+
+# --- Scene Setup ---
+
+# Create Floor
+floor = create_cube("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), "e8dfcd")
+
+# Create Walls
+wall_back = create_cube("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), "e8dfcd")
+wall_side = create_cube("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), "e8dfcd")
+
+# --- Furniture Palette ---
+# Sage: 91aa8a, Warm Oak: 9b704d, Cream: e2b96b, Accent: e8dfcd (used for walls/floor)
+# We will use specific shades for furniture parts.
+# Oak Frame: 9b704d
+# Sage Fabric: 91aa8a
+# Cream Cushion: e2b96b
+# Dark Wood: 5c4033 (derived from oak for contrast)
+
+# 1. Media Cabinet (Back Wall Left)
+# Base
+cabinet_base = create_cube("media_cabinet_base", (-2.0, 2.7, 1.7), (1.8, 0.4, 0.4), "9b704d")
+# Top
+cabinet_top = create_cube("media_cabinet_top", (-2.0, 2.7, 1.7), (1.8, 0.05, 0.4), "5c4033")
+# TV Stand (simulated as a flat slab on top)
+tv_stand = create_cube("tv_stand", (-2.0, 2.7, 1.7), (1.8, 0.02, 0.02), "5c4033")
+
+# 2. Television
+tv_screen = create_cube("tv_screen", (-2.0, 2.7, 1.7), (1.4, 0.02, 0.02), "1a1a1a")
+tv_frame = create_cube("tv_frame", (-2.0, 2.7, 1.7), (1.4, 0.02, 0.02), "333333")
+
+# 3. Accent Chair (Front Right)
+# Frame
+chair_legs = create_cube("chair_legs", (1.5, 0.5, 0.2), (0.4, 0.4, 0.4), "9b704d")
+# Seat
+chair_seat = create_cube("chair_seat", (1.5, 0.5, 0.2), (0.5, 0.5, 0.05), "91aa8a")
+# Back
+chair_back = create_cube("chair_back", (1.5, 0.5, 0.2), (0.5, 0.6, 0.05), "91aa8a")
+# Armrests
+chair_arm_l = create_cube("chair_arm_l", (1.5, 0.5, 0.2), (0.05, 0.5, 0.05), "9b704d")
+chair_arm_r = create_cube("chair_arm_r", (1.5, 0.5, 0.2), (0.05, 0.5, 0.05), "9b704d")
+
+# 4. Sofa (Back Wall Center)
+# Base
+sofa_base = create_cube("sofa_base", (0, 2.7, 1.7), (2.2, 0.4, 0.4), "9b704d")
+# Cushions
+sofa_cushion_l = create_cube("sofa_cushion_l", (0, 2.7, 1.7), (0.8, 0.35, 0.05), "91aa8a")
+sofa_cushion_r = create_cube("sofa_cushion_r", (0, 2.7, 1.7), (0.8, 0.35, 0.05), "91aa8a")
+# Arms
+sofa_arm_l = create_cube("sofa_arm_l", (0, 2.7, 1.7), (0.1, 0.4, 0.05), "9b704d")
+sofa_arm_r = create_cube("sofa_arm_r", (0, 2.7, 1.7), (0.1, 0.4, 0.05), "9b704d")
+# Back
+sofa_back = create_cube("sofa_back", (0, 2.7, 1.7), (2.2, 0.4, 0.05), "9b704d")
+
+# 5. Coffee Table (Center)
+table_top = create_cube("table_top", (0, 0.5, 0.2), (1.0, 0.6, 0.05), "9b704d")
+table_legs = create_cube("table_legs", (0, 0.5, 0.2), (0.1, 0.1, 0.4), "5c4033")
+
+# 6. Books on Table
+book1 = create_cube("book1", (0, 0.5, 0.2), (0.1, 0.02, 0.05), "e2b96b")
+book2 = create_cube("book2", (0, 0.5, 0.2), (0.1, 0.02, 0.05), "e2b96b")
+book3 = create_cube("book3", (0, 0.5, 0.2), (0.1, 0.02, 0.05), "e2b96b")
+
+# 7. Rug (Under Coffee Table)
+rug = create_cube("rug", (0, 0.5, 0.2), (1.2, 0.8, 0.02), "e2b96b")
+
+# 8. Lamp (Corner)
+lamp_base = create_cube("lamp_base", (1.8, 1.8, 0.2), (0.1, 0.1, 0.1), "9b704d")
+lamp_stand = create_cube("lamp_stand", (1.8, 1.8, 0.2), (0.02, 0.8, 0.1), "9b704d")
+lamp_shade = create_cube("lamp_shade", (1.8, 1.8, 0.2), (0.2, 0.2, 0.05), "e2b96b")
+
+# 9. Plant (Corner)
+pot = create_cube("plant_pot", (1.8, 1.8, 0.2), (0.2, 0.2, 0.2), "5c4033")
+plant = create_cube("plant", (1.8, 1.8, 0.2), (0.1, 0.3, 0.1), "2d5a27")
+
+# --- Finalize ---
+# Select all objects to apply modifiers if needed (though we applied inline)
+bpy.ops.object.select_all(action='DESELECT')
+
+# Ensure all objects are in the scene
+for obj in bpy.data.objects:
+    bpy.context.scene.collection.objects.link(obj)
+
+# Add a simple light source for visibility (though prompt says renderer supplies lights, this ensures visibility in viewport)
+light = bpy.data.lights.new(name="FillLight", type='AREA')
+light.energy = 500
+light.location = (0, 0, 3)
+light.rotation_euler = (math.radians(90), 0, 0)
+bpy.context.scene.objects.link(light)
+bpy.context.scene.collection.objects.link(light)
+
+# Select camera if it exists, otherwise create one
+cam = bpy.data.objects.get("Camera")
+if not cam:
+    cam = bpy.ops.object.camera_add(location=(0, 0, 2.5)).data
+    cam.rotation_euler = (math.radians(90), 0, 0)
+    bpy.context.scene.camera = cam
+    bpy.context.scene.objects.link(cam)
+    bpy.context.scene.collection.objects.link(cam)
+
+# Deselect all
+bpy.ops.object.select_all(action='DESELECT')

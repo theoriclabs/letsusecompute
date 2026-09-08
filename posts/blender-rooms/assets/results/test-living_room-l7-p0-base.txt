@@ -1,0 +1,184 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+COLOR_SAGE = (0.5686, 0.6745, 0.5373)   # 91aa8a
+COLOR_OAK = (0.6078, 0.4392, 0.3020)    # 9b704d
+COLOR_CREAM = (0.9176, 0.7490, 0.8039)  # e2b96b (Adjusted slightly for cream warmth)
+COLOR_ACCENT = (0.5686, 0.6745, 0.5373) # Sage as accent textile
+COLOR_WARM_OAK = (0.8039, 0.6745, 0.5373) # e8dfcd
+
+# --- Helper Functions ---
+
+def create_box(name, loc, size, color, bevel=0.01, material_name=None):
+    """Creates a low-poly box mesh with optional bevel."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = loc
+    obj.rotation_euler = (math.radians(90), 0, 0) # Isometric rotation
+    
+    mesh = obj.data
+    verts = [(s/2, s/2, s/2), (-s/2, s/2, s/2), (-s/2, -s/2, s/2), (s/2, -s/2, s/2),
+             (s/2, s/2, -s/2), (-s/2, s/2, -s/2), (-s/2, -s/2, -s/2), (s/2, -s/2, -s/2)]
+    faces = [(0, 1, 2, 3), (4, 5, 6, 7), (0, 4, 7, 3), (1, 5, 6, 2), (0, 1, 5, 4), (3, 2, 6, 7)]
+    
+    mesh.vertices.add(len(verts))
+    for v, pos in enumerate(verts):
+        mesh.vertices[v].co = pos
+    mesh.faces.add(len(faces))
+    for f in faces:
+        mesh.faces[-1].vertices = f
+    
+    # Apply bevel to edges (simple approximation by adding edge loops or modifying normals if needed, 
+    # but for low poly we rely on the geometry being flat. True bevel requires edge splitting).
+    # For strict low-poly constraints, we will just set the material color.
+    
+    mat = bpy.data.materials.new(name=material_name or f"mat_{name}")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.8
+    bsdf.inputs['Metallic'].default_value = 0.0
+    
+    obj.data.materials.append(mat)
+    bpy.context.collection.objects.link(obj)
+    return obj
+
+def create_cylinder(name, loc, radius, height, color, bevel=0.01, material_name=None):
+    """Creates a low-poly cylinder."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = loc
+    obj.rotation_euler = (math.radians(90), 0, 0)
+    
+    mesh = obj.data
+    # Low poly cylinder: 8 segments
+    verts = []
+    faces = []
+    for i in range(8):
+        angle = i * math.pi / 4
+        x = radius * math.cos(angle)
+        z = radius * math.sin(angle)
+        top = (x, z, height/2)
+        bottom = (x, z, -height/2)
+        verts.append(top)
+        verts.append(bottom)
+    
+    # Top face
+    top_indices = list(range(0, 8))
+    faces.append(top_indices)
+    # Bottom face (reversed)
+    bottom_indices = list(range(8, 16))
+    faces.append(bottom_indices[::-1])
+    # Side faces
+    for i in range(8):
+        idx1 = i
+        idx2 = (i + 1) % 8
+        idx3 = idx2 + 8
+        idx4 = idx1 + 8
+        faces.append([idx1, idx2, idx4, idx3])
+        
+    mesh.vertices.add(len(verts))
+    for v, pos in enumerate(verts):
+        mesh.vertices[v].co = pos
+    mesh.faces.add(len(faces))
+    for f in faces:
+        mesh.faces[-1].vertices = f
+        
+    mat = bpy.data.materials.new(name=material_name or f"mat_{name}")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    
+    obj.data.materials.append(mat)
+    bpy.context.collection.objects.link(obj)
+    return obj
+
+# --- Scene Setup ---
+
+# Floor
+floor = create_box("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), COLOR_OAK, material_name="mat_floor")
+
+# Walls
+wall_back = create_box("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), COLOR_SAGE, material_name="mat_wall")
+wall_side = create_box("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), COLOR_SAGE, material_name="mat_wall")
+
+# --- Furniture Generation ---
+
+# 1. Sofa (2.4m wide, against back wall, left side)
+# Position: Left side of back wall. Center X approx -1.2.
+sofa_base_loc = (-1.2, 2.7 - 0.75, 0.25) # 0.75 depth from back wall
+sofa = create_box("sofa_base", sofa_base_loc, (2.4, 0.75, 0.6), COLOR_OAK, material_name="mat_sofa")
+
+# Sofa Arms
+arm_left = create_box("sofa_arm_l", (-1.2 - 0.3, 2.7 - 0.75, 0.25), (0.3, 0.75, 0.6), COLOR_OAK, material_name="mat_sofa")
+arm_right = create_box("sofa_arm_r", (-1.2 + 1.8, 2.7 - 0.75, 0.25), (0.3, 0.75, 0.6), COLOR_OAK, material_name="mat_sofa")
+
+# Sofa Cushions (Sage)
+cushion_l = create_box("sofa_cushion_l", (-1.2 - 0.15, 2.7 - 0.75 + 0.1, 0.25), (0.6, 0.6, 0.1), COLOR_SAGE, material_name="mat_cushion")
+cushion_r = create_box("sofa_cushion_r", (-1.2 + 1.65, 2.7 - 0.75 + 0.1, 0.25), (0.6, 0.6, 0.1), COLOR_SAGE, material_name="mat_cushion")
+cushion_mid = create_box("sofa_cushion_m", (-1.2 + 0.6, 2.7 - 0.75 + 0.1, 0.25), (1.2, 0.6, 0.1), COLOR_SAGE, material_name="mat_cushion")
+
+# 2. Coffee Table (Low, Oak)
+# Position: Center of room, in front of sofa
+table_loc = (-0.6, 1.0, 0.25)
+table = create_box("coffee_table_top", table_loc, (1.0, 0.5, 0.1), COLOR_OAK, material_name="mat_table")
+table_legs = []
+for x in [-0.45, 0.45]:
+    for z in [-0.25, 0.25]:
+        leg = create_box("coffee_leg", (table_loc[0] + x, table_loc[1] + z, -0.1), (0.08, 0.08, 0.2), COLOR_OAK, material_name="mat_table")
+        table_legs.append(leg)
+
+# Books on table
+book1 = create_box("book_1", (table_loc[0], table_loc[1] + 0.05, 0.35), (0.15, 0.05, 0.05), COLOR_ACCENT, material_name="mat_book")
+book2 = create_box("book_2", (table_loc[0], table_loc[1] + 0.05, 0.40), (0.15, 0.05, 0.05), COLOR_CREAM, material_name="mat_book")
+
+# 3. Accent Chair (Arm-free, Cream)
+# Position: Right side of room, facing left
+chair_loc = (1.5, 1.5, 0.25)
+chair_seat = create_box("chair_seat", chair_loc, (0.6, 0.6, 0.1), COLOR_CREAM, material_name="mat_chair")
+chair_back = create_box("chair_back", (chair_loc[0], chair_loc[1] + 0.3, 0.25), (0.6, 0.5, 0.1), COLOR_CREAM, material_name="mat_chair")
+chair_legs = []
+for x in [-0.3, 0.3]:
+    for z in [-0.3, 0.3]:
+        leg = create_box("chair_leg", (chair_loc[0] + x, chair_loc[1] + z, -0.1), (0.06, 0.06, 0.2), COLOR_OAK, material_name="mat_chair")
+        chair_legs.append(leg)
+
+# 4. Media Cabinet & TV (Left Wall)
+# Cabinet along left wall
+cabinet_loc = (-2.7 + 0.1, 0.5, 1.7)
+cabinet = create_box("media_cabinet", cabinet_loc, (2.0, 0.4, 0.6), COLOR_OAK, material_name="mat_cabinet")
+# TV on top
+tv_loc = (cabinet_loc[0], cabinet_loc[1] + 0.4, 0.8)
+tv = create_box("tv_screen", tv_loc, (1.2, 0.6, 0.05), (0.1, 0.1, 0.1), material_name="mat_tv") # Dark grey/black
+tv_stand = create_box("tv_stand", (tv_loc[0], tv_loc[1] + 0.02, 0.4), (1.2, 0.1, 0.05), COLOR_OAK, material_name="mat_tv")
+
+# 5. Rug (Sage)
+# Centered under sofa and table
+rug_loc = (-0.6, 1.5, 0.1)
+rug = create_box("rug", rug_loc, (2.0, 1.5, 0.02), COLOR_SAGE, material_name="mat_rug")
+
+# 6. Lamp (Floor lamp in corner)
+# Right front corner
+lamp_loc = (1.8, 1.8, 0.25)
+lamp_base = create_box("lamp_base", lamp_loc, (0.2, 0.2, 0.1), COLOR_OAK, material_name="mat_lamp")
+lamp_stand = create_cylinder("lamp_stand", (lamp_loc[0], lamp_loc[1] + 0.1, 0.25), 0.05, 1.2, COLOR_OAK, material_name="mat_lamp")
+lamp_shade = create_cylinder("lamp_shade", (lamp_loc[0], lamp_loc[1] + 1.2, 0.25), 0.25, 0.1, COLOR_CREAM, material_name="mat_lamp")
+
+# 7. Plant (Corner)
+# Left front corner
+plant_loc = (-2.5, 0.2, 0.25)
+pot = create_box("plant_pot", plant_loc, (0.3, 0.3, 0.1), COLOR_OAK, material_name="mat_pot")
+plant = create_box("plant_leaves", (plant_loc[0], plant_loc[1] + 0.15, 0.25), (0.4, 0.4, 0.3), COLOR_SAGE, material_name="mat_plant") # Abstract bush
+
+# --- Final Adjustments ---
+# Ensure all objects are in the main collection
+for obj in bpy.data.objects:
+    if obj not in bpy.context.collection.objects:
+        bpy.context.collection.objects.link(obj)
+
+# Select all for potential viewport manipulation if needed (though not required by prompt)
+bpy.ops.object.select_all(action='DESELECT')

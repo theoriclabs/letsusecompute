@@ -1,0 +1,198 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+PALETTE = {
+    'slate': (0.48, 0.53, 0.60),      # 7a899a
+    'cream': (0.90, 0.86, 0.79),      # e5ddca
+    'wood':  (0.55, 0.42, 0.31),      # 8f6b50
+    'mustard': (0.84, 0.68, 0.28)     # d7ad48
+}
+
+# Helper to create a mesh with bevels
+def create_beveled_box(location, size, thickness, color, name, bevel=0.02):
+    bpy.ops.mesh.primitive_cube_add(size=1, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    # Scale to desired size
+    obj.scale = (size[0], size[1], size[2])
+    
+    # Apply scale to data
+    bpy.ops.object.transform_apply(scale=True)
+    
+    # Add bevel modifier
+    mod = obj.modifiers.new(name="Bevel", type='BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(30)
+    
+    # Material
+    mat = bpy.data.materials.new(name=name + "_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    bsdf.inputs['Metallic'].default_value = 0.0
+    obj.data.materials.append(mat)
+    
+    return obj
+
+# Helper to create a plane with bevels
+def create_beveled_plane(location, size, thickness, color, name, bevel=0.02):
+    bpy.ops.mesh.primitive_plane_add(size=1, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    obj.scale = (size[0], size[1], 1)
+    bpy.ops.object.transform_apply(scale=True)
+    
+    # Extrude to thickness
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.extrude_region_move(GEO각='SELECTED', RELEASED='NONE', value=thickness, orient='Z', WORLDMATRIX='None')
+    bpy.ops.object.mode_set(mode='OBJECT')
+    
+    # Add bevel modifier
+    mod = obj.modifiers.new(name="Bevel", type='BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(30)
+    
+    # Material
+    mat = bpy.data.materials.new(name=name + "_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    obj.data.materials.append(mat)
+    
+    return obj
+
+# --- Room Structure ---
+# Floor
+floor = create_beveled_box((0, 0, 0.1), (5.6, 5.6, 0.2), 0.0, PALETTE['slate'], "floor")
+
+# Back Wall
+wall_back = create_beveled_box((0, 2.7, 1.7), (5.6, 0.15, 3.0), 0.0, PALETTE['slate'], "wall_back")
+
+# Left Wall
+wall_side = create_beveled_box((-2.7, 0, 1.7), (0.15, 5.6, 3.0), 0.0, PALETTE['slate'], "wall_side")
+
+# Ceiling (optional, low poly style often leaves it open or simple)
+ceiling = create_beveled_box((0, 2.7, 4.7), (5.6, 5.6, 0.2), 0.0, PALETTE['slate'], "ceiling")
+
+# --- Furniture: Sofa (2.4m wide, accent colored textiles) ---
+# Position: Front right area, facing left
+sofa_x = 2.0
+sofa_z = 0.5
+sofa_y = 0.0
+
+# Sofa Base (Wood frame)
+sofa_base = create_beveled_box((sofa_x, sofa_y, 0.2), (2.4, 0.8, 0.2), 0.0, PALETTE['wood'], "sofa_base")
+
+# Sofa Back (Mustard)
+sofa_back = create_beveled_box((sofa_x, sofa_y + 0.4, 0.2), (2.4, 0.15, 0.2), 0.0, PALETTE['mustard'], "sofa_back")
+
+# Sofa Seat (Cream)
+sofa_seat = create_beveled_box((sofa_x, sofa_y + 0.2, 0.2), (2.4, 0.6, 0.2), 0.0, PALETTE['cream'], "sofa_seat")
+
+# Sofa Arms (Wood)
+arm_l = create_beveled_box((sofa_x - 0.1, sofa_y + 0.2, 0.2), (0.15, 0.8, 0.2), 0.0, PALETTE['wood'], "sofa_arm_l")
+arm_r = create_beveled_box((sofa_x + 1.25, sofa_y + 0.2, 0.2), (0.15, 0.8, 0.2), 0.0, PALETTE['wood'], "sofa_arm_r")
+
+# Sofa Cushions (Mustard)
+cush_l = create_beveled_box((sofa_x - 0.2, sofa_y + 0.3, 0.2), (0.6, 0.5, 0.2), 0.0, PALETTE['mustard'], "sofa_cush_l")
+cush_r = create_beveled_box((sofa_x + 0.8, sofa_y + 0.3, 0.2), (0.6, 0.5, 0.2), 0.0, PALETTE['mustard'], "sofa_cush_r")
+
+# --- Furniture: Coffee Table (Low, wood frame, cream top) ---
+# Position: Center front
+table_x = 0.0
+table_y = 0.8
+table_z = 0.2
+
+table_legs = []
+for i in range(4):
+    lx = -0.4 + (i % 2) * 0.8
+    ly = -0.4 + (i // 2) * 0.8
+    leg = create_beveled_box((table_x + lx, table_y + ly, 0.1), (0.1, 0.1, 0.4), 0.0, PALETTE['wood'], f"table_leg_{i}")
+    table_legs.append(leg)
+
+table_top = create_beveled_box((table_x, table_y + 0.4, 0.2), (0.8, 0.8, 0.2), 0.0, PALETTE['cream'], "table_top")
+
+# Books on table
+book1 = create_beveled_box((table_x + 0.1, table_y + 0.4, 0.2), (0.1, 0.05, 0.05), 0.0, PALETTE['wood'], "book_1")
+book2 = create_beveled_box((table_x + 0.2, table_y + 0.4, 0.2), (0.1, 0.05, 0.05), 0.0, PALETTE['wood'], "book_2")
+
+# --- Furniture: Accent Chair (Arm-free, wood frame, mustard seat) ---
+# Position: Left wall area, facing in
+chair_x = -1.5
+chair_y = 0.0
+chair_z = 1.5
+
+chair_legs = []
+for i in range(4):
+    lx = -0.2 + (i % 2) * 0.4
+    ly = -0.2 + (i // 2) * 0.4
+    leg = create_beveled_box((chair_x + lx, chair_y + ly, 0.1), (0.08, 0.08, 0.5), 0.0, PALETTE['wood'], f"chair_leg_{i}")
+    chair_legs.append(leg)
+
+chair_seat = create_beveled_box((chair_x, chair_y + 0.4, 0.2), (0.6, 0.5, 0.2), 0.0, PALETTE['mustard'], "chair_seat")
+chair_back = create_beveled_box((chair_x, chair_y + 0.6, 0.2), (0.6, 0.6, 0.2), 0.0, PALETTE['wood'], "chair_back")
+
+# --- Furniture: Media Cabinet & TV ---
+# Position: Left wall, further back
+cabinet_x = -2.0
+cabinet_y = 0.0
+cabinet_z = 3.0
+
+cabinet_legs = []
+for i in range(4):
+    lx = -0.3 + (i % 2) * 0.6
+    ly = -0.3 + (i // 2) * 0.6
+    leg = create_beveled_box((cabinet_x + lx, cabinet_y + ly, 0.1), (0.1, 0.1, 0.6), 0.0, PALETTE['wood'], f"cabinet_leg_{i}")
+    cabinet_legs.append(leg)
+
+cabinet_top = create_beveled_box((cabinet_x, cabinet_y + 0.6, 0.2), (1.2, 0.6, 0.2), 0.0, PALETTE['wood'], "cabinet_top")
+cabinet_door = create_beveled_box((cabinet_x, cabinet_y + 0.6, 0.2), (1.2, 0.1, 0.2), 0.0, PALETTE['cream'], "cabinet_door")
+
+# TV (Flat plane)
+tv_x = cabinet_x + 0.6
+tv_y = cabinet_y + 0.6
+tv_z = 0.2
+tv = create_beveled_plane((tv_x, tv_y, tv_z), (0.8, 0.4, 0.01), 0.0, PALETTE['slate'], "tv_screen")
+
+# --- Furniture: Rug ---
+# Position: Under sofa and table
+rug = create_beveled_plane((0.0, 0.6, 0.15), (2.0, 1.5, 0.01), 0.0, PALETTE['cream'], "rug")
+
+# --- Furniture: Lamp ---
+# Position: Near sofa
+lamp_x = 1.0
+lamp_y = 0.8
+lamp_z = 0.2
+
+lamp_base = create_beveled_box((lamp_x, lamp_y, 0.1), (0.15, 0.15, 0.15), 0.0, PALETTE['wood'], "lamp_base")
+lamp_stem = create_beveled_box((lamp_x, lamp_y + 0.15, 0.1), (0.05, 0.05, 0.6), 0.0, PALETTE['wood'], "lamp_stem")
+lamp_shade = create_beveled_box((lamp_x, lamp_y + 0.75, 0.2), (0.3, 0.3, 0.1), 0.0, PALETTE['cream'], "lamp_shade")
+
+# --- Furniture: Plant ---
+# Position: Corner near cabinet
+plant_x = -2.2
+plant_y = 0.0
+plant_z = 3.5
+
+plant_pot = create_beveled_box((plant_x, plant_y, 0.1), (0.2, 0.2, 0.1), 0.0, PALETTE['wood'], "plant_pot")
+plant_leaves = create_beveled_box((plant_x, plant_y + 0.15, 0.2), (0.3, 0.3, 0.3), 0.0, PALETTE['slate'], "plant_leaves")
+
+# --- Final Cleanup ---
+bpy.ops.object.mode_set(mode='OBJECT')
+# Ensure all objects are selected for potential future operations if needed
+bpy.ops.object.select_all(action='DESELECT')

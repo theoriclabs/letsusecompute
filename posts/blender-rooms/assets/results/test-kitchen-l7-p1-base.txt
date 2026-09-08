@@ -1,0 +1,271 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+COLORS = {
+    'dusty_blue': (0.529, 0.620, 0.678),   # 859eae
+    'cream': (0.933, 0.902, 0.824),        # ece3d0
+    'warm_wood': (0.608, 0.451, 0.337),    # 9b7359
+    'accent_terra': (0.796, 0.553, 0.459)  # cb8d74
+}
+
+def create_cube(location, size, color, name, bevel=0.02):
+    """Helper to create a low-poly cube with small bevels."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    # Scale to desired size
+    obj.scale = (size[0], size[1], size[2])
+    
+    # Material
+    mat_name = name + "_mat"
+    if mat_name not in bpy.data.materials:
+        mat = bpy.data.materials.new(name=mat_name)
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        bsdf.inputs['Roughness'].default_value = 0.8
+        mat.node_tree.links.new(bsdf.inputs['Base Color'], bsdf.inputs['Base Color']) # Fix link logic
+        # Correct linking
+        bsdf.inputs['Base Color'].default_value = color
+        mat.node_tree.nodes['Principled BSDF'].inputs['Roughness'].default_value = 0.8
+        obj.data.materials.append(mat)
+    else:
+        obj.data.materials.append(bpy.data.materials[mat_name])
+    
+    # Apply bevel modifier for low-poly look
+    mod = obj.modifiers.new(name="Bevel", type='BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(10)
+    
+    return obj
+
+def create_cylinder(location, radius, height, color, name, bevel=0.02):
+    """Helper to create a low-poly cylinder."""
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    obj.scale = (1, 1, 1) # Cylinder size is radius/depth
+    
+    # Material
+    mat_name = name + "_mat"
+    if mat_name not in bpy.data.materials:
+        mat = bpy.data.materials.new(name=mat_name)
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        bsdf.inputs['Roughness'].default_value = 0.8
+        obj.data.materials.append(mat)
+    else:
+        obj.data.materials.append(bpy.data.materials[mat_name])
+    
+    # Bevel
+    mod = obj.modifiers.new(name="Bevel", type='BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(10)
+    
+    return obj
+
+# --- Scene Setup ---
+# Floor
+floor_loc = (0, 0, 0.1)
+floor_size = (5.6, 5.6, 0.2)
+floor = create_cube(floor_loc, floor_size, COLORS['cream'], "floor", bevel=0.0)
+
+# Walls
+wall_back_loc = (0, 2.7, 1.7)
+wall_back_size = (5.6, 0.15, 3.0)
+wall_back = create_cube(wall_back_loc, wall_back_size, COLORS['dusty_blue'], "wall_back", bevel=0.0)
+
+wall_side_loc = (-2.7, 0, 1.7)
+wall_side_size = (0.15, 5.6, 3.0)
+wall_side = create_cube(wall_side_loc, wall_side_size, COLORS['dusty_blue'], "wall_side", bevel=0.0)
+
+# --- Furniture: Refrigerator (Left Wall Zone) ---
+# Position: Left wall, near back
+ref_loc = (-2.5, 1.5, 1.7)
+ref_size = (0.6, 1.8, 0.8)
+ref = create_cube(ref_loc, ref_size, COLORS['dusty_blue'], "refrigerator", bevel=0.03)
+# Add handle
+handle_loc = (-2.5, 1.5, 1.7)
+handle_size = (0.05, 0.1, 0.8)
+handle = create_cube(handle_loc, handle_size, COLORS['warm_wood'], "refrigerator_handle", bevel=0.01)
+handle.location = (-2.45, 1.5, 1.7) # Slight offset
+
+# --- Furniture: Two-Door Counter with Stove and Sink (Left Wall Zone) ---
+# Position: Left wall, forward of fridge
+counter_base_loc = (-2.5, 0.5, 1.7)
+counter_base_size = (1.8, 0.8, 0.8)
+counter_base = create_cube(counter_base_loc, counter_base_size, COLORS['warm_wood'], "counter_base", bevel=0.03)
+
+# Stove Top
+stove_top_loc = (-2.5, 0.5, 1.7)
+stove_top_size = (1.8, 0.8, 0.05)
+stove_top = create_cube(stove_top_loc, stove_top_size, COLORS['dusty_blue'], "stove_top", bevel=0.01)
+
+# Burners (4)
+burner_size = (0.15, 0.15, 0.05)
+burner_locs = [
+    (-1.1, 0.5, 1.7),
+    (0.7, 0.5, 1.7),
+    (-1.1, 1.15, 1.7),
+    (0.7, 1.15, 1.7)
+]
+for loc in burner_locs:
+    b = create_cube(loc, burner_size, COLORS['accent_terra'], "stove_burner", bevel=0.0)
+
+# Sink
+sink_loc = (-2.5, -0.6, 1.7)
+sink_size = (0.6, 0.8, 0.05)
+sink = create_cube(sink_loc, sink_size, COLORS['dusty_blue'], "sink_basin", bevel=0.01)
+
+# Tap
+tap_loc = (-2.5, -0.6, 1.7)
+tap_size = (0.05, 0.3, 0.05)
+tap = create_cube(tap_loc, tap_size, COLORS['warm_wood'], "sink_tap", bevel=0.01)
+tap.location = (-2.5, -0.6, 1.7)
+
+# --- Furniture: Dining Table (Front Corner Open) ---
+# Position: Center-ish, facing back wall
+table_loc = (0, -1.5, 1.7)
+table_size = (1.2, 2.0, 0.8)
+table = create_cube(table_loc, table_size, COLORS['warm_wood'], "dining_table", bevel=0.03)
+
+# Table Legs (4)
+leg_size = (0.05, 0.05, 0.8)
+leg_locs = [
+    (-0.4, -0.7, 1.7),
+    (0.4, -0.7, 1.7),
+    (-0.4, -1.3, 1.7),
+    (0.4, -1.3, 1.7)
+]
+for loc in leg_locs:
+    l = create_cube(loc, leg_size, COLORS['warm_wood'], "table_leg", bevel=0.01)
+
+# Bowl on table
+bowl_loc = (0, -1.5, 1.7)
+bowl_size = (0.3, 0.3, 0.15)
+bowl = create_cylinder(bowl_loc, 0.15, 0.15, COLORS['accent_terra'], "dining_bowl", bevel=0.01)
+
+# --- Furniture: Two Chairs ---
+# Chair 1 (Left side of table)
+chair1_loc = (-1.0, -1.0, 1.7)
+chair1_size = (0.5, 0.9, 0.5)
+chair1 = create_cube(chair1_loc, chair1_size, COLORS['dusty_blue'], "chair_1", bevel=0.02)
+# Seat cushion
+seat1_loc = (-1.0, -1.0, 1.7)
+seat1_size = (0.4, 0.4, 0.05)
+seat1 = create_cube(seat1_loc, seat1_size, COLORS['cream'], "chair_1_seat", bevel=0.01)
+seat1.location = (-1.0, -1.0, 1.7)
+# Legs
+leg1_size = (0.05, 0.05, 0.4)
+leg1_locs = [(-0.8, -0.8, 1.7), (0.8, -0.8, 1.7), (-0.8, -0.8, 1.7), (0.8, -0.8, 1.7)] # Simplified for low poly
+# Actually, let's just make the main cube the chair structure and add a seat
+# Re-doing chair 1 logic for clarity: Main body + Seat + Legs
+# Main body
+bpy.ops.mesh.primitive_cube_add(size=1, location=chair1_loc)
+c1 = bpy.context.active_object
+c1.name = "chair_1_body"
+c1.scale = (0.5, 0.9, 0.5)
+c1.data.materials.append(bpy.data.materials["chair_1_mat"])
+mod = c1.modifiers.new(name="Bevel", type='BEVEL')
+mod.width = 0.02; mod.segments = 1; mod.limit_method = 'ANGLE'; mod.angle_limit = math.radians(10)
+
+# Seat
+bpy.ops.mesh.primitive_cube_add(size=1, location=(-1.0, -1.0, 1.7))
+s1 = bpy.context.active_object
+s1.name = "chair_1_seat"
+s1.scale = (0.4, 0.4, 0.05)
+s1.data.materials.append(bpy.data.materials["chair_1_seat_mat"])
+mod = s1.modifiers.new(name="Bevel", type='BEVEL')
+mod.width = 0.01; mod.segments = 1; mod.limit_method = 'ANGLE'; mod.angle_limit = math.radians(10)
+
+# Legs
+for lx in [-0.8, 0.8]:
+    for ly in [-0.8, -0.8]:
+        bpy.ops.mesh.primitive_cube_add(size=1, location=(lx, ly, 1.7))
+        leg = bpy.context.active_object
+        leg.name = f"chair_1_leg_{lx}_{ly}"
+        leg.scale = (0.05, 0.05, 0.4)
+        leg.data.materials.append(bpy.data.materials["chair_1_leg_mat"])
+        mod = leg.modifiers.new(name="Bevel", type='BEVEL')
+        mod.width = 0.01; mod.segments = 1; mod.limit_method = 'ANGLE'; mod.angle_limit = math.radians(10)
+
+# Chair 2 (Right side of table)
+chair2_loc = (1.0, -1.0, 1.7)
+# Main body
+bpy.ops.mesh.primitive_cube_add(size=1, location=chair2_loc)
+c2 = bpy.context.active_object
+c2.name = "chair_2_body"
+c2.scale = (0.5, 0.9, 0.5)
+c2.data.materials.append(bpy.data.materials["chair_2_mat"])
+mod = c2.modifiers.new(name="Bevel", type='BEVEL')
+mod.width = 0.02; mod.segments = 1; mod.limit_method = 'ANGLE'; mod.angle_limit = math.radians(10)
+
+# Seat
+bpy.ops.mesh.primitive_cube_add(size=1, location=(1.0, -1.0, 1.7))
+s2 = bpy.context.active_object
+s2.name = "chair_2_seat"
+s2.scale = (0.4, 0.4, 0.05)
+s2.data.materials.append(bpy.data.materials["chair_2_seat_mat"])
+mod = s2.modifiers.new(name="Bevel", type='BEVEL')
+mod.width = 0.01; mod.segments = 1; mod.limit_method = 'ANGLE'; mod.angle_limit = math.radians(10)
+
+# Legs
+for lx in [-0.8, 0.8]:
+    for ly in [-0.8, -0.8]:
+        bpy.ops.mesh.primitive_cube_add(size=1, location=(lx, ly, 1.7))
+        leg = bpy.context.active_object
+        leg.name = f"chair_2_leg_{lx}_{ly}"
+        leg.scale = (0.05, 0.05, 0.4)
+        leg.data.materials.append(bpy.data.materials["chair_2_leg_mat"])
+        mod = leg.modifiers.new(name="Bevel", type='BEVEL')
+        mod.width = 0.01; mod.segments = 1; mod.limit_method = 'ANGLE'; mod.angle_limit = math.radians(10)
+
+# --- Furniture: Plant ---
+# Position: Back corner, right side
+plant_loc = (1.5, 2.5, 1.7)
+plant_pot_size = (0.3, 0.3, 0.1)
+plant_pot = create_cube(plant_loc, plant_pot_size, COLORS['warm_wood'], "plant_pot", bevel=0.01)
+
+plant_leaves_size = (0.4, 0.4, 0.4)
+plant_leaves = create_cube(plant_loc, plant_leaves_size, COLORS['dusty_blue'], "plant_leaves", bevel=0.01)
+# Adjust leaves to sit on pot
+plant_leaves.location = (1.5, 2.5, 1.7)
+plant_leaves.scale = (0.3, 0.3, 0.3)
+
+# --- Apply Modifiers ---
+for obj in bpy.data.objects:
+    if obj.modifiers:
+        bpy.ops.object.modifier_apply(modifier="Bevel")
+
+# --- Final Cleanup ---
+# Ensure all objects are in the scene
+for obj in bpy.data.objects:
+    if obj.name not in ["floor", "wall_back", "wall_side"]:
+        obj.location = (0,0,0) # Reset location just in case, though we set it during creation
+        # Re-apply specific locations to be safe after modifier application if needed, 
+        # but usually scale/loc are preserved. 
+        # Let's just ensure they are selected and visible.
+        obj.select_set(True)
+        bpy.context.view_layer.objects.active = obj
+
+# Select all for potential future operations
+bpy.ops.object.select_all(action='DESELECT')
+for obj in bpy.data.objects:
+    obj.select_set(True)
+bpy.context.view_layer.objects.active = floor
+
+# Note: The camera and lights are handled by the renderer as per instructions.
+# The scene is now a complete low-poly kitchen.

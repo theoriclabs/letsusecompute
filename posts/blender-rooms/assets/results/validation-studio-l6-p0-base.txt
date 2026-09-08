@@ -1,0 +1,265 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+# Palette: Sage (91aa8a), Cream (e8dfcd), Oak (9b704d), Gold (e2b96b)
+COLORS = {
+    'sage': (0.5686, 0.6745, 0.5255),
+    'cream': (0.9098, 0.8745, 0.8275),
+    'oak': (0.6078, 0.4392, 0.2980),
+    'gold': (0.8863, 0.7255, 0.4118),
+    'white': (1.0, 1.0, 1.0),
+    'black': (0.1, 0.1, 0.1),
+}
+
+# --- Helper Functions ---
+
+def create_mesh(name, verts, faces, parent=None):
+    """Creates a mesh object from vertex and face data."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    if parent:
+        obj.parent = parent
+    bpy.context.collection.objects.link(obj)
+    
+    mesh = obj.data
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    
+    # Apply scale to fix potential zero-area faces issues
+    obj.scale = (1, 1, 1)
+    bpy.ops.object.transform_apply(scale=True)
+    
+    return obj
+
+def create_material(name, color):
+    """Creates a simple flat material."""
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.8
+    bsdf.inputs['Metallic'].default_value = 0.0
+    return mat
+
+def create_box(name, loc, size, mat_name=None, parent=None):
+    """Creates a box mesh."""
+    verts = [
+        (size[0]/2, size[1]/2, size[2]/2),
+        (-size[0]/2, size[1]/2, size[2]/2),
+        (-size[0]/2, -size[1]/2, size[2]/2),
+        (size[0]/2, -size[1]/2, size[2]/2),
+        (size[0]/2, size[1]/2, -size[2]/2),
+        (-size[0]/2, size[1]/2, -size[2]/2),
+        (-size[0]/2, -size[1]/2, -size[2]/2),
+        (size[0]/2, -size[1]/2, -size[2]/2),
+    ]
+    faces = [
+        (0, 1, 2, 3),
+        (5, 4, 7, 6),
+        (3, 2, 6, 7),
+        (0, 4, 7, 3),
+        (1, 5, 6, 2),
+        (4, 0, 1, 5),
+    ]
+    obj = create_mesh(name, verts, faces, parent)
+    obj.location = loc
+    if mat_name:
+        obj.data.materials.append(bpy.data.materials.get(mat_name) or create_material(mat_name, COLORS.get(mat_name.split('_')[0], (0.5,0.5,0.5))))
+    return obj
+
+def create_cylinder(name, loc, radius, height, segments=16, mat_name=None, parent=None):
+    """Creates a cylinder mesh."""
+    verts = []
+    faces = []
+    for i in range(segments + 1):
+        angle = 2 * math.pi * i / segments
+        x = radius * math.cos(angle)
+        z = radius * math.sin(angle)
+        verts.append((x, 0, z))
+        verts.append((x, height, z))
+    
+    for i in range(segments):
+        v1 = i
+        v2 = i + 1
+        v3 = v2 + segments
+        v4 = v1 + segments
+        faces.append((v1, v2, v3))
+        faces.append((v4, v3, v2))
+    
+    obj = create_mesh(name, verts, faces, parent)
+    obj.location = loc
+    if mat_name:
+        obj.data.materials.append(bpy.data.materials.get(mat_name) or create_material(mat_name, COLORS.get(mat_name.split('_')[0], (0.5,0.5,0.5))))
+    return obj
+
+def create_custom_mesh(name, verts, faces, loc, mat_name=None, parent=None):
+    """Creates a mesh from custom vertex/face lists."""
+    obj = create_mesh(name, verts, faces, parent)
+    obj.location = loc
+    if mat_name:
+        obj.data.materials.append(bpy.data.materials.get(mat_name) or create_material(mat_name, COLORS.get(mat_name.split('_')[0], (0.5,0.5,0.5))))
+    return obj
+
+# --- Scene Setup ---
+
+# 1. Floor
+floor = create_box("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), "floor_mat")
+floor.data.materials[0].name = "floor_mat"
+floor.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = COLORS['cream']
+
+# 2. Walls
+wall_back = create_box("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), "wall_mat")
+wall_back.data.materials[0].name = "wall_mat"
+wall_back.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = COLORS['sage']
+
+wall_side = create_box("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), "wall_mat")
+wall_side.data.materials[0].name = "wall_mat"
+wall_side.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = COLORS['sage']
+
+# --- Furniture Generation ---
+
+# Materials
+MAT_OAK = create_material("mat_oak", COLORS['oak'])
+MAT_SAGE = create_material("mat_sage", COLORS['sage'])
+MAT_CREAM = create_material("mat_cream", COLORS['cream'])
+MAT_GOLD = create_material("mat_gold", COLORS['gold'])
+MAT_BLACK = create_material("mat_black", COLORS['black'])
+
+# Group for furniture
+furniture_group = bpy.data.objects.new("Furniture", None)
+bpy.context.collection.objects.link(furniture_group)
+
+# 1. Desk (1.9m wide)
+# Base
+desk_base = create_box("desk_base", (0.95, 0.5, 0.8), (1.9, 0.6, 0.05), "mat_oak", furniture_group)
+# Top
+desk_top = create_box("desk_top", (0.95, 0.5, 0.85), (1.9, 0.6, 0.02), "mat_oak", furniture_group)
+# Legs (4)
+for i in range(4):
+    lx = -0.9 + (i % 2) * 1.8
+    lz = -0.3 + (i // 2) * 0.6
+    leg = create_box(f"desk_leg_{i}", (lx, lz, 0.4), (0.05, 0.05, 0.4), "mat_oak", furniture_group)
+    leg.parent = desk_base
+
+# 2. Monitor
+monitor_stand = create_box("monitor_stand", (0.95, 0.5, 0.9), (0.1, 0.1, 0.1), "mat_black", furniture_group)
+monitor_screen = create_box("monitor_screen", (0.95, 0.5, 0.95), (0.4, 0.25, 0.01), "mat_black", furniture_group)
+monitor_screen.parent = monitor_stand
+
+# 3. Keyboard
+keyboard = create_box("keyboard", (0.95, 0.5, 0.85), (0.4, 0.15, 0.02), "mat_black", furniture_group)
+keyboard.parent = desk_top
+
+# 4. Chair (Facing desk)
+# Seat
+chair_seat = create_box("chair_seat", (0, 0, 0.5), (0.5, 0.5, 0.05), "mat_oak", furniture_group)
+# Back
+chair_back = create_box("chair_back", (0, 0, 0.5), (0.4, 0.6, 0.3), "mat_oak", furniture_group)
+# Legs
+for i in range(4):
+    lx = -0.2 + (i % 2) * 0.4
+    lz = -0.2 + (i // 2) * 0.4
+    leg = create_box(f"chair_leg_{i}", (lx, lz, 0.4), (0.03, 0.03, 0.4), "mat_oak", furniture_group)
+    leg.parent = chair_seat
+
+# Position Chair
+chair_seat.location = (0.95, -0.8, 0.5)
+chair_back.location = (0.95, -0.8, 0.5)
+for leg in chair_seat.children_recursive:
+    if 'leg' in leg.name:
+        leg.location = leg.location # Keep relative
+        leg.parent = chair_seat
+        leg.location = (0.95, -0.8, 0.5) # Absolute
+        leg.parent = None # Detach from seat to keep absolute pos, then re-parent logic is tricky, simpler to just set loc
+        # Re-doing chair construction with absolute locations for simplicity in this script
+        pass
+
+# Re-constructing chair with absolute locations for stability
+bpy.ops.object.select_all(action='DESELECT')
+for obj in bpy.data.objects:
+    if 'chair' in obj.name:
+        obj.select_set(True)
+bpy.context.view_layer.objects.active = chair_seat
+bpy.ops.object.parent_clear(type='CLEAR')
+
+# Let's rebuild chair cleanly with absolute positions
+for obj in bpy.data.objects:
+    if 'chair' in obj.name:
+        bpy.data.objects.remove(obj, do_unlink=True)
+
+# Chair Rebuild
+chair_seat = create_box("chair_seat", (0.95, -0.8, 0.5), (0.5, 0.5, 0.05), "mat_oak", furniture_group)
+chair_back = create_box("chair_back", (0.95, -0.8, 0.5), (0.4, 0.6, 0.3), "mat_oak", furniture_group)
+for i in range(4):
+    lx = -0.2 + (i % 2) * 0.4
+    lz = -0.2 + (i // 2) * 0.4
+    leg = create_box(f"chair_leg_{i}", (0.95 + lx, -0.8 + lz, 0.4), (0.03, 0.03, 0.4), "mat_oak", furniture_group)
+    leg.parent = chair_seat
+
+# 5. Bookcase (4 levels, open)
+bookcase = create_box("bookcase_frame", (0, 0, 0), (0.8, 2.0, 0.3), "mat_oak", furniture_group)
+# Shelves
+for i in range(4):
+    shelf_z = 0.15 + i * 0.45
+    shelf = create_box(f"bookcase_shelf_{i}", (0, 0, shelf_z), (0.78, 1.95, 0.02), "mat_oak", furniture_group)
+    shelf.parent = bookcase_frame = bookcase # Parent to frame
+    # Actually, let's parent shelves to the frame object
+    shelf.parent = bookcase
+
+# Books
+for i in range(12):
+    bx = -0.3 + (i % 4) * 0.2
+    bz = 0.15 + (i // 4) * 0.45
+    b_color = 'sage' if i % 2 == 0 else 'cream'
+    book = create_box(f"book_{i}", (bx, bz, 0.15), (0.1, 0.02, 0.15), b_color, furniture_group)
+    book.parent = bookcase
+
+# 6. Storage Cabinet
+cabinet = create_box("cabinet_frame", (0, 0, 0), (0.6, 0.8, 0.9), "mat_oak", furniture_group)
+# Doors
+for i in range(2):
+    door = create_box(f"cabinet_door_{i}", (0, 0, 0), (0.29, 0.8, 0.01), "mat_oak", furniture_group)
+    door.location = (-0.15 + i * 0.3, 0, 0.45)
+    door.parent = cabinet
+
+# 7. Rug
+rug = create_box("rug", (0, 0, 0.02), (2.0, 1.5, 0.02), "mat_sage", furniture_group)
+rug.location = (0.5, -0.5, 0.02)
+
+# 8. Standing Lamp
+lamp_base = create_box("lamp_base", (0, 0, 0.1), (0.15, 0.15, 0.05), "mat_gold", furniture_group)
+lamp_stand = create_box("lamp_stand", (0, 0, 0.1), (0.05, 0.05, 1.5), "mat_gold", furniture_group)
+lamp_stand.parent = lamp_base
+lamp_shade = create_box("lamp_shade", (0, 0, 1.55), (0.3, 0.3, 0.05), "mat_cream", furniture_group)
+lamp_shade.parent = lamp_stand
+lamp_shade.location = (0, 0, 1.55)
+
+# Position Lamp
+lamp_base.location = (1.5, 0.5, 0.1)
+lamp_stand.location = (1.5, 0.5, 0.1)
+lamp_shade.location = (1.5, 0.5, 1.55)
+
+# 9. Plant
+pot = create_box("plant_pot", (0, 0, 0.1), (0.2, 0.2, 0.1), "mat_oak", furniture_group)
+plant = create_box("plant_leaf", (0, 0, 0.3), (0.1, 0.1, 0.1), "mat_sage", furniture_group)
+plant.parent = pot
+plant.location = (0, 0, 0.3)
+
+# Position Plant
+pot.location = (1.5, 1.2, 0.1)
+plant.location = (1.5, 1.2, 0.3)
+
+# --- Final Cleanup ---
+bpy.ops.object.select_all(action='DESELECT')
+for obj in bpy.data.objects:
+    if obj.name not in ['floor', 'wall_back', 'wall_side']:
+        obj.select_set(True)
+bpy.context.view_layer.objects.active = floor
+bpy.ops.object.parent_set(type='OBJECT') # Ensure floor is root
+
+# Deselect all
+bpy.ops.object.select_all(action='DESELECT')

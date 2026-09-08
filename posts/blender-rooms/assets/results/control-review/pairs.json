@@ -1,0 +1,82 @@
+[
+  {
+    "pair_id": "pair-000",
+    "prompt": "Create a cozy low-poly bedroom in sage and warm oak. A 1.6 m wide bed with two pillows and a folded blanket, a bedside cabinet and lamp, a two-door wardrobe, rug, potted plant and framed art. Arrange the main storage or work zone along the back wall, leaving the front corner open. Layout variation 7: use accent-colored textiles, warm wood frames, and cream highlights. Palette hex colors: 91aa8a, e8dfcd, 9b704d, e2b96b.",
+    "A": null,
+    "B": null,
+    "preference": null,
+    "recognizable_furniture": null,
+    "detail": null,
+    "notes": ""
+  },
+  {
+    "pair_id": "pair-001",
+    "prompt": "Create a cozy low-poly bedroom in dusty blue and cream. A 1.6 m wide bed with two pillows and a folded blanket, a bedside cabinet and lamp, a two-door wardrobe, rug, potted plant and framed art. Arrange the main storage or work zone along the back wall, leaving the front corner open. Layout variation 7: use accent-colored textiles, warm wood frames, and cream highlights. Palette hex colors: 859eae, ece3d0, 9b7359, cb8d74.",
+    "A": null,
+    "B": null,
+    "preference": null,
+    "recognizable_furniture": null,
+    "detail": null,
+    "notes": ""
+  },
+  {
+    "pair_id": "pair-002",
+    "prompt": "Create a cozy low-poly studio in sage and warm oak. A 1.9 m wide desk with monitor and keyboard, a chair facing the desk, an open four-level bookcase with books, a storage cabinet, rug, standing lamp and plant. Arrange the main storage or work zone along the back wall, leaving the front corner open. Layout variation 7: use accent-colored textiles, warm wood frames, and cream highlights. Palette hex colors: 91aa8a, e8dfcd, 9b704d, e2b96b.",
+    "A": null,
+    "B": "pair-002-B.png",
+    "preference": null,
+    "recognizable_furniture": null,
+    "detail": null,
+    "notes": ""
+  },
+  {
+    "pair_id": "pair-003",
+    "prompt": "Create a cozy low-poly studio in dusty blue and cream. A 1.9 m wide desk with monitor and keyboard, a chair facing the desk, an open four-level bookcase with books, a storage cabinet, rug, standing lamp and plant. Arrange the main storage or work zone along the back wall, leaving the front corner open. Layout variation 7: use accent-colored textiles, warm wood frames, and cream highlights. Palette hex colors: 859eae, ece3d0, 9b7359, cb8d74.",
+    "A": null,
+    "B": null,
+    "preference": null,
+    "recognizable_furniture": null,
+    "detail": null,
+    "notes": ""
+  },
+  {
+    "pair_id": "pair-004",
+    "prompt": "Create a cozy low-poly kitchen in sage and warm oak. A refrigerator, two-door counter with a four-burner stove and rimmed sink with tap, a dining table with a bowl, two chairs and a plant. Arrange the main storage or work zone along the back wall, leaving the front corner open. Layout variation 7: use accent-colored textiles, warm wood frames, and cream highlights. Palette hex colors: 91aa8a, e8dfcd, 9b704d, e2b96b.",
+    "A": null,
+    "B": null,
+    "preference": null,
+    "recognizable_furniture": null,
+    "detail": null,
+    "notes": ""
+  },
+  {
+    "pair_id": "pair-005",
+    "prompt": "Create a cozy low-poly kitchen in dusty blue and cream. A refrigerator, two-door counter with a four-burner stove and rimmed sink with tap, a dining table with a bowl, two chairs and a plant. Arrange the main storage or work zone along the back wall, leaving the front corner open. Layout variation 7: use accent-colored textiles, warm wood frames, and cream highlights. Palette hex colors: 859eae, ece3d0, 9b7359, cb8d74.",
+    "A": null,
+    "B": null,
+    "preference": null,
+    "recognizable_furniture": null,
+    "detail": null,
+    "notes": ""
+  },
+  {
+    "pair_id": "pair-006",
+    "prompt": "Create a cozy low-poly living room in sage and warm oak. A 2.2 m wide sofa with cushions and arms, a low coffee table with books, an arm-free accent chair, television on a media cabinet, rug, lamp and plant. Arrange the main storage or work zone along the back wall, leaving the front corner open. Layout variation 7: use accent-colored textiles, warm wood frames, and cream highlights. Palette hex colors: 91aa8a, e8dfcd, 9b704d, e2b96b.",
+    "A": null,
+    "B": null,
+    "preference": null,
+    "recognizable_furniture": null,
+    "detail": null,
+    "notes": ""
+  },
+  {
+    "pair_id": "pair-007",
+    "prompt": "Create a cozy low-poly living room in dusty blue and cream. A 2.2 m wide sofa with cushions and arms, a low coffee table with books, an arm-free accent chair, television on a media cabinet, rug, lamp and plant. Arrange the main storage or work zone along the back wall, leaving the front corner open. Layout variation 7: use accent-colored textiles, warm wood frames, and cream highlights. Palette hex colors: 859eae, ece3d0, 9b7359, cb8d74.",
+    "A": null,
+    "B": null,
+    "preference": null,
+    "recognizable_furniture": null,
+    "detail": null,
+    "notes": ""
+  }
+]

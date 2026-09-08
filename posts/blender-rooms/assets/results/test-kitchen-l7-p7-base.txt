@@ -1,0 +1,203 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Constants & Palette ---
+# Teal: 71a4a3, Apricot: edddc8, Wood: 967255, Cream: dfac83
+COLORS = {
+    'teal': (0.443, 0.643, 0.639),
+    'apricot': (0.929, 0.867, 0.788),
+    'wood': (0.588, 0.447, 0.333),
+    'cream': (0.875, 0.675, 0.522),
+    'dark_wood': (0.3, 0.2, 0.1),
+    'white': (1.0, 1.0, 1.0)
+}
+
+# Helper to create a beveled box
+def create_beveled_box(location, size, thickness, color, name, bevel=0.02):
+    bpy.ops.mesh.primitive_cube_add(size=1, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    obj.data.color_attributes.new(name="Col", domain='POINT', type='COLOR')
+    obj.data.color_attributes["Col"].data[0].color = color
+    
+    # Apply scale to get correct size
+    obj.scale = (size[0]/2, size[1]/2, size[2]/2)
+    
+    # Add bevel
+    bpy.ops.object.modifier_add(type='BEVEL')
+    mod = obj.modifiers[-1]
+    mod.bevel_depth = bevel
+    mod.bevel_segments = 1
+    
+    bpy.ops.object.shade_smooth()
+    return obj
+
+# Helper to create a cylinder (for sink/tap)
+def create_cylinder(location, radius, height, color, name, segments=16):
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    obj.data.color_attributes.new(name="Col", domain='POINT', type='COLOR')
+    obj.data.color_attributes["Col"].data[0].color = color
+    obj.data.use_subdivision_surface = False # Keep low poly
+    obj.data.subdivision_levels = 0
+    
+    # Apply scale
+    obj.scale = (1, 1, 1) # Cylinder is already radius/depth
+    
+    # Adjust location to match radius if needed (bpy adds at center)
+    # The primitive adds at center, so we are good.
+    
+    bpy.ops.object.modifier_add(type='SUBSURF')
+    mod = obj.modifiers[-1]
+    mod.levels = 1
+    mod.render_levels = 1
+    mod.subdivision_type = 'CATMULL_CLARK'
+    
+    bpy.ops.object.shade_smooth()
+    return obj
+
+# --- Room Structure ---
+
+# Floor
+floor_loc = (0, 0, 0.1)
+floor_size = (5.6, 5.6, 0.2)
+floor = create_beveled_box(floor_loc, floor_size, 0.01, COLORS['apricot'], "floor", bevel=0.01)
+
+# Back Wall
+wall_back_loc = (0, 2.7, 1.7)
+wall_back_size = (5.6, 0.15, 3.0)
+wall_back = create_beveled_box(wall_back_loc, wall_back_size, 0.01, COLORS['teal'], "wall_back", bevel=0.01)
+
+# Left Wall
+wall_side_loc = (-2.7, 0, 1.7)
+wall_side_size = (0.15, 5.6, 3.0)
+wall_side = create_beveled_box(wall_side_loc, wall_side_size, 0.01, COLORS['teal'], "wall_side", bevel=0.01)
+
+# --- Furniture: Refrigerator (Left Wall Zone) ---
+# Location: Left wall area, near back
+ref_loc = (-2.5, 1.5, 0.2)
+ref_size = (0.6, 1.8, 0.6)
+ref = create_beveled_box(ref_loc, ref_size, 0.05, COLORS['teal'], "ref_frame", bevel=0.02)
+# Door handle
+handle_loc = (-2.5, 1.5, 0.2)
+handle_loc[1] += 0.9 # Middle height
+handle = create_cylinder(handle_loc, 0.02, 0.1, COLORS['wood'], "ref_handle")
+handle.rotation_euler = (math.radians(90), 0, 0)
+
+# --- Furniture: Two-Door Counter with Stove & Sink (Left Wall Zone) ---
+# Base Cabinet
+counter_base_loc = (-2.5, -0.5, 0.2)
+counter_base_size = (2.0, 0.6, 0.6)
+counter_base = create_beveled_box(counter_base_loc, counter_base_size, 0.05, COLORS['wood'], "counter_base", bevel=0.02)
+
+# Countertop
+counter_top_loc = (-2.5, -0.5, 0.8)
+counter_top_size = (2.0, 0.6, 0.1)
+counter_top = create_beveled_box(counter_top_loc, counter_top_size, 0.01, COLORS['cream'], "counter_top", bevel=0.02)
+
+# Stove (4 burners)
+stove_loc = (-2.5, 0.2, 0.8)
+stove_size = (0.6, 0.6, 0.02)
+stove = create_beveled_box(stove_loc, stove_size, 0.01, COLORS['dark_wood'], "stove_top", bevel=0.01)
+# Burner grates (simple circles)
+for i in range(4):
+    angle = i * math.pi / 2
+    burner_loc = list(stove_loc)
+    burner_loc[0] += 0.15 * math.cos(angle)
+    burner_loc[1] += 0.15 * math.sin(angle)
+    burner = create_cylinder(burner_loc, 0.08, 0.01, COLORS['black'], "stove_burner")
+    burner.rotation_euler = (math.radians(90), 0, 0)
+
+# Sink (Rimmed)
+sink_loc = (-1.5, -0.5, 0.8)
+sink_size = (0.6, 0.4, 0.02)
+sink = create_beveled_box(sink_loc, sink_size, 0.01, COLORS['white'], "sink_basin", bevel=0.01)
+# Sink Rim
+rim_loc = list(sink_loc)
+rim_loc[2] = 0.8
+rim_size = (0.62, 0.42, 0.02)
+rim = create_beveled_box(rim_loc, rim_size, 0.01, COLORS['white'], "sink_rim", bevel=0.01)
+
+# Tap
+tap_loc = (-1.5, -0.5, 0.8)
+tap_loc[1] += 0.2
+tap = create_cylinder(tap_loc, 0.03, 0.15, COLORS['chrome'], "tap_base")
+tap.rotation_euler = (math.radians(90), 0, 0)
+tap_head = create_cylinder(tap_loc, 0.02, 0.05, COLORS['chrome'], "tap_head")
+tap_head.location[2] += 0.15
+
+# --- Furniture: Dining Table (Front Corner Open) ---
+# Position in the middle of the room, facing the camera roughly
+table_loc = (0.5, -1.5, 0.2)
+table_size = (1.2, 0.8, 0.8)
+table = create_beveled_box(table_loc, table_size, 0.05, COLORS['wood'], "table_top", bevel=0.02)
+# Table Legs
+leg_positions = [
+    (0.5, -1.5, 0.2),
+    (0.5, -0.7, 0.2),
+    (-0.3, -1.5, 0.2),
+    (-0.3, -0.7, 0.2)
+]
+for p in leg_positions:
+    leg = create_beveled_box(p, (0.05, 0.05, 0.8), 0.01, COLORS['wood'], "table_leg")
+
+# Bowl on table
+bowl_loc = (0.5, -1.5, 0.8)
+bowl = create_cylinder(bowl_loc, 0.15, 0.08, COLORS['apricot'], "bowl")
+bowl.rotation_euler = (math.radians(90), 0, 0)
+
+# --- Furniture: Two Chairs ---
+def create_chair(loc_x, loc_y):
+    # Seat
+    seat_loc = (loc_x, loc_y, 0.2)
+    seat = create_beveled_box(seat_loc, (0.4, 0.4, 0.05), 0.01, COLORS['wood'], "chair_seat", bevel=0.01)
+    # Back
+    back_loc = (loc_x, loc_y, 0.25)
+    back = create_beveled_box(back_loc, (0.3, 0.4, 0.3), 0.01, COLORS['wood'], "chair_back", bevel=0.01)
+    # Legs
+    leg_positions = [
+        (loc_x, loc_y, 0.2),
+        (loc_x + 0.2, loc_y, 0.2),
+        (loc_x, loc_y + 0.2, 0.2),
+        (loc_x + 0.2, loc_y + 0.2, 0.2)
+    ]
+    for p in leg_positions:
+        leg = create_beveled_box(p, (0.03, 0.03, 0.2), 0.01, COLORS['wood'], "chair_leg")
+    return seat, back
+
+# Chair 1 (Near table)
+c1_seat, c1_back = create_chair(0.5, -2.2)
+# Chair 2 (Near table, other side)
+c2_seat, c2_back = create_chair(-0.3, -2.2)
+
+# --- Furniture: Plant ---
+plant_loc = (2.0, 0.0, 0.2)
+# Pot
+pot = create_beveled_box(plant_loc, (0.3, 0.3, 0.1), 0.01, COLORS['wood'], "plant_pot", bevel=0.01)
+# Leaves (Low poly approximation)
+leaf_loc = (2.0, 0.0, 0.3)
+leaf = create_beveled_box(leaf_loc, (0.4, 0.4, 0.4), 0.01, COLORS['green'], "plant_leaf")
+leaf.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+# Add Green color if not defined
+COLORS['green'] = (0.2, 0.6, 0.2)
+
+# --- Final Cleanup & Settings ---
+# Select all and apply transforms
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+
+# Ensure smooth shading for all
+for obj in bpy.data.objects:
+    if obj.type == 'MESH':
+        bpy.ops.object.shade_smooth()
+
+# Deselect all
+bpy.ops.object.select_all(action='DESELECT')

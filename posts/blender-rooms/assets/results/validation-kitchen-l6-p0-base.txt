@@ -1,0 +1,178 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_box(name, loc, size, color, bevel=0.01):
+    """Creates a low-poly box mesh with a small bevel."""
+    mesh = bpy.data.meshes.new(name=f"{name}_mesh")
+    obj = bpy.data.objects.new(name=name, object_data=mesh)
+    bpy.context.collection.objects.link(obj)
+    obj.location = loc
+    obj.rotation_euler = (0, 0, 0)
+    
+    vertices = [
+        (size[0]/2, size[1]/2, size[2]/2), (-size[0]/2, size[1]/2, size[2]/2),
+        (-size[0]/2, -size[1]/2, size[2]/2), (size[0]/2, -size[1]/2, size[2]/2),
+        (size[0]/2, size[1]/2, -size[2]/2), (-size[0]/2, size[1]/2, -size[2]/2),
+        (-size[0]/2, -size[1]/2, -size[2]/2), (size[0]/2, -size[1]/2, -size[2]/2)
+    ]
+    
+    faces = [
+        (0, 1, 2, 3), (4, 5, 6, 7), (0, 4, 7, 3), (1, 5, 6, 2),
+        (0, 1, 5, 4), (3, 2, 6, 7)
+    ]
+    
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.8
+    bsdf.inputs["Metallic"].default_value = 0.0
+    
+    obj.data.materials.append(mat)
+    
+    # Apply bevel modifier for low-poly look
+    mod = obj.modifiers.new(name="Bevel", type='BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(10)
+    
+    return obj
+
+def create_cylinder(name, loc, radius, height, color, segments=8):
+    """Creates a low-poly cylinder."""
+    mesh = bpy.data.meshes.new(name=f"{name}_mesh")
+    obj = bpy.data.objects.new(name=name, object_data=mesh)
+    bpy.context.collection.objects.link(obj)
+    obj.location = loc
+    
+    vertices = []
+    faces = []
+    for i in range(segments + 1):
+        angle = 2 * math.pi * i / segments
+        x = radius * math.cos(angle)
+        z = radius * math.sin(angle)
+        vertices.append((x, 0, z))
+        vertices.append((x, height, z))
+    
+    for i in range(segments):
+        v1 = i
+        v2 = i + 1
+        v3 = v2 + segments
+        v4 = v1 + segments
+        faces.append((v1, v2, v3, v4))
+    
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.7
+    
+    obj.data.materials.append(mat)
+    return obj
+
+# --- Palette ---
+COLOR_SAGE = (0.5686, 0.6745, 0.5373)   # 91aa8a
+COLOR_WARM_OAK = (0.9176, 0.8745, 0.8039) # e8dfcd
+COLOR_WOOD = (0.6078, 0.4392, 0.2980)    # 9b704d
+COLOR_ACCENT = (0.8824, 0.7294, 0.4225)  # e2b96b
+
+# --- Scene Setup ---
+
+# Floor
+floor = create_box("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), COLOR_WARM_OAK)
+
+# Back Wall
+wall_back = create_box("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), COLOR_SAGE)
+
+# Left Wall
+wall_side = create_box("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), COLOR_SAGE)
+
+# --- Furniture Generation ---
+
+# 1. Refrigerator (Left side of back wall)
+# Location: Left side of back wall, centered vertically
+ref_loc = (-2.0, 1.5, 1.7 + 0.15/2)
+ref = create_box("fridge_body", ref_loc, (0.6, 1.8, 2.0), COLOR_WARM_OAK)
+# Fridge Handle
+handle = create_box("fridge_handle", (-1.7, 1.5, 1.7 + 0.15/2 + 0.1), (0.05, 1.6, 0.02), COLOR_ACCENT)
+
+# 2. Two-Door Counter with Stove and Sink (Center of back wall)
+# Base Cabinet
+counter_base = create_box("counter_base", (0, 0.8, 1.7 + 0.15/2), (1.8, 0.9, 2.0), COLOR_WARM_OAK)
+# Countertop
+counter_top = create_box("counter_top", (0, 1.7, 1.7 + 0.15/2), (1.8, 0.1, 2.0), COLOR_SAGE)
+# Stove (4 burners)
+stove = create_box("stove", (0.4, 1.7, 1.7 + 0.15/2 + 0.05), (0.8, 0.08, 0.05), COLOR_WARM_OAK)
+# Sink Basin
+sink = create_box("sink_basin", (-0.4, 1.7, 1.7 + 0.15/2 + 0.05), (0.8, 0.08, 0.05), COLOR_SAGE)
+# Tap
+tap = create_cylinder("sink_tap", (-0.1, 1.75, 1.7 + 0.15/2 + 0.05 + 0.02), 0.03, 0.15, COLOR_WARM_OAK)
+
+# 3. Dining Table (Front Right area)
+table_loc = (1.5, -1.0, 0.5)
+table_top = create_box("table_top", table_loc, (1.2, 0.8, 0.05), COLOR_WARM_OAK)
+table_legs = []
+for i in range(4):
+    angle = i * math.pi / 2
+    lx = table_loc[0] + math.cos(angle) * 0.4
+    lz = table_loc[2] + math.sin(angle) * 0.4
+    leg = create_box(f"table_leg_{i}", (lx, 0.05, lz), (0.05, 0.5, 0.05), COLOR_WOOD)
+    table_legs.append(leg)
+
+# Bowl on Table
+bowl = create_cylinder("bowl", (table_loc[0], table_loc[1] + 0.03, table_loc[2]), 0.15, 0.08, COLOR_ACCENT)
+
+# 4. Two Chairs (One near table, one near fridge)
+# Chair 1 (Near table)
+chair1_loc = (1.5, 0.5, 0.5)
+chair1_seat = create_box("chair_seat_1", chair1_loc, (0.5, 0.5, 0.05), COLOR_WARM_OAK)
+chair1_back = create_box("chair_back_1", (chair1_loc[0], chair1_loc[1] + 0.05, chair1_loc[2]), (0.05, 0.6, 0.5), COLOR_WOOD)
+chair1_legs = []
+for i in range(4):
+    angle = i * math.pi / 2
+    lx = chair1_loc[0] + math.cos(angle) * 0.2
+    lz = chair1_loc[2] + math.sin(angle) * 0.2
+    leg = create_box(f"chair_leg_1_{i}", (lx, 0.02, lz), (0.03, 0.4, 0.03), COLOR_WOOD)
+    chair1_legs.append(leg)
+
+# Chair 2 (Near fridge)
+chair2_loc = (-1.5, 0.5, 0.5)
+chair2_seat = create_box("chair_seat_2", chair2_loc, (0.5, 0.5, 0.05), COLOR_WARM_OAK)
+chair2_back = create_box("chair_back_2", (chair2_loc[0], chair2_loc[1] + 0.05, chair2_loc[2]), (0.05, 0.6, 0.5), COLOR_WOOD)
+chair2_legs = []
+for i in range(4):
+    angle = i * math.pi / 2
+    lx = chair2_loc[0] + math.cos(angle) * 0.2
+    lz = chair2_loc[2] + math.sin(angle) * 0.2
+    leg = create_box(f"chair_leg_2_{i}", (lx, 0.02, lz), (0.03, 0.4, 0.03), COLOR_WOOD)
+    chair2_legs.append(leg)
+
+# 5. Plant (Corner near table)
+plant_loc = (2.0, -1.5, 0.5)
+pot = create_box("plant_pot", plant_loc, (0.3, 0.3, 0.1), COLOR_WARM_OAK)
+plant = create_cylinder("plant_leaves", (plant_loc[0], plant_loc[1] + 0.05, plant_loc[2]), 0.15, 0.4, COLOR_SAGE)
+
+# --- Final Cleanup ---
+# Ensure all objects are in the main collection
+for obj in bpy.data.objects:
+    if obj.name not in ["floor", "wall_back", "wall_side"]:
+        bpy.context.collection.objects.link(obj)
+
+# Apply modifiers to ensure geometry is evaluated
+for obj in bpy.data.objects:
+    for mod in obj.modifiers:
+        if mod.type == 'BEVEL':
+            obj.update_modifiers()

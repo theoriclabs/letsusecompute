@@ -1,0 +1,172 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_box(name, loc, size, color, bevel=0.01):
+    """Creates a low-poly box mesh with a small bevel."""
+    mesh = bpy.data.meshes.new(name=f"{name}_mesh")
+    obj = bpy.data.objects.new(name=name, object_data=mesh)
+    bpy.context.collection.objects.link(obj)
+    obj.location = loc
+    obj.rotation_euler = (0, 0, 0)
+    
+    vertices = [
+        (size[0]/2, size[1]/2, size[2]/2), (-size[0]/2, size[1]/2, size[2]/2),
+        (-size[0]/2, -size[1]/2, size[2]/2), (size[0]/2, -size[1]/2, size[2]/2),
+        (size[0]/2, size[1]/2, -size[2]/2), (-size[0]/2, size[1]/2, -size[2]/2),
+        (-size[0]/2, -size[1]/2, -size[2]/2), (size[0]/2, -size[1]/2, -size[2]/2)
+    ]
+    
+    faces = [
+        (0, 1, 2, 3), (4, 5, 6, 7), (0, 4, 7, 3), (1, 5, 6, 2),
+        (3, 2, 6, 7), (0, 1, 5, 4)
+    ]
+    
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.7
+    bsdf.inputs["Metallic"].default_value = 0.0
+    
+    obj.data.materials.append(mat)
+    
+    # Apply bevel modifier for low-poly look
+    mod = obj.modifiers.new(name="Bevel", type='BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(10)
+    
+    return obj
+
+def create_cylinder(name, loc, radius, height, color, segments=8):
+    """Creates a low-poly cylinder."""
+    mesh = bpy.data.meshes.new(name=f"{name}_mesh")
+    obj = bpy.data.objects.new(name=name, object_data=mesh)
+    bpy.context.collection.objects.link(obj)
+    obj.location = loc
+    
+    vertices = []
+    faces = []
+    for i in range(segments + 1):
+        angle = 2 * math.pi * i / segments
+        x = radius * math.cos(angle)
+        z = radius * math.sin(angle)
+        vertices.append((x, 0, z))
+        vertices.append((x, height, z))
+    
+    # Top face
+    top_indices = list(range(0, segments + 1))
+    # Bottom face (reversed for correct winding)
+    bottom_indices = list(range(segments + 1, 2 * segments + 2))[::-1]
+    # Side faces
+    for i in range(segments):
+        start = i * 2
+        end = (i + 1) * 2
+        faces.append((start, end, end + 1, start + 1))
+        faces.append(bottom_indices[i], bottom_indices[i+1], start + 1, end + 1) # Simplified logic, fixing below
+    
+    # Re-generating faces properly for cylinder
+    faces = []
+    for i in range(segments):
+        v1 = i
+        v2 = (i + 1) % (segments + 1)
+        v3 = v2 + (segments + 1)
+        v4 = v1 + (segments + 1)
+        faces.append((v1, v2, v3, v4))
+    
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.6
+    
+    obj.data.materials.append(mat)
+    return obj
+
+# --- Palette ---
+C_Rose = (0.75686, 0.55686, 0.60392)   # #c28e98
+C_Ivory = (0.94117, 0.90196, 0.83921)  # #f0e6d6
+C_Wood = (0.60392, 0.45490, 0.32941)   # #9d7454
+C_Green = (0.51372, 0.63921, 0.59607)  # #83a29a
+
+# --- Room Setup ---
+# Floor
+floor = create_box("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), C_Ivory)
+
+# Back Wall
+wall_back = create_box("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), C_Ivory)
+# Left Wall
+wall_side = create_box("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), C_Ivory)
+
+# --- Furniture: Refrigerator (Left Wall) ---
+# Frame
+ref_frame = create_box("ref_frame", (-2.5, 0.5, 1.7), (0.6, 1.8, 0.6), C_Wood)
+# Door
+ref_door = create_box("ref_door", (-2.3, 0.5, 1.7), (0.5, 1.6, 0.6), C_Rose)
+# Handle
+ref_handle = create_cylinder("ref_handle", (-2.3, 0.5, 1.7), 0.02, 0.1, C_Wood)
+ref_handle.rotation_euler = (math.radians(90), 0, 0)
+
+# --- Furniture: Two-Door Counter (Left Wall) ---
+# Base
+counter_base = create_box("counter_base", (-2.5, 0.5, 1.7), (0.6, 0.9, 0.6), C_Wood)
+# Top
+counter_top = create_box("counter_top", (-2.5, 1.4, 1.7), (0.6, 0.9, 0.1), C_Ivory)
+# Stove (4 burners)
+stove_top = create_box("stove_top", (-2.5, 1.4, 1.7), (0.58, 0.88, 0.05), C_Rose)
+# Burners (simplified as small circles)
+for i in range(4):
+    burner = create_cylinder(f"burner_{i}", (-2.5 + (i%2)*0.25, 1.4 + (i//2)*0.4, 1.7), 0.12, 0.02, C_Wood)
+    burner.rotation_euler = (math.radians(90), 0, 0)
+# Sink
+sink = create_box("sink", (-2.5, 1.4, 1.7), (0.25, 0.35, 0.05), C_Ivory)
+# Tap
+tap = create_cylinder("tap", (-2.5, 1.4, 1.7), 0.03, 0.15, C_Wood)
+tap.rotation_euler = (math.radians(90), 0, 0)
+
+# --- Furniture: Dining Table (Front Corner) ---
+# Table Top
+table_top = create_box("table_top", (0, 0.5, 1.7), (1.2, 0.8, 0.05), C_Wood)
+# Bowl
+bowl = create_cylinder("bowl", (0, 0.5, 1.7), 0.15, 0.08, C_Rose)
+bowl.rotation_euler = (math.radians(90), 0, 0)
+# Legs
+for leg in range(4):
+    leg_pos = [(-0.4, -0.3), (0.4, -0.3), (-0.4, 0.3), (0.4, 0.3)]
+    leg = create_box(f"table_leg_{leg}", (leg_pos[leg][0], leg_pos[leg][1], 0.1), (0.05, 0.05, 0.4), C_Wood)
+
+# --- Furniture: Two Chairs ---
+def make_chair(name, loc_x, loc_y):
+    # Seat
+    seat = create_box(f"{name}_seat", (loc_x, loc_y, 0.2), (0.4, 0.4, 0.05), C_Ivory)
+    # Back
+    back = create_box(f"{name}_back", (loc_x, loc_y, 0.2), (0.3, 0.4, 0.3), C_Wood)
+    # Legs
+    for leg in range(4):
+        leg_pos = [(-0.15, -0.15), (0.15, -0.15), (-0.15, 0.15), (0.15, 0.15)]
+        leg = create_box(f"{name}_leg_{leg}", (loc_x + leg_pos[leg][0], loc_y + leg_pos[leg][1], 0.1), (0.03, 0.03, 0.3), C_Wood)
+
+chair1 = make_chair("chair1", 0.2, 0.2)
+chair2 = make_chair("chair2", -0.2, 0.2)
+
+# --- Furniture: Plant ---
+plant_pot = create_box("plant_pot", (1.0, 0.5, 1.7), (0.2, 0.2, 0.1), C_Wood)
+plant_leaves = create_cylinder("plant_leaves", (1.0, 0.5, 1.7), 0.1, 0.2, C_Green)
+plant_leaves.rotation_euler = (math.radians(90), 0, 0)
+
+# --- Finalize ---
+bpy.context.scene.collection.objects.active = floor
+bpy.context.view_layer.update()

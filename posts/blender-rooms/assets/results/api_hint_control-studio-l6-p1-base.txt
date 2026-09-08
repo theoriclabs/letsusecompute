@@ -1,0 +1,255 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_cube(location, size, name, color, parent=None):
+    """Creates a cube mesh with specified properties."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    obj.rotation_euler = (0, 0, 0)
+    if parent:
+        obj.parent = parent
+    
+    mesh = obj.data
+    vertices = [(x, y, z) for x in [-size[0]/2, size[0]/2] for y in [-size[1]/2, size[1]/2] for z in [-size[2]/2, size[2]/2]]
+    faces = [[0, 1, 2, 3], [0, 3, 7, 6], [0, 4, 5, 1], [0, 1, 5, 4], [0, 2, 6, 3], [0, 2, 7, 6]]
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    
+    # Apply scale immediately to avoid modifier issues
+    obj.scale = (1, 1, 1)
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.8
+    bsdf.inputs["Metallic"].default_value = 0.0
+    obj.data.materials.append(mat)
+    
+    return obj
+
+def create_cylinder(location, radius, height, name, color, segments=16, parent=None):
+    """Creates a cylinder mesh."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    obj.rotation_euler = (0, 0, 0)
+    if parent:
+        obj.parent = parent
+    
+    mesh = obj.data
+    vertices = []
+    faces = []
+    for i in range(segments + 1):
+        angle = 2 * math.pi * i / segments
+        x = radius * math.cos(angle)
+        z = radius * math.sin(angle)
+        top_v = (x, 0, height/2 + z)
+        bot_v = (x, 0, -height/2 + z)
+        vertices.append(top_v)
+        vertices.append(bot_v)
+    
+    for i in range(segments):
+        top_idx = i
+        next_top = (i + 1) % (segments + 1)
+        bot_idx = i + (segments + 1)
+        next_bot = bot_idx + 1
+        if next_bot > len(vertices): next_bot = 1
+        faces.append([top_idx, next_top, next_bot])
+        faces.append([top_idx, next_bot, bot_idx])
+    
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    obj.scale = (1, 1, 1)
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.7
+    obj.data.materials.append(mat)
+    
+    return obj
+
+def create_plane(location, size, name, color, parent=None):
+    """Creates a plane mesh."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    obj.rotation_euler = (0, 0, 0)
+    if parent:
+        obj.parent = parent
+    
+    mesh = obj.data
+    vertices = [(-size[0]/2, -size[1]/2, 0), (size[0]/2, -size[1]/2, 0), (size[0]/2, size[1]/2, 0), (-size[0]/2, size[1]/2, 0)]
+    faces = [[0, 1, 2, 3]]
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    obj.scale = (1, 1, 1)
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.9
+    obj.data.materials.append(mat)
+    
+    return obj
+
+def add_bevel(obj, width=0.01):
+    """Adds a bevel modifier to an object."""
+    mod = obj.modifiers.new(name="bevel", type='BEVEL')
+    mod.width = width
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(30)
+
+# --- Materials ---
+# Palette: 859eae (Dusty Blue), ece3d0 (Cream), 9b7359 (Warm Wood), cb8d74 (Accent)
+mat_dusty_blue = bpy.data.materials.new("mat_dusty_blue")
+mat_dusty_blue.use_nodes = True
+bsdf = mat_dusty_blue.node_tree.nodes["Principled BSDF"]
+bsdf.inputs["Base Color"].default_value = (0.52549, 0.62, 0.64706, 1.0)
+bsdf.inputs["Roughness"].default_value = 0.8
+
+mat_cream = bpy.data.materials.new("mat_cream")
+mat_cream.use_nodes = True
+bsdf = mat_cream.node_tree.nodes["Principled BSDF"]
+bsdf.inputs["Base Color"].default_value = (0.93333, 0.90196, 0.82353, 1.0)
+bsdf.inputs["Roughness"].default_value = 0.9
+
+mat_wood = bpy.data.materials.new("mat_wood")
+mat_wood.use_nodes = True
+bsdf = mat_wood.node_tree.nodes["Principled BSDF"]
+bsdf.inputs["Base Color"].default_value = (0.60784, 0.45490, 0.35294, 1.0)
+bsdf.inputs["Roughness"].default_value = 0.6
+
+mat_accent = bpy.data.materials.new("mat_accent")
+mat_accent.use_nodes = True
+bsdf = mat_accent.node_tree.nodes["Principled BSDF"]
+bsdf.inputs["Base Color"].default_value = (0.79608, 0.55686, 0.45490, 1.0)
+bsdf.inputs["Roughness"].default_value = 0.7
+
+# --- Room Setup ---
+# Floor
+floor = create_cube((0, 0, 0.1), (5.6, 5.6, 0.2), "floor", mat_cream)
+add_bevel(floor, 0.02)
+
+# Back Wall
+wall_back = create_cube((0, 2.7, 1.7), (5.6, 0.15, 3.0), "wall_back", mat_dusty_blue)
+add_bevel(wall_back, 0.02)
+
+# Left Wall
+wall_side = create_cube((-2.7, 0, 1.7), (0.15, 5.6, 3.0), "wall_side", mat_dusty_blue)
+add_bevel(wall_side, 0.02)
+
+# --- Furniture: Desk Area (Back Wall) ---
+# Desk
+desk = create_cube((0, 0.6, 0.2), (1.9, 0.6, 0.8), "desk", mat_wood)
+add_bevel(desk, 0.01)
+
+# Desk Legs
+leg_pos = [(-0.8, 0.3, 0.4), (0.8, 0.3, 0.4), (-0.8, 0.3, -0.4), (0.8, 0.3, -0.4)]
+for loc in leg_pos:
+    leg = create_cylinder(loc, 0.04, 0.6, "desk_leg", mat_wood)
+    leg.parent = desk
+
+# Monitor
+monitor_stand = create_cube((0, 0.65, 0.9), (0.1, 0.05, 0.1), "monitor_stand", mat_wood)
+monitor_stand.parent = desk
+monitor = create_cube((0, 0.65, 1.05), (0.6, 0.35, 0.02), "monitor", mat_accent)
+monitor.parent = monitor_stand
+
+# Keyboard
+keyboard = create_cube((0, 0.6, 0.81), (0.4, 0.03, 0.02), "keyboard", mat_cream)
+keyboard.parent = desk
+
+# --- Furniture: Chair ---
+# Chair Frame
+chair = create_cube((0.9, 0.6, 0.2), (0.5, 0.5, 0.8), "chair_frame", mat_wood)
+add_bevel(chair, 0.01)
+
+# Chair Seat
+seat = create_cube((0.9, 0.6, 0.55), (0.45, 0.45, 0.05), "chair_seat", mat_cream)
+seat.parent = chair
+
+# Chair Back
+back = create_cube((0.9, 0.6, 0.85), (0.45, 0.45, 0.3), "chair_back", mat_cream)
+back.parent = chair
+
+# Chair Legs
+chair_leg_pos = [(-0.2, 0.25, 0.4), (0.2, 0.25, 0.4), (-0.2, 0.25, -0.4), (0.2, 0.25, -0.4)]
+for loc in chair_leg_pos:
+    leg = create_cylinder(loc, 0.03, 0.55, "chair_leg", mat_wood)
+    leg.parent = chair
+
+# --- Furniture: Bookcase (Back Wall, Right Side) ---
+# Bookcase Frame
+bookcase = create_cube((2.0, 0.6, 0.2), (1.2, 1.8, 0.4), "bookcase", mat_wood)
+add_bevel(bookcase, 0.01)
+
+# Shelves
+shelf_thickness = 0.05
+shelf_height = 0.45
+shelf_y = 0.6 + shelf_thickness/2
+for i in range(4):
+    z = 0.2 + (i * shelf_height) + (shelf_thickness/2)
+    shelf = create_cube((2.0, shelf_y, z), (1.1, 0.05, 0.38), "bookcase_shelf", mat_wood)
+    shelf.parent = bookcase
+
+# Books
+book_colors = [mat_accent, mat_cream, mat_wood, mat_accent, mat_cream]
+for i in range(12):
+    x = 2.0 + (i % 3) * 0.35 - 0.35
+    z = 0.2 + (i // 3) * 0.45 + 0.025
+    book = create_cube((x, shelf_y, z), (0.08, 0.05, 0.2), "book", book_colors[i % len(book_colors)])
+    book.parent = bookcase
+
+# --- Furniture: Storage Cabinet (Back Wall, Left Side) ---
+cabinet = create_cube((-1.0, 0.6, 0.2), (0.8, 1.0, 0.4), "cabinet", mat_wood)
+add_bevel(cabinet, 0.01)
+
+# Cabinet Doors
+door_h = 0.9
+door_w = 0.39
+door_z = 0.2 + door_h/2
+door1 = create_cube((-1.0, 0.6, door_z), (door_w, door_h, 0.02), "cabinet_door", mat_accent)
+door1.parent = cabinet
+door2 = create_cube((-0.2, 0.6, door_z), (door_w, door_h, 0.02), "cabinet_door", mat_accent)
+door2.parent = cabinet
+
+# Cabinet Legs
+cab_leg_pos = [(-0.6, 0.3, 0.4), (0.2, 0.3, 0.4), (-0.6, 0.3, -0.4), (0.2, 0.3, -0.4)]
+for loc in cab_leg_pos:
+    leg = create_cylinder(loc, 0.04, 0.6, "cabinet_leg", mat_wood)
+    leg.parent = cabinet
+
+# --- Furniture: Rug ---
+rug = create_plane((0, 0.1, 0.0), (2.0, 1.5, 0.02), "rug", mat_cream)
+rug.rotation_euler = (0, 0, 0)
+add_bevel(rug, 0.01)
+
+# --- Furniture: Standing Lamp (Front Left Corner) ---
+lamp_base = create_cube((-2.0, 0.6, 0.2), (0.2, 0.2, 0.1), "lamp_base", mat_wood)
+lamp_stand = create_cylinder((-2.0, 0.6, 0.4), 0.03, 1.5, "lamp_stand", mat_wood)
+lamp_stand.parent = lamp_base
+lamp_shade = create_cylinder((-2.0, 0.6, 1.8), 0.15, 0.1, "lamp_shade", mat_accent)
+lamp_shade.parent = lamp_stand
+
+# --- Furniture: Plant (Front Right Corner) ---
+plant_pot = create_cube((2.0, 0.6, 0.2), (0.2, 0.2, 0.1), "plant_pot", mat_wood)
+plant_stem = create_cylinder((2.0, 0.6, 0.4), 0.02, 0.8, "plant_stem", mat_cream)
+plant_stem.parent = plant_pot
+plant_leaves = create_cube((2.0, 0.6, 1.0), (0.3, 0.3, 0.3), "plant_leaves", mat_dusty_blue)
+plant_leaves.parent = plant_pot
+
+# --- Final Cleanup ---
+bpy.ops.object.select_all(action='DESELECT')
+for obj in bpy.data.objects:
+    obj.select_set(True)
+bpy.context.view_layer.objects.active = floor
+bpy.ops.object.select_all(action='DESELECT')

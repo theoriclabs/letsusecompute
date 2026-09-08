@@ -1,0 +1,11 @@
+torch==2.8.0
+transformers==5.16.1
+peft==0.20.0
+accelerate==1.14.0
+datasets==5.0.1
+bpy==4.5.3
+Pillow==11.3.0
+pytest==8.4.2
+ruff==0.12.12
+
+fla-core==0.5.2; platform_system == "Linux"

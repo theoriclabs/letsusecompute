@@ -1,0 +1,149 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# Helper function to create a beveled cube
+def create_beveled_cube(location, size, color, name, bevel=0.02):
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    bpy.context.collection.objects.link(obj)
+    
+    mesh = obj.data
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = (color[0], color[1], color[2], 1.0)
+    mat.diffuse_color = (color[0], color[1], color[2], 1.0) # Compatibility fallback
+    obj.data.materials.append(mat)
+    
+    # Add bevel modifier
+    mod = obj.modifiers.new(name="edge", type="BEVEL")
+    mod.width = bevel
+    mod.segments = 1
+    
+    return obj
+
+# Helper function to create a beveled cylinder (for lamp base/pot)
+def create_beveled_cylinder(location, radius, height, color, name, bevel=0.02):
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    bpy.context.collection.objects.link(obj)
+    
+    mesh = obj.data
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = (color[0], color[1], color[2], 1.0)
+    mat.diffuse_color = (color[0], color[1], color[2], 1.0)
+    obj.data.materials.append(mat)
+    
+    mod = obj.modifiers.new(name="edge", type="BEVEL")
+    mod.width = bevel
+    mod.segments = 1
+    
+    return obj
+
+# --- Room Geometry ---
+
+# Floor
+floor = create_beveled_cube((0, 0, 0.1), (5.6, 5.6, 0.2), (0.91, 0.91, 0.91), "floor", bevel=0.05)
+
+# Back Wall
+wall_back = create_beveled_cube((0, 2.7, 1.7), (5.6, 0.15, 3.0), (0.91, 0.91, 0.91), "wall_back", bevel=0.05)
+
+# Left Wall
+wall_side = create_beveled_cube((-2.7, 0, 1.7), (0.15, 5.6, 3.0), (0.91, 0.91, 0.91), "wall_side", bevel=0.05)
+
+# --- Furniture Palette ---
+# Sage: (0.57, 0.68, 0.53) -> Hex 91aa8a
+# Warm Oak: (0.60, 0.48, 0.30) -> Hex 9b704d
+# Cream: (0.90, 0.75, 0.60) -> Hex e8dfcd
+# Gold Accent: (0.88, 0.73, 0.42) -> Hex e2b96b
+
+SAGE = (0.57, 0.68, 0.53)
+OAK = (0.60, 0.48, 0.30)
+CREAM = (0.90, 0.75, 0.60)
+GOLD = (0.88, 0.73, 0.42)
+
+# --- Bed (1.6m wide) ---
+# Position: Front Left area, leaving front corner open.
+# Center roughly at x=-1.0, z=0.5
+bed_x = -1.0
+bed_z = 0.5
+bed_y = 0.1 # Slightly above floor
+
+# Bed Frame
+bed_frame = create_beveled_cube((bed_x, bed_y, bed_z), (1.6, 0.4, 0.1), OAK, "bed_frame")
+# Bed Mattress
+bed_mattress = create_beveled_cube((bed_x, bed_y + 0.1, bed_z), (1.6, 0.2, 0.2), SAGE, "bed_mattress")
+# Bed Headboard (Low)
+bed_headboard = create_beveled_cube((bed_x, bed_y + 0.1, bed_z - 0.1), (1.6, 0.1, 0.1), OAK, "bed_headboard")
+
+# Pillows
+pillow_l = create_beveled_cube((bed_x - 0.3, bed_y + 0.15, bed_z - 0.05), (0.4, 0.15, 0.1), CREAM, "pillow_left")
+pillow_r = create_beveled_cube((bed_x + 0.3, bed_y + 0.15, bed_z - 0.05), (0.4, 0.15, 0.1), CREAM, "pillow_right")
+
+# Blanket (Folded)
+blanket = create_beveled_cube((bed_x, bed_y + 0.12, bed_z + 0.05), (1.4, 0.1, 0.05), SAGE, "bed_blanket")
+
+# --- Rug ---
+rug = create_beveled_cube((bed_x, bed_y - 0.05, bed_z + 0.8), (1.8, 1.2, 0.02), GOLD, "rug")
+
+# --- Bedside Cabinet ---
+# Position: Right side of bed
+cabinet_x = bed_x + 0.9
+cabinet_z = bed_z + 0.2
+cabinet_y = 0.1
+
+cabinet_body = create_beveled_cube((cabinet_x, cabinet_y, cabinet_z), (0.4, 0.4, 0.4), OAK, "cabinet_body")
+cabinet_top = create_beveled_cube((cabinet_x, cabinet_y + 0.4, cabinet_z), (0.4, 0.1, 0.4), CREAM, "cabinet_top")
+cabinet_door_l = create_beveled_cube((cabinet_x - 0.1, cabinet_y, cabinet_z), (0.1, 0.4, 0.4), OAK, "cabinet_door_left")
+cabinet_door_r = create_beveled_cube((cabinet_x + 0.1, cabinet_y, cabinet_z), (0.1, 0.4, 0.4), OAK, "cabinet_door_right")
+
+# Lamp
+lamp_base = create_beveled_cylinder((cabinet_x, cabinet_y + 0.4, cabinet_z + 0.1), 0.05, 0.05, OAK, "lamp_base")
+lamp_stem = create_beveled_cube((cabinet_x, cabinet_y + 0.45, cabinet_z + 0.1), (0.05, 0.3, 0.05), OAK, "lamp_stem")
+lamp_shade = create_beveled_cube((cabinet_x, cabinet_y + 0.75, cabinet_z + 0.1), (0.15, 0.15, 0.15), GOLD, "lamp_shade")
+
+# --- Two-Door Wardrobe ---
+# Position: Back wall, right side
+wardrobe_x = 1.5
+wardrobe_z = 1.7
+wardrobe_y = 0.1
+
+wardrobe_body = create_beveled_cube((wardrobe_x, wardrobe_y, wardrobe_z), (1.0, 1.8, 0.6), OAK, "wardrobe_body")
+wardrobe_door_l = create_beveled_cube((wardrobe_x - 0.3, wardrobe_y, wardrobe_z), (0.3, 1.8, 0.6), OAK, "wardrobe_door_left")
+wardrobe_door_r = create_beveled_cube((wardrobe_x + 0.3, wardrobe_y, wardrobe_z), (0.3, 1.8, 0.6), OAK, "wardrobe_door_right")
+wardrobe_handle_l = create_beveled_cube((wardrobe_x - 0.3, wardrobe_y + 0.9, wardrobe_z + 0.05), (0.02, 0.2, 0.02), GOLD, "wardrobe_handle_left")
+wardrobe_handle_r = create_beveled_cube((wardrobe_x + 0.3, wardrobe_y + 0.9, wardrobe_z + 0.05), (0.02, 0.2, 0.02), GOLD, "wardrobe_handle_right")
+
+# --- Potted Plant ---
+# Position: Front Right corner area
+plant_x = 1.5
+plant_z = -0.5
+plant_y = 0.1
+
+pot = create_beveled_cylinder((plant_x, plant_y, plant_z), 0.15, 0.15, OAK, "plant_pot")
+plant_stem = create_beveled_cube((plant_x, plant_y + 0.15, plant_z), (0.05, 0.3, 0.05), SAGE, "plant_stem")
+plant_leaves = create_beveled_cube((plant_x, plant_y + 0.45, plant_z), (0.2, 0.2, 0.2), SAGE, "plant_leaves")
+
+# --- Framed Art ---
+# Position: Back wall, center-left
+art_x = -0.5
+art_z = 1.7
+art_y = 1.75
+
+frame = create_beveled_cube((art_x, art_y, art_z), (0.8, 0.02, 0.02), GOLD, "art_frame")
+canvas = create_beveled_cube((art_x, art_y + 0.01, art_z), (0.7, 0.01, 0.01), CREAM, "art_canvas")
+
+# --- Final Cleanup ---
+# Ensure all objects are in the main collection
+for obj in bpy.data.objects:
+    if obj.name not in ["floor", "wall_back", "wall_side"]:
+        bpy.context.collection.objects.link(obj)
+
+# Select all for potential future operations (though not required by prompt)
+bpy.ops.object.select_all(action='DESELECT')

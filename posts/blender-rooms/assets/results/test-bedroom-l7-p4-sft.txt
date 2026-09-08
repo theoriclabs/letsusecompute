@@ -1,0 +1,67 @@
+import bpy
+import math
+
+def material(color):
+    mat = bpy.data.materials.get(color)
+    if mat is None:
+        mat = bpy.data.materials.new(color)
+        rgb = [int(color[i:i+2], 16) / 255 for i in (0, 2, 4)]
+        linear = tuple(v / 12.92 if v < 0.04045 else ((v + 0.055) / 1.055) ** 2.4 for v in rgb)
+        mat.diffuse_color = linear + (1,)
+    return mat
+
+def box(name, loc, size, color, angle=0):
+    bpy.ops.mesh.primitive_cube_add(size=1, location=loc)
+    obj = bpy.context.object
+    obj.name = name
+    obj.dimensions = size
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    obj.rotation_euler.z = angle
+    obj.data.materials.append(material(color))
+    bevel = obj.modifiers.new('edge', 'BEVEL')
+    bevel.width = min(0.025, min(size) / 5)
+    bevel.segments = 1
+    return obj
+
+def cylinder(name, loc, radius, depth, color):
+    bpy.ops.mesh.primitive_cylinder_add(vertices=10, radius=radius, depth=depth, location=loc)
+    obj = bpy.context.object
+    obj.name = name
+    obj.data.materials.append(material(color))
+    return obj
+
+
+box('floor', (0, 0, 0.1), (5.6, 5.6, 0.2), 'eedacf', 0)
+box('wall_back', (0, 2.7, 1.7), (5.6, 0.15, 3), '668b79', 0)
+box('wall_side', (-2.7, 0, 1.7), (0.15, 5.6, 3), '668b79', 0)
+box('trim_back', (0, 2.595, 0.29), (5.2, 0.05, 0.18), 'eedacf', 0)
+box('trim_side', (-2.595, 0, 0.29), (0.05, 5.2, 0.18), 'eedacf', 0)
+box('bed_frame', (-0.25, 0.2, 0.4), (1.8, 2.25, 0.4), '8d6951', -1.5708)
+box('bed_mattress', (-0.25, 0.2, 0.68), (1.75, 2.15, 0.22), 'eedacf', -1.5708)
+box('bed_headboard', (-1.35, 0.2, 0.85), (1.88, 0.1, 1.25), '8d6951', -1.5708)
+box('bed_blanket', (0.17, 0.2, 0.807), (1.77, 1.12, 0.055), 'd4a25f', -1.5708)
+box('bed_pillow_0', (-0.93, 0.56, 0.86), (0.59, 0.44, 0.16), 'eedacf', -1.5708)
+box('bed_pillow_1', (-0.93, -0.56, 0.86), (0.59, 0.44, 0.16), 'eedacf', -1.5708)
+box('nightstand_body', (-1.0, -1.55, 0.46), (0.58, 0.58, 0.52), '8d6951', -1.5708)
+box('nightstand_door_0', (-0.695, -1.39, 0.46), (0.255, 0.035, 0.43), 'eedacf', -1.5708)
+box('nightstand_handle_0', (-0.66, -1.52, 0.486), (0.04, 0.04, 0.18), '504945', -1.5708)
+box('nightstand_door_1', (-0.695, -1.71, 0.46), (0.255, 0.035, 0.43), 'eedacf', -1.5708)
+box('nightstand_handle_1', (-0.66, -1.58, 0.486), (0.04, 0.04, 0.18), '504945', -1.5708)
+cylinder('lamp_base', (-1.0, -1.55, 0.745), 0.23, 0.07, '514b47')
+cylinder('lamp_stem', (-1.0, -1.55, 0.95), 0.035, 0.46, '514b47')
+cylinder('lamp_shade', (-1.0, -1.55, 1.18), 0.26, 0.35, 'eedacf')
+box('wardrobe_body', (-1.9, -1.9, 1.325), (1.15, 0.75, 2.25), '8d6951', -1.5708)
+box('wardrobe_door_0', (-1.51, -1.61, 1.325), (0.53, 0.035, 2.16), 'eedacf', -1.5708)
+box('wardrobe_handle_0', (-1.475, -1.87, 1.437), (0.04, 0.04, 0.18), '504945', -1.5708)
+box('wardrobe_door_1', (-1.51, -2.19, 1.325), (0.53, 0.035, 2.16), 'eedacf', -1.5708)
+box('wardrobe_handle_1', (-1.475, -1.93, 1.437), (0.04, 0.04, 0.18), '504945', -1.5708)
+box('rug', (1, 1, 0.22), (1.6, 1.4, 0.04), '668b79', -1.5708)
+cylinder('plant_pot', (1.5, 1.8, 0.35), 0.19, 0.3, 'd4a25f')
+cylinder('plant_stem', (1.5, 1.8, 0.6), 0.035, 0.35, '6d8051')
+box('plant_leaf_0', (1.5, 1.8, 0.75), (0.25, 0.17, 0.3), '739662', -1.5708)
+box('plant_leaf_1', (1.43, 1.8, 0.75), (0.25, 0.17, 0.3), '739662', -2.3708)
+box('plant_leaf_2', (1.58, 1.8, 0.75), (0.25, 0.17, 0.3), '739662', -3.1708)
+box('artwork_frame', (-2.59, -0.55, 2.2), (0.95, 0.065, 0.7), '8d6951', -1.5708)
+box('artwork_canvas', (-2.547, -0.55, 2.2), (0.83, 0.025, 0.58), 'eedacf', -1.5708)
+box('artwork_shape', (-2.527, -0.62, 2.2), (0.37, 0.02, 0.33), 'd4a25f', -1.5708)
+bpy.context.view_layer.update()

@@ -1,0 +1,196 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_box(name, loc, size, rot, color, bevel=0.01):
+    """Creates a low-poly box mesh with optional bevel."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=loc, rotation=rot)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    # Apply scale and rotation immediately to avoid transform issues
+    bpy.ops.object.transform_apply(scale=True, rotation=True, location=True)
+    
+    # Set Color
+    mat_name = name + "_mat"
+    if mat_name in bpy.data.materials:
+        mat = bpy.data.materials[mat_name]
+    else:
+        mat = bpy.data.materials.new(name=mat_name)
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        bsdf.inputs['Roughness'].default_value = 0.8
+        mat.node_tree.links.new(bsdf.inputs['Base Color'], bsdf.inputs['Base Color']) # Fix link logic if needed, usually direct
+        # Correct linking:
+        bsdf.inputs['Base Color'].default_value = color
+        mat.node_tree.links.new(bsdf.inputs['Base Color'], bsdf.inputs['Base Color']) # This is redundant in thought, let's just set value
+        # Actually, Principled BSDF Base Color is a vector.
+        bsdf.inputs['Base Color'].default_value = (color[0], color[1], color[2], 1.0)
+    
+    obj.data.materials.append(mat)
+    
+    # Apply Bevel
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        mod = obj.modifiers[-1]
+        mod.bevel_depth = bevel
+        mod.bevel_count = 1
+    
+    return obj
+
+def create_cylinder(name, loc, radius, height, color, segments=16, bevel=0.01):
+    """Creates a low-poly cylinder."""
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    bpy.ops.object.transform_apply(scale=True, rotation=True, location=True)
+    
+    mat_name = name + "_mat"
+    if mat_name in bpy.data.materials:
+        mat = bpy.data.materials[mat_name]
+    else:
+        mat = bpy.data.materials.new(name=mat_name)
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = (color[0], color[1], color[2], 1.0)
+        bsdf.inputs['Roughness'].default_value = 0.7
+        mat.node_tree.links.new(bsdf.inputs['Base Color'], bsdf.inputs['Base Color'])
+    
+    obj.data.materials.append(mat)
+    
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        mod = obj.modifiers[-1]
+        mod.bevel_depth = bevel
+        mod.bevel_count = 1
+    
+    return obj
+
+# --- Palette ---
+# Rose: c28e98
+# Ivory: f0e6d6
+# Wood: 9d7454
+# Sage: 83a29a
+COLOR_ROSE = (0.76078, 0.55686, 0.60392)
+COLOR_IVORY = (0.94118, 0.90196, 0.83922)
+COLOR_WOOD = (0.61569, 0.45490, 0.32941)
+COLOR_SAGE = (0.51373, 0.63529, 0.59216)
+
+# --- Room Structure ---
+
+# Floor
+floor = create_box("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), (0, 0, 0), COLOR_IVORY)
+floor.data.name = "floor_mesh"
+floor.modifiers.clear()
+# No bevel for floor to keep it flat, but ensure it's solid
+bpy.ops.object.modifier_add(type='SOLID')
+floor.modifiers[-1].thickness = 0.01
+
+# Back Wall
+wall_back = create_box("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), (0, 0, 0), COLOR_SAGE)
+wall_back.data.name = "wall_back_mesh"
+
+# Left Wall
+wall_side = create_box("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), (0, 0, 0), COLOR_SAGE)
+wall_side.data.name = "wall_side_mesh"
+
+# --- Furniture ---
+
+# 1. Bed (1.8m wide)
+# Frame
+bed_frame = create_box("bed_frame", (0.9, 0.8, 0.2), (1.8, 2.0, 0.1), (0, 0, 0), COLOR_WOOD)
+bed_frame.data.name = "bed_frame_mesh"
+
+# Mattress
+bed_mattress = create_box("bed_mattress", (0.9, 0.8, 0.4), (1.8, 2.0, 0.1), (0, 0, 0), COLOR_IVORY)
+bed_mattress.data.name = "bed_mattress_mesh"
+
+# Pillow 1
+pillow_1 = create_box("pillow_1", (0.9, 0.8, 0.45), (0.6, 0.6, 0.05), (0, 0, 0), COLOR_ROSE)
+pillow_1.data.name = "pillow_1_mesh"
+
+# Pillow 2
+pillow_2 = create_box("pillow_2", (0.9, 0.8, 0.45), (0.6, 0.6, 0.05), (0, 0, 0), COLOR_ROSE)
+pillow_2.data.name = "pillow_2_mesh"
+
+# Blanket (Folded)
+blanket = create_box("blanket", (0.9, 0.8, 0.42), (1.2, 1.8, 0.05), (0, 0, 0), COLOR_SAGE)
+blanket.data.name = "blanket_mesh"
+
+# 2. Bedside Cabinet & Lamp
+# Cabinet
+cabinet = create_box("cabinet", (2.0, 0.8, 0.2), (0.5, 0.5, 0.4), (0, 0, 0), COLOR_WOOD)
+cabinet.data.name = "cabinet_mesh"
+
+# Cabinet Top
+cabinet_top = create_box("cabinet_top", (2.0, 0.8, 0.2), (0.5, 0.5, 0.05), (0, 0, 0), COLOR_IVORY)
+cabinet_top.data.name = "cabinet_top_mesh"
+
+# Lamp Base
+lamp_base = create_cylinder("lamp_base", (2.25, 0.8, 0.2), 0.08, 0.08, COLOR_WOOD)
+lamp_base.data.name = "lamp_base_mesh"
+
+# Lamp Shade
+lamp_shade = create_cylinder("lamp_shade", (2.25, 0.8, 0.2), 0.12, 0.15, COLOR_IVORY)
+lamp_shade.data.name = "lamp_shade_mesh"
+
+# 3. Two-Door Wardrobe (Along Left Wall)
+# Wardrobe Body
+wardrobe = create_box("wardrobe", (-2.5, 0.8, 1.7), (0.1, 2.0, 2.5), (0, 0, 0), COLOR_WOOD)
+wardrobe.data.name = "wardrobe_mesh"
+
+# Door 1
+door_1 = create_box("door_1", (-2.5, 0.8, 1.7), (0.05, 1.0, 2.5), (0, 0, 0), COLOR_SAGE)
+door_1.data.name = "door_1_mesh"
+
+# Door 2
+door_2 = create_box("door_2", (-2.5, 0.8, 1.7), (0.05, 1.0, 2.5), (0, 0, 0), COLOR_SAGE)
+door_2.data.name = "door_2_mesh"
+
+# 4. Rug
+rug = create_box("rug", (0.0, 0.0, 0.12), (2.0, 1.5, 0.02), (0, 0, 0), COLOR_ROSE)
+rug.data.name = "rug_mesh"
+
+# 5. Potted Plant
+# Pot
+pot = create_cylinder("pot", (1.5, 1.5, 0.2), 0.15, 0.15, COLOR_WOOD)
+pot.data.name = "pot_mesh"
+
+# Leaves (Grouped as one low-poly shape for simplicity, or multiple small boxes)
+# Let's make a simple bush shape using a few boxes
+plant_leaf_1 = create_box("plant_leaf_1", (1.5, 1.5, 0.2), (0.3, 0.3, 0.3), (0, 0, 0), COLOR_SAGE)
+plant_leaf_1.data.name = "plant_leaf_1_mesh"
+plant_leaf_2 = create_box("plant_leaf_2", (1.5, 1.5, 0.2), (0.3, 0.3, 0.3), (0, 0, 0), COLOR_SAGE)
+plant_leaf_2.data.name = "plant_leaf_2_mesh"
+plant_leaf_3 = create_box("plant_leaf_3", (1.5, 1.5, 0.2), (0.3, 0.3, 0.3), (0, 0, 0), COLOR_SAGE)
+plant_leaf_3.data.name = "plant_leaf_3_mesh"
+
+# 6. Framed Art
+art_frame = create_box("art_frame", (0.0, 2.5, 1.7), (0.02, 0.8, 0.6), (0, 0, 0), COLOR_WOOD)
+art_frame.data.name = "art_frame_mesh"
+art_canvas = create_box("art_canvas", (0.0, 2.5, 1.7), (0.01, 0.75, 0.55), (0, 0, 0), COLOR_ROSE)
+art_canvas.data.name = "art_canvas_mesh"
+
+# --- Cleanup and Finalization ---
+# Ensure all objects are in the scene
+for obj in bpy.data.objects:
+    if obj.name not in ["floor", "wall_back", "wall_side", "bed_frame", "bed_mattress", "pillow_1", "pillow_2", "blanket", "cabinet", "cabinet_top", "lamp_base", "lamp_shade", "wardrobe", "door_1", "door_2", "rug", "pot", "plant_leaf_1", "plant_leaf_2", "plant_leaf_3", "art_frame", "art_canvas"]:
+        bpy.data.objects.remove(obj, do_unlink=True)
+
+# Select all for apply transforms if any were missed (though we applied them in creation)
+bpy.ops.object.select_all(action='DESELECT')
+for obj in bpy.data.objects:
+    obj.select_set(True)
+bpy.context.view_layer.objects.active = floor
+bpy.ops.object.transform_apply(scale=True, rotation=True, location=True)
+
+# Deselect all
+bpy.ops.object.select_all(action='DESELECT')

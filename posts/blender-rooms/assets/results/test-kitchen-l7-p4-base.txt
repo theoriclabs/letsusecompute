@@ -1,0 +1,221 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# Define Colors
+COLOR_FLOOR = (0.4, 0.545, 0.467)   # 668b79
+COLOR_WALL = (0.933, 0.855, 0.824)  # eedacf
+COLOR_WOOD = (0.545, 0.408, 0.349)  # 8d6951
+COLOR_ACCENT = (0.831, 0.635, 0.373) # d4a25f
+COLOR_WHITE = (0.95, 0.95, 0.95)
+
+def create_material(name, color):
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    bsdf.inputs['Metallic'].default_value = 0.0
+    return mat
+
+def create_mesh(name, vertices, edges, faces, location, rotation, scale, mat_name):
+    obj = bpy.data.objects.new(name, None)
+    bpy.context.collection.objects.link(obj)
+    mesh = bpy.data.meshes.new(name)
+    mesh.from_pydata(vertices, edges, faces)
+    mesh.update_calc()
+    obj.data = mesh
+    obj.location = location
+    obj.rotation_euler = rotation
+    obj.scale = scale
+    if mat_name:
+        mat = bpy.data.materials.get(mat_name)
+        if not mat:
+            mat = create_material(mat_name, (0.5, 0.5, 0.5))
+        obj.data.materials.append(mat)
+    return obj
+
+# --- Room Structure ---
+
+# Floor
+floor_verts = [
+    (-2.8, -2.8, 0.0), (2.8, -2.8, 0.0), (2.8, 2.8, 0.0), (-2.8, 2.8, 0.0),
+    (-2.8, -2.8, 0.2), (2.8, -2.8, 0.2), (2.8, 2.8, 0.2), (-2.8, 2.8, 0.2)
+]
+floor_edges = [
+    (0, 1), (1, 2), (2, 3), (3, 0),
+    (4, 5), (5, 6), (6, 7), (7, 4),
+    (0, 4), (1, 5), (2, 6), (3, 7)
+]
+floor_faces = [
+    (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)
+]
+floor = create_mesh("floor", floor_verts, floor_edges, floor_faces, (0, 0, 0.1), (0, 0, 0), (1, 1, 1), "Floor_Mat")
+
+# Back Wall
+back_wall_verts = [
+    (-2.8, 2.7, 1.7), (2.8, 2.7, 1.7), (2.8, 2.7, 4.7), (-2.8, 2.7, 4.7),
+    (-2.8, 2.7, 1.5), (2.8, 2.7, 1.5), (2.8, 2.7, 4.5), (-2.8, 2.7, 4.5)
+]
+back_wall_edges = [
+    (0, 1), (1, 2), (2, 3), (3, 0),
+    (4, 5), (5, 6), (6, 7), (7, 4),
+    (0, 4), (1, 5), (2, 6), (3, 7)
+]
+back_wall_faces = [
+    (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)
+]
+wall_back = create_mesh("wall_back", back_wall_verts, back_wall_edges, back_wall_faces, (0, 2.7, 1.7), (0, 0, 0), (1, 1, 1), "Wall_Mat")
+
+# Left Wall
+left_wall_verts = [
+    (-2.8, 0, 1.7), (-2.8, 0, 4.7), (-5.8, 0, 4.7), (-5.8, 0, 1.7),
+    (-2.8, 0, 1.5), (-2.8, 0, 4.5), (-5.8, 0, 4.5), (-5.8, 0, 1.5)
+]
+left_wall_edges = [
+    (0, 1), (1, 2), (2, 3), (3, 0),
+    (4, 5), (5, 6), (6, 7), (7, 4),
+    (0, 4), (1, 5), (2, 6), (3, 7)
+]
+left_wall_faces = [
+    (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7)
+]
+wall_side = create_mesh("wall_side", left_wall_verts, left_wall_edges, left_wall_faces, (-2.7, 0, 1.7), (0, 0, 0), (1, 1, 1), "Wall_Mat")
+
+# --- Furniture Helpers ---
+
+def make_box(name, w, d, h, loc, rot, scale, mat):
+    verts = [
+        (-w/2, -d/2, 0), (w/2, -d/2, 0), (w/2, d/2, 0), (-w/2, d/2, 0),
+        (-w/2, -d/2, h), (w/2, -d/2, h), (w/2, d/2, h), (-w/2, d/2, h)
+    ]
+    edges = [
+        (0, 1), (1, 2), (2, 3), (3, 0),
+        (4, 5), (5, 6), (6, 7), (7, 4),
+        (0, 4), (1, 5), (2, 6), (3, 7)
+    ]
+    faces = [
+        (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7),
+        (0, 1, 2, 3), (4, 5, 6, 7)
+    ]
+    return create_mesh(name, verts, edges, faces, loc, rot, scale, mat)
+
+def make_cylinder(name, r, h, loc, rot, scale, mat, segs=8):
+    verts = []
+    edges = []
+    faces = []
+    for i in range(segs + 1):
+        angle = 2 * math.pi * i / segs
+        x = r * math.cos(angle)
+        z = r * math.sin(angle)
+        verts.append((x, 0, z))
+        verts.append((x, 0, z + h))
+    
+    for i in range(segs):
+        v1 = i
+        v2 = i + 1
+        v3 = segs + v2
+        v4 = segs + v1
+        edges.append((v1, v2))
+        edges.append((v3, v4))
+        edges.append((v1, v4))
+        edges.append((v2, v3))
+        faces.append((v1, v2, v3, v4))
+    return create_mesh(name, verts, edges, faces, loc, rot, scale, mat)
+
+# --- Kitchen Area (Left Wall) ---
+
+# Refrigerator
+ref_verts = [
+    (-2.8, 0.6, 1.7), (-2.8, 0.6, 2.5), (-2.8, 0.6, 2.5), (-2.8, 0.6, 1.7), # Top
+    (-2.8, 0.6, 1.7), (-2.8, 0.6, 2.5), (-2.8, 0.6, 2.5), (-2.8, 0.6, 1.7), # Front
+    (-2.8, 0.6, 1.7), (-2.8, 0.6, 2.5), (-2.8, 0.6, 2.5), (-2.8, 0.6, 1.7)  # Side
+]
+# Simplified box for fridge
+ref_verts = [
+    (-2.8, 0.6, 1.7), (0.0, 0.6, 1.7), (0.0, 0.6, 2.5), (-2.8, 0.6, 2.5),
+    (-2.8, 0.6, 1.5), (0.0, 0.6, 1.5), (0.0, 0.6, 2.3), (-2.8, 0.6, 2.3)
+]
+ref_edges = [
+    (0, 1), (1, 2), (2, 3), (3, 0),
+    (4, 5), (5, 6), (6, 7), (7, 4),
+    (0, 4), (1, 5), (2, 6), (3, 7)
+]
+ref_faces = [
+    (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7),
+    (0, 1, 2, 3), (4, 5, 6, 7)
+]
+ref = create_mesh("refrigerator", ref_verts, ref_edges, ref_faces, (-2.8, 0.6, 2.1), (0, 0, 0), (1, 1, 1), "Wood_Mat")
+
+# Two-Door Counter
+counter_verts = [
+    (-2.8, 0.6, 2.5), (0.0, 0.6, 2.5), (0.0, 0.6, 3.5), (-2.8, 0.6, 3.5),
+    (-2.8, 0.6, 2.3), (0.0, 0.6, 2.3), (0.0, 0.6, 3.3), (-2.8, 0.6, 3.3)
+]
+counter_edges = [
+    (0, 1), (1, 2), (2, 3), (3, 0),
+    (4, 5), (5, 6), (6, 7), (7, 4),
+    (0, 4), (1, 5), (2, 6), (3, 7)
+]
+counter_faces = [
+    (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7),
+    (0, 1, 2, 3), (4, 5, 6, 7)
+]
+counter = create_mesh("counter", counter_verts, counter_edges, counter_faces, (-2.8, 0.6, 3.0), (0, 0, 0), (1, 1, 1), "Wood_Mat")
+
+# Stove (4 burners)
+stove_verts = [
+    (-2.8, 0.6, 2.5), (0.0, 0.6, 2.5), (0.0, 0.6, 2.7), (-2.8, 0.6, 2.7),
+    (-2.8, 0.6, 2.5), (0.0, 0.6, 2.5), (0.0, 0.6, 2.7), (-2.8, 0.6, 2.7)
+]
+stove_edges = [
+    (0, 1), (1, 2), (2, 3), (3, 0),
+    (4, 5), (5, 6), (6, 7), (7, 4),
+    (0, 4), (1, 5), (2, 6), (3, 7)
+]
+stove_faces = [
+    (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7),
+    (0, 1, 2, 3), (4, 5, 6, 7)
+]
+stove = create_mesh("stove", stove_verts, stove_edges, stove_faces, (-2.8, 0.6, 2.6), (0, 0, 0), (1, 1, 1), "Wood_Mat")
+
+# Sink
+sink_verts = [
+    (-2.8, 0.6, 3.0), (-2.8, 0.6, 3.2), (-2.8, 0.6, 3.2), (-2.8, 0.6, 3.0),
+    (-2.8, 0.6, 3.0), (-2.8, 0.6, 3.2), (-2.8, 0.6, 3.2), (-2.8, 0.6, 3.0)
+]
+sink_edges = [
+    (0, 1), (1, 2), (2, 3), (3, 0),
+    (4, 5), (5, 6), (6, 7), (7, 4),
+    (0, 4), (1, 5), (2, 6), (3, 7)
+]
+sink_faces = [
+    (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7),
+    (0, 1, 2, 3), (4, 5, 6, 7)
+]
+sink = create_mesh("sink", sink_verts, sink_edges, sink_faces, (-2.8, 0.6, 3.1), (0, 0, 0), (1, 1, 1), "Wood_Mat")
+
+# Tap
+tap_verts = [
+    (-2.8, 0.6, 3.1), (-2.8, 0.6, 3.15), (-2.8, 0.6, 3.15), (-2.8, 0.6, 3.1),
+    (-2.8, 0.6, 3.1), (-2.8, 0.6, 3.15), (-2.8, 0.6, 3.15), (-2.8, 0.6, 3.1)
+]
+tap_edges = [
+    (0, 1), (1, 2), (2, 3), (3, 0),
+    (4, 5), (5, 6), (6, 7), (7, 4),
+    (0, 4), (1, 5), (2, 6), (3, 7)
+]
+tap_faces = [
+    (0, 1, 5, 4), (1, 2, 6, 5), (2, 3, 7, 6), (3, 0, 4, 7),
+    (0, 1, 2, 3), (4, 5, 6, 7)
+]
+tap = create_mesh("tap", tap_verts, tap_edges, tap_faces, (-2.8, 0.6, 3.15), (0, 0, 0), (1, 1, 1), "Metal_Mat")
+
+# --- Dining Area (Front Corner) ---
+
+# Dining Table
+table_verts = [
+    (-1.0, -1.0, 0.0), (1.0, -1.0, 0.0), (1.0, 1.0, 0.0), (-1.0, 

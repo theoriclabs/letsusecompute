@@ -1,0 +1,214 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+COLOR_DUSTY_BLUE = (0.529, 0.616, 0.647)   # 859eae
+COLOR_CREAM = (0.941, 0.902, 0.824)        # ece3d0
+COLOR_WOOD = (0.608, 0.451, 0.365)         # 9b7359
+COLOR_ACCENT = (0.804, 0.553, 0.459)       # cb8d74
+
+# --- Helper Functions ---
+
+def create_cube(name, loc, size, color, bevel=0.01):
+    """Creates a low-poly cube with a small bevel."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = loc
+    obj.rotation_euler = (math.radians(90), 0, 0)  # Align Z-up to Y-up for extrusion logic if needed, but here we use standard cube
+    
+    mesh = obj.data
+    verts = [(s/2, s/2, s/2), (-s/2, s/2, s/2), (-s/2, -s/2, s/2), (s/2, -s/2, s/2),
+             (s/2, s/2, -s/2), (-s/2, s/2, -s/2), (-s/2, -s/2, -s/2), (s/2, -s/2, -s/2)]
+    faces = [(0, 1, 2, 3), (4, 5, 6, 7), (0, 4, 7, 3), (1, 5, 6, 2), (0, 1, 5, 4), (3, 2, 6, 7)]
+    
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    
+    mat = bpy.data.materials.new(name=f"mat_{name}")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.8
+    bsdf.inputs['Metallic'].default_value = 0.0
+    
+    obj.data.materials.append(mat)
+    
+    # Apply bevel modifier
+    mod = obj.modifiers.new(name="Bevel", type='BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(30)
+    
+    bpy.context.collection.objects.link(obj)
+    return obj
+
+def create_cylinder(name, loc, radius, height, color, bevel=0.01):
+    """Creates a low-poly cylinder."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = loc
+    obj.rotation_euler = (math.radians(90), 0, 0)
+    
+    mesh = obj.data
+    # Low poly cylinder: 8 segments
+    verts = []
+    faces = []
+    for i in range(8):
+        angle = i * math.pi / 4
+        x = radius * math.cos(angle)
+        z = radius * math.sin(angle)
+        top = (x, z, height/2)
+        bottom = (x, z, -height/2)
+        verts.append(top)
+        verts.append(bottom)
+    
+    # Top face
+    top_indices = list(range(0, 8))
+    faces.append(top_indices)
+    # Bottom face (reversed)
+    bottom_indices = list(range(8, 16))
+    faces.append(bottom_indices[::-1])
+    # Side faces
+    for i in range(8):
+        idx_top = i
+        idx_bottom = i + 8
+        idx_next_top = (i + 1) % 8
+        idx_next_bottom = (i + 1) % 8 + 8
+        faces.append([idx_top, idx_next_top, idx_next_bottom, idx_bottom])
+        
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    
+    mat = bpy.data.materials.new(name=f"mat_{name}")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.8
+    
+    obj.data.materials.append(mat)
+    
+    mod = obj.modifiers.new(name="Bevel", type='BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(30)
+    
+    bpy.context.collection.objects.link(obj)
+    return obj
+
+def create_box(name, loc, size, color, bevel=0.01):
+    """Creates a box (cuboid)."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = loc
+    obj.rotation_euler = (math.radians(90), 0, 0)
+    
+    mesh = obj.data
+    verts = [(s/2, s/2, s/2), (-s/2, s/2, s/2), (-s/2, -s/2, s/2), (s/2, -s/2, s/2),
+             (s/2, s/2, -s/2), (-s/2, s/2, -s/2), (-s/2, -s/2, -s/2), (s/2, -s/2, -s/2)]
+    faces = [(0, 1, 2, 3), (4, 5, 6, 7), (0, 4, 7, 3), (1, 5, 6, 2), (0, 1, 5, 4), (3, 2, 6, 7)]
+    
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    
+    mat = bpy.data.materials.new(name=f"mat_{name}")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.8
+    
+    obj.data.materials.append(mat)
+    
+    mod = obj.modifiers.new(name="Bevel", type='BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(30)
+    
+    bpy.context.collection.objects.link(obj)
+    return obj
+
+# --- Room Construction ---
+
+# Floor
+floor = create_cube("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), COLOR_CREAM)
+
+# Back Wall
+wall_back = create_cube("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), COLOR_DUSTY_BLUE)
+
+# Left Wall
+wall_side = create_cube("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), COLOR_DUSTY_BLUE)
+
+# --- Furniture Layout ---
+
+# 1. Desk Area (Front Left-ish, facing back wall)
+# Desk Base
+desk_base = create_box("desk_base", (-1.2, -0.8, 0.2), (1.9, 0.75, 0.75), COLOR_WOOD)
+# Desk Top
+desk_top = create_box("desk_top", (-1.2, -0.8, 0.9), (1.9, 0.6, 0.05), COLOR_CREAM)
+# Monitor Stand
+monitor_stand = create_box("monitor_stand", (-0.8, -0.8, 0.9), (0.3, 0.3, 0.05), COLOR_WOOD)
+# Monitor
+monitor = create_box("monitor", (-0.8, -0.8, 1.15), (0.25, 0.4, 0.05), COLOR_DUSTY_BLUE)
+# Keyboard Tray
+keyboard_tray = create_box("keyboard_tray", (-0.8, -0.8, 0.9), (0.3, 0.2, 0.05), COLOR_WOOD)
+
+# 2. Chair (Facing desk)
+chair_legs = create_box("chair_legs", (0.2, -0.8, 0.2), (0.4, 0.4, 0.2), COLOR_WOOD)
+chair_seat = create_box("chair_seat", (0.2, -0.8, 0.45), (0.4, 0.4, 0.05), COLOR_ACCENT)
+chair_back = create_box("chair_back", (0.2, -0.8, 0.7), (0.35, 0.5, 0.05), COLOR_ACCENT)
+chair_arm_left = create_box("chair_arm_left", (0.2, -0.8, 0.5), (0.05, 0.4, 0.05), COLOR_WOOD)
+chair_arm_right = create_box("chair_arm_right", (0.2, -0.8, 0.5), (0.05, 0.4, 0.05), COLOR_WOOD)
+
+# 3. Bookcase (Back Wall, Right side)
+# Frame
+bookcase_frame = create_box("bookcase_frame", (1.5, 2.7, 1.7), (0.8, 2.0, 0.15), COLOR_WOOD)
+# Shelves
+shelf_1 = create_box("shelf_1", (1.5, 2.7, 1.7), (0.7, 0.1, 0.1), COLOR_WOOD)
+shelf_2 = create_box("shelf_2", (1.5, 2.7, 1.7), (0.7, 0.1, 0.1), COLOR_WOOD)
+shelf_3 = create_box("shelf_3", (1.5, 2.7, 1.7), (0.7, 0.1, 0.1), COLOR_WOOD)
+shelf_4 = create_box("shelf_4", (1.5, 2.7, 1.7), (0.7, 0.1, 0.1), COLOR_WOOD)
+# Spine of bookcase
+spine_left = create_box("spine_left", (1.5, 2.7, 1.7), (0.05, 2.0, 0.15), COLOR_WOOD)
+spine_right = create_box("spine_right", (1.5, 2.7, 1.7), (0.05, 2.0, 0.15), COLOR_WOOD)
+
+# Books (Small boxes)
+for i in range(12):
+    x = 1.5 + (i % 4) * 0.15
+    z = 1.7 + (i // 4) * 0.15
+    color = COLOR_CREAM if i % 2 == 0 else COLOR_ACCENT
+    book = create_box(f"book_{i}", (x, z, 0.9), (0.08, 0.08, 0.05), color)
+
+# 4. Storage Cabinet (Back Wall, Left side, next to desk)
+cabinet_base = create_box("cabinet_base", (-1.8, 2.7, 1.7), (0.6, 0.8, 0.15), COLOR_WOOD)
+cabinet_top = create_box("cabinet_top", (-1.8, 2.7, 1.7), (0.6, 0.6, 0.05), COLOR_CREAM)
+cabinet_door_left = create_box("cabinet_door_left", (-1.8, 2.7, 1.7), (0.25, 0.6, 0.05), COLOR_WOOD)
+cabinet_door_right = create_box("cabinet_door_right", (-1.8, 2.7, 1.7), (0.25, 0.6, 0.05), COLOR_WOOD)
+cabinet_shelf = create_box("cabinet_shelf", (-1.8, 2.7, 1.7), (0.5, 0.1, 0.1), COLOR_WOOD)
+
+# 5. Rug (Under desk and chair)
+rug = create_cube("rug", (-0.6, -0.8, 0.2), (2.0, 1.5, 0.02), COLOR_ACCENT)
+
+# 6. Standing Lamp (Corner near bookcase)
+lamp_base = create_box("lamp_base", (2.0, 2.7, 1.7), (0.15, 0.15, 0.05), COLOR_WOOD)
+lamp_stand = create_cylinder("lamp_stand", (2.0, 2.7, 1.7), 0.05, 1.2, COLOR_WOOD)
+lamp_shade = create_cylinder("lamp_shade", (2.0, 2.7, 1.7), 0.15, 0.1, COLOR_CREAM)
+
+# 7. Plant (Front Right corner)
+plant_pot = create_box("plant_pot", (2.0, -1.0, 0.2), (0.3, 0.3, 0.1), COLOR_WOOD)
+plant_leaves = create_box("plant_leaves", (2.0, -1.0, 0.4), (0.2, 0.2, 0.1), COLOR_DUSTY_BLUE)
+
+# --- Final Cleanup ---
+# Ensure all objects are in the active collection
+bpy.context.view_layer.objects.active = floor
+bpy.context.scene.objects.active = floor
+
+# Select all to ensure they are in the scene
+bpy.ops.object.select_all(action='DESELECT')
+for obj in bpy.data.objects:
+    obj.select_set(True)
+bpy.ops.object.select_all(action='SELECT')
+
+print("Low-poly studio scene created successfully.")

@@ -1,0 +1,55 @@
+{
+  "scope": "Seven completed pilot runs; excludes later repair experiment",
+  "total_debit_cents": 782,
+  "receipts": [
+    {
+      "run_id": "run_d663d5abc85ccb99441fd11c3d95d027",
+      "total_debit_cents": 11,
+      "provider_cost_cents": 10,
+      "platform_fee_cents": 1,
+      "machine_terminated_at": "2026-09-08T02:40:48.505+00:00"
+    },
+    {
+      "run_id": "run_2bd67d01e05b221f9047bfdd066fc674",
+      "total_debit_cents": 29,
+      "provider_cost_cents": 27,
+      "platform_fee_cents": 2,
+      "machine_terminated_at": "2026-09-08T02:57:47.818+00:00"
+    },
+    {
+      "run_id": "run_74699ed064f07bbb83e7c77332aa7f69",
+      "total_debit_cents": 11,
+      "provider_cost_cents": 10,
+      "platform_fee_cents": 1,
+      "machine_terminated_at": "2026-09-08T04:06:55.170+00:00"
+    },
+    {
+      "run_id": "run_0f6686e157bd8bb7ce1187bf01320e63",
+      "total_debit_cents": 0,
+      "provider_cost_cents": 0,
+      "platform_fee_cents": 0,
+      "machine_terminated_at": "2026-09-08T04:09:20.273+00:00"
+    },
+    {
+      "run_id": "run_16141ae2479299d3c5fd0686ab08b405",
+      "total_debit_cents": 524,
+      "provider_cost_cents": 488,
+      "platform_fee_cents": 36,
+      "machine_terminated_at": "2026-09-08T05:41:31.614+00:00"
+    },
+    {
+      "run_id": "run_f62cfd31c65501be529a975b1eb6a139",
+      "total_debit_cents": 154,
+      "provider_cost_cents": 143,
+      "platform_fee_cents": 11,
+      "machine_terminated_at": "2026-09-08T06:09:07.304+00:00"
+    },
+    {
+      "run_id": "run_d6f7173297b6c3aed5062e8c22fd6f3c",
+      "total_debit_cents": 53,
+      "provider_cost_cents": 49,
+      "platform_fee_cents": 4,
+      "machine_terminated_at": "2026-09-08T06:18:49.471+00:00"
+    }
+  ]
+}

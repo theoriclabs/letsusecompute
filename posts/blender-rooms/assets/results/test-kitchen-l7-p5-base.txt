@@ -1,0 +1,208 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+# Palette: Slate (7a899a), Cream (e5ddca), Wood (8f6b50), Mustard (d7ad48)
+COLOR_SLATE = (0.48, 0.53, 0.60)
+COLOR_CREAM = (0.90, 0.86, 0.79)
+COLOR_WOOD = (0.55, 0.42, 0.31)
+COLOR_MUSTARD = (0.84, 0.67, 0.28)
+
+# Helper to create a low-poly cube with bevel
+def create_lowpoly_cube(location, size, color, name, bevel=0.02):
+    bpy.ops.mesh.primitive_cube_add(size=1, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    # Scale to desired size
+    obj.scale = (size[0], size[1], size[2])
+    
+    # Apply scale to prevent modifier issues later
+    obj.update_from_editmode()
+    
+    # Material
+    mat = bpy.data.materials.new(name=name + "_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    bsdf.inputs['Metallic'].default_value = 0.0
+    
+    obj.data.materials.append(mat)
+    
+    # Bevel
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        mod = obj.modifiers[-1]
+        mod.bevel_depth = bevel
+        mod.bevel_segments = 1
+    
+    return obj
+
+# Helper to create a low-poly cylinder (for legs, taps, etc.)
+def create_lowpoly_cylinder(location, radius, height, color, name, segments=8):
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=location, segments=segments)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    obj.scale = (1, 1, 1) # Cylinder is already scaled by radius/depth
+    
+    mat = bpy.data.materials.new(name=name + "_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.6
+    
+    obj.data.materials.append(mat)
+    
+    return obj
+
+# --- Room Structure ---
+# Floor
+floor_loc = (0, 0, 0.1)
+floor_size = (5.6, 5.6, 0.2)
+floor = create_lowpoly_cube(floor_loc, floor_size, COLOR_SLATE, "floor", bevel=0.0)
+
+# Back Wall
+wall_back_loc = (0, 2.7, 1.7)
+wall_back_size = (5.6, 0.15, 3.0)
+wall_back = create_lowpoly_cube(wall_back_loc, wall_back_size, COLOR_SLATE, "wall_back", bevel=0.0)
+
+# Left Wall
+wall_side_loc = (-2.7, 0, 1.7)
+wall_side_size = (0.15, 5.6, 3.0)
+wall_side = create_lowpoly_cube(wall_side_loc, wall_side_size, COLOR_SLATE, "wall_side", bevel=0.0)
+
+# --- Furniture: Storage Zone (Left Wall) ---
+# Base Cabinet Unit (under counter)
+cabinet_base_loc = (-2.0, 0.6, 0.2)
+cabinet_base_size = (1.8, 0.9, 0.8)
+cabinet_base = create_lowpoly_cube(cabinet_base_loc, cabinet_base_size, COLOR_WOOD, "cabinet_base", bevel=0.02)
+
+# Upper Cabinet
+cabinet_top_loc = (-2.0, 1.5, 0.2)
+cabinet_top_size = (1.8, 0.6, 0.8)
+cabinet_top = create_lowpoly_cube(cabinet_top_loc, cabinet_top_size, COLOR_WOOD, "cabinet_top", bevel=0.02)
+
+# Door Handles (Mustard)
+handle_loc1 = (-1.8, 0.6, 0.2)
+handle1 = create_lowpoly_cylinder(handle_loc1, 0.02, 0.1, COLOR_MUSTARD, "cabinet_handle_1")
+handle_loc2 = (-1.8, 1.5, 0.2)
+handle2 = create_lowpoly_cylinder(handle_loc2, 0.02, 0.1, COLOR_MUSTARD, "cabinet_handle_2")
+
+# --- Furniture: Counter & Stove (Back Wall Area) ---
+# Counter Base
+counter_base_loc = (0.5, 0.6, 0.2)
+counter_base_size = (2.0, 0.9, 0.8)
+counter_base = create_lowpoly_cube(counter_base_loc, counter_base_size, COLOR_WOOD, "counter_base", bevel=0.02)
+
+# Countertop (Cream)
+counter_top_loc = (0.5, 1.5, 0.2)
+counter_top_size = (2.0, 0.9, 0.1)
+counter_top = create_lowpoly_cube(counter_top_loc, counter_top_size, COLOR_CREAM, "counter_top", bevel=0.02)
+
+# Stove (4 burners)
+stove_loc = (0.5, 1.5, 0.2)
+stove_size = (0.8, 0.6, 0.1)
+stove = create_lowpoly_cube(stove_loc, stove_size, COLOR_SLATE, "stove", bevel=0.01)
+
+# Burner Rings (Mustard)
+burner_locs = [
+    (0.5, 1.5, 0.2),
+    (0.5, 1.5, 0.2),
+    (0.5, 1.5, 0.2),
+    (0.5, 1.5, 0.2)
+]
+# Simplified: Just add a ring mesh manually or use a small cube representation
+# Let's create a simple ring using a modified cube for low poly count
+def create_burner_ring(location):
+    bpy.ops.mesh.primitive_circle_add(radius=0.1, location=location, subdivisions=4)
+    ring = bpy.context.active_object
+    ring.name = "burner_ring"
+    mat = bpy.data.materials.new(name="burner_ring_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = COLOR_MUSTARD
+    ring.data.materials.append(mat)
+    return ring
+
+# Create 4 burners
+for i in range(4):
+    offset_x = 0.2 if i % 2 == 0 else -0.2
+    offset_y = 0.2 if i < 2 else -0.2
+    create_burner_ring((0.5 + offset_x, 1.5 + offset_y, 0.2))
+
+# Sink (Rimmed)
+sink_loc = (1.3, 1.5, 0.2)
+sink_size = (0.6, 0.4, 0.1)
+sink = create_lowpoly_cube(sink_loc, sink_size, COLOR_SLATE, "sink", bevel=0.02)
+
+# Tap
+tap_loc = (1.3, 1.5, 0.2)
+tap = create_lowpoly_cylinder(tap_loc, 0.03, 0.15, COLOR_WOOD, "tap", segments=8)
+tap_head = create_lowpoly_cylinder((1.3, 1.5, 0.35), 0.02, 0.05, COLOR_SLATE, "tap_head", segments=8)
+
+# --- Furniture: Dining Area (Front Corner Open) ---
+# Dining Table (Wood frame, Cream top)
+table_loc = (0.0, -1.0, 0.2)
+table_legs_size = (0.05, 0.05, 0.8)
+table_top_size = (1.2, 1.2, 0.1)
+
+# Legs
+for dx, dy in [(0.6, 0.6), (-0.6, 0.6), (0.6, -0.6), (-0.6, -0.6)]:
+    leg = create_lowpoly_cylinder((table_loc[0] + dx, table_loc[1] + dy, 0.2), 0.04, 0.8, COLOR_WOOD, "table_leg")
+
+# Top
+table_top = create_lowpoly_cube(table_loc, table_top_size, COLOR_CREAM, "table_top", bevel=0.02)
+
+# Bowl (Mustard)
+bowl_loc = (0.0, -1.0, 0.3)
+bowl = create_lowpoly_cylinder(bowl_loc, 0.15, 0.08, COLOR_MUSTARD, "bowl", segments=8)
+
+# Chairs (2)
+def create_chair(location):
+    # Seat
+    seat = create_lowpoly_cube((location[0], location[1], 0.2), (0.4, 0.4, 0.05), COLOR_WOOD, "chair_seat", bevel=0.01)
+    # Back
+    back = create_lowpoly_cube((location[0], location[1], 0.25), (0.4, 0.3, 0.05), COLOR_WOOD, "chair_back", bevel=0.01)
+    # Legs
+    for dx, dy in [(0.2, 0.2), (-0.2, 0.2), (0.2, -0.2), (-0.2, -0.2)]:
+        leg = create_lowpoly_cylinder((location[0] + dx, location[1] + dy, 0.2), 0.03, 0.4, COLOR_WOOD, "chair_leg")
+    return seat, back
+
+# Chair 1 (Left of table)
+chair1_seat, chair1_back = create_chair((-0.8, -1.0))
+# Chair 2 (Right of table)
+chair2_seat, chair2_back = create_chair((0.8, -1.0))
+
+# --- Furniture: Plant ---
+plant_loc = (-2.0, 1.8, 0.2)
+# Pot
+pot = create_lowpoly_cylinder(plant_loc, 0.15, 0.15, COLOR_WOOD, "plant_pot", segments=8)
+# Leaves (Greenish tint not in palette, using Mustard/Cream mix for low poly style or just Cream)
+# Using Cream for leaves to match "cream highlights"
+leaf_group = bpy.data.groups.new("leaves")
+for i in range(5):
+    angle = i * (math.pi * 2) / 5
+    x = math.cos(angle) * 0.1
+    z = math.sin(angle) * 0.1
+    leaf = create_lowpoly_cube((plant_loc[0] + x, plant_loc[1], plant_loc[2] + 0.15), (0.1, 0.1, 0.1), COLOR_CREAM, "plant_leaf")
+    leaf.rotation_euler = (math.radians(45), 0, 0)
+    leaf_group.objects.append(leaf)
+
+# --- Final Cleanup ---
+# Select all and apply transforms
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+
+# Deselect all
+bpy.ops.object.select_all(action='DESELECT')
+
+# Ensure active object is the floor for scene centering if needed, though scene is centered at 0,0,0
+bpy.context.scene.frame_set(1)

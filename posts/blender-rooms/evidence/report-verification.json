@@ -1,0 +1,47 @@
+{
+  "link_checks": [
+    {
+      "page": "index.html",
+      "missing_links": [],
+      "sections": 0,
+      "images": 5
+    },
+    {
+      "page": "assets/results/gallery.html",
+      "missing_links": [],
+      "sections": 48,
+      "images": 38
+    },
+    {
+      "page": "assets/results/review/index.html",
+      "missing_links": [],
+      "sections": 0,
+      "images": 30
+    },
+    {
+      "page": "assets/results/control-review/index.html",
+      "missing_links": [],
+      "sections": 0,
+      "images": 1
+    }
+  ],
+  "browser_previews": [
+    {
+      "page": "index.html",
+      "screenshot": "evidence/blender-final-post.png",
+      "dom_bytes": 8815
+    },
+    {
+      "page": "assets/results/review/index.html",
+      "screenshot": "evidence/blender-final-review.png",
+      "dom_bytes": 41085
+    }
+  ],
+  "ruff": "passed: all top-level Python files, --no-cache",
+  "tests": "17 passed in 25.89 seconds; evidence/tests.txt",
+  "report_built_from": "verified full-training, test and diagnostic archives",
+  "compute_git_status": "clean",
+  "no_publish_performed": true,
+  "visual_inspection": "Final article and anonymous review screenshots inspected; room images load, labels are readable and A/B frames have equal dimensions.",
+  "review_initial_state": "0 / 32 reviewed; no preferences prefilled"
+}

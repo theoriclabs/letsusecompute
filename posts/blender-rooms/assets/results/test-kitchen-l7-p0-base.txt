@@ -1,0 +1,231 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+# Palette: Sage (91aa8a), Warm Oak (e8dfcd), Dark Oak (9b704d), Gold Accent (e2b96b)
+COLOR_SAGE = (0.5686, 0.6706, 0.5294)
+COLOR_OAK = (0.9098, 0.8745, 0.8275)
+COLOR_DARK_OAK = (0.6078, 0.4392, 0.3020)
+COLOR_GOLD = (0.8941, 0.7255, 0.4078)
+COLOR_WHITE = (0.95, 0.95, 0.95)
+
+# Dimensions
+FLOOR_SIZE = 5.6
+WALL_HEIGHT = 3.0
+WALL_THICKNESS = 0.15
+FLOOR_HEIGHT = 0.2
+
+# --- Helper Functions ---
+
+def create_cube(name, loc, size, color, bevel=0.02):
+    """Creates a low-poly cube with a small bevel."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    # Scale to desired size
+    obj.scale = (size[0], size[1], size[2])
+    
+    # Material
+    mat = bpy.data.materials.new(name=name + "_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    bsdf.inputs['Metallic'].default_value = 0.0
+    
+    obj.data.materials.append(mat)
+    
+    # Bevel
+    if bevel > 0:
+        bpy.ops.object.shade_smooth()
+        bpy.ops.object.modifier_add(type='BEVEL')
+        mod = obj.modifiers[-1]
+        mod.bevel_depth = bevel
+        mod.bevel_segments = 1
+    
+    return obj
+
+def create_cylinder(name, loc, radius, height, color, bevel=0.02):
+    """Creates a low-poly cylinder."""
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    obj.scale = (1, 1, 1) # Cylinder is already scaled by radius/depth
+    
+    mat = bpy.data.materials.new(name=name + "_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    
+    obj.data.materials.append(mat)
+    
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        mod = obj.modifiers[-1]
+        mod.bevel_depth = bevel
+        mod.bevel_segments = 1
+    
+    return obj
+
+def create_box(name, loc, size, color, bevel=0.02):
+    """Creates a box (Cube scaled)."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    obj.scale = size
+    mat = bpy.data.materials.new(name=name + "_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    obj.data.materials.append(mat)
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        mod = obj.modifiers[-1]
+        mod.bevel_depth = bevel
+        mod.bevel_segments = 1
+    return obj
+
+# --- Scene Setup ---
+
+# Floor
+floor_loc = (0, 0, FLOOR_HEIGHT)
+floor_size = (FLOOR_SIZE, FLOOR_SIZE, 0.2)
+floor = create_cube("floor", floor_loc, floor_size, COLOR_OAK, bevel=0.0)
+
+# Walls
+wall_back_loc = (0, FLOOR_SIZE/2 + WALL_THICKNESS/2, WALL_HEIGHT)
+wall_back_size = (FLOOR_SIZE, WALL_THICKNESS, WALL_HEIGHT)
+wall_back = create_cube("wall_back", wall_back_loc, wall_back_size, COLOR_SAGE, bevel=0.0)
+
+wall_side_loc = (-FLOOR_SIZE/2 + WALL_THICKNESS/2, 0, WALL_HEIGHT)
+wall_side_size = (WALL_THICKNESS, FLOOR_SIZE, WALL_HEIGHT)
+wall_side = create_cube("wall_side", wall_side_loc, wall_side_size, COLOR_SAGE, bevel=0.0)
+
+# --- Furniture Generation ---
+
+# 1. Refrigerator (Left Wall Zone)
+# Location: Left wall, near back
+ref_loc = (-FLOOR_SIZE/2 + 0.6, FLOOR_SIZE/2 - 1.5, FLOOR_HEIGHT + 0.1)
+ref_size = (0.6, 1.8, 1.8)
+ref = create_cube("refrigerator", ref_loc, ref_size, COLOR_DARK_OAK, bevel=0.03)
+# Add a handle
+handle_loc = (ref_loc[0] + 0.3, ref_loc[1] + 0.9, ref_loc[2] + 0.1)
+handle = create_cylinder("ref_handle", handle_loc, 0.04, 0.2, COLOR_GOLD, bevel=0.0)
+handle.rotation_euler = (math.radians(90), 0, 0)
+
+# 2. Two-Door Counter with Stove and Sink (Left Wall Zone)
+# Base Cabinet
+counter_base_loc = (-FLOOR_SIZE/2 + 1.3, FLOOR_SIZE/2 - 3.0, FLOOR_HEIGHT + 0.1)
+counter_base_size = (1.8, 0.9, 0.9)
+counter_base = create_cube("counter_base", counter_base_loc, counter_base_size, COLOR_DARK_OAK, bevel=0.03)
+
+# Countertop
+counter_top_loc = (-FLOOR_SIZE/2 + 1.3, FLOOR_SIZE/2 - 3.0, FLOOR_HEIGHT + 0.9)
+counter_top_size = (1.8, 0.85, 0.05)
+counter_top = create_cube("counter_top", counter_top_loc, counter_top_size, COLOR_OAK, bevel=0.02)
+
+# Stove (4 burners)
+stove_loc = (-FLOOR_SIZE/2 + 1.3 + 0.9, FLOOR_SIZE/2 - 3.0 + 0.025, FLOOR_HEIGHT + 0.9 + 0.025)
+stove_size = (0.8, 0.8, 0.05)
+stove = create_cube("stove", stove_loc, stove_size, COLOR_DARK_OAK, bevel=0.01)
+# Burner grates (simple circles)
+for i in range(4):
+    angle = i * math.pi / 2
+    grate_loc = (stove_loc[0] + 0.4, stove_loc[1] + 0.4, stove_loc[2] + 0.03)
+    grate = create_cylinder("stove_grate_" + str(i), grate_loc, 0.15, 0.02, COLOR_DARK_OAK, bevel=0.0)
+    grate.rotation_euler = (math.radians(90), 0, 0)
+
+# Sink
+sink_loc = (-FLOOR_SIZE/2 + 1.3, FLOOR_SIZE/2 - 3.0 + 0.4, FLOOR_HEIGHT + 0.9)
+sink_size = (0.6, 0.5, 0.05)
+sink = create_cube("sink", sink_loc, sink_size, COLOR_WHITE, bevel=0.02)
+# Tap
+tap_loc = (sink_loc[0] + 0.3, sink_loc[1] + 0.25, sink_loc[2] + 0.05)
+tap = create_cylinder("tap", tap_loc, 0.03, 0.15, COLOR_GOLD, bevel=0.0)
+tap.rotation_euler = (math.radians(90), 0, 0)
+
+# 3. Dining Table (Front Corner Open)
+# Position: Center-ish, facing the room
+table_loc = (0, -1.5, FLOOR_HEIGHT + 0.1)
+table_size = (1.2, 2.0, 0.05)
+table = create_cube("dining_table", table_loc, table_size, COLOR_DARK_OAK, bevel=0.03)
+
+# Table Legs
+leg_positions = [(-0.5, -0.5), (0.5, -0.5), (-0.5, 0.5), (0.5, 0.5)]
+for lx, ly in leg_positions:
+    leg_loc = (table_loc[0] + lx, table_loc[1] + ly, table_loc[2] + 0.02)
+    leg = create_cylinder("table_leg", leg_loc, 0.05, 0.8, COLOR_DARK_OAK, bevel=0.0)
+    leg.rotation_euler = (math.radians(90), 0, 0)
+
+# Bowl on Table
+bowl_loc = (table_loc[0], table_loc[1] + 0.5, table_loc[2] + 0.06)
+bowl = create_cylinder("bowl", bowl_loc, 0.15, 0.08, COLOR_GOLD, bevel=0.02)
+bowl.rotation_euler = (math.radians(90), 0, 0)
+
+# 4. Chairs (Two)
+# Chair 1
+chair1_loc = (0.8, -1.5, FLOOR_HEIGHT + 0.1)
+chair1 = create_cube("chair_seat", chair1_loc, (0.4, 0.4, 0.05), COLOR_OAK, bevel=0.02)
+# Chair Back
+chair1_back_loc = (chair1_loc[0], chair1_loc[1] + 0.2, chair1_loc[2] + 0.05)
+chair1_back = create_cube("chair_back", chair1_back_loc, (0.4, 0.6, 0.05), COLOR_OAK, bevel=0.02)
+# Chair Legs
+for lx, ly in [(-0.2, -0.2), (0.2, -0.2), (-0.2, 0.2), (0.2, 0.2)]:
+    leg_loc = (chair1_loc[0] + lx, chair1_loc[1] + ly, chair1_loc[2] + 0.02)
+    leg = create_cylinder("chair_leg", leg_loc, 0.03, 0.4, COLOR_OAK, bevel=0.0)
+    leg.rotation_euler = (math.radians(90), 0, 0)
+
+# Chair 2
+chair2_loc = (-0.8, -1.5, FLOOR_HEIGHT + 0.1)
+chair2 = create_cube("chair_seat", chair2_loc, (0.4, 0.4, 0.05), COLOR_OAK, bevel=0.02)
+chair2_back_loc = (chair2_loc[0], chair2_loc[1] + 0.2, chair2_loc[2] + 0.05)
+chair2_back = create_cube("chair_back", chair2_back_loc, (0.4, 0.6, 0.05), COLOR_OAK, bevel=0.02)
+for lx, ly in [(-0.2, -0.2), (0.2, -0.2), (-0.2, 0.2), (0.2, 0.2)]:
+    leg_loc = (chair2_loc[0] + lx, chair2_loc[1] + ly, chair2_loc[2] + 0.02)
+    leg = create_cylinder("chair_leg", leg_loc, 0.03, 0.4, COLOR_OAK, bevel=0.0)
+    leg.rotation_euler = (math.radians(90), 0, 0)
+
+# 5. Plant (Accent)
+plant_loc = (0, FLOOR_SIZE/2 - 0.5, FLOOR_HEIGHT + 0.1)
+pot_loc = (plant_loc[0], plant_loc[1], plant_loc[2] + 0.05)
+pot = create_cylinder("plant_pot", pot_loc, 0.15, 0.15, COLOR_DARK_OAK, bevel=0.02)
+plant_loc_y = plant_loc[1] + 0.15
+plant_stem_loc = (plant_loc[0], plant_loc_y, plant_loc[2] + 0.05)
+plant_stem = create_cylinder("plant_stem", plant_stem_loc, 0.03, 0.4, COLOR_SAGE, bevel=0.0)
+plant_stem.rotation_euler = (math.radians(90), 0, 0)
+# Leaves (simple cones)
+for i in range(3):
+    leaf_loc = (plant_loc[0], plant_loc_y + 0.2, plant_loc[2] + 0.1)
+    leaf = create_cube("plant_leaf", leaf_loc, (0.1, 0.1, 0.1), COLOR_SAGE, bevel=0.0)
+    leaf.rotation_euler = (math.radians(45), math.radians(45), math.radians(45))
+    leaf.rotation_euler[0] += i * math.radians(120)
+
+# --- Optimization ---
+# Apply modifiers to reduce evaluated mesh count
+for obj in bpy.data.objects:
+    if obj.modifiers:
+        for mod in obj.modifiers:
+            if mod.type == 'BEVEL':
+                mod.apply()
+    bpy.ops.object.shade_smooth()
+
+# Select all and apply scale to prevent zero volume issues
+bpy.ops.object.select_all(action='DESELECT')
+for obj in bpy.data.objects:
+    obj.select_set(True)
+bpy.context.view_layer.objects.active = bpy.data.objects['floor']
+bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+
+# Deselect all
+bpy.ops.object.select_all(action='DESELECT')

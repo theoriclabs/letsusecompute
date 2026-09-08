@@ -1,0 +1,57 @@
+{
+  "revision": "geometry-v2-object-operators",
+  "discovered_from": "Initial base validation programs: modifier_add, parent_clear, light_add. The whitelist was then audited for equivalent ordinary object APIs before testing.",
+  "reason": "The initial guard rejected ordinary geometry operations that the task allowed through equivalent object data APIs. No geometry thresholds, prompts, generations, or labels change.",
+  "correction": "Permit ordinary mesh/object/transform operations equivalent to the already allowed data API. File/process/network operations remain forbidden. Geometry thresholds and saved programs are unchanged; lights are standardized.",
+  "validation_policy": "Re-render the exact saved outputs of both base and SFT; preserve original v1 evidence.",
+  "test_policy": "Freeze the corrected evaluator before the first test-model evaluation.",
+  "allowed_operations_added": [
+    "bpy.ops.object.modifier_add",
+    "bpy.ops.object.parent_clear",
+    "bpy.ops.mesh.primitive_plane_add",
+    "bpy.ops.mesh.primitive_circle_add",
+    "bpy.ops.object.parent_set",
+    "bpy.ops.object.origin_set",
+    "bpy.ops.object.duplicate",
+    "bpy.ops.object.convert",
+    "bpy.ops.object.mode_set",
+    "bpy.ops.object.empty_add",
+    "bpy.ops.object.light_add",
+    "bpy.ops.object.camera_add",
+    "bpy.ops.transform.translate",
+    "bpy.ops.transform.rotate",
+    "bpy.ops.transform.resize"
+  ],
+  "validation": "Trusted teacher program produces identical mesh and polygon counts using the operators; host-access rejection tests still pass.",
+  "checks": "16 passed, 2 tiny-model empty-config warnings, 24.70 seconds; ruff passed",
+  "renderer_correction": "Hide program-created lights before adding the fixed evaluator lights; use the fixed evaluator camera. Both models use this same rendering policy.",
+  "native_verification": {
+    "blender": "4.5.3 LTS",
+    "operator_definitions_verified": 28
+  },
+  "frozen_source_sha256": {
+    "render.py": "9e01fca5c5555bb88c0390afa0f137f877d5b7eedefda23b16b8d0fbc3723059",
+    "evaluate.py": "e0e6eb75bf28e2eab3cd2c650cd09023246de0bb0d0dbd7b1dc0a45f36f76eaa",
+    "inference.py": "50e225b9056a6f4ca5663a4ce6d5a8ba520a384418a9587e0182ec03a60f7d6f"
+  },
+  "test_generation": {
+    "batch_size": 8,
+    "decoding": "greedy",
+    "max_new_tokens": 4096,
+    "applied_to": [
+      "base",
+      "sft"
+    ],
+    "tiny_model_padding_and_eos_check": "Passed with batch size eight; 1 test passed in 13.26 seconds (16 deselected)."
+  },
+  "geometry_namespaces": [
+    "bpy.ops.mesh",
+    "bpy.ops.transform"
+  ],
+  "final_pretest_audit": "After full training, AST-only inspection of the saved baseline exposed mesh.select_all behind the first rejected operation. Built-in mesh/transform namespaces are allowed; no test outputs have been generated. Both policies will be replayed with this final guard.",
+  "final_audit_result": {
+    "base_programs_passing_AST": 8,
+    "trusted_geometry_and_host_access_checks": "6 passed, 11 deselected in 5.81 seconds"
+  },
+  "batch_rationale": "One eight-palette family per batch, identical for both models. Static cache capacity is small compared with the 80 GB GPU; batching amortizes decode overhead."
+}

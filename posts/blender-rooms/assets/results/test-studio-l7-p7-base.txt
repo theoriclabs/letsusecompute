@@ -1,0 +1,174 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+# Palette: Teal (71a4a3), Apricot (edddc8), Wood (967255), Cream (dfac83)
+COLORS = {
+    'teal': (0.443, 0.643, 0.643),
+    'apricot': (0.929, 0.867, 0.788),
+    'wood': (0.588, 0.447, 0.333),
+    'cream': (0.875, 0.675, 0.522),
+    'white': (1.0, 1.0, 1.0),
+    'black': (0.1, 0.1, 0.1)
+}
+
+# Helper to create a beveled box
+def create_beveled_box(name, loc, size, bevel_depth=0.02, color=None, material_name=None):
+    bpy.ops.mesh.primitive_cube_add(size=1, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.location = loc
+    obj.scale = (size[0], size[1], size[2])
+    
+    # Apply bevel
+    bpy.ops.object.modifier_add(type='BEVEL')
+    mod = obj.modifiers[-1]
+    mod.bevel_depth = bevel_depth
+    mod.bevel_segments = 1
+    
+    # Material
+    if material_name:
+        mat = bpy.data.materials.get(material_name)
+        if not mat:
+            mat = bpy.data.materials.new(name=material_name)
+            mat.use_nodes = True
+            bsdf = mat.node_tree.nodes["Principled BSDF"]
+            bsdf.inputs['Base Color'].default_value = color if color else (0.8, 0.8, 0.8)
+            mat.node_tree.links.new(mat.node_tree.nodes['Principled BSDF'].inputs['Base Color'], mat.node_tree.nodes['Principled BSDF'].inputs['Base Color']) # Fix link logic
+            # Correct link setup
+            bsdf.inputs['Base Color'].default_value = color if color else (0.8, 0.8, 0.8)
+        obj.data.materials.append(mat)
+    else:
+        mat = obj.data.materials[0]
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color if color else (0.8, 0.8, 0.8)
+        
+    return obj
+
+# --- Room Structure ---
+# Floor
+floor = create_beveled_box("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), color=COLORS['apricot'], material_name="mat_floor")
+floor.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = COLORS['apricot']
+
+# Back Wall
+wall_back = create_beveled_box("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), color=COLORS['teal'], material_name="mat_wall")
+wall_back.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = COLORS['teal']
+
+# Left Wall
+wall_side = create_beveled_box("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), color=COLORS['teal'], material_name="mat_wall")
+wall_side.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = COLORS['teal']
+
+# --- Furniture Generation ---
+
+# 1. Desk (Left Wall area)
+# Desk Base
+desk_base = create_beveled_box("desk_base", (-1.2, 0.6, 0.25), (1.8, 0.6, 0.05), color=COLORS['wood'], material_name="mat_wood")
+# Desk Top
+desk_top = create_beveled_box("desk_top", (-1.2, 0.6, 0.3), (1.8, 0.6, 0.02), color=COLORS['cream'], material_name="mat_wood")
+# Desk Legs (4)
+for i in range(4):
+    leg = create_beveled_box(f"desk_leg_{i}", 
+                             (-1.2 + (0.45 if i%2 else -0.45), 0.6 + (0.45 if i>1 else -0.45), 0.15), 
+                             (0.05, 0.05, 0.15), color=COLORS['wood'], material_name="mat_wood")
+
+# 2. Monitor
+monitor_stand = create_beveled_box("monitor_stand", (-0.6, 0.6, 0.32), (0.1, 0.1, 0.05), color=COLORS['black'], material_name="mat_black")
+monitor_screen = create_beveled_box("monitor_screen", (-0.6, 0.6, 0.35), (0.3, 0.22, 0.01), color=COLORS['black'], material_name="mat_black")
+
+# 3. Keyboard
+keyboard = create_beveled_box("keyboard", (-0.6, 0.6, 0.31), (0.25, 0.08, 0.01), color=COLORS['cream'], material_name="mat_wood")
+
+# 4. Chair (Facing desk)
+chair_legs = []
+for i in range(4):
+    leg = create_beveled_box(f"chair_leg_{i}", 
+                             (0.3 + (0.15 if i%2 else -0.15), 0.3 + (0.15 if i>1 else -0.15), 0.1), 
+                             (0.03, 0.03, 0.1), color=COLORS['wood'], material_name="mat_wood")
+    chair_legs.append(leg)
+
+chair_seat = create_beveled_box("chair_seat", (0.3, 0.3, 0.25), (0.4, 0.4, 0.02), color=COLORS['apricot'], material_name="mat_textile")
+chair_back = create_beveled_box("chair_back", (0.3, 0.3, 0.45), (0.35, 0.4, 0.02), color=COLORS['apricot'], material_name="mat_textile")
+chair_arm_l = create_beveled_box("chair_arm_l", (0.3, 0.3, 0.35), (0.02, 0.4, 0.02), color=COLORS['apricot'], material_name="mat_textile")
+chair_arm_r = create_beveled_box("chair_arm_r", (0.3, 0.3, 0.35), (0.02, 0.4, 0.02), color=COLORS['apricot'], material_name="mat_textile")
+
+# 5. Bookcase (Left Wall, behind desk)
+bookcase_frame = create_beveled_box("bookcase_frame", (-2.0, 0.6, 1.7), (0.15, 1.8, 2.0), color=COLORS['wood'], material_name="mat_wood")
+# Shelves
+for i in range(4):
+    shelf = create_beveled_box(f"bookcase_shelf_{i}", 
+                               (-2.0, 0.6 + (0.45 * i), 1.7), 
+                               (0.14, 0.05, 1.9), color=COLORS['wood'], material_name="mat_wood")
+    # Books
+    for j in range(5):
+        book = create_beveled_box(f"book_{i}_{j}", 
+                                  (-2.0 + (0.25 * j), 0.6 + (0.45 * i), 1.7 + 0.02), 
+                                  (0.02, 0.02, 0.15), color=COLORS['teal'] if j%2==0 else COLORS['cream'], material_name="mat_book")
+
+# 6. Storage Cabinet (Corner)
+cabinet_base = create_beveled_box("cabinet_base", (-2.0, 1.8, 1.7), (0.15, 0.8, 1.0), color=COLORS['wood'], material_name="mat_wood")
+cabinet_top = create_beveled_box("cabinet_top", (-2.0, 1.8, 1.7), (0.14, 0.7, 0.9), color=COLORS['cream'], material_name="mat_wood")
+cabinet_door_l = create_beveled_box("cabinet_door_l", (-2.0, 1.8, 1.7), (0.08, 0.7, 0.4), color=COLORS['apricot'], material_name="mat_wood")
+cabinet_door_r = create_beveled_box("cabinet_door_r", (-2.0, 1.8, 1.7), (0.08, 0.7, 0.4), color=COLORS['apricot'], material_name="mat_wood")
+
+# 7. Rug (Front corner open area)
+rug = create_beveled_box("rug", (0.0, 0.0, 0.21), (2.0, 2.0, 0.01), color=COLORS['teal'], material_name="mat_rug")
+
+# 8. Standing Lamp (Right side)
+lamp_base = create_beveled_box("lamp_base", (1.5, 0.0, 0.25), (0.1, 0.1, 0.05), color=COLORS['wood'], material_name="mat_wood")
+lamp_stand = create_beveled_box("lamp_stand", (1.5, 0.0, 0.3), (0.02, 0.8, 0.02), color=COLORS['wood'], material_name="mat_wood")
+lamp_shade = create_beveled_box("lamp_shade", (1.5, 0.0, 0.5), (0.3, 0.3, 0.02), color=COLORS['cream'], material_name="mat_textile")
+
+# 9. Plant (Right corner)
+pot = create_beveled_box("plant_pot", (1.8, 0.0, 0.25), (0.2, 0.2, 0.05), color=COLORS['wood'], material_name="mat_wood")
+plant = create_beveled_box("plant", (1.8, 0.0, 0.35), (0.15, 0.15, 0.3), color=COLORS['teal'], material_name="mat_plant")
+
+# Materials Definition (Ensuring they exist and are linked)
+def ensure_material(name, color):
+    mat = bpy.data.materials.get(name)
+    if not mat:
+        mat = bpy.data.materials.new(name=name)
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        mat.node_tree.links.new(bsdf.inputs['Base Color'], bsdf.inputs['Base Color']) # Dummy link to prevent error
+    return mat
+
+# Apply specific materials to objects that might have lost them or need explicit assignment
+ensure_material("mat_floor", COLORS['apricot'])
+ensure_material("mat_wall", COLORS['teal'])
+ensure_material("mat_wood", COLORS['wood'])
+ensure_material("mat_textile", COLORS['apricot'])
+ensure_material("mat_rug", COLORS['teal'])
+ensure_material("mat_plant", COLORS['teal'])
+ensure_material("mat_black", COLORS['black'])
+ensure_material("mat_book", COLORS['cream'])
+
+# Re-assign materials to ensure consistency
+for obj in bpy.data.objects:
+    if obj.data.materials:
+        mat = obj.data.materials[0]
+        if mat.use_nodes:
+            bsdf = mat.node_tree.nodes["Principled BSDF"]
+            # Simple heuristic to set color based on object name prefix if not already set
+            if "floor" in obj.name: bsdf.inputs['Base Color'].default_value = COLORS['apricot']
+            elif "wall" in obj.name: bsdf.inputs['Base Color'].default_value = COLORS['teal']
+            elif "wood" in obj.name: bsdf.inputs['Base Color'].default_value = COLORS['wood']
+            elif "textile" in obj.name or "seat" in obj.name or "back" in obj.name: bsdf.inputs['Base Color'].default_value = COLORS['apricot']
+            elif "rug" in obj.name: bsdf.inputs['Base Color'].default_value = COLORS['teal']
+            elif "plant" in obj.name: bsdf.inputs['Base Color'].default_value = COLORS['teal']
+            elif "black" in obj.name: bsdf.inputs['Base Color'].default_value = COLORS['black']
+            elif "cream" in obj.name: bsdf.inputs['Base Color'].default_value = COLORS['cream']
+
+# Select all objects to ensure they are part of the scene
+bpy.ops.object.select_all(action='DESELECT')
+for obj in bpy.data.objects:
+    obj.select_set(True)
+bpy.context.view_layer.objects.active = floor
+
+# Final cleanup of selection
+bpy.ops.object.select_all(action='DESELECT')

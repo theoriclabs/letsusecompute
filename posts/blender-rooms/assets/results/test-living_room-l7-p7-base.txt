@@ -1,0 +1,241 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+COLORS = {
+    'teal': (0.443, 0.643, 0.635),      # 71a4a3
+    'apricot': (0.918, 0.867, 0.788),   # edddc8
+    'wood': (0.588, 0.447, 0.333),      # 967255
+    'cream': (0.882, 0.675, 0.522),     # dfac83
+    'dark_wood': (0.3, 0.2, 0.1),
+    'white': (1.0, 1.0, 1.0)
+}
+
+# --- Helper Functions ---
+
+def create_box(name, loc, size, color, bevel=0.02, material_name=None):
+    """Creates a low-poly box mesh with optional bevels."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.location = loc
+    obj.scale = (size[0]/2, size[1]/2, size[2]/2)
+    
+    # Apply bevel
+    if bevel > 0:
+        bpy.ops.object.shade_smooth()
+        bpy.ops.object.modifier_add(type='BEVEL')
+        mod = obj.modifiers[-1]
+        mod.bevel_depth = bevel
+        mod.bevel_segments = 1
+    
+    # Material
+    if material_name:
+        mat = bpy.data.materials.get(material_name)
+        if not mat:
+            mat = bpy.data.materials.new(name=material_name)
+            mat.use_nodes = True
+            bsdf = mat.node_tree.nodes["Principled BSDF"]
+            bsdf.inputs['Base Color'].default_value = color
+            mat.node_tree.links.new(bsdf.inputs['Base Color'], bsdf.inputs['Base Color']) # Fix link logic if needed, usually direct assignment works
+            # Correct assignment:
+            bsdf.inputs['Base Color'].default_value = color
+        obj.data.materials.append(mat)
+    else:
+        mat = bpy.data.materials.new(name=f"Mat_{name}")
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        obj.data.materials.append(mat)
+    
+    return obj
+
+def create_cylinder(name, loc, radius, height, color, bevel=0.02, material_name=None):
+    """Creates a low-poly cylinder."""
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.location = loc
+    obj.scale = (1, 1, 1) # Scale handled by radius/depth
+    
+    # Apply bevel
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        mod = obj.modifiers[-1]
+        mod.bevel_depth = bevel
+        mod.bevel_segments = 1
+    
+    # Material
+    if material_name:
+        mat = bpy.data.materials.get(material_name)
+        if not mat:
+            mat = bpy.data.materials.new(name=material_name)
+            mat.use_nodes = True
+            bsdf = mat.node_tree.nodes["Principled BSDF"]
+            bsdf.inputs['Base Color'].default_value = color
+        obj.data.materials.append(mat)
+    else:
+        mat = bpy.data.materials.new(name=f"Mat_{name}")
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        obj.data.materials.append(mat)
+    
+    return obj
+
+def create_material(name, color):
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    return mat
+
+# --- Scene Setup ---
+
+# Floor
+floor_mat = create_material("Mat_Floor", COLORS['apricot'])
+bpy.ops.mesh.primitive_cube_add(size=1, location=(0, 0, 0.1))
+floor = bpy.context.active_object
+floor.name = "floor"
+floor.location = (0, 0, 0.1)
+floor.scale = (5.6/2, 5.6/2, 0.2/2)
+floor.data.materials.append(floor_mat)
+
+# Back Wall
+back_wall_mat = create_material("Mat_Wall_Back", COLORS['teal'])
+bpy.ops.mesh.primitive_cube_add(size=1, location=(0, 2.7, 1.7))
+wall_back = bpy.context.active_object
+wall_back.name = "wall_back"
+wall_back.location = (0, 2.7, 1.7)
+wall_back.scale = (5.6/2, 0.15/2, 3.0/2)
+wall_back.data.materials.append(back_wall_mat)
+
+# Left Wall
+left_wall_mat = create_material("Mat_Wall_Left", COLORS['teal'])
+bpy.ops.mesh.primitive_cube_add(size=1, location=(-2.7, 0, 1.7))
+wall_side = bpy.context.active_object
+wall_side.name = "wall_side"
+wall_side.location = (-2.7, 0, 1.7)
+wall_side.scale = (0.15/2, 5.6/2, 3.0/2)
+wall_side.data.materials.append(left_wall_mat)
+
+# --- Furniture Generation ---
+
+# 1. Sofa (2.4m wide, against back wall, slightly left)
+# Location: Centered at x = -1.2 (half of 2.4), y = 2.7 - 0.6 (half height)
+sofa_base_loc = (-1.2, 2.1, 0.25)
+sofa_mat = create_material("Mat_Sofa_Fabric", COLORS['cream'])
+sofa_legs_mat = create_material("Mat_Wood", COLORS['wood'])
+
+# Sofa Frame
+sofa_frame = create_box("sofa_frame", sofa_base_loc, (2.4, 0.6, 0.6), COLORS['wood'], bevel=0.05)
+sofa_frame.data.materials[0] = create_material("Mat_Sofa_Wood", COLORS['wood'])
+
+# Sofa Cushions (3 segments)
+cushion_mat = create_material("Mat_Sofa_Cushion", COLORS['apricot'])
+for i in range(3):
+    x = -1.2 + (i * 0.8) + 0.4
+    z = 0.25 + 0.3
+    cushion = create_box(f"sofa_cushion_{i}", (x, 2.4, z), (0.7, 0.55, 0.4), COLORS['apricot'], bevel=0.03)
+    cushion.data.materials[0] = cushion_mat
+
+# Sofa Arms
+arm_mat = create_material("Mat_Sofa_Arm", COLORS['cream'])
+# Left Arm
+arm_l = create_box("sofa_arm_left", (-1.8, 2.4, 0.25), (0.3, 0.6, 0.6), COLORS['cream'], bevel=0.05)
+arm_l.data.materials[0] = arm_mat
+# Right Arm
+arm_r = create_box("sofa_arm_right", (0.6, 2.4, 0.25), (0.3, 0.6, 0.6), COLORS['cream'], bevel=0.05)
+arm_r.data.materials[0] = arm_mat
+
+# 2. Coffee Table (Low, center of room)
+table_loc = (0, 0.5, 0.25)
+table_top_mat = create_material("Mat_Table_Top", COLORS['wood'])
+table_leg_mat = create_material("Mat_Table_Leg", COLORS['dark_wood'])
+
+table_top = create_box("table_top", table_loc, (1.2, 0.6, 0.05), COLORS['wood'], bevel=0.02)
+table_top.data.materials[0] = table_top_mat
+
+# Legs
+for leg in range(4):
+    x = -0.3 + (leg % 2) * 0.6
+    y = -0.3 + (leg // 2) * 0.6
+    leg_obj = create_box(f"table_leg_{leg}", (x, y, 0.25), (0.05, 0.05, 0.25), COLORS['dark_wood'], bevel=0.01)
+    leg_obj.data.materials[0] = table_leg_mat
+
+# Books on table
+book_mat = create_material("Mat_Book", COLORS['cream'])
+for i in range(3):
+    book = create_box(f"book_{i}", (0.2, 0.3, 0.25 + 0.03*i), (0.1, 0.02, 0.02), COLORS['cream'], bevel=0.005)
+    book.data.materials[0] = book_mat
+
+# 3. Accent Chair (Arm-free, front right corner area)
+chair_loc = (1.5, -1.0, 0.25)
+chair_mat = create_material("Mat_Chair_Fabric", COLORS['teal'])
+chair_leg_mat = create_material("Mat_Chair_Leg", COLORS['wood'])
+
+# Seat
+seat = create_box("chair_seat", chair_loc, (0.6, 0.6, 0.05), COLORS['teal'], bevel=0.03)
+seat.data.materials[0] = chair_mat
+
+# Backrest
+back = create_box("chair_back", (1.5, -0.3, 0.25), (0.5, 0.6, 0.4), COLORS['teal'], bevel=0.03)
+back.data.materials[0] = chair_mat
+
+# Legs
+for leg in range(4):
+    x = 1.5 + (-0.25 + (leg % 2) * 0.5)
+    y = -1.0 + (-0.25 + (leg // 2) * 0.5)
+    leg_obj = create_box(f"chair_leg_{leg}", (x, y, 0.25), (0.04, 0.04, 0.25), COLORS['wood'], bevel=0.01)
+    leg_obj.data.materials[0] = chair_leg_mat
+
+# 4. TV and Media Cabinet (Left wall)
+cabinet_loc = (-2.7, 0.5, 1.7)
+cabinet_mat = create_material("Mat_Cabinet", COLORS['wood'])
+tv_mat = create_material("Mat_TV", (0.05, 0.05, 0.05))
+
+# Cabinet Base
+cabinet = create_box("media_cabinet", cabinet_loc, (1.8, 0.4, 0.4), COLORS['wood'], bevel=0.03)
+cabinet.data.materials[0] = cabinet_mat
+
+# TV
+tv = create_box("television", (-2.7, 0.5, 1.7 + 0.2), (1.2, 0.6, 0.05), (0.05, 0.05, 0.05), bevel=0.01)
+tv.data.materials[0] = tv_mat
+
+# 5. Rug (Under sofa and table)
+rug_loc = (-0.6, 1.0, 0.2)
+rug_mat = create_material("Mat_Rug", COLORS['apricot'])
+# Create a slightly larger rug than the furniture footprint
+rug = create_box("rug", rug_loc, (2.0, 2.0, 0.02), COLORS['apricot'], bevel=0.01)
+rug.data.materials[0] = rug_mat
+
+# 6. Lamp (Corner lamp)
+lamp_loc = (-2.0, -1.5, 0.25)
+lamp_base = create_box("lamp_base", lamp_loc, (0.1, 0.1, 0.1), COLORS['wood'], bevel=0.01)
+lamp_base.data.materials[0] = create_material("Mat_Lamp_Base", COLORS['wood'])
+lamp_stand = create_cylinder("lamp_stand", (lamp_loc[0], lamp_loc[1], 0.25), 0.03, 0.2, COLORS['wood'], bevel=0.01)
+lamp_stand.data.materials[0] = create_material("Mat_Lamp_Stand", COLORS['wood'])
+lamp_shade = create_cylinder("lamp_shade", (lamp_loc[0], lamp_loc[1], 0.5), 0.15, 0.1, COLORS['cream'], bevel=0.01)
+lamp_shade.data.materials[0] = create_material("Mat_Lamp_Shade", COLORS['cream'])
+
+# 7. Plant (Corner)
+plant_loc = (2.0, -2.0, 0.25)
+pot = create_box("plant_pot", plant_loc, (0.3, 0.3, 0.1), COLORS['wood'], bevel=0.02)
+pot.data.materials[0] = create_material("Mat_Plant_Pot", COLORS['wood'])
+plant = create_box("plant_foliage", (plant_loc[0], plant_loc[1], 0.35), (0.4, 0.4, 0.4), COLORS['teal'], bevel=0.02)
+plant.data.materials[0] = create_material("Mat_Plant", COLORS['teal'])
+
+# --- Final Cleanup ---
+# Ensure all objects are in edit mode for potential future edits, but here we just finalize
+for obj in bpy.data.objects:
+    obj.select_set(True)
+bpy.ops.object.mode_set(mode='OBJECT')
+
+# Select camera and lights if they exist (as per prompt "renderer supplies camera and lights")
+# We do not create them, just ensure scene is ready.
+bpy.context.scene.render.engine = 'CYCLES' # Default fallback, though prompt says renderer supplies
+bpy.context.scene.cycles.device = 'GPU'

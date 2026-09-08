@@ -1,0 +1,159 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+COLORS = {
+    'forest_green': (0.4, 0.54, 0.47),   # 668b79
+    'blush': (0.94, 0.85, 0.82),          # eedacf
+    'wood_dark': (0.54, 0.41, 0.32),      # 8d6951
+    'wood_light': (0.83, 0.64, 0.37),     # d4a25f
+    'cream': (0.98, 0.98, 0.92),          # Off-white/Cream
+    'white': (1.0, 1.0, 1.0)
+}
+
+def create_material(name, color):
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    bsdf.inputs['Metallic'].default_value = 0.0
+    return mat
+
+def create_mesh(name, vertices, edges, faces, material_name):
+    obj = bpy.data.objects.new(name, None)
+    bpy.context.collection.objects.link(obj)
+    
+    mesh = bpy.data.meshes.new(name)
+    mesh.from_pydata(vertices, edges, faces)
+    mesh.update_calc()
+    
+    # Apply scale to fix potential float issues
+    obj.scale = (1, 1, 1)
+    
+    mat = bpy.data.materials.get(material_name)
+    if not mat:
+        mat = create_material(name + "_mat", (0.5, 0.5, 0.5))
+    
+    obj.data.materials.append(mat)
+    return obj
+
+def create_box(name, loc, size, mat_name):
+    verts = [
+        (0, 0, 0), (size[0], 0, 0), (size[0], size[1], 0), (0, size[1], 0),
+        (0, 0, size[2]), (size[0], 0, size[2]), (size[0], size[1], size[2]), (0, size[1], size[2])
+    ]
+    edges = [
+        (0, 1), (1, 2), (2, 3), (3, 0),
+        (4, 5), (5, 6), (6, 7), (7, 4),
+        (0, 4), (1, 5), (2, 6), (3, 7)
+    ]
+    faces = [(0, 1, 2, 3), (4, 5, 6, 7), (0, 1, 5, 4), (2, 3, 7, 6), (0, 3, 7, 4), (1, 2, 6, 5)]
+    return create_mesh(name, verts, edges, faces, mat_name)
+
+def create_cylinder(name, loc, radius, height, segments=16, mat_name=None):
+    verts = []
+    edges = []
+    faces = []
+    
+    for i in range(segments + 1):
+        angle = 2 * math.pi * i / segments
+        x = radius * math.cos(angle)
+        z = radius * math.sin(angle)
+        verts.append((x, 0, z))
+        verts.append((x, height, z))
+    
+    for i in range(segments):
+        v1 = i
+        v2 = i + 1
+        v3 = v2 + segments
+        v4 = v1 + segments
+        edges.append((v1, v2, v3, v4))
+        faces.append((v1, v2, v3, v4))
+        
+    edges.append((0, segments))
+    faces.append((0, 1, segments, segments + 1))
+    
+    obj = create_mesh(name, verts, edges, faces, mat_name if mat_name else "cyl_mat")
+    obj.location = loc
+    return obj
+
+# --- Scene Setup ---
+# Floor
+floor = create_box("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), "floor_mat")
+floor.data.materials[0].diffuse_color = COLORS['blush']
+
+# Walls
+wall_back = create_box("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), "wall_mat")
+wall_back.data.materials[0].diffuse_color = COLORS['forest_green']
+
+wall_side = create_box("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), "wall_mat")
+wall_side.data.materials[0].diffuse_color = COLORS['forest_green']
+
+# --- Furniture Generation ---
+
+# 1. Bed (1.8m wide)
+# Frame
+bed_frame = create_box("bed_frame", (0.9, 1.8, 0.2), (1.8, 2.0, 0.1), "wood_dark")
+# Mattress
+bed_mattress = create_box("bed_mattress", (0.9, 1.8, 0.3), (1.8, 2.0, 0.15), "cream")
+# Pillow 1
+pillow1 = create_box("pillow_1", (0.9, 1.8, 0.35), (0.5, 0.6, 0.1), "blush")
+# Pillow 2
+pillow2 = create_box("pillow_2", (0.9, 1.8, 0.35), (0.5, 0.6, 0.1), "blush")
+# Blanket (Folded)
+blanket = create_box("bed_blanket", (0.9, 1.8, 0.35), (0.8, 0.6, 0.05), "forest_green")
+blanket.location = (0.9, 1.8, 0.35)
+
+# 2. Bedside Cabinet & Lamp
+# Cabinet
+cabinet = create_box("cabinet", (2.0, 1.8, 0.2), (0.4, 0.5, 0.4), "wood_light")
+# Cabinet Top
+cabinet_top = create_box("cabinet_top", (2.0, 1.8, 0.2), (0.4, 0.5, 0.02), "cream")
+# Lamp Base
+lamp_base = create_cylinder("lamp_base", (2.0, 1.8, 0.2), 0.05, 0.05, mat_name="wood_dark")
+# Lamp Shade
+lamp_shade = create_cylinder("lamp_shade", (2.0, 1.8, 0.2), 0.1, 0.1, segments=8, mat_name="cream")
+lamp_shade.location = (2.0, 1.8, 0.45)
+
+# 3. Two-Door Wardrobe (Left Wall)
+# Main Body
+wardrobe_body = create_box("wardrobe_body", (-2.7, 0.2, 1.7), (0.15, 2.0, 2.5), "wood_dark")
+# Door 1
+door1 = create_box("wardrobe_door_1", (-2.7, 0.2, 1.7), (0.08, 2.0, 2.5), "wood_light")
+# Door 2
+door2 = create_box("wardrobe_door_2", (-2.7, 0.2, 1.7), (0.08, 2.0, 2.5), "wood_light")
+# Handles
+handle1 = create_cylinder("wardrobe_handle_1", (-2.7, 0.2, 1.7), 0.01, 0.05, mat_name="cream")
+handle1.location = (-2.7, 0.2, 1.7)
+handle1.rotation_euler = (math.radians(90), 0, 0)
+handle2 = create_cylinder("wardrobe_handle_2", (-2.7, 0.2, 1.7), 0.01, 0.05, mat_name="cream")
+handle2.location = (-2.7, 0.2, 1.7)
+handle2.rotation_euler = (math.radians(90), 0, 0)
+
+# 4. Rug
+rug = create_box("rug", (0.0, 0.0, 0.1), (2.0, 1.5, 0.02), "cream")
+rug.location = (0.0, 0.0, 0.1)
+
+# 5. Potted Plant (Front Corner)
+pot = create_cylinder("plant_pot", (2.5, 2.5, 0.1), 0.15, 0.15, mat_name="wood_dark")
+plant_leaves = create_box("plant_leaves", (2.5, 2.5, 0.1), (0.4, 0.4, 0.4), "forest_green")
+plant_leaves.location = (2.5, 2.5, 0.2)
+
+# 6. Framed Art (Back Wall)
+frame = create_box("art_frame", (0.0, 2.7, 1.7), (0.02, 0.8, 0.02), "wood_dark")
+art_piece = create_box("art_piece", (0.0, 2.7, 1.7), (0.8, 0.6, 0.01), "cream")
+art_piece.location = (0.0, 2.7, 1.7)
+
+# --- Final Adjustments ---
+# Ensure all objects are in the main collection
+for obj in bpy.data.objects:
+    if obj.name not in ['floor', 'wall_back', 'wall_side']:
+        obj.collection = bpy.context.collection
+
+# Select all for potential camera setup if needed (though prompt says renderer supplies camera)
+bpy.ops.object.select_all(action='DESELECT')

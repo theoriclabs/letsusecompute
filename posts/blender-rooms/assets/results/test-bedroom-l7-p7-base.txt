@@ -1,0 +1,176 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_cube(name, loc, size, color, bevel=0.01):
+    """Creates a low-poly cube with a small bevel."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = loc
+    obj.rotation_euler = (math.radians(90), 0, 0)  # Rotate to align Z with local up for extrusion logic if needed, but here we use standard cube
+    
+    mesh = obj.data
+    vertices = [(0,0,0), (size[0],0,0), (size[0],size[1],0), (0,size[1],0),
+                (0,0,size[2]), (size[0],0,size[2]), (size[0],size[1],size[2]), (0,size[1],size[2])]
+    faces = [(0, 1, 2, 3), (4, 5, 6, 7), (0, 1, 5, 4), (2, 3, 7, 6), (0, 3, 7, 4), (1, 2, 6, 5)]
+    
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.8
+    bsdf.inputs["Metallic"].default_value = 0.0
+    
+    obj.data.materials.append(mat)
+    
+    # Apply bevel modifier for low-poly look
+    mod = obj.modifiers.new(name="Bevel", type='BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(10)
+    
+    bpy.data.objects.append(obj)
+    return obj
+
+def create_cylinder(name, loc, radius, height, color, segments=8, bevel=0.01):
+    """Creates a low-poly cylinder."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = loc
+    
+    mesh = obj.data
+    vertices = []
+    faces = []
+    verts_count = 0
+    
+    # Top and Bottom
+    for i in range(segments):
+        angle = math.radians(i * 360 / segments)
+        x = radius * math.cos(angle)
+        z = radius * math.sin(angle)
+        vertices.append((x, 0, z)) # Bottom
+        vertices.append((x, 0, z + height)) # Top
+        verts_count += 2
+        
+    # Bottom Face
+    faces.append((0, 1, 2))
+    for i in range(1, segments):
+        faces.append((i, i+1, i+2))
+    faces.append((segments, 0, segments+1))
+    
+    # Top Face (inverted)
+    for i in range(segments-1, -1, -1):
+        faces.append((verts_count + i + 1, verts_count + i + 2, verts_count + i + 3))
+    
+    # Side Faces
+    for i in range(segments):
+        faces.append((verts_count + i, verts_count + i + 1, verts_count + i + segments + 1, verts_count + i + segments))
+        
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.8
+    
+    obj.data.materials.append(mat)
+    
+    mod = obj.modifiers.new(name="Bevel", type='BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    
+    bpy.data.objects.append(obj)
+    return obj
+
+# --- Palette ---
+# Teal: 71a4a3
+# Apricot: edddc8
+# Wood: 967255
+# Cream: dfac83
+COLORS = {
+    'teal': (0.443, 0.643, 0.639),
+    'apricot': (0.929, 0.867, 0.792),
+    'wood': (0.588, 0.447, 0.337),
+    'cream': (0.871, 0.675, 0.522),
+    'dark_wood': (0.3, 0.25, 0.2)
+}
+
+# --- Room Structure ---
+
+# Floor
+floor = create_cube("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), COLORS['apricot'])
+
+# Back Wall
+wall_back = create_cube("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), COLORS['teal'])
+
+# Left Wall
+wall_side = create_cube("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), COLORS['teal'])
+
+# --- Furniture ---
+
+# 1. Bed (1.8m wide)
+# Frame
+bed_frame = create_cube("bed_frame", (0.9, 1.8, 0.2), (1.8, 2.0, 0.2), COLORS['wood'])
+# Mattress
+bed_mattress = create_cube("bed_mattress", (0.9, 1.8, 0.4), (1.8, 2.0, 0.15), COLORS['cream'])
+# Pillow 1
+pillow_1 = create_cube("pillow_1", (0.9, 2.0, 0.45), (0.5, 0.5, 0.1), COLORS['apricot'])
+# Pillow 2
+pillow_2 = create_cube("pillow_2", (0.9, 2.0, 0.45), (0.5, 0.5, 0.1), COLORS['apricot'])
+# Blanket (folded)
+blanket = create_cube("bed_blanket", (0.9, 1.8, 0.4), (1.8, 0.6, 0.05), COLORS['teal'])
+
+# 2. Bedside Cabinet & Lamp
+# Cabinet
+cabinet = create_cube("cabinet", (2.2, 1.8, 0.2), (0.4, 0.4, 0.4), COLORS['wood'])
+# Lamp Base
+lamp_base = create_cylinder("lamp_base", (2.2, 1.8, 0.4), 0.05, 0.05, COLORS['wood'])
+# Lamp Shade
+lamp_shade = create_cylinder("lamp_shade", (2.2, 1.8, 0.45), 0.1, 0.1, COLORS['cream'])
+
+# 3. Two-Door Wardrobe (Left Wall)
+# Main Body
+wardrobe_body = create_cube("wardrobe_body", (-2.7, 1.0, 1.7), (0.15, 2.0, 2.5), COLORS['wood'])
+# Door 1
+door_1 = create_cube("wardrobe_door_1", (-2.7, 1.0, 1.7), (0.07, 2.0, 2.5), COLORS['cream'])
+# Door 2
+door_2 = create_cube("wardrobe_door_2", (-2.7, 1.0, 1.7), (0.07, 2.0, 2.5), COLORS['cream'])
+# Handle 1
+handle_1 = create_cylinder("wardrobe_handle_1", (-2.7, 1.0, 1.7), 0.01, 0.01, COLORS['dark_wood'])
+# Handle 2
+handle_2 = create_cylinder("wardrobe_handle_2", (-2.7, 1.0, 1.7), 0.01, 0.01, COLORS['dark_wood'])
+
+# 4. Rug
+rug = create_cube("rug", (0.0, 0.0, 0.11), (2.0, 2.0, 0.02), COLORS['apricot'])
+
+# 5. Potted Plant (Front Corner area, but slightly back to not block view)
+# Pot
+pot = create_cylinder("plant_pot", (1.5, -1.0, 0.2), 0.15, 0.15, COLORS['wood'])
+# Leaves (Simplified as a blocky shape)
+plant_leaves = create_cube("plant_leaves", (1.5, -1.0, 0.35), (0.4, 0.4, 0.4), COLORS['teal'])
+
+# 6. Framed Art (Back Wall)
+frame = create_cube("art_frame", (0.0, 2.7, 1.7), (0.8, 0.1, 0.02), COLORS['wood'])
+canvas = create_cube("art_canvas", (0.0, 2.7, 1.7), (0.7, 0.08, 0.01), COLORS['cream'])
+
+# --- Finalize ---
+# Select all for potential global operations if needed, though not strictly required by prompt
+bpy.ops.object.select_all(action='DESELECT')
+
+# Ensure all objects are in the scene (they are created via bpy.data.objects.append)
+# The scene is already active by default in this context.
+
+# Add a simple sun light for visualization (optional, prompt says renderer supplies lights, but good for preview)
+# bpy.ops.object.light_add(type='SUN', location=(0, 0, 3))
+# light_data = bpy.context.object.data
+# light_data.energy = 500
+# light_data.color = (1, 1, 1)

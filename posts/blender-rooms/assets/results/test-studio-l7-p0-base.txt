@@ -1,0 +1,218 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+# Palette: Sage (91aa8a), Cream (e8dfcd), Oak (9b704d), Gold (e2b96b)
+COLORS = {
+    'sage': (0.5686, 0.6745, 0.5255),
+    'cream': (0.9098, 0.8745, 0.8275),
+    'oak': (0.6078, 0.4392, 0.2980),
+    'gold': (0.8863, 0.7255, 0.4118),
+    'white': (1.0, 1.0, 1.0),
+    'black': (0.1, 0.1, 0.1),
+}
+
+def create_mesh(name, verts, faces, parent=None):
+    """Helper to create a mesh from vertex and face lists."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    if parent:
+        obj.parent = parent
+    bpy.context.collection.objects.link(obj)
+    
+    mesh = obj.data
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    
+    # Apply scale to fix potential zero-area faces issues
+    obj.scale = (1, 1, 1)
+    bpy.ops.object.transform_apply(scale=True)
+    
+    return obj
+
+def create_material(name, color):
+    mat = bpy.data.materials.new(name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    bsdf.inputs['Metallic'].default_value = 0.0
+    return mat
+
+# --- Room Structure ---
+# Floor
+floor_verts = [
+    (-2.8, -2.8, 0.1), (2.8, -2.8, 0.1), (2.8, 2.8, 0.1), (-2.8, 2.8, 0.1)
+]
+floor_faces = [(0, 1, 2), (0, 2, 3)]
+floor = create_mesh("floor", floor_verts, floor_faces)
+floor.data.materials.append(create_material("mat_floor", COLORS['cream']))
+
+# Back Wall
+back_wall_verts = [
+    (-2.8, 2.8, 1.7), (2.8, 2.8, 1.7), (2.8, 2.8, 4.7), (-2.8, 2.8, 4.7)
+]
+back_wall_faces = [(0, 1, 2), (0, 2, 3)]
+wall_back = create_mesh("wall_back", back_wall_verts, back_wall_faces)
+wall_back.data.materials.append(create_material("mat_wall", COLORS['sage']))
+
+# Left Wall
+left_wall_verts = [
+    (-2.8, -2.8, 1.7), (-2.8, 2.8, 1.7), (-2.8, 2.8, 4.7), (-2.8, -2.8, 4.7)
+]
+left_wall_faces = [(0, 1, 2), (0, 2, 3)]
+wall_side = create_mesh("wall_side", left_wall_verts, left_wall_faces)
+wall_side.data.materials.append(create_material("mat_wall", COLORS['sage']))
+
+# --- Furniture Helpers ---
+def create_box(name, loc, size, mat_color, bevel=0.02):
+    verts = [
+        (-size[0]/2, -size[1]/2, -size[2]/2), (size[0]/2, -size[1]/2, -size[2]/2),
+        (size[0]/2, size[1]/2, -size[2]/2), (-size[0]/2, size[1]/2, -size[2]/2),
+        (-size[0]/2, -size[1]/2, size[2]/2), (size[0]/2, -size[1]/2, size[2]/2),
+        (size[0]/2, size[1]/2, size[2]/2), (-size[0]/2, size[1]/2, size[2]/2)
+    ]
+    faces = [
+        (0, 1, 2), (0, 2, 3), # Bottom
+        (4, 5, 1), (4, 1, 0), # Front
+        (5, 6, 2), (5, 2, 1), # Right
+        (6, 7, 3), (6, 3, 2), # Back
+        (7, 4, 6), (7, 6, 5), # Left
+    ]
+    obj = create_mesh(name, verts, faces)
+    obj.location = loc
+    obj.data.materials.append(create_material(name, mat_color))
+    return obj
+
+def create_cylinder(name, loc, radius, height, segments=8, mat_color=None):
+    verts = []
+    faces = []
+    for i in range(segments + 1):
+        angle = 2 * math.pi * i / segments
+        x = radius * math.cos(angle)
+        z = radius * math.sin(angle)
+        verts.append((x, 0, z))
+        verts.append((x, height, z))
+    
+    for i in range(segments):
+        a = i
+        b = (i + 1) % (segments + 1)
+        c = b + (segments + 1)
+        d = a + (segments + 1)
+        faces.append((a, b, d))
+        faces.append((b, c, d))
+    
+    obj = create_mesh(name, verts, faces)
+    obj.location = loc
+    if mat_color:
+        obj.data.materials.append(create_material(name, mat_color))
+    return obj
+
+# --- Desk Area (Front Right) ---
+# Desk
+desk = create_box("desk_frame", (1.0, -1.0, 0.2), (1.6, 0.6, 0.08), COLORS['oak'])
+desk_legs = []
+for x in [-0.8, 0.8]:
+    leg = create_box(f"desk_leg_{x}", (x, -0.3, 0.04), (0.06, 0.3, 0.06), COLORS['oak'])
+    desk_legs.append(leg)
+desk.parent = desk
+
+# Monitor
+monitor_stand = create_box("monitor_stand", (0.0, 0.0, 0.15), (0.15, 0.15, 0.05), COLORS['black'])
+monitor = create_box("monitor_screen", (0.0, 0.0, 0.25), (0.4, 0.25, 0.02), COLORS['black'])
+monitor_stand.parent = monitor
+monitor.parent = desk
+
+# Keyboard
+keyboard = create_box("keyboard", (0.0, 0.0, 0.12), (0.35, 0.12, 0.02), COLORS['cream'])
+keyboard.parent = desk
+
+# Chair (Facing desk, so rotated 180 deg around Y)
+chair = create_box("chair_base", (1.0, 0.8, 0.2), (0.5, 0.5, 0.05), COLORS['oak'])
+chair_seat = create_box("chair_seat", (0.0, 0.0, 0.05), (0.45, 0.45, 0.05), COLORS['cream'])
+chair_back = create_box("chair_back", (0.0, 0.0, 0.05), (0.2, 0.4, 0.05), COLORS['cream'])
+chair_arm_l = create_box("chair_arm_l", (0.0, 0.0, 0.05), (0.1, 0.1, 0.05), COLORS['cream'])
+chair_arm_r = create_box("chair_arm_r", (0.0, 0.0, 0.05), (0.1, 0.1, 0.05), COLORS['cream'])
+chair_legs = []
+for x in [-0.25, 0.25]:
+    for z in [-0.25, 0.25]:
+        leg = create_box(f"chair_leg_{x}_{z}", (x, z, 0.0), (0.04, 0.04, 0.04), COLORS['oak'])
+        chair_legs.append(leg)
+
+# Group chair parts
+chair_group = bpy.data.objects.new("chair", None)
+bpy.context.collection.objects.link(chair_group)
+chair_group.parent = chair
+chair.parent = chair_group
+chair_seat.parent = chair
+chair_back.parent = chair
+chair_arm_l.parent = chair
+chair_arm_r.parent = chair
+for leg in chair_legs:
+    leg.parent = chair
+
+# --- Bookcase (Left Wall) ---
+bookcase = create_box("bookcase_frame", (-2.0, 0.0, 1.7), (0.4, 2.0, 2.8), COLORS['oak'])
+shelves = []
+for i in range(4):
+    shelf = create_box(f"bookcase_shelf_{i}", (0.0, 0.0, 0.0), (0.38, 0.05, 0.27), COLORS['cream'])
+    shelf.parent = bookcase
+    shelves.append(shelf)
+
+# Books
+for i in range(12):
+    book = create_box(f"book_{i}", (0.0, 0.0, 0.0), (0.04, 0.02, 0.15), COLORS['gold'])
+    book.parent = bookcase
+    # Randomize position slightly on shelves
+    shelf_idx = i % 4
+    shelf_y = 0.02 + (shelf_idx * 0.45)
+    shelf_z = 0.135 + ((i // 4) * 0.1)
+    book.location = (0.1 + (i % 3) * 0.08, shelf_y, shelf_z)
+
+# --- Storage Cabinet (Left Wall, further back) ---
+cabinet = create_box("cabinet_frame", (-2.0, 1.0, 1.7), (0.4, 0.8, 1.2), COLORS['oak'])
+cabinet_doors = []
+for i in range(2):
+    door = create_box(f"cabinet_door_{i}", (0.0, 0.0, 0.0), (0.19, 0.7, 0.01), COLORS['cream'])
+    door.parent = cabinet
+    cabinet_doors.append(door)
+
+# --- Rug (Center) ---
+rug_verts = [
+    (-1.0, -1.0, 0.1), (1.0, -1.0, 0.1), (1.0, 1.0, 0.1), (-1.0, 1.0, 0.1)
+]
+rug_faces = [(0, 1, 2), (0, 2, 3)]
+rug = create_mesh("rug", rug_verts, rug_faces)
+rug.location = (0.0, 0.0, 0.1)
+rug.data.materials.append(create_material("mat_rug", COLORS['sage']))
+
+# --- Standing Lamp (Corner) ---
+lamp_base = create_box("lamp_base", (2.0, 2.0, 0.1), (0.15, 0.15, 0.05), COLORS['gold'])
+lamp_stand = create_cylinder("lamp_stand", (2.0, 2.0, 0.6), 0.03, 1.5, mat_color=COLORS['gold'])
+lamp_shade = create_cylinder("lamp_shade", (2.0, 2.0, 2.0), 0.2, 0.1, segments=16, mat_color=COLORS['cream'])
+lamp_shade.rotation_euler = (math.pi/2, 0, 0)
+lamp_shade.parent = lamp_stand
+lamp_stand.parent = lamp_base
+
+# --- Plant (Corner) ---
+plant_pot = create_box("plant_pot", (2.0, -2.0, 0.15), (0.2, 0.2, 0.05), COLORS['oak'])
+plant_stem = create_cylinder("plant_stem", (0.0, 0.0, 0.1), 0.02, 0.4, mat_color=COLORS['cream'])
+plant_leaves = create_box("plant_leaves", (0.0, 0.0, 0.4), (0.3, 0.3, 0.1), COLORS['sage'])
+plant_stem.parent = plant_pot
+plant_leaves.parent = plant_stem
+plant_pot.parent = plant_stem # Simplified hierarchy
+
+# --- Final Adjustments ---
+# Ensure all objects are in the main collection
+for obj in bpy.data.objects:
+    if obj.parent:
+        obj.parent.users_clear()
+        bpy.context.collection.objects.link(obj)
+    else:
+        bpy.context.collection.objects.link(obj)
+
+# Select all for potential future operations (though not required by prompt)
+bpy.ops.object.select_all(action='DESELECT')

@@ -1,0 +1,156 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+COLOR_SLATE = (0.482, 0.533, 0.600)   # 7a899a
+COLOR_MUSTARD = (0.835, 0.859, 0.282)  # d7ad48
+COLOR_CREAM = (0.839, 0.859, 0.667)    # e5ddca
+COLOR_WOOD = (0.557, 0.420, 0.314)     # 8f6b50
+
+# --- Helper Functions ---
+
+def create_cube(name, loc, size, color, bevel=0.02):
+    """Creates a low-poly cube with a small bevel."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    obj.data.scale = size
+    obj.location = loc
+    
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.7
+    bsdf.inputs["Metallic"].default_value = 0.0
+    
+    obj.data.materials.append(mat)
+    
+    # Apply bevel
+    bpy.ops.object.shade_smooth()
+    bpy.ops.object.modifier_add(type='BEVEL')
+    mod = obj.modifiers[-1]
+    mod.bevel_depth = bevel
+    mod.bevel_resolution = 1
+    bpy.ops.object.modifier_apply(modifier=mod.name)
+    
+    return obj
+
+def create_cylinder(name, loc, radius, height, color, bevel=0.02):
+    """Creates a low-poly cylinder."""
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.7
+    bsdf.inputs["Metallic"].default_value = 0.0
+    
+    obj.data.materials.append(mat)
+    
+    bpy.ops.object.shade_smooth()
+    bpy.ops.object.modifier_add(type='BEVEL')
+    mod = obj.modifiers[-1]
+    mod.bevel_depth = bevel
+    mod.bevel_resolution = 1
+    bpy.ops.object.modifier_apply(modifier=mod.name)
+    
+    return obj
+
+def create_box(name, loc, size, color, bevel=0.02):
+    """Creates a low-poly box (Cube with specific scale)."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    obj.data.scale = size
+    obj.location = loc
+    
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.7
+    bsdf.inputs["Metallic"].default_value = 0.0
+    
+    obj.data.materials.append(mat)
+    
+    bpy.ops.object.shade_smooth()
+    bpy.ops.object.modifier_add(type='BEVEL')
+    mod = obj.modifiers[-1]
+    mod.bevel_depth = bevel
+    mod.bevel_resolution = 1
+    bpy.ops.object.modifier_apply(modifier=mod.name)
+    
+    return obj
+
+# --- Room Structure ---
+
+# Floor
+floor = create_cube("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), COLOR_SLATE)
+
+# Back Wall
+wall_back = create_cube("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), COLOR_SLATE)
+
+# Left Wall
+wall_side = create_cube("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), COLOR_SLATE)
+
+# --- Furniture: Bed (Right side, against back wall) ---
+# Bed Frame
+bed_frame = create_box("bed_frame", (1.8, 1.0, 1.7), (1.8, 0.4, 2.0), COLOR_SLATE)
+# Bed Mattress
+bed_mattress = create_box("bed_mattress", (1.8, 1.0, 1.7), (1.8, 0.25, 2.0), COLOR_CREAM)
+# Bed Headboard
+bed_headboard = create_box("bed_headboard", (1.8, 1.0, 1.7), (1.8, 0.15, 0.1), COLOR_WOOD)
+# Pillows
+pillow_l = create_box("pillow_left", (1.8, 1.0, 1.7), (0.4, 0.15, 0.4), COLOR_MUSTARD)
+pillow_r = create_box("pillow_right", (1.8, 1.0, 1.7), (0.4, 0.15, 0.4), COLOR_MUSTARD)
+# Blanket (Folded)
+blanket = create_box("bed_blanket", (1.8, 1.0, 1.7), (1.4, 0.1, 2.0), COLOR_MUSTARD)
+
+# --- Furniture: Wardrobe (Left Wall) ---
+# Wardrobe Frame
+wardrobe_frame = create_box("wardrobe_frame", (-2.0, 0.5, 1.7), (0.4, 1.8, 2.0), COLOR_SLATE)
+# Wardrobe Doors
+door_l = create_box("wardrobe_door_left", (-2.0, 0.5, 1.7), (0.2, 1.8, 2.0), COLOR_WOOD)
+door_r = create_box("wardrobe_door_right", (-2.0, 0.5, 1.7), (0.2, 1.8, 2.0), COLOR_WOOD)
+# Wardrobe Handles
+handle_l = create_cylinder("wardrobe_handle_left", (-2.0, 0.5, 1.7), 0.01, 0.05, COLOR_SLATE)
+handle_r = create_cylinder("wardrobe_handle_right", (-2.0, 0.5, 1.7), 0.01, 0.05, COLOR_SLATE)
+
+# --- Furniture: Bedside Cabinet & Lamp (Left of Bed) ---
+# Cabinet
+cabinet = create_box("cabinet", (1.0, 1.0, 1.7), (0.4, 0.45, 0.6), COLOR_WOOD)
+# Cabinet Top
+cabinet_top = create_box("cabinet_top", (1.0, 1.0, 1.7), (0.4, 0.05, 0.6), COLOR_CREAM)
+# Lamp Base
+lamp_base = create_cylinder("lamp_base", (1.0, 1.0, 1.7), 0.06, 0.06, COLOR_WOOD)
+# Lamp Shade
+lamp_shade = create_cylinder("lamp_shade", (1.0, 1.0, 1.7), 0.12, 0.12, COLOR_CREAM)
+# Lamp Stem
+lamp_stem = create_cylinder("lamp_stem", (1.0, 1.0, 1.7), 0.02, 0.2, COLOR_WOOD)
+
+# --- Furniture: Rug ---
+rug = create_cube("rug", (0.5, 0.5, 0.11), (2.2, 1.8, 0.02), COLOR_MUSTARD)
+
+# --- Furniture: Potted Plant (Front Left Corner) ---
+# Pot
+pot = create_cylinder("plant_pot", (-2.2, 0.5, 0.5), 0.15, 0.15, COLOR_WOOD)
+# Plant Leaves (Grouped as one object for simplicity, low poly)
+plant = create_box("plant_leaves", (-2.2, 0.5, 0.5), (0.3, 0.3, 0.4), COLOR_SLATE)
+
+# --- Furniture: Framed Art (Back Wall) ---
+frame = create_box("art_frame", (0, 2.7, 1.7), (1.0, 0.02, 0.02), COLOR_WOOD)
+canvas = create_box("art_canvas", (0, 2.7, 1.7), (0.9, 0.01, 0.01), COLOR_CREAM)
+
+# --- Final Cleanup ---
+bpy.ops.object.select_all(action='DESELECT')

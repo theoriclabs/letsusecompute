@@ -1,0 +1,159 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_cube(location, size, color, name, bevel=0.01):
+    """Creates a low-poly cube with a small bevel."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    # Scale to desired size
+    obj.scale = (size[0], size[1], size[2])
+    
+    # Apply scale to prevent issues
+    bpy.ops.object.transform_apply(scale=True)
+    
+    # Material
+    mat_name = name + "_mat"
+    if mat_name not in bpy.data.materials:
+        mat = bpy.data.materials.new(name=mat_name)
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        bsdf.inputs['Roughness'].default_value = 0.8
+        mat.node_tree.links.new(bsdf.inputs['Base Color'], bsdf.inputs['Base Color']) # Fix link logic if needed, usually direct
+        # Correct linking:
+        bsdf.inputs['Base Color'].default_value = color
+    else:
+        mat = bpy.data.materials[mat_name]
+    
+    obj.data.materials.append(mat)
+    
+    # Bevel
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        mod = obj.modifiers[-1]
+        mod.bevel_depth = bevel
+        mod.bevel_resolution = 1
+    
+    return obj
+
+def create_cylinder(location, radius, height, color, name, bevel=0.01):
+    """Creates a low-poly cylinder."""
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    obj.scale = (1, 1, 1) # Scale applied later
+    bpy.ops.object.transform_apply(scale=True)
+    
+    mat_name = name + "_mat"
+    if mat_name not in bpy.data.materials:
+        mat = bpy.data.materials.new(name=mat_name)
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        bsdf.inputs['Roughness'].default_value = 0.7
+    else:
+        mat = bpy.data.materials[mat_name]
+    obj.data.materials.append(mat)
+    
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        mod = obj.modifiers[-1]
+        mod.bevel_depth = bevel
+        mod.bevel_resolution = 1
+    
+    return obj
+
+# --- Scene Setup ---
+
+# Colors
+C_SAGE = (0.5686, 0.6980, 0.5373)   # 91aa8a
+C_CREAM = (0.9059, 0.8745, 0.8039)  # e8dfcd
+C_OAK = (0.6078, 0.4392, 0.2980)    # 9b704d
+C_GOLD = (0.8863, 0.7255, 0.4227)   # e2b96b
+
+# --- Room Structure ---
+
+# Floor
+floor = create_cube((0, 0, 0.1), (5.6, 5.6, 0.2), C_SAGE, "floor", bevel=0.0)
+
+# Back Wall
+wall_back = create_cube((0, 2.7, 1.7), (5.6, 0.15, 3.0), C_OAK, "wall_back", bevel=0.0)
+
+# Left Wall
+wall_side = create_cube((-2.7, 0, 1.7), (0.15, 5.6, 3.0), C_OAK, "wall_side", bevel=0.0)
+
+# Right Wall (for enclosure)
+wall_right = create_cube((2.7, 0, 1.7), (0.15, 5.6, 3.0), C_OAK, "wall_right", bevel=0.0)
+
+# --- Furniture & Decor ---
+
+# 1. Bed (1.6m wide)
+# Frame
+bed_frame = create_cube((0.8, 1.6, 0.1), (1.6, 2.0, 0.1), C_OAK, "bed_frame", bevel=0.02)
+# Legs
+for leg in [(0.8, 1.6, 0.11), (0.8, -1.6, 0.11), (-0.8, 1.6, 0.11), (-0.8, -1.6, 0.11)]:
+    leg_obj = create_cylinder(leg, 0.04, 0.1, C_OAK, "bed_leg", bevel=0.0)
+
+# Mattress
+bed_mattress = create_cube((0.8, 1.6, 0.1), (1.6, 2.0, 0.15), C_CREAM, "bed_mattress", bevel=0.02)
+
+# Blanket (Folded)
+blanket = create_cube((0.8, 1.6, 0.1), (1.4, 1.8, 0.05), C_GOLD, "bed_blanket", bevel=0.01)
+# Pillow 1
+pillow1 = create_cube((0.8, 1.4, 0.1), (0.6, 0.6, 0.05), C_SAGE, "bed_pillow_1", bevel=0.01)
+# Pillow 2
+pillow2 = create_cube((0.8, 1.2, 0.1), (0.6, 0.6, 0.05), C_SAGE, "bed_pillow_2", bevel=0.01)
+
+# 2. Bedside Cabinet
+cabinet_base = create_cube((2.2, 1.6, 0.1), (0.4, 0.4, 0.4), C_OAK, "cabinet_base", bevel=0.02)
+cabinet_top = create_cube((2.2, 1.6, 0.1), (0.4, 0.4, 0.05), C_CREAM, "cabinet_top", bevel=0.02)
+# Handle
+handle = create_cylinder((2.2, 1.6, 0.45), 0.01, 0.05, C_GOLD, "cabinet_handle", bevel=0.0)
+
+# 3. Lamp
+lamp_base = create_cylinder((2.2, 1.6, 0.1), 0.08, 0.08, C_OAK, "lamp_base", bevel=0.0)
+lamp_stem = create_cylinder((2.2, 1.6, 0.1), 0.02, 0.3, C_OAK, "lamp_stem", bevel=0.0)
+lamp_shade = create_cylinder((2.2, 1.6, 0.1), 0.12, 0.05, C_GOLD, "lamp_shade", bevel=0.0)
+
+# 4. Wardrobe (Two-door)
+wardrobe_body = create_cube((0.0, 1.6, 0.1), (1.0, 2.0, 2.2), C_OAK, "wardrobe_body", bevel=0.02)
+# Doors
+door_left = create_cube((0.0, 1.6, 0.1), (0.5, 2.0, 0.02), C_OAK, "wardrobe_door_left", bevel=0.01)
+door_right = create_cube((0.0, 1.6, 0.1), (0.5, 2.0, 0.02), C_OAK, "wardrobe_door_right", bevel=0.01)
+# Handles
+handle_l = create_cylinder((0.0, 1.6, 0.1), 0.01, 0.1, C_GOLD, "wardrobe_handle_l", bevel=0.0)
+handle_r = create_cylinder((0.0, 1.6, 0.1), 0.01, 0.1, C_GOLD, "wardrobe_handle_r", bevel=0.0)
+
+# 5. Rug
+rug = create_cube((0.0, 0.0, 0.1), (1.8, 2.2, 0.02), C_SAGE, "rug", bevel=0.0)
+
+# 6. Potted Plant
+pot = create_cylinder((1.0, 1.6, 0.1), 0.15, 0.15, C_OAK, "plant_pot", bevel=0.0)
+plant_stem = create_cylinder((1.0, 1.6, 0.1), 0.02, 0.4, C_SAGE, "plant_stem", bevel=0.0)
+plant_leaves = create_cube((1.0, 1.6, 0.1), (0.3, 0.3, 0.3), C_SAGE, "plant_leaves", bevel=0.01)
+
+# 7. Framed Art
+frame = create_cube((0.0, 1.6, 0.1), (0.6, 0.4, 0.02), C_GOLD, "art_frame", bevel=0.01)
+canvas = create_cube((0.0, 1.6, 0.1), (0.5, 0.3, 0.01), C_CREAM, "art_canvas", bevel=0.0)
+
+# --- Final Adjustments ---
+# Ensure all objects are in Edit Mode to apply modifiers if necessary, though we used transform_apply
+for obj in bpy.data.objects:
+    if obj.type == 'MESH':
+        bpy.context.view_layer.objects.active = obj
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='SELECT')
+        bpy.ops.object.mode_set(mode='OBJECT')
+
+# Select all for potential global operations if needed
+bpy.ops.object.select_all(action='DESELECT')

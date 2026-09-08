@@ -1,0 +1,181 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_cube(name, loc, size, color, bevel=0.01):
+    """Creates a low-poly cube with a small bevel."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = loc
+    obj.rotation_euler = (math.radians(45), math.radians(45), 0) # Isometric view rotation
+    bpy.context.collection.objects.link(obj)
+    
+    mesh = obj.data
+    vertices = [(0,0,0), (size[0],0,0), (size[0],size[1],0), (0,size[1],0),
+                (0,0,size[2]), (size[0],0,size[2]), (size[0],size[1],size[2]), (0,size[1],size[2])]
+    faces = [(0,1,2,3), (4,5,6,7), (0,1,5,4), (2,3,7,6), (0,3,7,4), (1,2,6,5)]
+    
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    
+    # Apply bevel
+    for face in mesh.polygons:
+        for edge_idx in face.loop_indices:
+            edge = mesh.edges[edge_idx]
+            edge.bevel_weight = 1.0
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.8
+    bsdf.inputs["Metallic"].default_value = 0.0
+    obj.data.materials.append(mat)
+    
+    return obj
+
+def create_cylinder(name, loc, radius, height, color, segments=8, bevel=0.01):
+    """Creates a low-poly cylinder."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = loc
+    obj.rotation_euler = (math.radians(45), math.radians(45), 0)
+    bpy.context.collection.objects.link(obj)
+    
+    mesh = obj.data
+    vertices = []
+    faces = []
+    verts_count = 0
+    
+    # Top and Bottom
+    for i in range(segments):
+        angle = math.radians(i * 360 / segments)
+        x = radius * math.cos(angle)
+        z = radius * math.sin(angle)
+        vertices.append((x, 0, z)) # Bottom
+        vertices.append((x, 0, z + height)) # Top
+        verts_count += 2
+    
+    # Bottom Face
+    faces.append([0, 1, 2])
+    for i in range(1, segments):
+        faces.append([i, i+1, i+2])
+    faces.append([segments, 0, segments+1])
+    
+    # Top Face (inverted)
+    for i in range(segments):
+        idx = i * 2 + 1
+        next_idx = (i + 1) * 2 + 1
+        faces.append([idx, next_idx, idx + segments + 1])
+    
+    # Side Faces
+    for i in range(segments):
+        idx = i * 2
+        next_idx = (i + 1) * 2
+        faces.append([idx, next_idx, next_idx + segments, idx + segments])
+    
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    
+    # Apply bevel to edges
+    for face in mesh.polygons:
+        for edge_idx in face.loop_indices:
+            edge = mesh.edges[edge_idx]
+            edge.bevel_weight = 1.0
+            
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.7
+    obj.data.materials.append(mat)
+    
+    return obj
+
+# --- Materials Definition ---
+# Palette: bd7963 (Terracotta), eddbc0 (Sand), 8b6650 (Dark Wood), 7d9a8c (Sage Green)
+mat_terracotta = bpy.data.materials.new("mat_terracotta")
+mat_terracotta.use_nodes = True
+mat_terracotta.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.733, 0.482, 0.392, 1.0)
+mat_terracotta.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0.8
+
+mat_sand = bpy.data.materials.new("mat_sand")
+mat_sand.use_nodes = True
+mat_sand.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.929, 0.867, 0.753, 1.0)
+mat_sand.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0.9
+
+mat_wood = bpy.data.materials.new("mat_wood")
+mat_wood.use_nodes = True
+mat_wood.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.545, 0.4, 0.314, 1.0)
+mat_wood.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0.4
+
+mat_sage = bpy.data.materials.new("mat_sage")
+mat_sage.use_nodes = True
+mat_sage.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.482, 0.604, 0.522, 1.0)
+mat_sage.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0.8
+
+# --- Room Structure ---
+
+# Floor
+floor = create_cube("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), mat_sand)
+
+# Back Wall
+wall_back = create_cube("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), mat_terracotta)
+
+# Left Wall
+wall_side = create_cube("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), mat_terracotta)
+
+# --- Furniture Generation ---
+
+# 1. Bed (1.8m wide)
+# Frame
+bed_frame = create_cube("bed_frame", (0.9, 1.0, 0.2), (1.8, 2.0, 0.2), mat_wood)
+# Mattress
+bed_mattress = create_cube("bed_mattress", (0.9, 1.0, 0.4), (1.8, 2.0, 0.15), mat_sand)
+# Pillow 1
+pillow_1 = create_cube("pillow_1", (0.9, 1.4, 0.5), (0.5, 0.6, 0.1), mat_sage)
+# Pillow 2
+pillow_2 = create_cube("pillow_2", (0.9, 1.8, 0.5), (0.5, 0.6, 0.1), mat_sage)
+# Blanket (Folded)
+blanket = create_cube("bed_blanket", (0.9, 1.2, 0.5), (0.8, 0.6, 0.05), mat_terracotta)
+
+# 2. Bedside Cabinet
+cabinet_base = create_cube("cabinet_base", (2.2, 0.5, 0.2), (0.6, 0.5, 0.6), mat_wood)
+cabinet_top = create_cube("cabinet_top", (2.2, 0.5, 0.8), (0.6, 0.5, 0.05), mat_sand)
+cabinet_door = create_cube("cabinet_door", (2.2, 0.5, 0.4), (0.5, 0.4, 0.05), mat_wood)
+
+# 3. Lamp
+lamp_base = create_cube("lamp_base", (2.2, 0.5, 0.8), (0.1, 0.1, 0.1), mat_wood)
+lamp_stand = create_cylinder("lamp_stand", (2.2, 0.5, 1.0), 0.05, 0.4, mat_wood, segments=8)
+lamp_shade = create_cube("lamp_shade", (2.2, 0.5, 1.4), (0.3, 0.3, 0.05), mat_sand)
+
+# 4. Two-Door Wardrobe (Along Left Wall)
+wardrobe_base = create_cube("wardrobe_base", (-2.5, 1.0, 1.7), (1.0, 2.0, 0.2), mat_wood)
+wardrobe_body = create_cube("wardrobe_body", (-2.5, 1.0, 1.9), (1.0, 2.0, 2.5), mat_wood)
+# Door 1
+door_1 = create_cube("wardrobe_door_1", (-2.5, 1.0, 2.4), (0.5, 2.0, 0.05), mat_terracotta)
+# Door 2
+door_2 = create_cube("wardrobe_door_2", (-2.0, 1.0, 2.4), (0.5, 2.0, 0.05), mat_terracotta)
+
+# 5. Rug
+rug = create_cube("rug", (0.0, 0.0, 0.21), (2.0, 1.5, 0.02), mat_sage)
+
+# 6. Potted Plant
+plant_pot = create_cylinder("plant_pot", (-1.5, 1.5, 0.22), 0.15, 0.15, mat_wood, segments=8)
+plant_leaves = create_cube("plant_leaves", (-1.5, 1.5, 0.35), (0.4, 0.4, 0.3), mat_sage)
+
+# 7. Framed Art
+art_frame = create_cube("art_frame", (0.0, 2.5, 1.71), (1.0, 0.6, 0.05), mat_wood)
+art_canvas = create_cube("art_canvas", (0.0, 2.5, 1.72), (0.9, 0.5, 0.01), mat_terracotta)
+
+# --- Final Cleanup and Selection ---
+# Deselect all
+bpy.ops.object.select_all(action='DESELECT')
+# Select the floor to ensure it's the active object if needed for specific operations, though not strictly required here
+bpy.context.view_layer.objects.active = floor
+
+print("Low-poly bedroom scene generated successfully.")
+print("Objects created: floor, wall_back, wall_side, bed components, cabinet, lamp, wardrobe, rug, plant, art.")

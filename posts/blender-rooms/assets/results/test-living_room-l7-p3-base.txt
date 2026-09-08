@@ -1,0 +1,226 @@
+import bpy
+import math
+
+# --- Configuration ---
+SCALE = 1.0
+COLORS = {
+    'lavender': (0.643, 0.600, 0.741),   # a799be
+    'butter': (0.933, 0.894, 0.686),     # ece1af
+    'wood': (0.573, 0.467, 0.380),       # 927861
+    'pink': (0.784, 0.522, 0.588),       # cf8596
+    'cream': (1.0, 0.98, 0.95),          # Cream highlight
+    'dark_wood': (0.3, 0.25, 0.2)        # Frame/Detail
+}
+
+def create_material(name, color):
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    bsdf.inputs['Metallic'].default_value = 0.0
+    return mat
+
+def create_mesh(name, verts, faces, parent=None):
+    mesh = bpy.data.meshes.new(name)
+    obj = bpy.data.objects.new(name, mesh)
+    if parent:
+        parent.collection.objects.link(obj)
+    else:
+        bpy.context.scene.collection.objects.link(obj)
+    
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    
+    # Apply scale to avoid transform issues
+    obj.scale = (SCALE, SCALE, SCALE)
+    obj.matrix_world.identity()
+    
+    # Create material and assign
+    mat = create_material(f"mat_{name}", (0.8, 0.8, 0.8)) # Default fallback
+    if name in COLORS:
+        mat = create_material(f"mat_{name}", COLORS[name])
+    
+    if mesh.material_slots:
+        mesh.material_slots[0].material = mat
+    else:
+        mat_slot = mesh.material_slots.append()
+        mat_slot.material = mat
+        
+    return obj
+
+def create_box(name, loc, size, mat=None):
+    verts = [
+        (0, 0, 0), (size[0], 0, 0), (size[0], size[1], 0), (0, size[1], 0),
+        (0, 0, size[2]), (size[0], 0, size[2]), (size[0], size[1], size[2]), (0, size[1], size[2])
+    ]
+    faces = [
+        (0, 1, 2, 3), (4, 5, 6, 7), (0, 1, 5, 4), (2, 3, 7, 6), (0, 3, 7, 4), (1, 2, 6, 5)
+    ]
+    obj = create_mesh(name, verts, faces)
+    obj.location = loc
+    obj.rotation_euler = (math.radians(90), 0, 0) # Rotate to face Z up initially, then adjust if needed
+    # Actually, standard box is XY plane. We want Z up.
+    # Let's rebuild verts for Z-up box directly to be safe with rotation logic
+    return create_mesh(name, verts, faces, parent=None)
+
+def create_low_poly_box(name, loc, size, mat=None):
+    # Z-up box
+    verts = [
+        (0, 0, 0), (size[0], 0, 0), (size[0], size[1], 0), (0, size[1], 0),
+        (0, 0, size[2]), (size[0], 0, size[2]), (size[0], size[1], size[2]), (0, size[1], size[2])
+    ]
+    faces = [
+        (0, 1, 2, 3), (4, 5, 6, 7), (0, 1, 5, 4), (2, 3, 7, 6), (0, 3, 7, 4), (1, 2, 6, 5)
+    ]
+    obj = create_mesh(name, verts, faces)
+    obj.location = loc
+    obj.rotation_euler = (0, 0, 0)
+    if mat:
+        obj.data.materials[0] = mat
+    return obj
+
+# --- Scene Setup ---
+bpy.ops.object.select_all(action='DESELECT')
+
+# Floor
+floor_mat = create_material("mat_floor", COLORS['butter'])
+floor_verts = [
+    (-2.8, -2.8, 0), (2.8, -2.8, 0), (2.8, 2.8, 0), (-2.8, 2.8, 0),
+    (-2.8, -2.8, 0.2), (2.8, -2.8, 0.2), (2.8, 2.8, 0.2), (-2.8, 2.8, 0.2)
+]
+floor_faces = [
+    (0, 1, 2, 3), (4, 5, 6, 7), (0, 1, 5, 4), (2, 3, 7, 6), (0, 3, 7, 4), (1, 2, 6, 5)
+]
+floor_obj = create_mesh("floor", floor_verts, floor_faces)
+floor_obj.location = (0, 0, 0.1)
+floor_obj.data.materials[0] = floor_mat
+
+# Walls
+wall_back_verts = [
+    (-2.8, 0, 0), (2.8, 0, 0), (2.8, 0, 3.0), (-2.8, 0, 3.0),
+    (-2.8, 0, 1.7), (2.8, 0, 1.7), (2.8, 0, 4.7), (-2.8, 0, 4.7)
+]
+wall_back_faces = [
+    (0, 1, 2, 3), (4, 5, 6, 7), (0, 1, 5, 4), (2, 3, 7, 6), (0, 3, 7, 4), (1, 2, 6, 5)
+]
+wall_back_obj = create_mesh("wall_back", wall_back_verts, wall_back_faces)
+wall_back_obj.location = (0, 2.7, 1.7)
+wall_back_obj.rotation_euler = (0, math.radians(90), 0)
+wall_back_obj.data.materials[0] = create_material("mat_wall", COLORS['lavender'])
+
+wall_side_verts = [
+    (0, -2.8, 0), (0, 2.8, 0), (0, 2.8, 3.0), (0, -2.8, 3.0),
+    (0, -2.8, 1.7), (0, 2.8, 1.7), (0, 2.8, 4.7), (0, -2.8, 4.7)
+]
+wall_side_faces = [
+    (0, 1, 2, 3), (4, 5, 6, 7), (0, 1, 5, 4), (2, 3, 7, 6), (0, 3, 7, 4), (1, 2, 6, 5)
+]
+wall_side_obj = create_mesh("wall_side", wall_side_verts, wall_side_faces)
+wall_side_obj.location = (-2.7, 0, 1.7)
+wall_side_obj.rotation_euler = (0, 0, math.radians(90))
+wall_side_obj.data.materials[0] = create_material("mat_wall", COLORS['lavender'])
+
+# --- Furniture Functions ---
+
+def create_sofa():
+    # 2.4m wide sofa, lavender frame, butter cushions
+    mat_frame = create_material("mat_sofa_frame", COLORS['lavender'])
+    mat_cushion = create_material("mat_sofa_cushion", COLORS['butter'])
+    
+    # Base
+    base_verts = [
+        (-1.2, -0.4, 0), (1.2, -0.4, 0), (1.2, 0.4, 0), (-1.2, 0.4, 0),
+        (-1.2, -0.4, 0.4), (1.2, -0.4, 0.4), (1.2, 0.4, 0.4), (-1.2, 0.4, 0.4)
+    ]
+    base_faces = [(0,1,2,3), (4,5,6,7), (0,1,5,4), (2,3,7,6), (0,3,7,4), (1,2,6,5)]
+    base = create_mesh("sofa_base", base_verts, base_faces)
+    base.location = (0, 0, 0.2)
+    base.data.materials[0] = mat_frame
+    
+    # Backrest
+    back_verts = [
+        (-1.2, 0.4, 0.4), (1.2, 0.4, 0.4), (1.2, 0.8, 0.4), (-1.2, 0.8, 0.4),
+        (-1.2, 0.4, 0.8), (1.2, 0.4, 0.8), (1.2, 0.8, 0.8), (-1.2, 0.8, 0.8)
+    ]
+    back_faces = [(0,1,2,3), (4,5,6,7), (0,1,5,4), (2,3,7,6), (0,3,7,4), (1,2,6,5)]
+    back = create_mesh("sofa_back", back_verts, back_faces)
+    back.location = (0, 0, 0.6)
+    back.data.materials[0] = mat_frame
+    
+    # Seat Cushion
+    seat_verts = [
+        (-1.0, -0.2, 0.4), (1.0, -0.2, 0.4), (1.0, 0.2, 0.4), (-1.0, 0.2, 0.4),
+        (-1.0, -0.2, 0.6), (1.0, -0.2, 0.6), (1.0, 0.2, 0.6), (-1.0, 0.2, 0.6)
+    ]
+    seat_faces = [(0,1,2,3), (4,5,6,7), (0,1,5,4), (2,3,7,6), (0,3,7,4), (1,2,6,5)]
+    seat = create_mesh("sofa_seat", seat_verts, seat_faces)
+    seat.location = (0, 0, 0.5)
+    seat.data.materials[0] = mat_cushion
+    
+    # Armrests
+    arm_verts = [
+        (-1.2, -0.4, 0.4), (-1.2, 0.4, 0.4), (-1.2, 0.4, 0.8), (-1.2, -0.4, 0.8),
+        (-1.2, -0.4, 0.6), (-1.2, 0.4, 0.6), (-1.2, 0.4, 0.8), (-1.2, -0.4, 0.8)
+    ]
+    arm_faces = [(0,1,2,3), (4,5,6,7), (0,1,5,4), (2,3,7,6), (0,3,7,4), (1,2,6,5)]
+    arm_l = create_mesh("sofa_arm_l", arm_verts, arm_faces)
+    arm_l.location = (-1.2, 0, 0.6)
+    arm_l.data.materials[0] = mat_frame
+    
+    arm_verts_r = [
+        (1.2, -0.4, 0.4), (1.2, 0.4, 0.4), (1.2, 0.4, 0.8), (1.2, -0.4, 0.8),
+        (1.2, -0.4, 0.6), (1.2, 0.4, 0.6), (1.2, 0.4, 0.8), (1.2, -0.4, 0.8)
+    ]
+    arm_r = create_mesh("sofa_arm_r", arm_verts_r, arm_faces)
+    arm_r.location = (1.2, 0, 0.6)
+    arm_r.data.materials[0] = mat_frame
+    
+    return base, back, seat, arm_l, arm_r
+
+def create_coffee_table():
+    # Low table, wood top, cream legs
+    mat_top = create_material("mat_table_top", COLORS['wood'])
+    mat_leg = create_material("mat_table_leg", COLORS['cream'])
+    
+    # Top
+    top_verts = [
+        (-0.8, -0.4, 0), (0.8, -0.4, 0), (0.8, 0.4, 0), (-0.8, 0.4, 0),
+        (-0.8, -0.4, 0.3), (0.8, -0.4, 0.3), (0.8, 0.4, 0.3), (-0.8, 0.4, 0.3)
+    ]
+    top_faces = [(0,1,2,3), (4,5,6,7), (0,1,5,4), (2,3,7,6), (0,3,7,4), (1,2,6,5)]
+    top = create_mesh("table_top", top_verts, top_faces)
+    top.location = (0, 0, 0.15)
+    top.data.materials[0] = mat_top
+    
+    # Legs
+    leg_verts = [
+        (-0.6, -0.3, 0), (-0.6, 0.3, 0), (0.6, -0.3, 0), (0.6, 0.3, 0),
+        (-0.6, -0.3, 0.3), (-0.6, 0.3, 0.3), (0.6, -0.3, 0.3), (0.6, 0.3, 0.3)
+    ]
+    leg_faces = [(0,1,2,3), (4,5,6,7), (0,1,5,4), (2,3,7,6), (0,3,7,4), (1,2,6,5)]
+    leg = create_mesh("table_legs", leg_verts, leg_faces)
+    leg.location = (0, 0, 0.15)
+    leg.data.materials[0] = mat_leg
+    
+    # Books
+    book_verts = [
+        (-0.3, -0.1, 0), (0.3, -0.1, 0), (0.3, 0.1, 0), (-0.3, 0.1, 0),
+        (-0.3, -0.1, 0.05), (0.3, -0.1, 0.05), (0.3, 0.1, 0.05), (-0.3, 0.1, 0.05)
+    ]
+    book_faces = [(0,1,2,3), (4,5,6,7), (0,1,5,4), (2,3,7,6), (0,3,7,4), (1,2,6,5)]
+    book = create_mesh("table_books", book_verts, book_faces)
+    book.location = (0, 0, 0.2)
+    book.data.materials[0] = create_material("mat_book", COLORS['pink'])
+    
+    return top, leg, book
+
+def create_accent_chair():
+    # Arm-free, pink seat, wood frame
+    mat_seat = create_material("mat_chair_seat", COLORS['pink'])
+    mat_frame = create_material("mat_chair_frame", COLORS['wood'])
+    
+    # Seat
+    seat_verts = [
+        (-0.4, -0.3, 0), (0.4, -0.3, 0), (0.4, 0.3, 0), (-0.4, 0.3, 0),
+        (-0.4, -0.3, 0.4), (0.4, -0.3, 0.4), (0.4, 0.3, 0.4), (-0.4, 0.3, 0.4)

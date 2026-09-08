@@ -1,0 +1,173 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+COLORS = {
+    'dusty_blue': (0.529, 0.620, 0.678),   # 859eae
+    'cream': (0.933, 0.902, 0.824),        # ece3d0
+    'warm_wood': (0.608, 0.451, 0.353),    # 9b7359
+    'terracotta': (0.796, 0.553, 0.459),   # cb8d74
+    'white': (1.0, 1.0, 1.0)
+}
+
+def create_cube(location, size, color, name, bevel=0.02):
+    """Helper to create a low-poly cube with small bevels."""
+    bpy.ops.mesh.primitive_cube_add(location=location, size=size[0])
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    obj.data.bevel_depth = bevel
+    obj.data.bevel_resolution = 1
+    
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    obj.data.materials.append(mat)
+    return obj
+
+def create_cylinder(location, radius, height, color, name, bevel=0.02):
+    """Helper to create a low-poly cylinder."""
+    bpy.ops.mesh.primitive_cylinder_add(location=location, radius=radius, depth=height)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    obj.data.bevel_depth = bevel
+    obj.data.bevel_resolution = 1
+    
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    obj.data.materials.append(mat)
+    return obj
+
+def create_room_structure():
+    # Floor
+    floor = create_cube((0, 0, 0.1), (5.6, 5.6, 0.2), COLORS['cream'], "floor", bevel=0.0)
+    floor.rotation_euler = (math.radians(45), math.radians(45), 0) # Isometric view alignment
+    
+    # Back Wall
+    wall_back = create_cube((0, 2.7, 1.7), (5.6, 0.15, 3.0), COLORS['dusty_blue'], "wall_back", bevel=0.0)
+    wall_back.rotation_euler = (math.radians(45), math.radians(45), 0)
+    
+    # Left Wall
+    wall_side = create_cube((-2.7, 0, 1.7), (0.15, 5.6, 3.0), COLORS['dusty_blue'], "wall_side", bevel=0.0)
+    wall_side.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+def create_kitchen_furniture():
+    # --- Refrigerator (Left side of back wall) ---
+    # Frame
+    fridge_frame = create_cube((-1.8, 2.7, 1.7), (0.6, 1.8, 0.6), COLORS['warm_wood'], "fridge_frame")
+    fridge_frame.rotation_euler = (math.radians(45), math.radians(45), 0)
+    # Door Left
+    fridge_door_l = create_cube((-1.8, 2.7, 1.7), (0.58, 1.7, 0.02), COLORS['dusty_blue'], "fridge_door_l")
+    fridge_door_l.rotation_euler = (math.radians(45), math.radians(45), 0)
+    # Door Right
+    fridge_door_r = create_cube((-1.8, 2.7, 1.7), (0.02, 1.7, 0.02), COLORS['dusty_blue'], "fridge_door_r")
+    fridge_door_r.rotation_euler = (math.radians(45), math.radians(45), 0)
+    # Handle
+    fridge_handle = create_cylinder((-1.8, 2.7, 1.7), 0.03, 0.1, COLORS['terracotta'], "fridge_handle")
+    fridge_handle.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+    # --- Two-Door Counter (Center of back wall) ---
+    # Base
+    counter_base = create_cube((0, 2.7, 1.7), (1.8, 0.9, 0.9), COLORS['warm_wood'], "counter_base")
+    counter_base.rotation_euler = (math.radians(45), math.radians(45), 0)
+    # Top
+    counter_top = create_cube((0, 2.7, 1.7), (1.8, 0.8, 0.05), COLORS['cream'], "counter_top")
+    counter_top.rotation_euler = (math.radians(45), math.radians(45), 0)
+    
+    # Stove (4 burners)
+    stove_top = create_cube((0, 2.7, 1.7), (0.8, 0.7, 0.02), COLORS['dusty_blue'], "stove_top")
+    stove_top.rotation_euler = (math.radians(45), math.radians(45), 0)
+    # Burner 1
+    burner1 = create_cylinder((0, 2.7, 1.7), 0.12, 0.01, COLORS['black'], "burner_1")
+    burner1.rotation_euler = (math.radians(45), math.radians(45), 0)
+    # Burner 2
+    burner2 = create_cylinder((0, 2.7, 1.7), 0.12, 0.01, COLORS['black'], "burner_2")
+    burner2.rotation_euler = (math.radians(45), math.radians(45), 0)
+    # Burner 3
+    burner3 = create_cylinder((0, 2.7, 1.7), 0.12, 0.01, COLORS['black'], "burner_3")
+    burner3.rotation_euler = (math.radians(45), math.radians(45), 0)
+    # Burner 4
+    burner4 = create_cylinder((0, 2.7, 1.7), 0.12, 0.01, COLORS['black'], "burner_4")
+    burner4.rotation_euler = (math.radians(45), math.radians(45), 0)
+    
+    # Sink (Rimmed)
+    sink_basin = create_cube((0.9, 2.7, 1.7), (0.6, 0.4, 0.05), COLORS['dusty_blue'], "sink_basin")
+    sink_basin.rotation_euler = (math.radians(45), math.radians(45), 0)
+    sink_rim = create_cube((0.9, 2.7, 1.7), (0.62, 0.42, 0.02), COLORS['cream'], "sink_rim")
+    sink_rim.rotation_euler = (math.radians(45), math.radians(45), 0)
+    # Tap
+    tap_base = create_cube((0.9, 2.7, 1.7), (0.04, 0.04, 0.04), COLORS['warm_wood'], "tap_base")
+    tap_base.rotation_euler = (math.radians(45), math.radians(45), 0)
+    tap_stem = create_cylinder((0.9, 2.7, 1.7), 0.02, 0.1, COLORS['warm_wood'], "tap_stem")
+    tap_stem.rotation_euler = (math.radians(45), math.radians(45), 0)
+    tap_head = create_cube((0.9, 2.7, 1.7), (0.04, 0.04, 0.04), COLORS['warm_wood'], "tap_head")
+    tap_head.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+def create_dining_area():
+    # Dining Table
+    table_top = create_cube((0, -1.5, 0.1), (1.2, 1.2, 0.05), COLORS['cream'], "table_top")
+    table_top.rotation_euler = (math.radians(45), math.radians(45), 0)
+    # Table Legs (4)
+    leg_positions = [(-0.4, -0.4, 0.1), (0.4, -0.4, 0.1), (-0.4, 0.4, 0.1), (0.4, 0.4, 0.1)]
+    for pos in leg_positions:
+        leg = create_cube(pos, (0.05, 0.05, 0.8), COLORS['warm_wood'], "table_leg")
+        leg.rotation_euler = (math.radians(45), math.radians(45), 0)
+    
+    # Bowl on table
+    bowl = create_cylinder((0, -1.5, 0.1), 0.15, 0.1, COLORS['terracotta'], "bowl")
+    bowl.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+    # Chair 1 (Front Left)
+    chair1_seat = create_cube((-0.8, -1.5, 0.1), (0.4, 0.4, 0.05), COLORS['cream'], "chair1_seat")
+    chair1_seat.rotation_euler = (math.radians(45), math.radians(45), 0)
+    chair1_back = create_cube((-0.8, -1.5, 0.1), (0.4, 0.3, 0.05), COLORS['dusty_blue'], "chair1_back")
+    chair1_back.rotation_euler = (math.radians(45), math.radians(45), 0)
+    chair1_legs = [(-0.6, -1.5, 0.1), (-0.6, -1.1, 0.1), (-0.2, -1.5, 0.1), (-0.2, -1.1, 0.1)]
+    for pos in chair1_legs:
+        leg = create_cube(pos, (0.03, 0.03, 0.8), COLORS['warm_wood'], "chair1_leg")
+        leg.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+    # Chair 2 (Front Right)
+    chair2_seat = create_cube((0.8, -1.5, 0.1), (0.4, 0.4, 0.05), COLORS['cream'], "chair2_seat")
+    chair2_seat.rotation_euler = (math.radians(45), math.radians(45), 0)
+    chair2_back = create_cube((0.8, -1.5, 0.1), (0.4, 0.3, 0.05), COLORS['dusty_blue'], "chair2_back")
+    chair2_back.rotation_euler = (math.radians(45), math.radians(45), 0)
+    chair2_legs = [(0.6, -1.5, 0.1), (0.6, -1.1, 0.1), (0.2, -1.5, 0.1), (0.2, -1.1, 0.1)]
+    for pos in chair2_legs:
+        leg = create_cube(pos, (0.03, 0.03, 0.8), COLORS['warm_wood'], "chair2_leg")
+        leg.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+def create_plant():
+    # Plant Pot
+    pot = create_cube((2.0, -1.0, 0.1), (0.3, 0.3, 0.1), COLORS['warm_wood'], "plant_pot")
+    pot.rotation_euler = (math.radians(45), math.radians(45), 0)
+    # Plant Leaves (Low poly approximation)
+    leaves = []
+    for i in range(3):
+        leaf = create_cube((2.0, -1.0, 0.1), (0.1, 0.1, 0.1), COLORS['dusty_blue'], f"plant_leaf_{i}")
+        leaf.rotation_euler = (math.radians(45), math.radians(45), 0)
+        # Offset slightly for volume
+        leaf.location = (2.0 + (i-1)*0.05, -1.0 + (i-1)*0.05, 0.1 + 0.05)
+        leaves.append(leaf)
+
+# --- Execution ---
+create_room_structure()
+create_kitchen_furniture()
+create_dining_area()
+create_plant()
+
+# Add a simple light source if not present (though prompt says renderer supplies, ensuring visibility is good practice in script)
+bpy.ops.object.light_add(type='SUN', location=(0, 0, 3))
+light = bpy.context.active_object
+light.data.energy = 2.0
+light.data.color = (1.0, 1.0, 1.0)

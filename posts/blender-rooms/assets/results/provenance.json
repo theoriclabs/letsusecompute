@@ -1,0 +1,230 @@
+[
+  {
+    "file": "validation-bedroom-l6-p0-sft.png",
+    "source": "sft/bedroom-l6-p0/render.png",
+    "split": "validation",
+    "sha256": "d7619f8f67ae231b1392a3bb45aa57bdb1233805bd7fcce347e74ec39dc252e4"
+  },
+  {
+    "file": "validation-bedroom-l6-p1-sft.png",
+    "source": "sft/bedroom-l6-p1/render.png",
+    "split": "validation",
+    "sha256": "e6660892d7171eb9806da905a8a553158eac2e8014f78db0eb45ef45be77b521"
+  },
+  {
+    "file": "validation-studio-l6-p0-sft.png",
+    "source": "sft/studio-l6-p0/render.png",
+    "split": "validation",
+    "sha256": "e4ec62964386701843a0dcef653c4bb9683357806a0b981dedc0cfcd9bbfd10e"
+  },
+  {
+    "file": "validation-kitchen-l6-p0-sft.png",
+    "source": "sft/kitchen-l6-p0/render.png",
+    "split": "validation",
+    "sha256": "8d76ebd727c4995ee1b7381d1a79ab05b693c7aa0507a69defa732ef82b81862"
+  },
+  {
+    "file": "validation-kitchen-l6-p1-sft.png",
+    "source": "sft/kitchen-l6-p1/render.png",
+    "split": "validation",
+    "sha256": "7161f9aa022e650c5f7eea440fecfec3f42b52be63b0dcc1e8df049213cb1441"
+  },
+  {
+    "file": "validation-living_room-l6-p0-sft.png",
+    "source": "sft/living_room-l6-p0/render.png",
+    "split": "validation",
+    "sha256": "2aa8152bfcacf2e8931754a819f9d689761b22733c6447be3fe7ec69c7ff722e"
+  },
+  {
+    "file": "validation-living_room-l6-p1-sft.png",
+    "source": "sft/living_room-l6-p1/render.png",
+    "split": "validation",
+    "sha256": "75bd53afd026212a52ef76ac1560cd74d0aaec43deffdfaa36c3ad496604f66c"
+  },
+  {
+    "file": "test-bedroom-l7-p0-sft.png",
+    "source": "sft/bedroom-l7-p0/render.png",
+    "split": "test",
+    "sha256": "160fc177080dc4dfa56d2bef4283e585f06ff7dc1c62ba3e21a6221d76a5a78a"
+  },
+  {
+    "file": "test-bedroom-l7-p1-sft.png",
+    "source": "sft/bedroom-l7-p1/render.png",
+    "split": "test",
+    "sha256": "cc87179856236b0e1c90304e82ecedf73a7389942e8b9fe296d93295ecaab069"
+  },
+  {
+    "file": "test-bedroom-l7-p2-sft.png",
+    "source": "sft/bedroom-l7-p2/render.png",
+    "split": "test",
+    "sha256": "02547af59107604505493e06291868e6fab605b6c1be499a7eea284df08bba36"
+  },
+  {
+    "file": "test-bedroom-l7-p3-sft.png",
+    "source": "sft/bedroom-l7-p3/render.png",
+    "split": "test",
+    "sha256": "53bcc03ebefcd49c9e287a530994558b48f0647b47623ac9f0f3481a844d27aa"
+  },
+  {
+    "file": "test-bedroom-l7-p4-sft.png",
+    "source": "sft/bedroom-l7-p4/render.png",
+    "split": "test",
+    "sha256": "c75bff4ec442cc61ae445b5b70da2484a9c2c0d4f73af3ff36a49c23e23db643"
+  },
+  {
+    "file": "test-bedroom-l7-p5-sft.png",
+    "source": "sft/bedroom-l7-p5/render.png",
+    "split": "test",
+    "sha256": "8b16cc111d3d1a390c7decd9da47c125a79214cb5cdc52f34bd69510504d10ea"
+  },
+  {
+    "file": "test-bedroom-l7-p6-sft.png",
+    "source": "sft/bedroom-l7-p6/render.png",
+    "split": "test",
+    "sha256": "e7b9d951f8c43f9f349f0e6e7b1993ef4dfdd4a827e4fbb79c401e5f090559fa"
+  },
+  {
+    "file": "test-bedroom-l7-p7-sft.png",
+    "source": "sft/bedroom-l7-p7/render.png",
+    "split": "test",
+    "sha256": "54b265298b6e48b2046db2acb11f4be329f1b0d5210c717aa5faa4a915114739"
+  },
+  {
+    "file": "test-studio-l7-p0-sft.png",
+    "source": "sft/studio-l7-p0/render.png",
+    "split": "test",
+    "sha256": "4b3bea52abba3125cded56603bac823ec28699931ace63e087730fc2fd970ee5"
+  },
+  {
+    "file": "test-studio-l7-p1-sft.png",
+    "source": "sft/studio-l7-p1/render.png",
+    "split": "test",
+    "sha256": "285685064ccc87746e3a95ff881159315e59086b56a71c8713faf5866fce9e0a"
+  },
+  {
+    "file": "test-studio-l7-p3-sft.png",
+    "source": "sft/studio-l7-p3/render.png",
+    "split": "test",
+    "sha256": "fdbddda0363fb7a59e65d14f451f64769e8cc3a261a808f97761d76cc21eceb5"
+  },
+  {
+    "file": "test-studio-l7-p4-sft.png",
+    "source": "sft/studio-l7-p4/render.png",
+    "split": "test",
+    "sha256": "9c8863b3036e2846f8e1b0e51181d90c33de07c2ded7e80348537107fad892fd"
+  },
+  {
+    "file": "test-studio-l7-p5-sft.png",
+    "source": "sft/studio-l7-p5/render.png",
+    "split": "test",
+    "sha256": "184ff6fe5b0d6fe326156052151601c328da5f393ad5357f1e2a7258bbf68bc8"
+  },
+  {
+    "file": "test-studio-l7-p6-sft.png",
+    "source": "sft/studio-l7-p6/render.png",
+    "split": "test",
+    "sha256": "29d8ea2e1fc7647088d2e5dcc3d82c7824acb48d1a164fa07e2d71be54724df0"
+  },
+  {
+    "file": "test-kitchen-l7-p0-sft.png",
+    "source": "sft/kitchen-l7-p0/render.png",
+    "split": "test",
+    "sha256": "c25c61063a64130ca452e30930b3eee50c8685dc2f9e354394bef3fe0789b2fb"
+  },
+  {
+    "file": "test-kitchen-l7-p1-sft.png",
+    "source": "sft/kitchen-l7-p1/render.png",
+    "split": "test",
+    "sha256": "c587a466b903ee90817c673e2a80d48b7c8cab3233edd5551eefbc6abe47fe5d"
+  },
+  {
+    "file": "test-kitchen-l7-p2-sft.png",
+    "source": "sft/kitchen-l7-p2/render.png",
+    "split": "test",
+    "sha256": "402a69768385efef3a62c6c43c6db6a741038cbbe50d145ae79d17534ecce35e"
+  },
+  {
+    "file": "test-kitchen-l7-p3-sft.png",
+    "source": "sft/kitchen-l7-p3/render.png",
+    "split": "test",
+    "sha256": "566110bdf37970a69a529c5942a72e48f090e03b3c6aa7a5726ca0cbcf06919b"
+  },
+  {
+    "file": "test-kitchen-l7-p4-sft.png",
+    "source": "sft/kitchen-l7-p4/render.png",
+    "split": "test",
+    "sha256": "510a8e69e6d4f31931555f7f39f06e867121b30587b4c60bbafe4df895b4f366"
+  },
+  {
+    "file": "test-kitchen-l7-p5-sft.png",
+    "source": "sft/kitchen-l7-p5/render.png",
+    "split": "test",
+    "sha256": "b00df883b72584d7bc91a69cfb7695816f6003e8d141510f61892f5e46f75657"
+  },
+  {
+    "file": "test-kitchen-l7-p6-sft.png",
+    "source": "sft/kitchen-l7-p6/render.png",
+    "split": "test",
+    "sha256": "5584c16bee2922f8b8a157f8e607a69b2cf0600279cd737d152e25cdcefb0703"
+  },
+  {
+    "file": "test-kitchen-l7-p7-sft.png",
+    "source": "sft/kitchen-l7-p7/render.png",
+    "split": "test",
+    "sha256": "01ceb44cd9fc073a43be8265a2d4e4d5634a6410e16e3d970bc001ede5ec1501"
+  },
+  {
+    "file": "test-living_room-l7-p0-sft.png",
+    "source": "sft/living_room-l7-p0/render.png",
+    "split": "test",
+    "sha256": "91d4eb8e09348258685cd020ee8692c706cc91029025f25f324a1e0f1c6d77dd"
+  },
+  {
+    "file": "test-living_room-l7-p1-sft.png",
+    "source": "sft/living_room-l7-p1/render.png",
+    "split": "test",
+    "sha256": "37ca49b60fbabd684847b4b06cbb06412d97bb78868449deea652a622047c1b6"
+  },
+  {
+    "file": "test-living_room-l7-p2-sft.png",
+    "source": "sft/living_room-l7-p2/render.png",
+    "split": "test",
+    "sha256": "6a657433614851dbb8d10ea89ac44b085d2372255795918b49fb26b1ab72115a"
+  },
+  {
+    "file": "test-living_room-l7-p3-sft.png",
+    "source": "sft/living_room-l7-p3/render.png",
+    "split": "test",
+    "sha256": "e43ea4bd58dd30cbf8cdbea3dd1fe1225551cb889cbbfbc5ff4c3684e800431a"
+  },
+  {
+    "file": "test-living_room-l7-p4-sft.png",
+    "source": "sft/living_room-l7-p4/render.png",
+    "split": "test",
+    "sha256": "c7698fed9a918cb2e3af5e8049b473152259c103e137cb4b24edefb9a9381d70"
+  },
+  {
+    "file": "test-living_room-l7-p5-sft.png",
+    "source": "sft/living_room-l7-p5/render.png",
+    "split": "test",
+    "sha256": "0a7d4fc511db678b760713fc32d4ce8d8be3e424242c68de9725f32ffd8635d7"
+  },
+  {
+    "file": "test-living_room-l7-p6-sft.png",
+    "source": "sft/living_room-l7-p6/render.png",
+    "split": "test",
+    "sha256": "97d22817f01cac6b93f231989089d719622fd9fc7e97cbb327b9c09479207f43"
+  },
+  {
+    "file": "test-living_room-l7-p7-sft.png",
+    "source": "sft/living_room-l7-p7/render.png",
+    "split": "test",
+    "sha256": "c92dccd76bbaa6074e183c62f40440ce031d7949f650baaeddf5fc48424a976b"
+  },
+  {
+    "file": "api_hint_control-studio-l6-p0-base.png",
+    "source": "base/studio-l6-p0/render.png",
+    "split": "api_hint_control",
+    "sha256": "2a3f3b3998f3fa8dc4bd8019f5cc12cdac8f974053a00b5066d35592aa8c4070"
+  }
+]

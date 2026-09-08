@@ -1,0 +1,208 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_cube(location, size, name, color):
+    """Creates a cube mesh with specified location, size, and color."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    obj.dimensions = size
+    bpy.context.collection.objects.link(obj)
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.8
+    bsdf.inputs["Metallic"].default_value = 0.0
+    obj.data.materials.append(mat)
+    
+    return obj
+
+def create_cylinder(location, radius, height, name, color, segments=16):
+    """Creates a cylinder mesh."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=location, segments=segments)
+    bpy.context.collection.objects.link(obj)
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.8
+    obj.data.materials.append(mat)
+    
+    return obj
+
+def add_bevel(obj, width=0.01):
+    """Adds a bevel modifier to an object."""
+    mod = obj.modifiers.new(name="bevel", type='BEVEL')
+    mod.width = width
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(30)
+
+# --- Materials ---
+# Palette: 91aa8a (Sage), e8dfcd (Cream), 9b704d (Oak), e2b96b (Accent Gold)
+M_SAGE = (0.5686, 0.6745, 0.5294, 1.0)
+M_CREAM = (0.9098, 0.8745, 0.8039, 1.0)
+M_OAK = (0.6078, 0.4392, 0.2980, 1.0)
+M_ACCENT = (0.8824, 0.7255, 0.4275, 1.0)
+
+# --- Room Structure ---
+# Floor
+floor = create_cube((0, 0, 0.1), (5.6, 5.6, 0.2), "floor", M_OAK)
+add_bevel(floor, 0.02)
+
+# Back Wall
+wall_back = create_cube((0, 2.7, 1.7), (5.6, 0.15, 3.0), "wall_back", M_OAK)
+add_bevel(wall_back, 0.02)
+
+# Left Wall
+wall_side = create_cube((-2.7, 0, 1.7), (0.15, 5.6, 3.0), "wall_side", M_OAK)
+add_bevel(wall_side, 0.02)
+
+# Right Wall (for enclosure)
+wall_right = create_cube((2.7, 0, 1.7), (0.15, 5.6, 3.0), "wall_right", M_OAK)
+add_bevel(wall_right, 0.02)
+
+# --- Furniture: Sofa (2.2m wide) ---
+# Location: Front Left area, facing right
+sofa_base_loc = (-1.1, 1.0, 0.25)
+sofa_width = 2.2
+sofa_depth = 0.9
+sofa_height = 0.8
+
+# Sofa Frame
+sofa_frame = create_cube(sofa_base_loc, (sofa_width, sofa_depth, sofa_height), "sofa_frame", M_OAK)
+add_bevel(sofa_frame, 0.01)
+
+# Sofa Cushions (Seat)
+cushion_y = sofa_depth / 2
+cushion_z = sofa_height / 2
+cushion_x = sofa_width / 2
+cushion_obj = create_cube(sofa_base_loc, (sofa_width - 0.1, sofa_depth - 0.1, 0.15), "sofa_cushion", M_SAGE)
+add_bevel(cushion_obj, 0.005)
+
+# Sofa Arms (Left)
+arm_left_loc = (-sofa_width/2 - 0.05, 0, sofa_height/2)
+arm_left = create_cube(arm_left_loc, (0.15, sofa_depth, 0.15), "sofa_arm_left", M_OAK)
+add_bevel(arm_left, 0.005)
+
+# Sofa Arms (Right)
+arm_right_loc = (sofa_width/2 + 0.05, 0, sofa_height/2)
+arm_right = create_cube(arm_right_loc, (0.15, sofa_depth, 0.15), "sofa_arm_right", M_OAK)
+add_bevel(arm_right, 0.005)
+
+# --- Furniture: Coffee Table ---
+# Location: Center front
+table_loc = (0, 0.5, 0.25)
+table_w = 1.2
+table_d = 0.6
+table_h = 0.35
+
+table_top = create_cube(table_loc, (table_w, table_d, 0.05), "table_top", M_OAK)
+add_bevel(table_top, 0.005)
+
+# Table Legs
+leg_offset = 0.1
+leg_locs = [
+    (table_w/2 - leg_offset, table_d/2 - leg_offset),
+    (table_w/2 - leg_offset, -leg_offset),
+    (-leg_offset, table_d/2 - leg_offset),
+    (-leg_offset, -leg_offset)
+]
+for lx, ly in leg_locs:
+    leg = create_cylinder((lx, ly, table_h/2), 0.04, table_h/2, f"table_leg_{lx}_{ly}", M_OAK)
+    add_bevel(leg, 0.002)
+
+# Books on Table
+book_locs = [(-0.2, 0.2, 0.3), (0.2, 0.2, 0.3), (-0.2, -0.2, 0.3)]
+for bx, by, bz in book_locs:
+    book = create_cube((bx, by, bz), (0.1, 0.05, 0.02), "book", M_ACCENT)
+    add_bevel(book, 0.001)
+
+# --- Furniture: Accent Chair (Arm-free) ---
+# Location: Front Right corner
+chair_loc = (1.5, 1.5, 0.25)
+chair_w = 0.7
+chair_d = 0.7
+chair_h = 0.8
+
+# Chair Frame
+chair_frame = create_cube(chair_loc, (chair_w, chair_d, chair_h), "chair_frame", M_OAK)
+add_bevel(chair_frame, 0.01)
+
+# Seat
+seat = create_cube(chair_loc, (chair_w - 0.1, chair_d - 0.1, 0.15), "chair_seat", M_SAGE)
+add_bevel(seat, 0.005)
+
+# Backrest
+backrest = create_cube(chair_loc, (chair_w - 0.1, 0.15, 0.4), "chair_back", M_SAGE)
+add_bevel(backrest, 0.005)
+
+# --- Furniture: Media Cabinet & TV ---
+# Location: Back Wall, Left side
+cabinet_loc = (-1.5, 2.7, 1.7)
+cabinet_w = 1.5
+cabinet_d = 0.4
+cabinet_h = 0.8
+
+# Cabinet Body
+cabinet = create_cube(cabinet_loc, (cabinet_w, cabinet_d, cabinet_h), "media_cabinet", M_OAK)
+add_bevel(cabinet, 0.01)
+
+# TV Screen
+tv_loc = (cabinet_w/2, cabinet_d/2, cabinet_h + 0.05)
+tv = create_cube(tv_loc, (0.8, 0.5, 0.02), "tv_screen", (0.1, 0.1, 0.1, 1.0)) # Dark grey/black
+add_bevel(tv, 0.001)
+
+# TV Stand Legs
+for lx, ly in [(-0.5, 0.1), (0.5, 0.1), (-0.5, -0.1), (0.5, -0.1)]:
+    leg = create_cylinder((cabinet_w/2 + lx, cabinet_d/2 + ly, cabinet_h/2), 0.03, cabinet_h/2, "tv_leg", M_OAK)
+    add_bevel(leg, 0.001)
+
+# --- Furniture: Rug ---
+# Location: Center of the open front area
+rug_loc = (0, 0.5, 0.1)
+rug_w = 2.0
+rug_d = 1.5
+rug = create_cube(rug_loc, (rug_w, rug_d, 0.02), "rug", M_ACCENT)
+add_bevel(rug, 0.001)
+
+# --- Furniture: Lamp ---
+# Location: Near sofa
+lamp_loc = (-0.8, 1.2, 0.25)
+lamp_base = create_cube(lamp_loc, (0.15, 0.15, 0.05), "lamp_base", M_OAK)
+add_bevel(lamp_base, 0.005)
+
+lamp_stem = create_cylinder((lamp_loc[0], lamp_loc[1], 0.15), 0.02, 0.3, "lamp_stem", M_OAK)
+add_bevel(lamp_stem, 0.001)
+
+lamp_shade = create_cylinder((lamp_loc[0], lamp_loc[1], 0.5), 0.15, 0.05, "lamp_shade", M_ACCENT)
+add_bevel(lamp_shade, 0.001)
+
+# --- Furniture: Plant ---
+# Location: Near right wall
+plant_loc = (2.0, 1.0, 0.25)
+pot = create_cube(plant_loc, (0.2, 0.2, 0.1), "plant_pot", M_OAK)
+add_bevel(pot, 0.005)
+
+plant = create_cylinder((plant_loc[0], plant_loc[1], 0.35), 0.15, 0.4, "plant", M_SAGE)
+add_bevel(plant, 0.001)
+
+# --- Final Cleanup ---
+# Select all and apply transforms to ensure clean topology
+for obj in bpy.data.objects:
+    obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+
+# Deselect all
+bpy.ops.object.select_all(action='DESELECT')

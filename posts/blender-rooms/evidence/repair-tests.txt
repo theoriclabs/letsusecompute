@@ -1,0 +1,9 @@
+....................                                                     [100%]
+=============================== warnings summary ===============================
+test_pipeline.py::test_real_qwen_adapter_step_and_reload
+test_pipeline.py::test_real_qwen_adapter_step_and_reload
+  /tmp/blender-room-env/lib/python3.11/site-packages/peft/utils/save_and_load.py:438: UserWarning: Could not find a config file in  - will assume that the vocabulary was not modified.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+20 passed, 2 warnings in 25.88s

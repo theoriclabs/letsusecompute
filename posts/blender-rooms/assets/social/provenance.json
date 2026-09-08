@@ -1,0 +1,68 @@
+{
+  "presentation": "Crossfade slideshow of unchanged saved primary-test still renders; no generated imagery or 3D camera motion.",
+  "selection": "First palette in every primary-test family, selected before follow-up.",
+  "primary_test_run": "run_f62cfd31c65501be529a975b1eb6a139",
+  "pilot_cost_usd": 7.82,
+  "scope": "Original completed pilot only; excludes unfinished repair experiment.",
+  "video_seconds": 18,
+  "video_size": [
+    1080,
+    1080
+  ],
+  "video_fps": 24,
+  "gif_seconds": 18,
+  "gif_size": [
+    640,
+    640
+  ],
+  "audio": "none; visible text and VTT captions",
+  "encoder_version": "7.1",
+  "sources": [
+    {
+      "id": "bedroom-l7-p0",
+      "family": "bedroom",
+      "geometry_valid": true,
+      "file": "../results/test-bedroom-l7-p0-sft.png",
+      "sha256": "160fc177080dc4dfa56d2bef4283e585f06ff7dc1c62ba3e21a6221d76a5a78a"
+    },
+    {
+      "id": "studio-l7-p0",
+      "family": "studio",
+      "geometry_valid": false,
+      "file": "../results/test-studio-l7-p0-sft.png",
+      "sha256": "4b3bea52abba3125cded56603bac823ec28699931ace63e087730fc2fd970ee5"
+    },
+    {
+      "id": "kitchen-l7-p0",
+      "family": "kitchen",
+      "geometry_valid": true,
+      "file": "../results/test-kitchen-l7-p0-sft.png",
+      "sha256": "c25c61063a64130ca452e30930b3eee50c8685dc2f9e354394bef3fe0789b2fb"
+    },
+    {
+      "id": "living_room-l7-p0",
+      "family": "living_room",
+      "geometry_valid": true,
+      "file": "../results/test-living_room-l7-p0-sft.png",
+      "sha256": "91d4eb8e09348258685cd020ee8692c706cc91029025f25f324a1e0f1c6d77dd"
+    }
+  ],
+  "files": {
+    "captions.vtt": {
+      "bytes": 506,
+      "sha256": "afc582052e676ffd24f55c37866f2f0c114120089d354426fc32bc24bfa59077"
+    },
+    "poster.jpg": {
+      "bytes": 187690,
+      "sha256": "f19a4d454f681bdafe286eaf0e10aff7449bd6fd6369dd04ba40dc35680e710e"
+    },
+    "qwen-blender-rooms.gif": {
+      "bytes": 620381,
+      "sha256": "4be2e9d589c94b2c96fd1e5069046a888ae1d32543ce6de03f236b7f21aaa554"
+    },
+    "qwen-blender-rooms.mp4": {
+      "bytes": 1253743,
+      "sha256": "468007a7468d8a9a58b13af902214330d962eb736b06373f40079aa003584d12"
+    }
+  }
+}

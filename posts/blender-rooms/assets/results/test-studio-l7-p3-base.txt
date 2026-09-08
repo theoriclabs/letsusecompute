@@ -1,0 +1,200 @@
+import bpy
+import math
+
+# --- Configuration ---
+SCALE = 1.0
+COLORS = {
+    'lavender': (0.643, 0.600, 0.588),   # a799be
+    'butter': (0.941, 0.894, 0.647),     # ece1af
+    'wood': (0.573, 0.467, 0.380),       # 927861
+    'pink': (0.796, 0.522, 0.588),       # cf8596
+    'cream': (1.0, 0.98, 0.92),          # Cream highlight
+    'dark_wood': (0.3, 0.25, 0.2)        # Frame accent
+}
+
+def create_material(name, color):
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    bsdf.inputs['Metallic'].default_value = 0.0
+    return mat
+
+def create_mesh(name, verts, faces, parent=None):
+    mesh = bpy.data.meshes.new(name)
+    obj = bpy.data.objects.new(name, mesh)
+    if parent:
+        parent.collection.objects.link(obj)
+    else:
+        bpy.context.scene.collection.objects.link(obj)
+    
+    mesh.from_pydata(verts, [], faces)
+    mesh.update()
+    
+    # Apply scale to avoid transform issues
+    obj.scale = (SCALE, SCALE, SCALE)
+    obj.matrix_world.identity()
+    
+    # Create material
+    mat = create_material(f"mat_{name}", (0.8, 0.8, 0.8)) # Default temp
+    if parent:
+        parent.data.materials.append(mat)
+    else:
+        obj.data.materials.append(mat)
+    
+    return obj
+
+def create_box(name, loc, size, mat=None, parent=None):
+    verts = [
+        (0, 0, 0), (size[0], 0, 0), (size[0], size[1], 0), (0, size[1], 0),
+        (0, 0, size[2]), (size[0], 0, size[2]), (size[0], size[1], size[2]), (0, size[1], size[2])
+    ]
+    faces = [
+        (0, 1, 2, 3), (1, 5, 6, 2), (5, 4, 7, 6), (4, 0, 3, 7),
+        (3, 2, 6, 7), (4, 5, 1, 0)
+    ]
+    return create_mesh(name, loc, verts, faces, parent)
+
+def create_cylinder(name, loc, radius, height, segments=16, mat=None, parent=None):
+    verts = []
+    faces = []
+    for i in range(segments + 1):
+        angle = 2 * math.pi * i / segments
+        x = radius * math.cos(angle)
+        z = radius * math.sin(angle)
+        verts.append((x, 0, z))
+        verts.append((x, height, z))
+    
+    for i in range(segments):
+        v1 = i
+        v2 = i + 1
+        v3 = v2 + segments + 1
+        v4 = v1 + segments + 1
+        faces.append((v1, v2, v3, v4))
+    
+    obj = create_mesh(name, loc, verts, faces, parent)
+    if mat:
+        obj.data.materials[0] = mat
+    return obj
+
+def create_lowpoly_sphere(name, loc, radius, segments=8, mat=None, parent=None):
+    verts = []
+    faces = []
+    for lat in range(segments + 1):
+        y = (1 - 2 * lat / segments) * radius
+        r = math.sqrt(1 - (y/radius)**2) * radius
+        for lon in range(segments + 1):
+            theta = 2 * math.pi * lon / segments
+            x = r * math.cos(theta)
+            z = r * math.sin(theta)
+            verts.append((x, y, z))
+    
+    for lat in range(segments):
+        for lon in range(segments):
+            a = lat * (segments + 1) + lon
+            b = a + 1
+            c = (lat + 1) * (segments + 1) + lon + 1
+            d = (lat + 1) * (segments + 1) + lon
+            faces.append((a, b, c, d))
+    
+    obj = create_mesh(name, loc, verts, faces, parent)
+    if mat:
+        obj.data.materials[0] = mat
+    return obj
+
+# --- Scene Setup ---
+bpy.ops.object.select_all(action='DESELECT')
+
+# --- Floor ---
+floor = create_box("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), mat=create_material("floor", COLORS['butter']))
+floor.rotation_euler = (math.radians(45), math.radians(45), 0) # Isometric view alignment
+
+# --- Walls ---
+wall_back = create_box("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), mat=create_material("wall_back", COLORS['lavender']))
+wall_back.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+wall_side = create_box("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), mat=create_material("wall_side", COLORS['lavender']))
+wall_side.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+# --- Rug ---
+rug = create_box("rug", (0.5, 0.5, 0.21), (2.0, 2.0, 0.02), mat=create_material("rug", COLORS['pink']))
+rug.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+# --- Desk (Left Wall Zone) ---
+desk = create_box("desk", (-1.5, 0.5, 0.21), (1.8, 0.6, 0.05), mat=create_material("desk", COLORS['wood']))
+desk.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+# Desk Legs
+for x in [-0.9, 0.9]:
+    leg = create_box(f"desk_leg_{x}", (x, 0.3, 0.21), (0.05, 0.05, 0.3), mat=create_material("desk_leg", COLORS['wood']))
+    leg.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+# Monitor
+monitor_stand = create_box("monitor_stand", (-0.6, 0.5, 0.26), (0.1, 0.1, 0.1), mat=create_material("monitor_stand", COLORS['dark_wood']))
+monitor_stand.rotation_euler = (math.radians(45), math.radians(45), 0)
+monitor = create_box("monitor", (-0.6, 0.7, 0.26), (0.4, 0.25, 0.02), mat=create_material("monitor", (0.1, 0.1, 0.1)))
+monitor.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+# Keyboard
+keyboard = create_box("keyboard", (-0.6, 0.55, 0.26), (0.3, 0.1, 0.02), mat=create_material("keyboard", COLORS['cream']))
+keyboard.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+# --- Chair (Facing Desk) ---
+chair_seat = create_box("chair_seat", (0.5, 0.5, 0.21), (0.5, 0.5, 0.05), mat=create_material("chair_seat", COLORS['pink']))
+chair_seat.rotation_euler = (math.radians(45), math.radians(45), 0)
+chair_back = create_box("chair_back", (0.5, 0.7, 0.21), (0.4, 0.4, 0.3), mat=create_material("chair_back", COLORS['pink']))
+chair_back.rotation_euler = (math.radians(45), math.radians(45), 0)
+chair_legs = create_box("chair_legs", (0.5, 0.3, 0.21), (0.5, 0.5, 0.3), mat=create_material("chair_legs", COLORS['wood']))
+chair_legs.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+# --- Bookcase (Left Wall) ---
+bookcase = create_box("bookcase", (-2.0, 0.5, 0.21), (0.6, 1.8, 1.2), mat=create_material("bookcase", COLORS['wood']))
+bookcase.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+# Shelves
+for y in [0.4, 1.0, 1.6]:
+    shelf = create_box(f"shelf_{y}", (-2.0, y, 0.21), (0.6, 0.02, 1.2), mat=create_material("shelf", COLORS['cream']))
+    shelf.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+# Books
+for i in range(12):
+    x = -1.8 + (i % 4) * 0.15
+    z = -0.5 + (i // 4) * 0.3
+    book = create_box(f"book_{i}", (x, 0.5, z), (0.05, 0.05, 0.15), mat=create_material("book", COLORS['dark_wood']))
+    book.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+# --- Storage Cabinet ---
+cabinet = create_box("cabinet", (-1.0, 1.5, 0.21), (0.8, 0.8, 0.8), mat=create_material("cabinet", COLORS['wood']))
+cabinet.rotation_euler = (math.radians(45), math.radians(45), 0)
+cabinet_door = create_box("cabinet_door", (-0.6, 1.5, 0.21), (0.4, 0.8, 0.02), mat=create_material("cabinet_door", COLORS['cream']))
+cabinet_door.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+# --- Standing Lamp ---
+lamp_base = create_box("lamp_base", (1.5, 0.5, 0.21), (0.1, 0.1, 0.1), mat=create_material("lamp_base", COLORS['wood']))
+lamp_base.rotation_euler = (math.radians(45), math.radians(45), 0)
+lamp_stem = create_cylinder("lamp_stem", (1.5, 1.2, 0.21), 0.02, 1.0, mat=create_material("lamp_stem", COLORS['cream']))
+lamp_stem.rotation_euler = (math.radians(45), math.radians(45), 0)
+lamp_shade = create_lowpoly_sphere("lamp_shade", (1.5, 1.8, 0.21), 0.15, mat=create_material("lamp_shade", COLORS['pink']))
+lamp_shade.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+# --- Plant ---
+plant_pot = create_box("plant_pot", (1.0, 0.5, 0.21), (0.2, 0.2, 0.1), mat=create_material("plant_pot", COLORS['wood']))
+plant_pot.rotation_euler = (math.radians(45), math.radians(45), 0)
+plant_leaves = create_lowpoly_sphere("plant_leaves", (1.0, 0.8, 0.21), 0.15, mat=create_material("plant_leaves", COLORS['green'] if 'green' in COLORS else (0.2, 0.8, 0.2)))
+plant_leaves.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+# --- Textiles (Accent) ---
+pillow1 = create_box("pillow1", (0.5, 0.75, 0.21), (0.3, 0.3, 0.05), mat=create_material("pillow1", COLORS['pink']))
+pillow1.rotation_euler = (math.radians(45), math.radians(45), 0)
+pillow2 = create_box("pillow2", (0.5, 0.85, 0.21), (0.2, 0.2, 0.05), mat=create_material("pillow2", COLORS['cream']))
+pillow2.rotation_euler = (math.radians(45), math.radians(45), 0)
+
+# --- Final Cleanup ---
+bpy.ops.object.select_all(action='DESELECT')
+for obj in bpy.data.objects:
+    obj.select_set(True)
+bpy.context.view_layer.objects.active = floor
+bpy.ops.object.select_all(action='DESELECT')
+for obj in bpy.data.objects:
+    obj.select_set(False)

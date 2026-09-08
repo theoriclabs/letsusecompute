@@ -1,0 +1,94 @@
+import bpy
+import math
+
+def material(color):
+    mat = bpy.data.materials.get(color)
+    if mat is None:
+        mat = bpy.data.materials.new(color)
+        rgb = [int(color[i:i+2], 16) / 255 for i in (0, 2, 4)]
+        linear = tuple(v / 12.92 if v < 0.04045 else ((v + 0.055) / 1.055) ** 2.4 for v in rgb)
+        mat.diffuse_color = linear + (1,)
+    return mat
+
+def box(name, loc, size, color, angle=0):
+    bpy.ops.mesh.primitive_cube_add(size=1, location=loc)
+    obj = bpy.context.object
+    obj.name = name
+    obj.dimensions = size
+    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+    obj.rotation_euler.z = angle
+    obj.data.materials.append(material(color))
+    bevel = obj.modifiers.new('edge', 'BEVEL')
+    bevel.width = min(0.025, min(size) / 5)
+    bevel.segments = 1
+    return obj
+
+def cylinder(name, loc, radius, depth, color):
+    bpy.ops.mesh.primitive_cylinder_add(vertices=10, radius=radius, depth=depth, location=loc)
+    obj = bpy.context.object
+    obj.name = name
+    obj.data.materials.append(material(color))
+    return obj
+
+
+box('floor', (0, 0, 0.1), (5.6, 5.6, 0.2), 'ece3d0', 0)
+box('wall_back', (0, 2.7, 1.7), (5.6, 0.15, 3), '859eae', 0)
+box('wall_side', (-2.7, 0, 1.7), (0.15, 5.6, 3), '859eae', 0)
+box('trim_back', (0, 2.595, 0.29), (5.2, 0.05, 0.18), 'ece3d0', 0)
+box('trim_side', (-2.595, 0, 0.29), (0.05, 5.2, 0.18), 'ece3d0', 0)
+box('desk_top', (-0.15, 1.85, 1.05), (1.7, 0.8, 0.12), '9b7359', 0)
+box('desk_leg_0', (-0.87, 1.58, 0.595), (0.1, 0.1, 0.79), '9b7359', 0)
+box('desk_leg_1', (-0.87, 2.12, 0.595), (0.1, 0.1, 0.79), '9b7359', 0)
+box('desk_leg_2', (0.57, 1.58, 0.595), (0.1, 0.1, 0.79), '9b7359', 0)
+box('desk_leg_3', (0.57, 2.12, 0.595), (0.1, 0.1, 0.79), '9b7359', 0)
+box('chair_leg_0', (0.07, 0.91, 0.4), (0.08, 0.08, 0.4), '9b7359', 3.1416)
+box('chair_leg_1', (0.07, 0.49, 0.4), (0.08, 0.08, 0.4), '9b7359', 3.1416)
+box('chair_leg_2', (-0.37, 0.91, 0.4), (0.08, 0.08, 0.4), '9b7359', 3.1416)
+box('chair_leg_3', (-0.37, 0.49, 0.4), (0.08, 0.08, 0.4), '9b7359', 3.1416)
+box('chair_seat', (-0.15, 0.7, 0.65), (0.64, 0.62, 0.14), 'cb8d74', 3.1416)
+box('chair_back', (-0.15, 0.45, 0.97), (0.64, 0.12, 0.66), 'cb8d74', 3.1416)
+box('monitor_foot', (-0.15, 1.92, 1.145), (0.38, 0.25, 0.08), '4c515a', 0)
+box('monitor_stand', (-0.15, 1.98, 1.33), (0.09, 0.07, 0.32), '4c515a', 0)
+box('monitor_frame', (-0.15, 1.99, 1.57), (0.85, 0.09, 0.5), '4c515a', 0)
+box('monitor_screen', (-0.15, 1.93, 1.57), (0.77, 0.02, 0.42), 'a5c6ce', 0)
+box('keyboard', (-0.15, 1.61, 1.13), (0.5, 0.18, 0.04), 'ece3d0', 0)
+box('storage_body', (1.95, 0.45, 0.6), (0.72, 0.8, 0.8), '9b7359', 0)
+box('storage_door_0', (1.77, 0.035, 0.6), (0.325, 0.035, 0.71), 'ece3d0', 0)
+box('storage_handle_0', (1.87, -0.0, 0.64), (0.04, 0.04, 0.18), '504945', 0)
+box('storage_door_1', (2.13, 0.035, 0.6), (0.325, 0.035, 0.71), 'ece3d0', 0)
+box('storage_handle_1', (2.03, -0.0, 0.64), (0.04, 0.04, 0.18), '504945', 0)
+cylinder('plant_pot', (1.95, 0.45, 1.0975), 0.12350000000000001, 0.195, 'cb8d74')
+cylinder('plant_stem', (1.95, 0.45, 1.26), 0.022750000000000003, 0.22749999999999998, '6d8051')
+box('plant_leaf_0', (1.8785, 0.45, 1.3575), (0.1625, 0.1105, 0.195), '739662', 0.0)
+box('plant_leaf_1', (2.0215, 0.463, 1.3575), (0.1625, 0.1105, 0.195), '739662', 0.8)
+box('plant_leaf_2', (1.95, 0.515, 1.3575), (0.1625, 0.1105, 0.195), '739662', 1.6)
+box('shelf_side_0', (-2.35, 1.6, 1.29), (0.08, 0.48, 2.18), '9b7359', 0)
+box('shelf_side_1', (-1.55, 1.6, 1.29), (0.08, 0.48, 2.18), '9b7359', 0)
+box('shelf_level_0', (-1.95, 1.6, 0.24), (0.88, 0.48, 0.08), '9b7359', 0)
+box('books_0_0', (-2.21, 1.6, 0.39), (0.08, 0.22, 0.22), '859eae', 0)
+box('books_0_1', (-2.105, 1.6, 0.4075), (0.08, 0.22, 0.255), 'ece3d0', 0)
+box('books_0_2', (-2.0, 1.6, 0.425), (0.08, 0.22, 0.29), 'cb8d74', 0)
+box('books_0_3', (-1.895, 1.6, 0.39), (0.08, 0.22, 0.22), '859eae', 0)
+box('shelf_level_1', (-1.95, 1.6, 0.88), (0.88, 0.48, 0.08), '9b7359', 0)
+box('books_1_0', (-2.21, 1.6, 1.03), (0.08, 0.22, 0.22), '859eae', 0)
+box('books_1_1', (-2.105, 1.6, 1.0475), (0.08, 0.22, 0.255), 'ece3d0', 0)
+box('books_1_2', (-2.0, 1.6, 1.065), (0.08, 0.22, 0.29), 'cb8d74', 0)
+box('books_1_3', (-1.895, 1.6, 1.03), (0.08, 0.22, 0.22), '859eae', 0)
+box('shelf_level_2', (-1.95, 1.6, 1.52), (0.88, 0.48, 0.08), '9b7359', 0)
+box('books_2_0', (-2.21, 1.6, 1.67), (0.08, 0.22, 0.22), '859eae', 0)
+box('books_2_1', (-2.105, 1.6, 1.6875), (0.08, 0.22, 0.255), 'ece3d0', 0)
+box('books_2_2', (-2.0, 1.6, 1.705), (0.08, 0.22, 0.29), 'cb8d74', 0)
+box('books_2_3', (-1.895, 1.6, 1.67), (0.08, 0.22, 0.22), '859eae', 0)
+box('shelf_level_3', (-1.95, 1.6, 2.16), (0.88, 0.48, 0.08), '9b7359', 0)
+box('books_3_0', (-2.21, 1.6, 2.31), (0.08, 0.22, 0.22), '859eae', 0)
+box('books_3_1', (-2.105, 1.6, 2.3275), (0.08, 0.22, 0.255), 'ece3d0', 0)
+box('books_3_2', (-2.0, 1.6, 2.345), (0.08, 0.22, 0.29), 'cb8d74', 0)
+box('books_3_3', (-1.895, 1.6, 2.31), (0.08, 0.22, 0.22), '859eae', 0)
+box('rug', (0, -0.9, 0.22), (2.0, 1.3, 0.04), 'cb8d74', 0)
+cylinder('lamp_base', (-1.9, -1.2, 0.235), 0.23, 0.07, '514b47')
+cylinder('lamp_stem', (-1.9, -1.2, 0.925), 0.035, 1.45, '514b47')
+cylinder('lamp_shade', (-1.9, -1.2, 1.65), 0.26, 0.35, 'ece3d0')
+box('artwork_frame', (0.55, 2.59, 2.2), (0.95, 0.065, 0.7), '9b7359', 0)
+box('artwork_canvas', (0.55, 2.547, 2.2), (0.83, 0.025, 0.58), 'ece3d0', 0)
+box('artwork_shape', (0.62, 2.527, 2.2), (0.37, 0.02, 0.33), 'cb8d74', 0)
+bpy.context.view_layer.update()

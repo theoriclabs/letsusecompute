@@ -1,0 +1,30 @@
+[
+  {
+    "id": "bedroom-l0-p0",
+    "split": "train",
+    "provenance": "original procedural demonstration; agent-authored generator v1",
+    "program_sha256": "ab9cc351b862ba079b081fdf720d8b9891993c4b73b754e80efb02d4b9aa9499",
+    "render_sha256": "e13c30d1340ad3015a7ec25d94a5f59925404206d56f8fbfdf52a31091ce9914"
+  },
+  {
+    "id": "studio-l0-p1",
+    "split": "train",
+    "provenance": "original procedural demonstration; agent-authored generator v1",
+    "program_sha256": "2bbd60a65c0ae0857cb3ba1ddacf49f665213f66062112a4b060e6623b5fbaf3",
+    "render_sha256": "b93949e292048bce18fe55e9041a617db1640ebacfd4725a3ee5f8895c0143d5"
+  },
+  {
+    "id": "kitchen-l0-p2",
+    "split": "train",
+    "provenance": "original procedural demonstration; agent-authored generator v1",
+    "program_sha256": "e2e695312d4f4a31f0767035988a0b04b150ecaeb4131a40fd2ff15ee03618cb",
+    "render_sha256": "bd2cafdc7e9b9b7d4d8ab89f4f742ca346fd56e7934216413522da5231b87ba3"
+  },
+  {
+    "id": "living_room-l0-p3",
+    "split": "train",
+    "provenance": "original procedural demonstration; agent-authored generator v1",
+    "program_sha256": "b88c625c7ee9dcd31eb612c8d2fc796abb500e7d9c186b89ab5174f9b9f6ad30",
+    "render_sha256": "c95fb3073e6fddc0861c00f4723012dfea80df65a170068ef27afd50c1bc897a"
+  }
+]

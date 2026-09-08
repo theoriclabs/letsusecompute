@@ -1,0 +1,148 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# Define Colors (RGBA)
+C_DUSTY_BLUE = (0.525, 0.616, 0.647, 1.0)   # 859eae
+C_CREAM = (0.941, 0.902, 0.824, 1.0)        # ece3d0
+C_WOOD = (0.608, 0.451, 0.333, 1.0)         # 9b7359
+C_ACCENT = (0.796, 0.553, 0.459, 1.0)       # cb8d74
+
+def create_material(name, color):
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.7
+    bsdf.inputs["Metallic"].default_value = 0.0
+    return mat
+
+def create_cube(location, size, name, mat):
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    obj.dimensions = size
+    bpy.context.collection.objects.link(obj)
+    obj.data.materials.append(mat)
+    return obj
+
+def create_cylinder(location, radius, height, name, mat, segments=16):
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    me = obj.data
+    me.from_meshdata(bpy.data.meshes.new(name))
+    me.from_object(bpy.data.meshes.new("temp_cyl"))
+    # Re-create cylinder properly
+    me = bpy.data.meshes.new(name)
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=location, segments=segments)
+    bpy.context.collection.objects.link(obj)
+    obj.data = me
+    obj.data.materials.append(mat)
+    return obj
+
+def create_box(location, size, name, mat):
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    obj.dimensions = size
+    bpy.context.collection.objects.link(obj)
+    obj.data.materials.append(mat)
+    return obj
+
+# --- Materials ---
+mat_floor = create_material("mat_floor", C_CREAM)
+mat_wall = create_material("mat_wall", C_DUSTY_BLUE)
+mat_wood = create_material("mat_wood", C_WOOD)
+mat_accent = create_material("mat_accent", C_ACCENT)
+mat_white = create_material("mat_white", (1.0, 1.0, 1.0, 1.0))
+mat_silver = create_material("mat_silver", (0.75, 0.75, 0.75, 1.0))
+
+# --- Room Structure ---
+# Floor
+floor = create_box((0, 0, 0.1), (5.6, 5.6, 0.2), "floor", mat_floor)
+# Back Wall
+wall_back = create_box((0, 2.7, 1.7), (5.6, 0.15, 3.0), "wall_back", mat_wall)
+# Left Wall
+wall_side = create_box((-2.7, 0, 1.7), (0.15, 5.6, 3.0), "wall_side", mat_wall)
+
+# --- Furniture Helpers ---
+
+# 1. Refrigerator (Left side, back wall)
+# Frame
+ref_frame = create_box((-2.0, 2.7, 1.7), (0.6, 1.8, 0.6), "ref_frame", mat_wood)
+# Door Left
+ref_door_l = create_box((-1.7, 2.7, 1.7), (0.5, 1.8, 0.05), "ref_door_l", mat_accent)
+# Door Right
+ref_door_r = create_box((-1.2, 2.7, 1.7), (0.5, 1.8, 0.05), "ref_door_r", mat_accent)
+# Handle
+ref_handle = create_cylinder((-1.7, 2.7, 1.7), 0.02, 0.1, "ref_handle", mat_silver)
+
+# 2. Two-Door Counter (Center, back wall)
+# Base
+counter_base = create_box((0.0, 2.7, 1.7), (2.0, 0.05, 0.9), "counter_base", mat_wood)
+# Top
+counter_top = create_box((0.0, 2.7, 1.7), (2.0, 0.05, 0.05), "counter_top", mat_accent)
+# Stove (4 burners)
+stove_top = create_box((0.0, 2.7, 1.7), (0.9, 0.05, 0.05), "stove_top", mat_silver)
+# Burner 1
+burner1 = create_cylinder((0.0, 2.7, 1.7), 0.12, 0.01, "burner1", mat_silver)
+# Burner 2
+burner2 = create_cylinder((0.0, 2.7, 1.7), 0.12, 0.01, "burner2", mat_silver)
+# Burner 3
+burner3 = create_cylinder((0.0, 2.7, 1.7), 0.12, 0.01, "burner3", mat_silver)
+# Burner 4
+burner4 = create_cylinder((0.0, 2.7, 1.7), 0.12, 0.01, "burner4", mat_silver)
+# Sink (Rimmed)
+sink_basin = create_box((1.0, 2.7, 1.7), (0.6, 0.05, 0.05), "sink_basin", mat_silver)
+sink_rim = create_box((1.0, 2.7, 1.7), (0.6, 0.05, 0.05), "sink_rim", mat_silver)
+# Tap
+tap_base = create_box((1.0, 2.7, 1.7), (0.05, 0.05, 0.1), "tap_base", mat_silver)
+tap_spout = create_cylinder((1.0, 2.7, 1.7), 0.03, 0.1, "tap_spout", mat_silver)
+
+# 3. Dining Table (Front Right)
+table_legs = []
+for i in range(4):
+    lx = 0.5 if i % 2 == 0 else -0.5
+    ly = 0.5 if i < 2 else -0.5
+    leg = create_box((lx, ly, 0.1), (0.05, 0.05, 0.6), f"table_leg_{i}", mat_wood)
+    table_legs.append(leg)
+table_top = create_box((0.0, 0.0, 0.7), (1.2, 0.05, 1.2), "table_top", mat_wood)
+# Bowl
+bowl = create_cylinder((0.0, 0.0, 0.7), 0.15, 0.08, "bowl", mat_accent)
+
+# 4. Chairs (Two)
+def make_chair(loc_x, loc_y, rot_z):
+    # Seat
+    seat = create_box((loc_x, loc_y, 0.2), (0.4, 0.4, 0.05), "chair_seat", mat_wood)
+    # Back
+    back = create_box((loc_x, loc_y, 0.2), (0.3, 0.4, 0.3), "chair_back", mat_wood)
+    # Legs
+    leg_lf = create_box((loc_x - 0.15, loc_y - 0.15, 0.1), (0.05, 0.05, 0.2), "chair_leg_lf", mat_wood)
+    leg_rb = create_box((loc_x + 0.15, loc_y + 0.15, 0.1), (0.05, 0.05, 0.2), "chair_leg_rb", mat_wood)
+    # Armrests
+    arm_l = create_box((loc_x - 0.2, loc_y, 0.2), (0.05, 0.05, 0.1), "chair_arm_l", mat_wood)
+    arm_r = create_box((loc_x + 0.2, loc_y, 0.2), (0.05, 0.05, 0.1), "chair_arm_r", mat_wood)
+    return [seat, back, leg_lf, leg_rb, arm_l, arm_r]
+
+chair1 = make_chair(1.0, 0.0, 0.0)
+chair2 = make_chair(-1.0, 0.0, 0.0)
+
+# 5. Plant (Corner)
+plant_pot = create_box((2.0, 2.0, 0.1), (0.3, 0.3, 0.1), "plant_pot", mat_wood)
+plant_leaves = create_cylinder((2.0, 2.0, 0.1), 0.15, 0.3, "plant_leaves", mat_accent, segments=8)
+
+# --- Bevels ---
+def add_bevel(obj, thickness=0.01, width=0.01):
+    mod = obj.modifiers.new(name="edge", type="BEVEL")
+    mod.width = width
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(30)
+    mod.bevel_depth = thickness
+
+# Apply bevels to furniture parts
+for obj in [ref_door_l, ref_door_r, counter_top, stove_top, sink_rim, tap_spout, table_top, bowl, plant_leaves]:
+    add_bevel(obj)
+
+# --- Finalize ---
+bpy.context.view_layer.update()

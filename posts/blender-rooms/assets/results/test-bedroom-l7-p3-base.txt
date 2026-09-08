@@ -1,0 +1,196 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_cube(location, size, name, color, bevel=0.01):
+    """Creates a low-poly cube with a small bevel."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.location = location
+    obj.scale = (size[0]/2, size[1]/2, size[2]/2)
+    
+    # Material
+    mat_name = f"{name}_mat"
+    if mat_name not in bpy.data.materials:
+        mat = bpy.data.materials.new(name=mat_name)
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        bsdf.inputs['Roughness'].default_value = 0.8
+        mat.node_tree.links.new(bsdf.inputs['Base Color'], bsdf.inputs['Base Color']) # Fix link
+        obj.data.materials.append(mat)
+    else:
+        obj.data.materials.append(bpy.data.materials[mat_name])
+    
+    # Bevel
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        obj.modifiers[-1].bevel_depth = bevel
+        obj.modifiers[-1].bevel_resolution = 1
+    
+    return obj
+
+def create_cylinder(location, radius, height, name, color, bevel=0.01):
+    """Creates a low-poly cylinder."""
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.location = location
+    obj.scale = (1, 1, 1) # Scale handled by radius/depth
+    
+    # Material
+    mat_name = f"{name}_mat"
+    if mat_name not in bpy.data.materials:
+        mat = bpy.data.materials.new(name=mat_name)
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        bsdf.inputs['Roughness'].default_value = 0.8
+        obj.data.materials.append(mat)
+    else:
+        obj.data.materials.append(bpy.data.materials[mat_name])
+    
+    # Bevel
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        obj.modifiers[-1].bevel_depth = bevel
+        obj.modifiers[-1].bevel_resolution = 1
+    
+    return obj
+
+# --- Palette ---
+# Lavender: a799be
+# Butter: ece1af
+# Warm Wood: 927861
+# Accent Pink: cf8596
+
+COLOR_LAVENDER = (0.643, 0.600, 0.588)
+COLOR_BUTTER = (0.933, 0.894, 0.686)
+COLOR_WOOD = (0.573, 0.467, 0.380)
+COLOR_ACCENT = (0.808, 0.522, 0.588)
+
+# --- Room Structure ---
+
+# Floor
+floor_loc = (0, 0, 0.1)
+floor_size = (5.6, 5.6, 0.2)
+floor = create_cube(floor_loc, floor_size, "floor", COLOR_BUTTER, bevel=0.0)
+
+# Back Wall
+wall_back_loc = (0, 2.7, 1.7)
+wall_back_size = (5.6, 0.15, 3.0)
+wall_back = create_cube(wall_back_loc, wall_back_size, "wall_back", COLOR_LAVENDER, bevel=0.0)
+
+# Left Wall
+wall_side_loc = (-2.7, 0, 1.7)
+wall_side_size = (0.15, 5.6, 3.0)
+wall_side = create_cube(wall_side_loc, wall_side_size, "wall_side", COLOR_LAVENDER, bevel=0.0)
+
+# --- Furniture ---
+
+# 1. Bed (1.8m wide)
+# Position: Centered roughly in the room, facing the camera (Z axis), slightly to the right to leave left wall for storage
+bed_x = 1.5
+bed_z = 1.0
+bed_y = 0.0
+
+# Bed Frame
+bed_frame_size = (1.8, 0.4, 0.1)
+bed_frame_loc = (bed_x, bed_y, 0.1)
+bed_frame = create_cube(bed_frame_loc, bed_frame_size, "bed_frame", COLOR_WOOD, bevel=0.02)
+
+# Bed Mattress
+mattress_size = (1.8, 0.35, 0.2)
+mattress_loc = (bed_x, bed_y, 0.25)
+mattress = create_cube(mattress_loc, mattress_size, "bed_mattress", COLOR_LAVENDER, bevel=0.01)
+
+# Pillow 1 (Left)
+pillow1_size = (0.5, 0.35, 0.1)
+pillow1_loc = (bed_x - 0.4, bed_y, 0.35)
+pillow1 = create_cube(pillow1_loc, pillow1_size, "pillow_1", COLOR_BUTTER, bevel=0.01)
+
+# Pillow 2 (Right)
+pillow2_size = (0.5, 0.35, 0.1)
+pillow2_loc = (bed_x + 0.4, bed_y, 0.35)
+pillow2 = create_cube(pillow2_loc, pillow2_size, "pillow_2", COLOR_BUTTER, bevel=0.01)
+
+# Blanket (Folded)
+blanket_size = (1.4, 0.35, 0.05)
+blanket_loc = (bed_x, bed_y, 0.32)
+blanket = create_cube(blanket_loc, blanket_size, "bed_blanket", COLOR_ACCENT, bevel=0.01)
+
+# 2. Bedside Cabinet & Lamp
+# Cabinet
+cabinet_size = (0.4, 0.4, 0.45)
+cabinet_loc = (bed_x + 0.9, bed_y, 0.225)
+cabinet = create_cube(cabinet_loc, cabinet_size, "cabinet", COLOR_WOOD, bevel=0.02)
+
+# Cabinet Top
+top_size = (0.4, 0.4, 0.05)
+top_loc = (cabinet_loc[0], cabinet_loc[1], 0.45)
+top = create_cube(top_loc, top_size, "cabinet_top", COLOR_BUTTER, bevel=0.01)
+
+# Lamp Base
+lamp_base_size = (0.1, 0.1, 0.1)
+lamp_base_loc = (cabinet_loc[0], cabinet_loc[1], 0.475)
+lamp_base = create_cube(lamp_base_loc, lamp_base_size, "lamp_base", COLOR_WOOD, bevel=0.01)
+
+# Lamp Shade
+shade_size = (0.15, 0.15, 0.15)
+shade_loc = (cabinet_loc[0], cabinet_loc[1], 0.575)
+shade = create_cylinder(shade_loc, 0.075, 0.15, "lamp_shade", COLOR_ACCENT, bevel=0.0)
+
+# 3. Two-Door Wardrobe (Along Left Wall)
+# Position: Against left wall, starting from front
+wardrobe_x = -2.55
+wardrobe_z = 1.0
+wardrobe_y = 0.0
+
+# Wardrobe Body
+wardrobe_size = (0.15, 1.8, 1.2)
+wardrobe_loc = (wardrobe_x, wardrobe_y, wardrobe_z)
+wardrobe = create_cube(wardrobe_loc, wardrobe_size, "wardrobe", COLOR_WOOD, bevel=0.02)
+
+# Wardrobe Doors (Visual only, slightly offset)
+door_size = (0.07, 1.8, 0.6)
+door1_loc = (wardrobe_x + 0.075, wardrobe_y, wardrobe_z)
+door1 = create_cube(door1_loc, door_size, "wardrobe_door_1", COLOR_WOOD, bevel=0.01)
+
+door2_loc = (wardrobe_x - 0.075, wardrobe_y, wardrobe_z)
+door2 = create_cube(door2_loc, door_size, "wardrobe_door_2", COLOR_WOOD, bevel=0.01)
+
+# 4. Rug
+rug_size = (1.2, 1.2, 0.02)
+rug_loc = (0.0, 0.0, 0.11)
+rug = create_cube(rug_loc, rug_size, "rug", COLOR_ACCENT, bevel=0.0)
+
+# 5. Potted Plant
+# Pot
+pot_size = (0.2, 0.2, 0.2)
+pot_loc = (0.8, 0.0, 0.11)
+pot = create_cube(pot_loc, pot_size, "plant_pot", COLOR_WOOD, bevel=0.01)
+
+# Leaves (Simple cluster)
+leaf_size = (0.15, 0.15, 0.15)
+leaf_loc = (0.8, 0.0, 0.25)
+leaf = create_cube(leaf_loc, leaf_size, "plant_leaf", COLOR_LAVENDER, bevel=0.0)
+
+# 6. Framed Art
+# Frame
+frame_size = (0.6, 0.4, 0.02)
+frame_loc = (0.0, 2.7, 1.85)
+frame = create_cube(frame_loc, frame_size, "art_frame", COLOR_WOOD, bevel=0.0)
+
+# Canvas
+canvas_size = (0.5, 0.3, 0.01)
+canvas_loc = (0.0, 2.7, 1.86)
+canvas = create_cube(canvas_loc, canvas_size, "art_canvas", COLOR_BUTTER, bevel=0.0)
+
+# --- Final Cleanup ---
+bpy.ops.object.select_all(action='DESELECT')

@@ -1,0 +1,32 @@
+{
+  "date": "2026-09-08",
+  "teacher_programs": 256,
+  "teacher_geometry_passed": 256,
+  "splits": {
+    "train": 192,
+    "validation": 32,
+    "test": 32
+  },
+  "polygon_range": [
+    788,
+    1490
+  ],
+  "mesh_count_range": [
+    33,
+    60
+  ],
+  "tests_passed": 17,
+  "test_scope": "includes tiny Qwen3.5 adapter update, exact reload logits, and Trainer with gradient checkpointing",
+  "gpu_training_started": true,
+  "compute_login_configured": true,
+  "gpu_api_spend_usd": 7.82,
+  "claims_excluded": [
+    "independent aesthetic quality score",
+    "independent teacher-model demonstrations",
+    "open-ended interior-design ability",
+    "isolated causal effect of the API hints"
+  ],
+  "record_scope": "Initial local preparation, before Compute sign-in and GPU execution; superseded by local-validation.json.",
+  "test_seconds": 25.89,
+  "gpu_training_completed": true
+}

@@ -1,0 +1,157 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+COLORS = {
+    'dusty_blue': (0.529, 0.620, 0.678),   # 859eae
+    'cream': (0.933, 0.902, 0.824),        # ece3d0
+    'warm_wood': (0.608, 0.451, 0.353),    # 9b7359
+    'accent_rose': (0.804, 0.545, 0.467),  # cb8d74
+    'white': (1.0, 1.0, 1.0),
+    'dark_wood': (0.2, 0.15, 0.1)
+}
+
+def create_cube(location, size, color, name, bevel=0.02):
+    """Helper to create a low-poly cube with small bevels."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    # Scale to desired size
+    obj.scale = (size[0], size[1], size[2])
+    
+    # Material
+    mat_name = name + "_mat"
+    if mat_name not in bpy.data.materials:
+        mat = bpy.data.materials.new(name=mat_name)
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        bsdf.inputs['Roughness'].default_value = 0.8
+        mat.node_tree.links.new(bsdf.inputs['Base Color'], bsdf.inputs['Base Color']) # Fix link logic if needed, usually direct assignment works
+        # Correct assignment
+        bsdf.inputs['Base Color'].default_value = color
+        mat.node_tree.nodes['Principled BSDF'].inputs['Roughness'].default_value = 0.8
+    else:
+        mat = bpy.data.materials[mat_name]
+    
+    obj.data.materials.append(mat)
+    
+    # Bevel
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        mod = obj.modifiers[-1]
+        mod.bevel_depth = bevel
+        mod.bevel_resolution = 1
+    
+    return obj
+
+def create_cylinder(location, radius, height, color, name, bevel=0.02):
+    """Helper to create a low-poly cylinder."""
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    obj.scale = (1, 1, 1) # Cylinder size is radius/depth
+    
+    # Material
+    mat_name = name + "_mat"
+    if mat_name not in bpy.data.materials:
+        mat = bpy.data.materials.new(name=mat_name)
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        bsdf.inputs['Roughness'].default_value = 0.7
+    else:
+        mat = bpy.data.materials[mat_name]
+    
+    obj.data.materials.append(mat)
+    
+    # Bevel
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        mod = obj.modifiers[-1]
+        mod.bevel_depth = bevel
+        mod.bevel_resolution = 1
+    
+    return obj
+
+# --- Room Structure ---
+# Floor
+floor = create_cube((0, 0, 0.1), (5.6, 5.6, 0.2), COLORS['cream'], "floor", bevel=0.0)
+
+# Back Wall
+wall_back = create_cube((0, 2.7, 1.7), (5.6, 0.15, 3.0), COLORS['dusty_blue'], "wall_back", bevel=0.0)
+# Left Wall
+wall_side = create_cube((-2.7, 0, 1.7), (0.15, 5.6, 3.0), COLORS['dusty_blue'], "wall_side", bevel=0.0)
+
+# --- Furniture: Bed (Right side, against back wall) ---
+# Bed Frame
+bed_frame = create_cube((2.0, 0.5, 0.2), (1.8, 2.0, 0.2), COLORS['warm_wood'], "bed_frame")
+# Bed Legs (4 small cylinders)
+for i in range(4):
+    x = 0.2 if i % 2 == 0 else 1.6
+    z = 0.2 if i < 2 else 1.8
+    leg = create_cylinder((x, 0.5, z), 0.03, 0.15, COLORS['warm_wood'], f"bed_leg_{i}")
+
+# Mattress
+bed_mattress = create_cube((0.9, 0.5, 0.35), (1.8, 2.0, 0.15), COLORS['cream'], "bed_mattress")
+
+# Pillows (2)
+pillow1 = create_cube((0.4, 0.5, 0.45), (0.5, 0.6, 0.1), COLORS['dusty_blue'], "pillow_left")
+pillow2 = create_cube((1.3, 0.5, 0.45), (0.5, 0.6, 0.1), COLORS['dusty_blue'], "pillow_right")
+
+# Blanket (Folded)
+blanket = create_cube((0.9, 0.5, 0.5), (1.0, 0.6, 0.05), COLORS['accent_rose'], "bed_blanket")
+
+# --- Furniture: Wardrobe (Left Wall) ---
+# Wardrobe Body
+wardrobe = create_cube((-2.0, 0.5, 0.2), (1.4, 2.0, 2.0), COLORS['warm_wood'], "wardrobe_body")
+# Doors (2)
+door1 = create_cube((-1.5, 0.5, 0.2), (0.7, 2.0, 0.02), COLORS['dusty_blue'], "wardrobe_door_left")
+door2 = create_cube((-0.8, 0.5, 0.2), (0.7, 2.0, 0.02), COLORS['dusty_blue'], "wardrobe_door_right")
+# Handles
+handle1 = create_cylinder((-1.5, 0.5, 1.0), 0.01, 0.05, COLORS['cream'], "wardrobe_handle_left")
+handle2 = create_cylinder((-0.8, 0.5, 1.0), 0.01, 0.05, COLORS['cream'], "wardrobe_handle_right")
+
+# --- Furniture: Bedside Cabinet & Lamp (Left of Bed) ---
+# Cabinet
+cabinet = create_cube((0.5, 0.5, 0.2), (0.4, 0.4, 0.4), COLORS['warm_wood'], "bedside_cabinet")
+# Cabinet Top
+cabinet_top = create_cube((0.5, 0.5, 0.4), (0.4, 0.4, 0.05), COLORS['cream'], "cabinet_top")
+# Drawer Handle
+handle_cab = create_cylinder((0.5, 0.5, 0.3), 0.01, 0.02, COLORS['dusty_blue'], "cabinet_handle")
+
+# Lamp
+lamp_base = create_cylinder((0.5, 0.5, 0.4), 0.05, 0.05, COLORS['warm_wood'], "lamp_base")
+lamp_stand = create_cylinder((0.5, 0.5, 0.45), 0.03, 0.3, COLORS['warm_wood'], "lamp_stand")
+lamp_shade = create_cube((0.5, 0.5, 0.75), (0.2, 0.2, 0.05), COLORS['cream'], "lamp_shade")
+
+# --- Furniture: Rug ---
+rug = create_cube((0.0, 0.0, 0.11), (2.2, 3.0, 0.02), COLORS['accent_rose'], "rug")
+
+# --- Furniture: Potted Plant (Front Left Corner) ---
+pot = create_cube((-2.2, 0.0, 0.2), (0.3, 0.3, 0.3), COLORS['warm_wood'], "plant_pot")
+plant_soil = create_cube((-2.2, 0.0, 0.25), (0.25, 0.25, 0.1), COLORS['dark_wood'], "plant_soil")
+plant_leaves = create_cube((-2.2, 0.0, 0.35), (0.4, 0.4, 0.4), COLORS['dusty_blue'], "plant_leaves")
+
+# --- Furniture: Framed Art (Back Wall) ---
+frame = create_cube((0.0, 2.7, 1.7), (1.0, 0.8, 0.02), COLORS['warm_wood'], "art_frame")
+canvas = create_cube((0.0, 2.7, 1.7), (0.9, 0.7, 0.01), COLORS['accent_rose'], "art_canvas")
+
+# --- Finalize ---
+# Select all to apply modifiers if any (though we used simple bevels)
+bpy.ops.object.select_all(action='DESELECT')
+for obj in bpy.data.objects:
+    obj.select_set(True)
+bpy.context.view_layer.objects.active = floor
+
+# Ensure Z-up orientation is standard (Blender default)
+# The scene is set up with Z up as requested.
+
+print("Low-poly bedroom scene created successfully.")

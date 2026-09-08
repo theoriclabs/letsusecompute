@@ -1,0 +1,171 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Configuration ---
+SCALE = 1.0
+COLORS = {
+    'terracotta': (0.733, 0.471, 0.392),   # bd7963
+    'sand': (0.929, 0.859, 0.745),         # eddbc0
+    'wood_dark': (0.502, 0.400, 0.322),    # 8b6650
+    'sage': (0.486, 0.604, 0.549),         # 7d9a8c
+    'cream': (0.961, 0.941, 0.898),        # F5F1E6 approx
+    'black': (0.1, 0.1, 0.1)
+}
+
+def create_box(name, loc, size, color, bevel=0.02):
+    """Creates a low-poly box mesh with small bevels."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    # Scale to desired size
+    obj.scale = (size[0], size[1], size[2])
+    
+    # Apply material
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.7
+    bsdf.inputs['Metallic'].default_value = 0.0
+    
+    obj.data.materials.append(mat)
+    
+    # Apply bevel modifier for low-poly look
+    mod = obj.modifiers.new(name="Bevel", type='BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = 0.5
+    
+    return obj
+
+def create_cylinder(name, loc, radius, height, color, segments=12, bevel=0.02):
+    """Creates a low-poly cylinder."""
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=loc)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    obj.rotation_euler = (math.radians(90), 0, 0) # Z-up
+    
+    obj.scale = (1, 1, 1) # Cylinder is already scaled by radius/depth
+    
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.6
+    
+    obj.data.materials.append(mat)
+    
+    mod = obj.modifiers.new(name="Bevel", type='BEVEL')
+    mod.width = bevel
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = 0.5
+    
+    return obj
+
+# --- 1. Room Structure ---
+
+# Floor
+floor = create_box("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), COLORS['sand'])
+
+# Back Wall
+wall_back = create_box("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), COLORS['terracotta'])
+
+# Left Wall
+wall_side = create_box("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), COLORS['terracotta'])
+
+# Right Wall (Partial for enclosure feel, but open front)
+wall_right = create_box("wall_right", (2.7, 0, 1.7), (0.15, 5.6, 3.0), COLORS['terracotta'])
+
+# Ceiling (Low poly feel)
+ceiling = create_box("ceiling", (0, 2.7, 4.7), (5.6, 5.6, 0.2), COLORS['sand'])
+
+# --- 2. Furniture: Desk & Chair (Work Zone) ---
+# Positioned near the front right, facing the desk (Left wall side)
+
+# Desk Base
+desk_base = create_box("desk_base", (1.5, 1.0, 0.2), (2.0, 0.8, 0.2), COLORS['wood_dark'])
+# Desk Top
+desk_top = create_box("desk_top", (1.5, 1.0, 0.9), (2.0, 0.8, 0.05), COLORS['wood_dark'])
+
+# Monitor Stand
+monitor_stand = create_box("monitor_stand", (1.5, 1.0, 1.0), (0.2, 0.2, 0.1), COLORS['wood_dark'])
+# Monitor Screen
+monitor_screen = create_box("monitor_screen", (1.5, 1.0, 1.1), (0.3, 0.4, 0.02), COLORS['black'])
+# Monitor Bezel
+monitor_bezel = create_box("monitor_bezel", (1.5, 1.0, 1.1), (0.32, 0.42, 0.02), COLORS['black'])
+
+# Keyboard Tray
+keyboard_tray = create_box("keyboard_tray", (1.5, 1.0, 0.9), (0.4, 0.2, 0.02), COLORS['wood_dark'])
+
+# Chair
+chair_legs = []
+for i in range(4):
+    angle = i * math.pi / 2
+    x = math.cos(angle) * 0.1
+    z = math.sin(angle) * 0.1
+    leg = create_cylinder(f"chair_leg_{i}", (1.5 + x, 1.0 + z, 0.2), 0.03, 0.8, COLORS['wood_dark'])
+    chair_legs.append(leg)
+
+chair_seat = create_box("chair_seat", (1.5, 1.0, 1.0), (0.5, 0.5, 0.05), COLORS['terracotta'])
+chair_back = create_box("chair_back", (1.5, 1.0, 1.0), (0.5, 0.4, 0.05), COLORS['terracotta'])
+chair_arm_left = create_box("chair_arm_left", (1.5, 1.0, 1.0), (0.05, 0.25, 0.05), COLORS['wood_dark'])
+chair_arm_right = create_box("chair_arm_right", (1.5, 1.0, 1.0), (0.05, 0.25, 0.05), COLORS['wood_dark'])
+
+# --- 3. Furniture: Bookcase (Left Wall) ---
+# Open four-level bookcase
+bookcase_frame = create_box("bookcase_frame", (-2.5, 1.0, 1.7), (0.1, 2.0, 2.8), COLORS['wood_dark'])
+
+# Shelves
+shelf_positions = [0.5, 1.0, 1.5, 2.0]
+for z in shelf_positions:
+    shelf = create_box(f"bookcase_shelf_{z}", (-2.5, 1.0, 1.7 + z), (0.08, 2.0, 0.05), COLORS['wood_dark'])
+
+# Books (Randomized colors from palette)
+import random
+book_colors = [COLORS['terracotta'], COLORS['sage'], COLORS['cream'], COLORS['wood_dark']]
+for i in range(15):
+    x = random.uniform(-0.05, 0.05)
+    z = random.uniform(0.5, 2.5)
+    h = random.uniform(0.05, 0.15)
+    color = random.choice(book_colors)
+    book = create_box(f"book_{i}", (-2.5 + x, 1.0 + z, 1.7), (0.05, h, 0.02), color)
+
+# --- 4. Furniture: Storage Cabinet ---
+# Near the back left corner
+cabinet_base = create_box("cabinet_base", (-2.5, 2.0, 1.7), (0.1, 0.8, 0.2), COLORS['wood_dark'])
+cabinet_top = create_box("cabinet_top", (-2.5, 2.0, 1.7), (0.1, 0.8, 0.05), COLORS['wood_dark'])
+cabinet_door = create_box("cabinet_door", (-2.5, 2.0, 1.7), (0.08, 0.7, 0.02), COLORS['terracotta'])
+
+# --- 5. Decor: Rug ---
+# In the center open area
+rug = create_box("rug", (0, 0.5, 0.11), (2.5, 2.5, 0.02), COLORS['sage'])
+
+# --- 6. Decor: Standing Lamp ---
+# Near the desk
+lamp_base = create_box("lamp_base", (1.8, 1.0, 0.2), (0.15, 0.15, 0.15), COLORS['wood_dark'])
+lamp_stem = create_cylinder("lamp_stem", (1.8, 1.0, 1.0), 0.04, 1.2, COLORS['wood_dark'])
+lamp_shade = create_box("lamp_shade", (1.8, 1.0, 1.2), (0.2, 0.2, 0.05), COLORS['cream'])
+
+# --- 7. Decor: Plant ---
+# Near the bookcase
+plant_pot = create_box("plant_pot", (-2.2, 1.0, 1.7), (0.2, 0.2, 0.1), COLORS['terracotta'])
+plant_leaves = create_box("plant_leaves", (-2.2, 1.0, 1.7), (0.25, 0.25, 0.3), COLORS['sage'])
+
+# --- Cleanup ---
+# Select all and apply transforms to ensure clean mesh data
+for obj in bpy.data.objects:
+    obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
+
+# Deselect all
+bpy.ops.object.select_all(action='DESELECT')

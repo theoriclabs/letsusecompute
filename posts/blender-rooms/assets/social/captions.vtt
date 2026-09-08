@@ -1,0 +1,19 @@
+WEBVTT
+
+00:00.000 --> 00:03.000
+Qwen3.5-9B, fine-tuned on 192 procedural Blender programs.
+
+00:03.000 --> 00:06.000
+Bedroom: actual saved render, geometry passed.
+
+00:06.000 --> 00:09.000
+Studio: actual saved render, geometry failed on bounds and support.
+
+00:09.000 --> 00:12.000
+Kitchen: actual saved render, geometry passed.
+
+00:12.000 --> 00:15.000
+Living room: actual saved render, geometry passed.
+
+00:15.000 --> 00:18.000
+Completed pilot: 30/32 renders, 18/32 geometry passes, $7.82 in GPU charges.

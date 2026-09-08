@@ -1,0 +1,29 @@
+{
+  "weight_sha256": "a3ee9475724bfe2d84c264134c64f32e6b96452a8d5d594981921551e4360402",
+  "weight_bytes": 21713472,
+  "tensor_count": 496,
+  "parameter_count": 10819584,
+  "dtypes": [
+    "torch.bfloat16"
+  ],
+  "finite_tensors": true,
+  "nonzero_lora_B_tensors": 248,
+  "optimizer_steps": 72,
+  "epochs": 3.0,
+  "validation_losses": [
+    {
+      "step": 24,
+      "loss": 0.09904138743877411
+    },
+    {
+      "step": 48,
+      "loss": 0.022907912731170654
+    },
+    {
+      "step": 72,
+      "loss": 0.01696397364139557
+    }
+  ],
+  "best_checkpoint": "/tmp/blender-result-export/sft/checkpoints/checkpoint-72",
+  "training_seconds": 2229.7828040756285
+}

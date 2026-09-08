@@ -1,0 +1,197 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_cube(location, size, name, color):
+    """Creates a cube mesh with specified location, size, and color."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    obj.data.extrude = 0.001 # Ensure volume
+    bpy.context.collection.objects.link(obj)
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.8
+    bsdf.inputs["Metallic"].default_value = 0.0
+    obj.data.materials.append(mat)
+    
+    return obj
+
+def create_cylinder(location, radius, height, name, color, segments=16):
+    """Creates a cylinder mesh."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = location
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=location, segments=segments)
+    bpy.context.collection.objects.link(obj)
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.8
+    obj.data.materials.append(mat)
+    
+    return obj
+
+def add_bevel(obj, thickness=0.01, width=0.01):
+    """Adds a bevel modifier to an object."""
+    mod = obj.modifiers.new(name="bevel", type='BEVEL')
+    mod.width = width
+    mod.segments = 1
+    mod.limit_method = 'ANGLE'
+    mod.angle_limit = math.radians(30)
+    mod.offset_type = 'AUTO'
+    mod.offset = thickness
+
+# --- Materials ---
+# Palette: 859eae (Dusty Blue), ece3d0 (Cream), 9b7359 (Warm Wood), cb8d74 (Accent Terracotta)
+mat_dusty_blue = bpy.data.materials.new("mat_dusty_blue")
+mat_dusty_blue.use_nodes = True
+mat_dusty_blue.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.52549, 0.62, 0.68235, 1.0)
+mat_dusty_blue.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0.7
+
+mat_cream = bpy.data.materials.new("mat_cream")
+mat_cream.use_nodes = True
+mat_cream.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.93333, 0.90196, 0.82353, 1.0)
+mat_cream.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0.9
+
+mat_wood = bpy.data.materials.new("mat_wood")
+mat_wood.use_nodes = True
+mat_wood.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.60784, 0.45490, 0.35294, 1.0)
+mat_wood.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0.5
+
+mat_terracotta = bpy.data.materials.new("mat_terracotta")
+mat_terracotta.use_nodes = True
+mat_terracotta.node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.79608, 0.55294, 0.46667, 1.0)
+mat_terracotta.node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0.6
+
+# --- Room Structure ---
+
+# Floor
+floor = create_cube((0, 0, 0.1), (5.6, 5.6, 0.2), "floor", (0.8, 0.8, 0.8, 1.0))
+floor.data.materials[0].use_nodes = True
+floor.data.materials[0].node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.8, 0.8, 0.8, 1.0)
+floor.data.materials[0].node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0.9
+
+# Back Wall
+wall_back = create_cube((0, 2.7, 1.7), (5.6, 0.15, 3.0), "wall_back", (0.9, 0.9, 0.9, 1.0))
+wall_back.data.materials[0].use_nodes = True
+wall_back.data.materials[0].node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.9, 0.9, 0.9, 1.0)
+
+# Left Wall
+wall_side = create_cube((-2.7, 0, 1.7), (0.15, 5.6, 3.0), "wall_side", (0.9, 0.9, 0.9, 1.0))
+wall_side.data.materials[0].use_nodes = True
+wall_side.data.materials[0].node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.9, 0.9, 0.9, 1.0)
+
+# --- Furniture: Sofa (2.2m wide) ---
+# Position: Left side, against back wall
+sofa_x = -1.1
+sofa_z = 1.7 + 0.075 # Half wall thickness
+
+# Sofa Frame
+sofa_frame = create_cube((sofa_x, 0.5, sofa_z), (2.2, 0.6, 0.8), "sofa_frame", mat_wood)
+add_bevel(sofa_frame, thickness=0.02, width=0.02)
+
+# Sofa Cushions (Seat)
+cushion_left = create_cube((sofa_x - 0.6, 0.5, sofa_z), (0.6, 0.5, 0.7), "sofa_cushion_left", mat_dusty_blue)
+cushion_right = create_cube((sofa_x + 0.6, 0.5, sofa_z), (0.6, 0.5, 0.7), "sofa_cushion_right", mat_dusty_blue)
+cushion_mid = create_cube((sofa_x, 0.5, sofa_z), (0.6, 0.5, 0.7), "sofa_cushion_mid", mat_dusty_blue)
+
+# Sofa Arms
+arm_left = create_cube((sofa_x - 1.1, 0.5, sofa_z), (0.1, 0.6, 0.8), "sofa_arm_left", mat_wood)
+arm_right = create_cube((sofa_x + 1.1, 0.5, sofa_z), (0.1, 0.6, 0.8), "sofa_arm_right", mat_wood)
+
+# --- Furniture: Coffee Table ---
+# Position: Center front of sofa
+table_x = 0
+table_z = 1.7 + 0.4 + 0.4 # Offset from wall
+table_y = 0.15
+
+table_top = create_cube((table_x, table_y, table_z), (1.0, 0.1, 0.8), "table_top", mat_wood)
+add_bevel(table_top, thickness=0.01, width=0.01)
+table_legs = create_cylinder((table_x, table_y, table_z - 0.4), 0.03, 0.4, "table_legs", mat_wood)
+
+# Books on table
+book1 = create_cube((table_x - 0.2, table_y + 0.05, table_z), (0.15, 0.02, 0.2), "book_1", mat_terracotta)
+book2 = create_cube((table_x + 0.2, table_y + 0.05, table_z), (0.15, 0.02, 0.2), "book_2", mat_cream)
+
+# --- Furniture: Accent Chair (Arm-free) ---
+# Position: Right side, facing slightly inward
+chair_x = 1.1
+chair_z = 1.7 + 0.075
+
+chair_seat = create_cube((chair_x, 0.4, chair_z), (0.6, 0.5, 0.6), "chair_seat", mat_wood)
+chair_back = create_cube((chair_x, 0.8, chair_z), (0.6, 0.6, 0.4), "chair_back", mat_wood)
+chair_legs = create_cylinder((chair_x, 0.4, chair_z - 0.3), 0.025, 0.3, "chair_legs", mat_wood)
+
+# Accent Pillow
+pillow = create_cube((chair_x + 0.1, 0.4, chair_z), (0.3, 0.3, 0.3), "chair_pillow", mat_terracotta)
+
+# --- Furniture: Media Cabinet & TV ---
+# Position: Right side, against back wall
+cabinet_x = 1.1
+cabinet_z = 1.7 + 0.075
+
+cabinet_body = create_cube((cabinet_x, 0.3, cabinet_z), (0.8, 0.6, 1.0), "cabinet_body", mat_wood)
+add_bevel(cabinet_body, thickness=0.01, width=0.01)
+
+# TV Screen
+tv_screen = create_cube((cabinet_x, 0.55, cabinet_z + 0.05), (0.7, 0.4, 0.02), "tv_screen", (0.1, 0.1, 0.1, 1.0))
+# TV Frame
+tv_frame = create_cube((cabinet_x, 0.55, cabinet_z + 0.05), (0.72, 0.42, 0.03), "tv_frame", mat_wood)
+
+# --- Furniture: Rug ---
+# Position: Under sofa and table
+rug = create_cube((0, 0.02, 1.7 + 0.2), (2.4, 1.2, 0.02), "rug", mat_cream)
+rug.data.materials[0].use_nodes = True
+rug.data.materials[0].node_tree.nodes["Principled BSDF"].inputs["Base Color"].default_value = (0.93333, 0.90196, 0.82353, 1.0)
+rug.data.materials[0].node_tree.nodes["Principled BSDF"].inputs["Roughness"].default_value = 0.95
+
+# --- Furniture: Lamp ---
+# Position: Near accent chair
+lamp_x = 1.1
+lamp_z = 1.7 + 0.075 + 0.6
+lamp_y = 0.4
+
+lamp_base = create_cube((lamp_x, lamp_y, lamp_z), (0.1, 0.1, 0.1), "lamp_base", mat_wood)
+lamp_stand = create_cylinder((lamp_x, lamp_y + 0.05, lamp_z), 0.02, 0.4, "lamp_stand", mat_wood)
+lamp_shade = create_cube((lamp_x, lamp_y + 0.45, lamp_z), (0.2, 0.2, 0.05), "lamp_shade", mat_cream)
+
+# --- Furniture: Plant ---
+# Position: Corner near cabinet
+plant_x = 1.1 + 0.4
+plant_z = 1.7 + 0.075 + 0.5
+plant_y = 0.4
+
+plant_pot = create_cube((plant_x, plant_y, plant_z), (0.2, 0.2, 0.2), "plant_pot", mat_wood)
+plant_leaves = create_cube((plant_x, plant_y + 0.1, plant_z), (0.3, 0.3, 0.3), "plant_leaves", mat_dusty_blue)
+
+# --- Final Cleanup ---
+# Select all and apply modifiers to ensure clean mesh for evaluation
+for obj in bpy.data.objects:
+    for mod in obj.modifiers:
+        if mod.type == 'BEVEL':
+            obj.modifiers.clear()
+            # Re-add bevel to ensure it's applied before evaluation if needed, 
+            # though usually evaluation handles modifiers. 
+            # For strict low-poly count, we might want to apply, but instructions say "support every part".
+            # We will leave modifiers active as they are part of the scene graph.
+    
+    # Ensure materials are assigned correctly
+    if obj.data.materials:
+        mat = obj.data.materials[0]
+        if mat:
+            mat.use_nodes = True
+            bsdf = mat.node_tree.nodes["Principled BSDF"]
+            # Ensure alpha is 1.0
+            bsdf.inputs["Alpha"].default_value = 1.0
+
+# Deselect all
+bpy.ops.object.select_all(action='DESELECT')

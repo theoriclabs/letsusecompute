@@ -1,0 +1,183 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# Define Colors (RGBA)
+C_SAGE = (0.5686, 0.6745, 0.5373, 1.0)   # 91aa8a
+C_OAK = (0.6078, 0.4392, 0.3020, 1.0)    # 9b704d
+C_CREAM = (0.8863, 0.7255, 0.4196, 1.0)  # e2b96b
+C_WARM = (0.9176, 0.8471, 0.8000, 1.0)   # e8dfcd (approximated warm beige)
+
+def create_material(name, color):
+    mat = bpy.data.materials.new(name=name)
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.6
+    bsdf.inputs["Metallic"].default_value = 0.0
+    return mat
+
+def create_mesh(name, verts, edges, faces, loc, rot, scale, mat_name):
+    obj = bpy.data.objects.new(name, None)
+    bpy.context.collection.objects.link(obj)
+    mesh = bpy.data.meshes.new(name)
+    mesh.from_pydata(verts, edges, faces)
+    mesh.update()
+    obj.data = mesh
+    obj.location = loc
+    obj.rotation_euler = rot
+    obj.scale = scale
+    if mat_name:
+        mat = bpy.data.materials.get(mat_name)
+        if not mat:
+            mat = create_material(mat_name, C_OAK)
+        obj.data.materials.append(mat)
+    return obj
+
+def add_bevel(obj, width=0.01):
+    mod = obj.modifiers.new(name="bevel", type="BEVEL")
+    mod.width = width
+    mod.angle = math.radians(30)
+    mod.limit_method = 'ANGLE'
+    mod.limit_angle = math.radians(30)
+
+# --- Materials ---
+mat_sage = create_material("mat_sage", C_SAGE)
+mat_oak = create_material("mat_oak", C_OAK)
+mat_cream = create_material("mat_cream", C_CREAM)
+mat_warm = create_material("mat_warm", C_WARM)
+
+# --- Helper: Box with bevel ---
+def make_box(name, size, loc, rot, scale, mat, bevel=True):
+    verts = []
+    edges = []
+    faces = []
+    
+    x, y, z = size
+    # Vertices
+    v0 = [ -x/2, -y/2, -z/2 ]
+    v1 = [  x/2, -y/2, -z/2 ]
+    v2 = [  x/2,  y/2, -z/2 ]
+    v3 = [ -x/2,  y/2, -z/2 ]
+    v4 = [ -x/2, -y/2,  z/2 ]
+    v5 = [  x/2, -y/2,  z/2 ]
+    v6 = [  x/2,  y/2,  z/2 ]
+    v7 = [ -x/2,  y/2,  z/2 ]
+    verts.extend([v0, v1, v2, v3, v4, v5, v6, v7])
+    
+    # Edges
+    edges.extend([ (0,1), (1,2), (2,3), (3,0),
+                   (4,5), (5,6), (6,7), (7,4),
+                   (0,4), (1,5), (2,6), (3,7) ])
+    
+    # Faces
+    faces.extend([ (0,1,2,3), (4,5,6,7), (0,1,5,4), (1,2,6,5), (2,3,7,6), (3,0,7,4) ])
+    
+    obj = create_mesh(name, verts, edges, faces, loc, rot, scale, mat)
+    if bevel:
+        add_bevel(obj)
+    return obj
+
+# --- Kitchen Zone (Back Wall Area) ---
+# Back Wall Cabinet Base
+cabinet_base = make_box("cabinet_base", (5.6, 0.9, 0.8), (0, 1.35, 1.7), (0,0,0), (1,1,1), mat_oak)
+add_bevel(cabinet_base, 0.02)
+
+# Back Wall Upper Cabinets (Left, Center, Right)
+# Left
+cabinet_l = make_box("cabinet_upper_l", (1.6, 0.9, 0.8), (-1.6, 1.35, 1.7), (0,0,0), (1,1,1), mat_oak)
+add_bevel(cabinet_l, 0.02)
+# Center
+cabinet_c = make_box("cabinet_upper_c", (1.6, 0.9, 0.8), (0, 1.35, 1.7), (0,0,0), (1,1,1), mat_oak)
+add_bevel(cabinet_c, 0.02)
+# Right
+cabinet_r = make_box("cabinet_upper_r", (1.6, 0.9, 0.8), (1.6, 1.35, 1.7), (0,0,0), (1,1,1), mat_oak)
+add_bevel(cabinet_r, 0.02)
+
+# Refrigerator (Left side of back wall)
+fridge = make_box("fridge", (0.8, 1.8, 0.8), (-2.4, 0.9, 1.7), (0,0,0), (1,1,1), mat_cream)
+add_bevel(fridge, 0.02)
+
+# Stove (Center of back wall)
+stove_top = make_box("stove_top", (0.6, 0.6, 0.05), (0, 1.35, 1.7), (0,0,0), (1,1,1), mat_oak)
+add_bevel(stove_top, 0.01)
+# Stove Legs
+stove_leg_l = make_box("stove_leg_l", (0.1, 0.1, 0.6), (-0.25, 1.35, 1.7), (0,0,0), (1,1,1), mat_oak)
+stove_leg_r = make_box("stove_leg_r", (0.1, 0.1, 0.6), (0.25, 1.35, 1.7), (0,0,0), (1,1,1), mat_oak)
+stove_leg_f = make_box("stove_leg_f", (0.1, 0.1, 0.6), (-0.25, 1.35, 1.7), (0,0,0), (1,1,1), mat_oak)
+stove_leg_b = make_box("stove_leg_b", (0.1, 0.1, 0.6), (0.25, 1.35, 1.7), (0,0,0), (1,1,1), mat_oak)
+
+# Sink (Right side of back wall)
+sink_basin = make_box("sink_basin", (0.6, 0.5, 0.1), (1.6, 1.35, 1.7), (0,0,0), (1,1,1), mat_oak)
+add_bevel(sink_basin, 0.01)
+# Tap
+tap_base = make_box("tap_base", (0.05, 0.05, 0.05), (1.6, 1.35, 1.7), (0,0,0), (1,1,1), mat_cream)
+tap_head = make_box("tap_head", (0.05, 0.05, 0.15), (1.6, 1.35, 1.7), (0,0,0), (1,1,1), mat_cream)
+
+# Countertop (Continuous)
+counter = make_box("counter", (5.6, 0.05, 0.8), (0, 1.35, 1.7), (0,0,0), (1,1,1), mat_oak)
+add_bevel(counter, 0.02)
+
+# --- Dining Zone (Front Corner Open) ---
+# Dining Table
+table_top = make_box("table_top", (1.8, 1.0, 0.05), (0, 0.5, 0.1), (0,0,0), (1,1,1), mat_oak)
+add_bevel(table_top, 0.01)
+table_leg_l = make_box("table_leg_l", (0.1, 0.1, 0.8), (-0.8, 0.5, 0.1), (0,0,0), (1,1,1), mat_oak)
+table_leg_r = make_box("table_leg_r", (0.1, 0.1, 0.8), (0.8, 0.5, 0.1), (0,0,0), (1,1,1), mat_oak)
+table_leg_f = make_box("table_leg_f", (0.1, 0.1, 0.8), (-0.8, 0.5, 0.1), (0,0,0), (1,1,1), mat_oak)
+table_leg_b = make_box("table_leg_b", (0.1, 0.1, 0.8), (0.8, 0.5, 0.1), (0,0,0), (1,1,1), mat_oak)
+
+# Bowl on Table
+bowl = make_box("bowl", (0.2, 0.2, 0.1), (0, 0.5, 0.1), (0,0,0), (1,1,1), mat_cream)
+add_bevel(bowl, 0.005)
+
+# Chair 1 (Front Left)
+chair_seat_1 = make_box("chair_seat_1", (0.4, 0.4, 0.05), (0, 0.5, 0.1), (0,0,0), (1,1,1), mat_oak)
+add_bevel(chair_seat_1, 0.01)
+chair_back_1 = make_box("chair_back_1", (0.4, 0.6, 0.05), (0, 0.5, 0.1), (0,0,0), (1,1,1), mat_oak)
+add_bevel(chair_back_1, 0.01)
+chair_legs_1 = make_box("chair_legs_1", (0.1, 0.1, 0.4), (0, 0.5, 0.1), (0,0,0), (1,1,1), mat_oak)
+add_bevel(chair_legs_1, 0.005)
+
+# Chair 2 (Front Right)
+chair_seat_2 = make_box("chair_seat_2", (0.4, 0.4, 0.05), (0, 0.5, 0.1), (0,0,0), (1,1,1), mat_oak)
+add_bevel(chair_seat_2, 0.01)
+chair_back_2 = make_box("chair_back_2", (0.4, 0.6, 0.05), (0, 0.5, 0.1), (0,0,0), (1,1,1), mat_oak)
+add_bevel(chair_back_2, 0.01)
+chair_legs_2 = make_box("chair_legs_2", (0.1, 0.1, 0.4), (0, 0.5, 0.1), (0,0,0), (1,1,1), mat_oak)
+add_bevel(chair_legs_2, 0.005)
+
+# Plant (Corner accent)
+plant_pot = make_box("plant_pot", (0.3, 0.3, 0.1), (2.5, 2.5, 0.1), (0,0,0), (1,1,1), mat_oak)
+add_bevel(plant_pot, 0.01)
+plant_leaves = make_box("plant_leaves", (0.2, 0.2, 0.3), (2.5, 2.5, 0.1), (0,0,0), (1,1,1), mat_sage)
+add_bevel(plant_leaves, 0.005)
+
+# --- Floor ---
+floor = make_box("floor", (5.6, 5.6, 0.2), (0, 0, 0.1), (0,0,0), (1,1,1), mat_oak)
+add_bevel(floor, 0.02)
+
+# --- Textiles (Accent) ---
+# Rug under table
+rug = make_box("rug", (2.0, 1.2, 0.02), (0, 0.5, 0.1), (0,0,0), (1,1,1), mat_warm)
+add_bevel(rug, 0.005)
+
+# Cushion on Chair 1
+cushion_1 = make_box("cushion_1", (0.35, 0.35, 0.05), (0, 0.5, 0.1), (0,0,0), (1,1,1), mat_warm)
+add_bevel(cushion_1, 0.005)
+
+# Curtain (Left side window area)
+curtain = make_box("curtain", (0.1, 2.0, 0.1), (-2.8, 1.0, 1.7), (0,0,0), (1,1,1), mat_warm)
+add_bevel(curtain, 0.005)
+
+# --- Final Cleanup ---
+for obj in bpy.data.objects:
+    if obj.type == 'MESH':
+        # Ensure no duplicate materials are assigned if not needed, but keep semantic names
+        pass
+
+# Select all for potential future operations (though not required by prompt)
+bpy.ops.object.select_all(action='DESELECT')

@@ -1,0 +1,214 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_cube(name, loc, size, color, bevel=0.01):
+    """Creates a low-poly cube with a small bevel."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = loc
+    obj.rotation_euler = (math.radians(90), 0, 0)  # Align Z up
+    bpy.context.collection.objects.link(obj)
+    
+    mesh = obj.data
+    verts = [(0,0,0), (size[0],0,0), (size[0],size[1],0), (0,size[1],0),
+             (0,0,size[2]), (size[0],0,size[2]), (size[0],size[1],size[2]), (0,size[1],size[2])]
+    mesh.from_pydata(verts, [], [(0,1,2,3), (4,5,6,7), (0,1,5,4), (2,3,7,6), (0,4,7,3), (1,5,6,2)])
+    
+    faces = mesh.polygons
+    for f in faces:
+        f.material_index = 0
+        f.bevel_depth = bevel
+        f.bevel_count = 1
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.8
+    bsdf.inputs['Metallic'].default_value = 0.0
+    obj.data.materials.append(mat)
+    return obj
+
+def create_cylinder(name, loc, radius, height, color, segments=8, bevel=0.01):
+    """Creates a low-poly cylinder."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = loc
+    obj.rotation_euler = (math.radians(90), 0, 0)
+    bpy.context.collection.objects.link(obj)
+    
+    mesh = obj.data
+    verts = []
+    for i in range(segments + 1):
+        angle = (i / segments) * math.pi * 2
+        x = radius * math.cos(angle)
+        z = radius * math.sin(angle)
+        verts.append((x, 0, z))
+        verts.append((x, height, z))
+    
+    faces = []
+    for i in range(segments):
+        faces.append((i, i+1, i+segments+1, i+segments))
+    
+    mesh.from_pydata(verts, [], faces)
+    
+    for f in mesh.polygons:
+        f.material_index = 0
+        f.bevel_depth = bevel
+        f.bevel_count = 1
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs['Base Color'].default_value = color
+    bsdf.inputs['Roughness'].default_value = 0.8
+    obj.data.materials.append(mat)
+    return obj
+
+# --- Materials Definition ---
+# Palette: 859eae (Dusty Blue), ece3d0 (Cream), 9b7359 (Warm Wood), cb8d74 (Accent)
+def get_color(hex_str):
+    r = int(hex_str[1:3], 16) / 255.0
+    g = int(hex_str[3:5], 16) / 255.0
+    b = int(hex_str[5:7], 16) / 255.0
+    return (r, g, b)
+
+mat_dusty_blue = bpy.data.materials.new("mat_dusty_blue")
+mat_dusty_blue.use_nodes = True
+mat_dusty_blue.node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = get_color("859eae")
+mat_dusty_blue.node_tree.nodes["Principled BSDF"].inputs['Roughness'].default_value = 0.7
+
+mat_cream = bpy.data.materials.new("mat_cream")
+mat_cream.use_nodes = True
+mat_cream.node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = get_color("ece3d0")
+mat_cream.node_tree.nodes["Principled BSDF"].inputs['Roughness'].default_value = 0.9
+
+mat_wood = bpy.data.materials.new("mat_wood")
+mat_wood.use_nodes = True
+mat_wood.node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = get_color("9b7359")
+mat_wood.node_tree.nodes["Principled BSDF"].inputs['Roughness'].default_value = 0.5
+
+mat_accent = bpy.data.materials.new("mat_accent")
+mat_accent.use_nodes = True
+mat_accent.node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = get_color("cb8d74")
+mat_accent.node_tree.nodes["Principled BSDF"].inputs['Roughness'].default_value = 0.6
+
+# --- Room Structure ---
+# Floor: 5.6 x 5.6 x 0.2, centered at (0,0,0.1)
+floor = create_cube("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), (0.8, 0.8, 0.8)) # Neutral floor
+floor.rotation_euler = (0, 0, 0)
+floor.data.materials[0].use_nodes = True
+floor.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = (0.9, 0.9, 0.9)
+floor.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Roughness'].default_value = 0.9
+
+# Back Wall: 5.6 x 0.15 x 3.0, centered at (0, 2.7, 1.7)
+# Note: Wall thickness is 0.15. Positioning logic:
+# Center Y = 2.7. Height = 3.0. So bottom is at 2.7 - 1.5 = 1.2.
+# Center Z = 1.7. Depth = 3.0. So front is at 1.7 - 1.5 = 0.2.
+wall_back = create_cube("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), (0.6, 0.6, 0.6))
+wall_back.rotation_euler = (0, 0, 0)
+wall_back.data.materials[0].use_nodes = True
+wall_back.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = (0.7, 0.7, 0.7)
+
+# Left Wall: 0.15 x 5.6 x 3.0, centered at (-2.7, 0, 1.7)
+# Center X = -2.7. Width = 0.15. So right edge is at -2.7 + 0.075 = -2.625.
+# Center Z = 1.7. Depth = 3.0. So front is at 0.2.
+wall_side = create_cube("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), (0.6, 0.6, 0.6))
+wall_side.rotation_euler = (0, 0, 0)
+wall_side.data.materials[0].use_nodes = True
+wall_side.data.materials[0].node_tree.nodes["Principled BSDF"].inputs['Base Color'].default_value = (0.7, 0.7, 0.7)
+
+# --- Furniture Generation ---
+
+# 1. Sofa (2.2m wide, low poly, dusty blue/cream)
+# Position: Front left area, facing back wall.
+# Center approx: (-1.1, 1.0, 0.5)
+sofa_base = create_cube("sofa_base", (-1.1, 1.0, 0.5), (2.2, 0.6, 0.4), mat_dusty_blue)
+sofa_base.rotation_euler = (0, 0, 0)
+
+# Sofa Arms
+arm_l = create_cube("sofa_arm_l", (-1.6, 1.0, 0.5), (0.3, 0.6, 0.4), mat_dusty_blue)
+arm_l.rotation_euler = (0, 0, 0)
+arm_r = create_cube("sofa_arm_r", (-0.6, 1.0, 0.5), (0.3, 0.6, 0.4), mat_dusty_blue)
+arm_r.rotation_euler = (0, 0, 0)
+
+# Sofa Cushions (Cream)
+cush_l = create_cube("sofa_cush_l", (-1.3, 1.0, 0.5), (0.8, 0.5, 0.35), mat_cream)
+cush_l.rotation_euler = (0, 0, 0)
+cush_r = create_cube("sofa_cush_r", (-0.3, 1.0, 0.5), (0.8, 0.5, 0.35), mat_cream)
+cush_r.rotation_euler = (0, 0, 0)
+
+# 2. Coffee Table (Low, wood frame, cream top)
+# Position: Center front
+table_legs = create_cube("table_legs", (0, 0.5, 0.5), (0.4, 0.4, 0.4), mat_wood)
+table_legs.rotation_euler = (0, 0, 0)
+table_top = create_cube("table_top", (0, 0.5, 0.5), (0.8, 0.8, 0.05), mat_cream)
+table_top.rotation_euler = (0, 0, 0)
+
+# Books on table
+book1 = create_cube("book_1", (0.2, 0.5, 0.5), (0.1, 0.02, 0.15), mat_accent)
+book1.rotation_euler = (0, 0, 0)
+book2 = create_cube("book_2", (0.2, 0.5, 0.5), (0.1, 0.02, 0.15), mat_accent)
+book2.rotation_euler = (0, 0, 0)
+book2.location.z = 0.51
+book3 = create_cube("book_3", (0.2, 0.5, 0.5), (0.1, 0.02, 0.15), mat_accent)
+book3.rotation_euler = (0, 0, 0)
+book3.location.z = 0.52
+
+# 3. Accent Chair (Arm-free, wood frame, accent cushion)
+# Position: Front right corner
+chair_legs = create_cube("chair_legs", (1.4, 0.5, 0.5), (0.3, 0.3, 0.3), mat_wood)
+chair_legs.rotation_euler = (0, 0, 0)
+chair_seat = create_cube("chair_seat", (1.4, 0.5, 0.5), (0.6, 0.4, 0.05), mat_wood)
+chair_seat.rotation_euler = (0, 0, 0)
+chair_back = create_cube("chair_back", (1.4, 0.5, 0.5), (0.6, 0.6, 0.4), mat_wood)
+chair_back.rotation_euler = (0, 0, 0)
+chair_cushion = create_cube("chair_cushion", (1.4, 0.5, 0.5), (0.5, 0.35, 0.3), mat_accent)
+chair_cushion.rotation_euler = (0, 0, 0)
+
+# 4. Media Cabinet & TV (Back wall zone)
+# Cabinet: 1.5m wide, 0.4m high
+cabinet = create_cube("media_cabinet", (0, 1.2, 1.7), (1.5, 0.4, 0.3), mat_wood)
+cabinet.rotation_euler = (0, 0, 0)
+
+# TV Screen (Black/Dark Grey)
+tv_stand = create_cube("tv_stand", (0, 1.2, 1.7), (0.1, 0.4, 0.3), mat_wood)
+tv_stand.rotation_euler = (0, 0, 0)
+tv_screen = create_cube("tv_screen", (0, 1.2, 1.7), (1.2, 0.02, 0.6), (0.1, 0.1, 0.1))
+tv_screen.rotation_euler = (0, 0, 0)
+
+# 5. Rug (Dusty Blue)
+# Position: Under sofa and table
+rug = create_cube("rug", (-0.5, 0.5, 0.1), (2.5, 2.5, 0.02), mat_dusty_blue)
+rug.rotation_euler = (0, 0, 0)
+
+# 6. Lamp (Floor lamp, cream shade, wood base)
+# Position: Near accent chair
+lamp_base = create_cube("lamp_base", (1.6, 0.5, 0.5), (0.1, 0.1, 0.1), mat_wood)
+lamp_base.rotation_euler = (0, 0, 0)
+lamp_post = create_cube("lamp_post", (1.6, 0.5, 0.5), (0.02, 1.2, 0.02), mat_wood)
+lamp_post.rotation_euler = (0, 0, 0)
+lamp_shade = create_cube("lamp_shade", (1.6, 0.5, 0.5), (0.3, 0.3, 0.05), mat_cream)
+lamp_shade.rotation_euler = (0, 0, 0)
+
+# 7. Plant (Potted plant, green leaves, brown pot)
+# Position: Near media cabinet
+pot = create_cube("plant_pot", (0.8, 1.2, 1.7), (0.2, 0.2, 0.2), mat_wood)
+pot.rotation_euler = (0, 0, 0)
+plant_stem = create_cube("plant_stem", (0.8, 1.2, 1.7), (0.02, 0.3, 0.02), (0.2, 0.6, 0.2))
+plant_stem.rotation_euler = (0, 0, 0)
+plant_leaves = create_cube("plant_leaves", (0.8, 1.2, 1.7), (0.2, 0.2, 0.2), (0.1, 0.5, 0.1))
+plant_leaves.rotation_euler = (0, 0, 0)
+
+# --- Final Cleanup ---
+# Ensure all objects are in the main collection
+for obj in bpy.data.objects:
+    if obj.name not in ["floor", "wall_back", "wall_side"]:
+        bpy.context.collection.objects.link(obj)
+
+# Select all for potential future operations (though not required by prompt)
+bpy.ops.object.select_all(action='DESELECT')

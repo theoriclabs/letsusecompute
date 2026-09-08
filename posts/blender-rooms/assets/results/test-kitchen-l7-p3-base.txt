@@ -1,0 +1,146 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_cube(name, loc, size, color, bevel=0.01):
+    """Creates a low-poly cube with a small bevel."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = loc
+    obj.rotation_euler = (math.radians(90), 0, 0)  # Isometric rotation
+    obj.data.bevel_depth = bevel
+    obj.data.bevel_resolution = 1
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.8
+    bsdf.inputs["Metallic"].default_value = 0.0
+    
+    obj.data.materials.append(mat)
+    bpy.context.collection.objects.link(obj)
+    return obj
+
+def create_cylinder(name, loc, radius, height, color, bevel=0.01):
+    """Creates a low-poly cylinder."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = loc
+    obj.rotation_euler = (math.radians(90), 0, 0)
+    obj.data.bevel_depth = bevel
+    obj.data.bevel_resolution = 1
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.8
+    
+    obj.data.materials.append(mat)
+    bpy.context.collection.objects.link(obj)
+    return obj
+
+def create_pipe(name, loc, radius, length, color, bevel=0.01):
+    """Creates a pipe/cylinder segment."""
+    obj = bpy.data.objects.new(name, bpy.data.meshes.new(name))
+    obj.location = loc
+    obj.rotation_euler = (math.radians(90), 0, 0)
+    obj.data.bevel_depth = bevel
+    obj.data.bevel_resolution = 1
+    
+    mat = bpy.data.materials.new(name=f"{name}_mat")
+    mat.use_nodes = True
+    bsdf = mat.node_tree.nodes["Principled BSDF"]
+    bsdf.inputs["Base Color"].default_value = color
+    bsdf.inputs["Roughness"].default_value = 0.8
+    
+    obj.data.materials.append(mat)
+    bpy.context.collection.objects.link(obj)
+    return obj
+
+# --- Palette ---
+# Lavender: a799be
+# Butter: ece1af
+# Warm Wood: 927861
+# Cream: cf8596 (Used as accent/terracotta here for warmth)
+COLOR_LAVENDER = (0.643, 0.600, 0.588)
+COLOR_BUTTER = (0.929, 0.894, 0.647)
+COLOR_WOOD = (0.576, 0.471, 0.380)
+COLOR_ACCENT = (0.812, 0.522, 0.588)
+
+# --- Scene Setup ---
+# Floor
+floor = create_cube("floor", (0, 0, 0.1), (5.6, 5.6, 0.2), COLOR_BUTTER)
+
+# Back Wall
+wall_back = create_cube("wall_back", (0, 2.7, 1.7), (5.6, 0.15, 3.0), COLOR_LAVENDER)
+
+# Left Wall
+wall_side = create_cube("wall_side", (-2.7, 0, 1.7), (0.15, 5.6, 3.0), COLOR_LAVENDER)
+
+# --- Furniture: Refrigerator (Left Wall Zone) ---
+# Frame
+ref_frame = create_cube("ref_frame", (-2.2, 0.5, 1.7), (0.6, 1.8, 0.6), COLOR_WOOD)
+# Door
+ref_door = create_cube("ref_door", (-2.2, 0.5, 1.7), (0.58, 1.7, 0.58), COLOR_LAVENDER)
+# Handle
+ref_handle = create_pipe("ref_handle", (-1.9, 0.5, 1.7), 0.02, 0.1, COLOR_WOOD)
+
+# --- Furniture: Two-Door Counter with Stove and Sink (Left Wall Zone) ---
+# Base
+counter_base = create_cube("counter_base", (-1.0, 0.5, 1.7), (1.2, 0.9, 0.9), COLOR_WOOD)
+# Top
+counter_top = create_cube("counter_top", (-1.0, 1.4, 1.7), (1.2, 0.8, 0.1), COLOR_BUTTER)
+
+# Stove Area (Right side of counter)
+stove_top = create_cube("stove_top", (-0.4, 1.4, 1.7), (0.6, 0.7, 0.1), COLOR_WOOD)
+# Burners
+burner1 = create_cube("burner_1", (-0.3, 1.4, 1.7), (0.15, 0.15, 0.01), COLOR_ACCENT)
+burner2 = create_cube("burner_2", (-0.1, 1.4, 1.7), (0.15, 0.15, 0.01), COLOR_ACCENT)
+burner3 = create_cube("burner_3", (0.1, 1.4, 1.7), (0.15, 0.15, 0.01), COLOR_ACCENT)
+burner4 = create_cube("burner_4", (0.3, 1.4, 1.7), (0.15, 0.15, 0.01), COLOR_ACCENT)
+
+# Sink Area (Left side of counter)
+sink_basin = create_cube("sink_basin", (-1.6, 1.4, 1.7), (0.5, 0.4, 0.05), COLOR_LAVENDER)
+sink_rim = create_cube("sink_rim", (-1.6, 1.4, 1.7), (0.55, 0.45, 0.1), COLOR_WOOD)
+# Tap
+tap_base = create_cube("tap_base", (-1.5, 1.4, 1.7), (0.05, 0.05, 0.1), COLOR_WOOD)
+tap_spout = create_pipe("tap_spout", (-1.5, 1.4, 1.7), 0.02, 0.15, COLOR_WOOD)
+tap_head = create_cube("tap_head", (-1.5, 1.4, 1.7), (0.04, 0.04, 0.04), COLOR_WOOD)
+
+# --- Furniture: Dining Table (Front Corner Open) ---
+# Table Top
+table_top = create_cube("table_top", (0.0, 0.0, 0.1), (2.0, 1.2, 0.1), COLOR_WOOD)
+# Table Legs
+leg_fl = create_cube("table_leg_fl", (0.0, 0.6, 0.1), (0.05, 0.4, 0.05), COLOR_WOOD)
+leg_fr = create_cube("table_leg_fr", (1.0, 0.6, 0.1), (0.05, 0.4, 0.05), COLOR_WOOD)
+leg_bl = create_cube("table_leg_bl", (0.0, -0.4, 0.1), (0.05, 0.4, 0.05), COLOR_WOOD)
+leg_br = create_cube("table_leg_br", (1.0, -0.4, 0.1), (0.05, 0.4, 0.05), COLOR_WOOD)
+
+# Bowl
+bowl = create_cylinder("bowl", (0.5, 0.0, 0.1), 0.15, 0.08, COLOR_ACCENT)
+
+# --- Furniture: Two Chairs ---
+# Chair 1 (Front Left)
+chair1_legs = create_cube("chair1_legs", (-0.8, 0.0, 0.1), (0.4, 0.4, 0.05), COLOR_WOOD)
+chair1_seat = create_cube("chair1_seat", (-0.8, 0.0, 0.1), (0.35, 0.35, 0.05), COLOR_BUTTER)
+chair1_back = create_cube("chair1_back", (-0.8, 0.0, 0.1), (0.35, 0.4, 0.05), COLOR_WOOD)
+chair1_arm = create_cube("chair1_arm", (-0.8, 0.0, 0.1), (0.05, 0.4, 0.05), COLOR_WOOD)
+
+# Chair 2 (Front Right)
+chair2_legs = create_cube("chair2_legs", (0.8, 0.0, 0.1), (0.4, 0.4, 0.05), COLOR_WOOD)
+chair2_seat = create_cube("chair2_seat", (0.8, 0.0, 0.1), (0.35, 0.35, 0.05), COLOR_BUTTER)
+chair2_back = create_cube("chair2_back", (0.8, 0.0, 0.1), (0.35, 0.4, 0.05), COLOR_WOOD)
+chair2_arm = create_cube("chair2_arm", (0.8, 0.0, 0.1), (0.05, 0.4, 0.05), COLOR_WOOD)
+
+# --- Furniture: Plant ---
+plant_pot = create_cube("plant_pot", (1.5, 0.0, 0.1), (0.3, 0.3, 0.1), COLOR_WOOD)
+plant_leaves = create_cube("plant_leaves", (1.5, 0.0, 0.1), (0.25, 0.25, 0.2), COLOR_LAVENDER)
+
+# --- Final Cleanup ---
+# Select all and ensure no duplicates or unused data blocks if any (though we created fresh ones)
+bpy.ops.object.select_all(action='DESELECT')

@@ -1,0 +1,163 @@
+import bpy
+import math
+
+# Clear existing objects to ensure a clean start
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+# --- Helper Functions ---
+
+def create_cube(location, size, color, name, bevel=0.01):
+    """Creates a low-poly cube with a small bevel."""
+    bpy.ops.mesh.primitive_cube_add(size=1, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    
+    # Apply scale immediately to avoid non-uniform scaling issues
+    obj.scale = (size[0], size[1], size[2])
+    obj.location = location
+    
+    # Material
+    mat_name = name + "_mat"
+    if mat_name not in bpy.data.materials:
+        mat = bpy.data.materials.new(name=mat_name)
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        bsdf.inputs['Roughness'].default_value = 0.8
+        mat.node_tree.links.new(bsdf.inputs['Base Color'], bsdf.inputs['Base Color']) # Fix link logic
+        # Correct linking
+        bsdf.inputs['Base Color'].default_value = color
+        mat.node_tree.nodes["Principled BSDF"].inputs['Roughness'].default_value = 0.8
+    else:
+        mat = bpy.data.materials[mat_name]
+    
+    obj.data.materials.append(mat)
+    
+    # Bevel
+    if bevel > 0:
+        bpy.ops.object.shade_smooth()
+        bpy.ops.object.modifier_add(type='BEVEL')
+        mod = obj.modifiers[-1]
+        mod.bevel_depth = bevel
+        mod.bevel_resolution = 1
+    
+    return obj
+
+def create_cylinder(location, radius, height, color, name, bevel=0.01):
+    """Creates a low-poly cylinder."""
+    bpy.ops.mesh.primitive_cylinder_add(radius=radius, depth=height, location=location)
+    obj = bpy.context.active_object
+    obj.name = name
+    obj.data.name = name + "_mesh"
+    obj.scale = (1, 1, 1) # Scale applied via data or manual if needed, but cylinder scale is tricky in add
+    # Actually, cylinder add uses radius/depth directly.
+    obj.location = location
+    
+    mat_name = name + "_mat"
+    if mat_name not in bpy.data.materials:
+        mat = bpy.data.materials.new(name=mat_name)
+        mat.use_nodes = True
+        bsdf = mat.node_tree.nodes["Principled BSDF"]
+        bsdf.inputs['Base Color'].default_value = color
+        bsdf.inputs['Roughness'].default_value = 0.7
+    else:
+        mat = bpy.data.materials[mat_name]
+    
+    obj.data.materials.append(mat)
+    
+    if bevel > 0:
+        bpy.ops.object.modifier_add(type='BEVEL')
+        mod = obj.modifiers[-1]
+        mod.bevel_depth = bevel
+        mod.bevel_resolution = 1
+    
+    return obj
+
+# --- Scene Setup ---
+
+# Colors
+C_SAGE = (0.57, 0.67, 0.54)   # 91aa8a
+C_WARM_OAK = (0.61, 0.44, 0.30) # 9b704d
+C_CREAM = (0.92, 0.85, 0.80)   # e8dfcd
+C_ACCENT = (0.57, 0.72, 0.42)  # e2b96b (Gold/Yellowish accent)
+
+# Room Dimensions
+FLOOR_SIZE = (5.6, 5.6, 0.2)
+FLOOR_LOC = (0, 0, 0.1)
+BACK_WALL_LOC = (0, 2.7, 1.7)
+BACK_WALL_SIZE = (5.6, 0.15, 3.0)
+LEFT_WALL_LOC = (-2.7, 0, 1.7)
+LEFT_WALL_SIZE = (0.15, 5.6, 3.0)
+
+# Create Room Structure
+floor = create_cube(FLOOR_LOC, FLOOR_SIZE, C_WARM_OAK, "floor", bevel=0.02)
+wall_back = create_cube(BACK_WALL_LOC, BACK_WALL_SIZE, C_SAGE, "wall_back", bevel=0.02)
+wall_side = create_cube(LEFT_WALL_LOC, LEFT_WALL_SIZE, C_SAGE, "wall_side", bevel=0.02)
+
+# --- Furniture Generation ---
+
+# 1. Bed (1.8m wide)
+# Position: Centered roughly, leaving space on left wall for storage.
+# Left wall is at x=-2.7. Bed width 1.8. Let's put bed at x=0.9 (center) to x=2.7? No, room width 5.6.
+# Let's put bed against the back wall, slightly right of center.
+# Back wall is at y=2.7. Bed depth 2.0.
+bed_frame = create_cube((0.9, 0.5, 0.25), (1.8, 2.0, 0.1), C_WARM_OAK, "bed_frame")
+bed_mattress = create_cube((0.9, 0.5, 0.35), (1.8, 2.0, 0.15), C_CREAM, "bed_mattress")
+pillow_l = create_cube((0.9, 0.8, 0.45), (0.5, 0.6, 0.1), C_SAGE, "pillow_left")
+pillow_r = create_cube((1.4, 0.8, 0.45), (0.5, 0.6, 0.1), C_SAGE, "pillow_right")
+blanket = create_cube((0.9, 0.6, 0.5), (1.8, 0.8, 0.05), C_ACCENT, "bed_blanket")
+
+# 2. Bedside Cabinet & Lamp
+# Left of bed (towards center of room)
+cabinet = create_cube((0.4, 0.5, 0.25), (0.4, 0.5, 0.6), C_WARM_OAK, "nightstand")
+lamp_base = create_cube((0.4, 0.5, 0.35), (0.1, 0.1, 0.1), C_WARM_OAK, "lamp_base")
+lamp_shade = create_cylinder((0.4, 0.5, 0.55), 0.08, 0.15, C_CREAM, "lamp_shade")
+
+# 3. Two-Door Wardrobe (Left Wall Zone)
+# Against left wall (x approx -2.5)
+wardrobe_body = create_cube((-2.5, 0.5, 0.25), (0.4, 2.2, 0.1), C_WARM_OAK, "wardrobe_body")
+# Doors (simple planes or slightly offset boxes)
+door_l = create_cube((-2.5, 0.5, 0.35), (0.2, 2.2, 0.05), C_SAGE, "wardrobe_door_left")
+door_r = create_cube((-2.3, 0.5, 0.35), (0.2, 2.2, 0.05), C_SAGE, "wardrobe_door_right")
+# Handles
+handle_l = create_cylinder((-2.5, 0.5, 0.45), 0.01, 0.05, C_CREAM, "wardrobe_handle_l")
+handle_r = create_cylinder((-2.3, 0.5, 0.45), 0.01, 0.05, C_CREAM, "wardrobe_handle_r")
+
+# 4. Rug
+# In front of bed, slightly angled or centered
+rug = create_cube((0.9, 0.5, 0.1), (1.6, 2.2, 0.02), C_SAGE, "rug")
+
+# 5. Potted Plant (Front Corner Open Area)
+# Front right corner area (x positive, y negative)
+plant_pot = create_cube((2.0, -1.0, 0.25), (0.3, 0.3, 0.3), C_WARM_OAK, "plant_pot")
+plant_leaves = create_cube((2.0, -1.0, 0.4), (0.4, 0.4, 0.4), C_SAGE, "plant_leaves")
+
+# 6. Framed Art (On Back Wall)
+# Centered on back wall
+art_frame = create_cube((0, 2.7, 1.85), (1.0, 0.8, 0.05), C_WARM_OAK, "art_frame")
+art_canvas = create_cube((0, 2.7, 1.9), (0.9, 0.7, 0.01), C_CREAM, "art_canvas")
+
+# --- Cleanup and Optimization ---
+# Ensure all objects are in Edit Mode to apply modifiers if necessary, though we used modifiers.
+# Apply modifiers to reduce polygon count evaluation overhead if needed, but keep geometry editable if possible.
+# For this script, we will apply modifiers to finalize the mesh for the evaluator.
+for obj in bpy.data.objects:
+    for mod in obj.modifiers:
+        if mod.type == 'BEVEL':
+            mod.apply()
+    obj.update_from_editmode()
+
+# Select all and enter edit mode to ensure normals are correct
+bpy.ops.object.select_all(action='DESELECT')
+for obj in bpy.data.objects:
+    obj.select_set(True)
+bpy.context.view_layer.objects.active = floor
+bpy.ops.object.mode_set(mode='EDIT')
+bpy.ops.mesh.select_all(action='SELECT')
+bpy.ops.mesh.shade_smooth()
+bpy.ops.object.mode_set(mode='OBJECT')
+
+# Final selection cleanup
+bpy.ops.object.select_all(action='DESELECT')
