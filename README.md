@@ -10,3 +10,4 @@ One repo for the site and the training files. Each post is a folder under `posts
 | Not Hotdog | [letsusecompute.com/posts/not-hotdog](https://letsusecompute.com/posts/not-hotdog) | [`posts/not-hotdog`](posts/not-hotdog) |
 | MNIST Digits | [letsusecompute.com/posts/mnist-digits](https://letsusecompute.com/posts/mnist-digits) | [`posts/mnist-digits`](posts/mnist-digits) |
 | Blender Rooms | [letsusecompute.com/posts/blender-rooms](https://letsusecompute.com/posts/blender-rooms/) | [`posts/blender-rooms`](posts/blender-rooms) |
+| Model Router | [letsusecompute.com/posts/model-router](https://letsusecompute.com/posts/model-router) | [`posts/model-router`](posts/model-router) |

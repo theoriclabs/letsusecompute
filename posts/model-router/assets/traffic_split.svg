@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="280" viewBox="0 0 1200 280" role="img" aria-labelledby="t d">
+  <title id="t">What DistilBERT actually sent</title>
+  <desc id="d">At the 95 percent quality target the router sent 67.8 percent of prompts to Mixtral.</desc>
+  <rect width="100%" height="100%" fill="#f7f4ef"/>
+  <text x="48" y="48" font-size="26" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">What DistilBERT actually sent</text>
+  <rect x="48" y="130" width="748.6" height="64" fill="#3d6b4f"/>
+  <rect x="796.6" y="130" width="355.4" height="64" fill="#1a1a1a"/>
+  <text x="68" y="172" font-size="20" font-weight="700" fill="#fff" font-family="system-ui, sans-serif">Mixtral 67.8%</text>
+  <text x="1132" y="172" font-size="20" font-weight="700" fill="#fff" text-anchor="end" font-family="system-ui, sans-serif">GPT-4 32.2%</text>
+  <text x="48" y="244" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">Threshold 0.575 on P(cheap suffices). Quality held at 95.2% of always-GPT-4.</text>
+</svg>

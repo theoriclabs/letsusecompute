@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A $0.08 prompt router — Let’s use compute</title>
+  <meta name="description" content="We trained DistilBERT on Compute to route prompts between Mixtral and GPT-4. It keeps 95% of GPT-4 quality, sends 68% of traffic cheap, and cuts list-price cost 72%." />
+  <meta property="og:title" content="A $0.08 prompt router" />
+  <meta property="og:description" content="Keep 95% of GPT-4 quality. Send 68% of traffic to Mixtral. Cut list-price cost 72%. The GPU run cost $0.07." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://letsusecompute.com/posts/model-router/" />
+  <meta property="og:image" content="https://letsusecompute.com/posts/model-router/assets/social.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://letsusecompute.com/posts/model-router/" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="../../assets/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="../../assets/favicon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <style>
+    .article-header .lede { margin-bottom: 1.4rem; }
+    section { margin-top: 2.25rem; }
+    section > h2:first-child { margin-top: 0; }
+    figure { margin: 1.35rem 0 1.8rem; }
+    figure .shot { margin: 0; height: auto; }
+    figcaption { color: var(--muted); font-size: 0.92rem; line-height: 1.45; margin-top: 0.55rem; }
+    .figure-label { color: var(--fg); font-weight: 700; }
+    .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem; margin: 1.2rem 0 1.5rem; }
+    .metric { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0.85rem 0.95rem; }
+    .metric dt { color: var(--muted); font-size: 0.9rem; }
+    .metric dd { font-size: 1.55rem; font-variant-numeric: tabular-nums; font-weight: 700; line-height: 1.15; margin: 0.2rem 0 0; }
+    .table-wrap { margin: 1.2rem 0 1.5rem; overflow-x: auto; }
+    .data-table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 10px; font-variant-numeric: tabular-nums; }
+    .data-table caption { color: var(--muted); font-size: 0.92rem; padding: 0.7rem 0.75rem 0.2rem; text-align: left; }
+    .data-table th, .data-table td { border-bottom: 1px solid var(--line); padding: 0.6rem 0.75rem; text-align: right; white-space: nowrap; }
+    .data-table th:first-child, .data-table td:first-child { text-align: left; }
+    .data-table tbody tr:last-child th, .data-table tbody tr:last-child td { border-bottom: 0; }
+    .examples { display: grid; gap: 0.7rem; margin: 1rem 0 1.5rem; }
+    .example { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0.85rem 0.95rem; }
+    .example header { display: flex; flex-wrap: wrap; gap: 0.4rem 0.7rem; align-items: baseline; margin-bottom: 0.45rem; }
+    .example p { margin: 0; font-size: 1.02rem; }
+    .tag { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; border-radius: 999px; padding: 0.15rem 0.55rem; }
+    .tag-cheap { background: color-mix(in srgb, #3d6b4f 18%, var(--card)); color: #3d6b4f; }
+    .tag-strong { background: color-mix(in srgb, var(--fg) 12%, var(--card)); color: var(--fg); }
+    .tag-miss { background: color-mix(in srgb, var(--accent) 16%, var(--card)); color: var(--accent); }
+    .meta { color: var(--muted); font-size: 0.88rem; font-variant-numeric: tabular-nums; }
+    @media (max-width: 32rem) { .metrics { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <p><a class="back" href="../../">← Let’s use compute</a></p>
+    <header class="article-header">
+      <p class="eyebrow">2026-09-10 · post #5</p>
+      <h1>A $0.08 prompt router</h1>
+      <p class="byline">Harsh Gupta</p>
+      <p class="lede">Most prompts do not need the expensive model. The trick is knowing which ones do, before you pay for the call.</p>
+    </header>
+
+    <p>We trained a small classifier on <a href="https://compute.cx">Compute</a> that reads a prompt and picks Mixtral or GPT-4. On 10,000 held-out prompts it keeps 95% of always-GPT-4 quality, sends 68% of traffic to Mixtral, and cuts list-price cost by 72%. The headline GPU run cost $0.07. The whole issue was $0.08.</p>
+
+    <dl class="metrics" aria-label="Headline routing result">
+      <div class="metric"><dt>Quality kept</dt><dd>95.2%</dd></div>
+      <div class="metric"><dt>Traffic to Mixtral</dt><dd>67.8%</dd></div>
+      <div class="metric"><dt>List-price cut</dt><dd>72%</dd></div>
+      <div class="metric"><dt>Issue spend</dt><dd>$0.08</dd></div>
+    </dl>
+
+    <figure>
+      <img class="shot evidence" src="./assets/million_bill.svg" width="1200" height="560" alt="Horizontal bars: always GPT-4 costs $8,416 per million prompts, DistilBERT $2,356, TF-IDF $2,591, oracle $1,184, always Mixtral $92" />
+      <figcaption><span class="figure-label">A million similar prompts.</span> Same held-out mix, scaled up, using 2024 public list prices for the two models in the dataset. Always-Mixtral is cheapest and misses the quality bar.</figcaption>
+    </figure>
+
+    <section aria-labelledby="idea">
+      <h2 id="idea">Send the easy ones cheap</h2>
+      <p>A router is a tiny model in front of two larger ones. It does not answer the prompt. It only decides who should.</p>
+      <p>We used <a href="https://huggingface.co/datasets/routellm/gpt4_dataset"><code>routellm/gpt4_dataset</code></a>: 109,101 training prompts and 10,000 validation prompts, each with a Mixtral 8x7B answer, a GPT-4 Turbo answer, and a 1–5 judge score for Mixtral. The job downloads that dataset on the machine. You do not upload it.</p>
+      <p>RouteLLM’s cut is simple. If Mixtral scores 4 or 5, the cheap model suffices. If it scores 1–3, the prompt needs GPT-4. On the held-out set that first label is already true 86.5% of the time.</p>
+      <figure>
+        <img class="shot evidence" src="./assets/label_split.svg" width="1200" height="280" alt="Bar showing 86.5 percent of held-out prompts labeled Mixtral score at least 4, and 13.5 percent labeled as needing GPT-4" />
+        <figcaption>This is the label, not the router. Always sending the 86.5% to Mixtral gets you 88.3% of GPT-4’s quality — Mixtral’s 3s still count — and almost none of GPT-4’s bill. That still misses a 95% target.</figcaption>
+      </figure>
+    </section>
+
+    <section aria-labelledby="models">
+      <h2 id="models">A laptop baseline, then DistilBERT</h2>
+      <p>Two classifiers, same label, same held-out prompts:</p>
+      <ul>
+        <li>TF-IDF (1–2 grams, 50k features) plus logistic regression.</li>
+        <li>DistilBERT (<code>distilbert-base-uncased</code>, 66,955,010 parameters) with a two-class head, class-weighted so the rarer “needs GPT-4” prompts are not ignored.</li>
+      </ul>
+      <p>Loss is cross-entropy. Accuracy is reported. It is not the number that matters. The number that matters is: at 95% of always-GPT-4 quality, how much traffic can we send to Mixtral, and what does that do to the bill.</p>
+      <p>Quality when the router picks Mixtral is that prompt’s Mixtral score divided by 5. Quality when it picks GPT-4 is 1.0. Cost uses public 2024 lists — Mixtral $0.24 / 1M tokens, GPT-4 Turbo $10 / $30 per 1M — and characters / 4 as a token estimate.</p>
+      <figure>
+        <img class="shot evidence" src="./assets/router_flow.svg" width="1200" height="420" alt="Flow diagram: a prompt enters DistilBERT, which sends 67.8 percent of traffic to Mixtral and 32.2 percent to GPT-4 at threshold 0.575" />
+        <figcaption>The operating point after training: send Mixtral if P(cheap suffices) ≥ 0.575.</figcaption>
+      </figure>
+    </section>
+
+    <section aria-labelledby="results">
+      <h2 id="results">72% off, 95% quality</h2>
+      <p>Headline run <code>run_2538f6a593a1fedfce8b4d4ce694c3d0</code> on a Vast.ai RTX 3090. Two epochs. DistilBERT accuracy 76.88%, TF-IDF 74.52%. Then we sweep the threshold and stop at the cheapest point that still clears 95% of always-GPT-4 quality.</p>
+      <div class="table-wrap" role="region" aria-label="Routing policies on 10,000 held-out prompts" tabindex="0">
+        <table class="data-table">
+          <caption>Held-out 10,000 prompts. DistilBERT beats always-cheap on quality, always-strong on cost, and TF-IDF on the same 95% line.</caption>
+          <thead>
+            <tr><th scope="col">Policy</th><th scope="col">Quality</th><th scope="col">Cheap traffic</th><th scope="col">USD / prompt</th><th scope="col">vs GPT-4</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Always Mixtral</th><td>88.3%</td><td>100%</td><td>$0.000092</td><td>−99%</td></tr>
+            <tr><th scope="row">TF-IDF @ 95%</th><td>95.2%</td><td>66.1%</td><td>$0.002591</td><td>−69%</td></tr>
+            <tr><th scope="row">DistilBERT @ 95%</th><td>95.2%</td><td>67.8%</td><td>$0.002356</td><td>−72%</td></tr>
+            <tr><th scope="row">Oracle</th><td>96.6%</td><td>86.5%</td><td>$0.001184</td><td>−86%</td></tr>
+            <tr><th scope="row">Always GPT-4</th><td>100%</td><td>0%</td><td>$0.008416</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figure>
+        <img class="shot evidence" src="./assets/cost_quality_curve.svg" width="1200" height="640" alt="Scatter of five measured policies: always Mixtral at low cost and 88 percent quality, DistilBERT and TF-IDF on the 95 percent line, oracle above them, always GPT-4 at the top right" />
+        <figcaption><span class="figure-label">Measured points, not a fitted curve.</span> The full threshold sweep was written on the machine and did not survive artifact upload. These five points are in the persisted result JSON.</figcaption>
+      </figure>
+      <figure>
+        <img class="shot evidence" src="./assets/traffic_split.svg" width="1200" height="280" alt="Bar showing DistilBERT sent 67.8 percent of prompts to Mixtral and 32.2 percent to GPT-4" />
+        <figcaption>What the DistilBERT operating point actually did with the 10,000 held-out prompts.</figcaption>
+      </figure>
+      <figure>
+        <img class="shot evidence" src="./assets/training_curves.svg" width="1200" height="520" alt="Two-epoch chart: train loss falling, eval loss rising slightly, eval accuracy rising from 73 percent to 76.9 percent" />
+        <figcaption>Two epochs only. Train loss fell; eval loss ticked up; accuracy rose. We did not pick a checkpoint from these curves — the 95% cost point is computed after training.</figcaption>
+      </figure>
+    </section>
+
+    <section aria-labelledby="examples">
+      <h2 id="examples">What it sent where</h2>
+      <p>These six prompts are the ones the run printed: the three highest Mixtral probabilities, and three sitting on the GPT-4 side of the 0.575 threshold.</p>
+      <div class="examples">
+        <article class="example">
+          <header><span class="tag tag-cheap">Mixtral</span><span class="meta">score 5 · P=0.987</span></header>
+          <p>how do i change the ram in my computer</p>
+        </article>
+        <article class="example">
+          <header><span class="tag tag-cheap">Mixtral</span><span class="meta">score 5 · P=0.986</span></header>
+          <p>How do I prevent my child from being so moody?</p>
+        </article>
+        <article class="example">
+          <header><span class="tag tag-cheap">Mixtral</span><span class="meta">score 5 · P=0.986</span></header>
+          <p>How can I help my mother open up about her emotions?</p>
+        </article>
+        <article class="example">
+          <header><span class="tag tag-strong">GPT-4</span><span class="meta">score 1 · P=0.575 · label agrees</span></header>
+          <p>What type of details about ian howat can be gathered from the following bio? Bio: ian howat (born 29 July 1958, Wrexham) is a former Welsh professional footballer…</p>
+        </article>
+        <article class="example">
+          <header><span class="tag tag-miss">GPT-4, Mixtral was fine</span><span class="meta">score 5 · P=0.575</span></header>
+          <p>modify the code to be more elegant and readable, add more comments to it: def get_reduce(): …</p>
+        </article>
+        <article class="example">
+          <header><span class="tag tag-miss">GPT-4, Mixtral was fine</span><span class="meta">score 5 · P=0.574</span></header>
+          <p>Lizzy: Darry is a roofer and has to climb ladders multiple times a day. He climbs his full ladder, which has 11 steps, 10 times today…</p>
+        </article>
+      </div>
+      <p>Everyday how-to questions go cheap. Long extraction goes expensive. Near the threshold the router also spends GPT-4 on some prompts Mixtral already scored a 5 — those are the dollars the oracle still has on us.</p>
+    </section>
+
+    <section aria-labelledby="run-it">
+      <h2 id="run-it">Train it on Compute</h2>
+      <p>One file. Hand <a href="https://compute.cx/SKILL.md">compute.cx/SKILL.md</a> to your agent, plus the specials in <a href="./SKILL.md">this post’s overlay</a>.</p>
+<pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/model-router/train.py -o train.py
+curl -fsSL https://compute.cx/install.sh | sh
+compute setup
+compute credits add 10
+
+compute run train.py::train --gpu cheap --dry-run
+compute run train.py::train --gpu cheap --timeout 3600 --wait</code></pre>
+      <p>Dry-run only prints the upload plan. The real command quotes a GPU before spend. This job landed on a Vast.ai RTX 3090 at $0.15/hr; the timeout budget was about $0.16 if it had run the full hour. It did not. A 10% sample is enough to check the metric code first:</p>
+<pre><code class="language-bash">compute run train.py::train --gpu cheap --timeout 3600 --wait --args '{"max_train": 10900, "max_eval": 1000, "epochs": 1}'</code></pre>
+      <p>Want to read the script? <a href="https://github.com/theoriclabs/letsusecompute/blob/main/posts/model-router/train.py"><code>train.py</code></a>.</p>
+    </section>
+
+    <section aria-labelledby="friction">
+      <h2 id="friction">The numbers survived. The weights did not.</h2>
+      <p>The function returned <code>ok: true</code> with the metrics above. Compute then failed to persist the artifact (HTTP 411). The run is marked failed, <code>compute artifacts list</code> is empty, and there is no Hub checkpoint — no <code>hf</code> secret was set. The result JSON persisted. That is what every chart on this page is built from.</p>
+      <p>Reports: <code>rpt_87434ce2882d5d359cece5663468a63f</code> (sample), <code>rpt_da7164a7e673156d932b6091cae50b68</code> (full run), <code>rpt_64af0c7e4729bc9a27728c32978f9c3b</code> (one Vast.ai 3090 missed the 600s boot deadline, $0).</p>
+      <p>If artifacts land on your run:</p>
+<pre><code class="language-bash">compute artifacts list &lt;run_id&gt;
+compute artifacts get &lt;run_id&gt; &lt;artifact_id&gt; &lt;version&gt; --out ./weights</code></pre>
+      <p>Storing a Hugging Face token does not put it on the machine. <code>Secret.from_name("hf")</code> on <code>train_and_push</code> does.</p>
+<pre><code class="language-bash">compute secrets set hf
+compute run train.py::train_and_push --gpu cheap --timeout 3600 --wait</code></pre>
+    </section>
+
+    <section aria-labelledby="limits">
+      <h2 id="limits">What this does not claim</h2>
+      <p>GPT-4 quality is taken as 1.0. Mixtral quality is the dataset’s 1–5 score divided by 5, not a new live judge. Token counts are characters / 4. The dollar figures use the public list prices for the two models in the dataset, not whoever you call in 2026. The prompts are RouteLLM’s English instruction mix, not your production traffic.</p>
+      <p>Accuracy is the wrong leaderboard. DistilBERT is trained with class weights so it can spend some accuracy to find the prompts Mixtral will fail. The curve is the test.</p>
+    </section>
+  </main>
+  <script src="../../assets/cli-highlight.js"></script>
+</body>
+</html>

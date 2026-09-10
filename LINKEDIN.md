@@ -81,3 +81,25 @@ https://letsusecompute.com/posts/face-or-not
 #MachineLearning #GPUComputing
 
 ---
+
+## 2026-09-10 — Model router
+
+Draft (post when the live guide URL is the one you want people to open):
+
+---
+
+Post #5 in the compute.cx series: a prompt router.
+
+Most prompts do not need the expensive model. We trained DistilBERT — plus a TF-IDF baseline — on RouteLLM’s Mixtral-vs-GPT-4 scores to decide which ones do.
+
+On 10,000 held-out prompts the DistilBERT router keeps 95% of always-GPT-4 quality, sends 68% of traffic to Mixtral, and cuts list-price cost 72%. Always-Mixtral is cheaper still and misses the quality bar. The TF-IDF baseline lands on the same 95% line and spends a bit more.
+
+Headline run: Vast.ai RTX 3090, 21 billed minutes, $0.07. Whole issue $0.08, including a 10% sample and a boot that never came up.
+
+One sharp edge, again: the job returned ok=true and the metrics, then artifact PUT failed with HTTP 411. No downloadable weights. The result JSON persisted, which is what the post uses.
+
+Guide: https://letsusecompute.com/posts/model-router
+
+#MachineLearning #GPUComputing
+
+---

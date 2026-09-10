@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-labelledby="t d">
+  <title id="t">List-price bill for one million similar prompts</title>
+  <desc id="d">Always GPT-4 costs about $8,416. The DistilBERT router costs about $2,356. Always Mixtral is $92 and misses the 95 percent quality target.</desc>
+  <rect width="100%" height="100%" fill="#f7f4ef"/>
+  <text x="48" y="48" font-size="28" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">A million prompts, at list price</text>
+  <text x="48" y="80" font-size="16" fill="#5c5c5c" font-family="system-ui, sans-serif">Same 10,000-prompt mix, scaled up. Tokens estimated as characters / 4.</text>
+  
+  <text x="264" y="132" font-size="16" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">Always GPT-4</text>
+  <text x="264" y="152" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">100% quality</text>
+  <rect x="280" y="110" width="840.0" height="52" rx="8" fill="#1a1a1a"/>
+  <text x="1106.0" y="144" font-size="18" font-weight="700" fill="#fff" text-anchor="end" font-family="system-ui, sans-serif">$8,416</text>
+
+  <text x="264" y="212" font-size="16" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">TF-IDF router</text>
+  <text x="264" y="232" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">95.2% quality</text>
+  <rect x="280" y="190" width="258.6" height="52" rx="8" fill="#7a8b99"/>
+  <text x="524.6" y="224" font-size="18" font-weight="700" fill="#fff" text-anchor="end" font-family="system-ui, sans-serif">$2,591</text>
+
+  <text x="264" y="292" font-size="16" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">DistilBERT router</text>
+  <text x="264" y="312" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">95.2% quality · 72% less</text>
+  <rect x="280" y="270" width="235.1" height="52" rx="8" fill="#c45c26"/>
+  <text x="501.1" y="304" font-size="18" font-weight="700" fill="#fff" text-anchor="end" font-family="system-ui, sans-serif">$2,356</text>
+
+  <text x="264" y="372" font-size="16" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">Oracle</text>
+  <text x="264" y="392" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">96.6% quality</text>
+  <rect x="280" y="350" width="118.2" height="52" rx="8" fill="#8a5a2b"/>
+  <text x="412.2" y="384" font-size="18" font-weight="700" fill="#1a1a1a" text-anchor="start" font-family="system-ui, sans-serif">$1,184</text>
+
+  <text x="264" y="452" font-size="16" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">Always Mixtral</text>
+  <text x="264" y="472" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">88.3% quality</text>
+  <rect x="280" y="430" width="9.2" height="52" rx="8" fill="#3d6b4f"/>
+  <text x="303.2" y="464" font-size="18" font-weight="700" fill="#1a1a1a" text-anchor="start" font-family="system-ui, sans-serif">$92.08</text>
+
+  <text x="48" y="538" font-size="13" fill="#5c5c5c" font-family="system-ui, sans-serif">Mixtral $0.24 / 1M · GPT-4 Turbo $10 / $30 per 1M · measured mean USD / prompt × 1,000,000</text>
+</svg>

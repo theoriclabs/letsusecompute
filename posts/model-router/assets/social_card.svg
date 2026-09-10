@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img">
+  <rect width="100%" height="100%" fill="#f7f4ef"/>
+  <text x="64" y="88" font-size="44" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">A $0.08 prompt router</text>
+  <text x="64" y="140" font-size="24" fill="#5c5c5c" font-family="system-ui, sans-serif">Keep 95% of GPT-4 quality. Cut list-price cost 72%.</text>
+  <text x="64" y="186" font-size="20" fill="#c45c26" font-family="system-ui, sans-serif">One million similar prompts, at public list prices</text>
+  
+  <text x="64" y="268" font-size="22" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Always GPT-4</text>
+  <rect x="64" y="280" width="800.0" height="36" rx="8" fill="#1a1a1a"/>
+  <text x="848.0" y="306" font-size="22" font-weight="700" fill="#fff" text-anchor="end" font-family="system-ui, sans-serif">$8,416</text>
+
+  <text x="64" y="368" font-size="22" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">DistilBERT router</text>
+  <rect x="64" y="380" width="281.5" height="36" rx="8" fill="#c45c26"/>
+  <text x="329.5" y="406" font-size="22" font-weight="700" fill="#fff" text-anchor="end" font-family="system-ui, sans-serif">$2,356</text>
+
+  <text x="64" y="468" font-size="22" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Always Mixtral</text>
+  <rect x="64" y="480" width="87.9" height="36" rx="8" fill="#3d6b4f"/>
+  <text x="167.9" y="506" font-size="22" font-weight="700" fill="#1a1a1a" text-anchor="start" font-family="system-ui, sans-serif">$92.08</text>
+
+  <text x="64" y="590" font-size="18" fill="#5c5c5c" font-family="system-ui, sans-serif">letsusecompute.com · trained on compute.cx</text>
+</svg>

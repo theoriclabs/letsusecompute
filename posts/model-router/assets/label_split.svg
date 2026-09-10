@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="280" viewBox="0 0 1200 280" role="img" aria-labelledby="t d">
+  <title id="t">Most prompts already look easy</title>
+  <desc id="d">On the held-out set, Mixtral scores 4 or 5 on 86.5 percent of prompts.</desc>
+  <rect width="100%" height="100%" fill="#f7f4ef"/>
+  <text x="48" y="48" font-size="26" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Most prompts already look easy</text>
+  <rect x="48" y="130" width="954.6" height="64" fill="#3d6b4f"/>
+  <rect x="1002.6" y="130" width="149.4" height="64" fill="#c45c26"/>
+  <text x="68" y="172" font-size="20" font-weight="700" fill="#fff" font-family="system-ui, sans-serif">Mixtral ≥ 4 86.5%</text>
+  <text x="1132" y="172" font-size="20" font-weight="700" fill="#fff" text-anchor="end" font-family="system-ui, sans-serif">needs GPT-4 13.5%</text>
+  <text x="48" y="244" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">10,000 validation prompts from routellm/gpt4_dataset. This is the label, not the router.</text>
+</svg>
