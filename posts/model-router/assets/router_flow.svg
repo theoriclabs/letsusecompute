@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="t d">
+  <title id="t">A prompt router sends easy prompts to Mixtral and hard ones to GPT-4</title>
+  <desc id="d">Prompt goes into DistilBERT. If the cheap-ok probability is at least 0.575, the job goes to Mixtral. Otherwise it goes to GPT-4.</desc>
+  <rect width="100%" height="100%" fill="#f7f4ef"/>
+  <text x="48" y="48" font-size="28" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">How the router spends</text>
+  <text x="48" y="80" font-size="16" fill="#5c5c5c" font-family="system-ui, sans-serif">Operating point from the headline run: send Mixtral if P(cheap suffices) ≥ 0.575</text>
+  <rect x="48" y="130" width="220" height="140" rx="16" fill="#ffffff" stroke="#ddd4c6" stroke-width="2"/>
+  <text x="68" y="188" font-size="18" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Prompt</text>
+  <text x="68" y="216" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">10,000 held-out</text>
+  <text x="68" y="238" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">English instructions</text>
+  <path d="M278 200 H318" stroke="#7a8b99" stroke-width="3" fill="none" marker-end="url(#a)"/>
+  <rect x="328" y="118" width="300" height="164" rx="16" fill="#f4dccb" stroke="#c45c26" stroke-width="3"/>
+  <text x="348" y="168" font-size="18" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">DistilBERT router</text>
+  <text x="348" y="196" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">67M params · class-weighted</text>
+  <text x="348" y="220" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">threshold 0.575</text>
+  <text x="348" y="250" font-size="14" font-weight="700" fill="#c45c26" font-family="system-ui, sans-serif">P(Mixtral is good enough)</text>
+  <path d="M628 160 H678" stroke="#3d6b4f" stroke-width="3" fill="none" marker-end="url(#ag)"/>
+  <path d="M628 240 H678" stroke="#1a1a1a" stroke-width="3" fill="none" marker-end="url(#ak)"/>
+  <rect x="688" y="96" width="464" height="112" rx="16" fill="#d5e8dd" stroke="#3d6b4f" stroke-width="3"/>
+  <text x="708" y="140" font-size="18" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Mixtral 8x7B · 67.8% of traffic</text>
+  <text x="708" y="168" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">$0.24 / 1M tokens · everyday how-to prompts</text>
+  <text x="708" y="190" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">mean quality when chosen: Mixtral score / 5</text>
+  <rect x="688" y="232" width="464" height="112" rx="16" fill="#ffffff" stroke="#1a1a1a" stroke-width="3"/>
+  <text x="708" y="276" font-size="18" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">GPT-4 Turbo · 32.2% of traffic</text>
+  <text x="708" y="304" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">$10 / $30 per 1M tokens · long extraction, messy code</text>
+  <text x="708" y="326" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">quality taken as 1.0 in this dataset</text>
+  <text x="48" y="390" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">Measured on run_2538f6a593a1fedfce8b4d4ce694c3d0. Prices are 2024 public lists for the two models in the dataset.</text>
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#7a8b99"/></marker>
+    <marker id="ag" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#3d6b4f"/></marker>
+    <marker id="ak" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#1a1a1a"/></marker>
+  </defs>
+</svg>
