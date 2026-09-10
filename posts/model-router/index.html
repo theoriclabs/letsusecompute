@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Model Router — Let’s use compute</title>
+  <meta name="description" content="Train a DistilBERT prompt router on Compute: keep 95% of GPT-4 quality, send 68% of traffic to Mixtral, and cut list-price cost 72% for $0.08." />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="../../assets/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="../../assets/favicon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <style>
+    table { width: 100%; border-collapse: collapse; margin: 1.2rem 0 1.5rem; font-variant-numeric: tabular-nums; }
+    th, td { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--line); }
+    th:not(:first-child), td:not(:first-child) { text-align: right; }
+    figcaption { color: var(--muted); font-size: 0.92rem; margin-top: 0.55rem; }
+    figure { margin: 1.35rem 0 1.8rem; }
+    figure .shot { margin: 0; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <p><a class="back" href="../../">← Let’s use compute</a></p>
+    <p class="eyebrow">2026-09-10 · post #5</p>
+    <h1>A $0.08 prompt router</h1>
+    <p class="byline">Harsh Gupta</p>
+    <p>Most prompts do not need the expensive model. The trick is knowing which ones do, before you pay for the call.</p>
+    <p>Today we train a small classifier that reads a prompt and picks Mixtral or GPT-4. On 10,000 held-out prompts it keeps 95% of always-GPT-4 quality, sends 68% of traffic to Mixtral, and cuts list-price cost by 72%. The headline run cost $0.07 on a Vast.ai RTX 3090. The whole issue, including a 10% sample and a failed boot, was $0.08.</p>
+
+    <p>You can train it on <a href="https://compute.cx">compute.cx</a> in four steps:</p>
+    <ol>
+      <li>Setup compute</li>
+      <li>Prepare the data</li>
+      <li>Setup the model for training</li>
+      <li>Train the model and read the curve</li>
+    </ol>
+
+    <h2>Setup compute</h2>
+    <p>Create an account, install the CLI, add credits.</p>
+<pre><code class="language-bash">curl -fsSL https://compute.cx/install.sh | sh
+compute setup
+compute credits add 10</code></pre>
+
+    <h2>Prepare the data</h2>
+    <p>Nothing to upload. The job downloads <a href="https://huggingface.co/datasets/routellm/gpt4_dataset"><code>routellm/gpt4_dataset</code></a> on the machine: 109,101 training prompts and 10,000 validation prompts, each with a Mixtral 8x7B response, a GPT-4 Turbo response, and a 1–5 judge score for Mixtral.</p>
+    <p>We follow RouteLLM’s cut. If Mixtral scores 4 or 5, the cheap model suffices. If it scores 1–3, the prompt needs GPT-4. On the held-out set that label is true for 86.5% of prompts. Always sending those to Mixtral already gets you 88.3% of GPT-4’s quality — Mixtral’s 3s still count for something — and almost none of GPT-4’s bill.</p>
+    <p>The remaining 13.5% are why a router exists. Always-Mixtral misses the 95% quality target. Always-GPT-4 hits 100% and pays about $0.0084 per prompt at 2024 public list prices (Mixtral $0.24 / 1M tokens; GPT-4 Turbo $10 / $30 per 1M; tokens estimated as characters / 4).</p>
+
+    <h2>Setup the model for training</h2>
+    <h3>Choose a model architecture</h3>
+    <p>Two classifiers, same label:</p>
+    <ul>
+      <li>TF-IDF (1–2 grams, 50k features) plus logistic regression — the baseline you can train on a laptop.</li>
+      <li>DistilBERT (<code>distilbert-base-uncased</code>, 66,955,010 parameters) with a two-class head. Class-weighted so the rarer “needs GPT-4” prompts are not ignored.</li>
+    </ul>
+    <h3>Choose a loss function</h3>
+    <p>Cross-entropy on <code>cheap_suffices</code> vs <code>need_strong</code>. Accuracy is reported. It is not the number that matters. The number that matters is: at 95% of always-GPT-4 quality, how much traffic can we send to Mixtral, and what does that do to the bill.</p>
+
+    <h2>Train the model and read the curve</h2>
+    <p>Grab the training script. That’s the only file you need. Hand <a href="https://compute.cx/SKILL.md">compute.cx/SKILL.md</a> to your agent, plus the special instructions below.</p>
+<pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/model-router/train.py -o train.py</code></pre>
+    <p>Want to read it first? <a href="https://github.com/theoriclabs/letsusecompute/blob/main/posts/model-router/train.py"><code>train.py</code></a>.</p>
+
+    <h3>Prompt-router training prompt</h3>
+<pre><code class="language-none">Use https://compute.cx/SKILL.md.
+
+Special instructions:
+- Download https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/model-router/train.py as train.py. Do not invent a script.
+- Entrypoint: train.py::train
+- Dataset: routellm/gpt4_dataset (the script downloads it on the machine)
+- TF-IDF logistic baseline + DistilBERT (~67M params), binary cheap_suffices (Mixtral score >= 4)
+- Use --gpu cheap. Do not pick H100 or MI300X unless a cheap run exceeds 40 minutes. Timeout 3600.
+- Dry-run first. Then show the preflight quote and ask before confirming spend.
+- After success, show routing accuracy, the cheap-traffic fraction at the 95% quality target, the implied cost cut, and download artifacts with compute artifacts list / get.</code></pre>
+
+    <p>Dry-run first. It only prints the upload plan — no dollars yet.</p>
+<pre><code class="language-bash">compute run train.py::train --gpu cheap --dry-run</code></pre>
+<pre><code class="language-none">dry-run (local AST; no upload, no quote)
+entrypoint: train.py::train
+files:
+  train.py
+third-party: datasets, huggingface_hub, sklearn, torch, transformers
+gpu:         cheapest (policy; no estimate)
+timeout:     3600s
+image:       cuda_pytorch
+pip:         torch==2.5.1+cu124, transformers==4.46.3, datasets==3.6.0, scikit-learn==1.6.1, huggingface_hub
+secrets:     (none)</code></pre>
+
+    <p>Then run for real. Pass <code>--gpu cheap</code>. On this job the CLI quoted the RTX 3090 declared in the script.</p>
+<pre><code class="language-bash">compute run train.py::train --gpu cheap --timeout 3600 --wait</code></pre>
+    <p>You’ll see the pick and the dollar quote before spend. Confirm if it looks right, or pass <code>--yes</code>.</p>
+<pre><code class="language-none">Run preflight (billed by started minute):
+  provider:       vastai
+  sku:            RTX-3090
+  locked rate:    $0.15/hr
+  timeout budget: 61 billed min → ≈ $0.16 total if the job runs to the timeout
+  balance:        $10.63</code></pre>
+
+    <p>A 10% sample is enough to get the metric code right before the full 109k:</p>
+<pre><code class="language-bash">compute run train.py::train --gpu cheap --timeout 3600 --wait --args '{"max_train": 10900, "max_eval": 1000, "epochs": 1}'</code></pre>
+
+    <h3>What the full run printed</h3>
+    <p>Headline run <code>run_2538f6a593a1fedfce8b4d4ce694c3d0</code>, Vast.ai RTX 3090, 2 epochs, 21 billed minutes of training, $0.07. DistilBERT accuracy 76.88%, TF-IDF 74.52%. Then the curve:</p>
+    <table>
+      <caption>Held-out 10,000 prompts. Quality is mean(Mixtral score / 5) when the router picks cheap, else 1.0.</caption>
+      <thead>
+        <tr><th>Policy</th><th>Quality</th><th>Cheap traffic</th><th>USD / prompt</th><th>vs always GPT-4</th></tr>
+      </thead>
+      <tbody>
+        <tr><th>Always Mixtral</th><td>88.3%</td><td>100%</td><td>$0.000092</td><td>−99%</td></tr>
+        <tr><th>TF-IDF @ 95%</th><td>95.2%</td><td>66.1%</td><td>$0.002591</td><td>−69%</td></tr>
+        <tr><th>DistilBERT @ 95%</th><td>95.2%</td><td>67.8%</td><td>$0.002356</td><td>−72%</td></tr>
+        <tr><th>Oracle</th><td>96.6%</td><td>86.5%</td><td>$0.001184</td><td>−86%</td></tr>
+        <tr><th>Always GPT-4</th><td>100%</td><td>0%</td><td>$0.008416</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p>DistilBERT beats “always cheap” on quality and “always strong” on cost. It also beats the TF-IDF baseline on the same target: a bit more Mixtral traffic, a bit less money. The oracle — route cheap exactly when the held-out label says so — shows how much headroom is left.</p>
+    <p>On a million similar prompts, always-GPT-4 is about $8,400 at these list prices. The DistilBERT router is about $2,360. Always-Mixtral is $92 and misses the quality bar.</p>
+
+    <figure>
+      <img class="shot" src="./assets/cost_quality_curve.svg" width="760" height="440" alt="Measured cost versus quality: always Mixtral at the cheap end, always GPT-4 at the expensive end, DistilBERT and TF-IDF at the 95 percent quality line, oracle in between" />
+      <figcaption>Measured operating points from the headline run, not an interpolated sweep. The full threshold curve was written on the machine and did not survive artifact upload.</figcaption>
+    </figure>
+
+    <p>Prompts the router sends to Mixtral look like everyday how-to questions (“how do i change the ram in my computer”). Prompts it sends to GPT-4 include long structured extraction and messy code edits. That split matches the label more often than not; it is not perfect. One held-out “needs GPT-4” football-bio prompt still sat near the 0.575 threshold.</p>
+
+    <h3>Artifacts, and a sharp edge</h3>
+    <p>The function returned <code>ok: true</code> with the metrics above. Compute then failed to persist the artifact (HTTP 411, missing Content-Length). The run is marked failed, <code>compute artifacts list</code> is empty, and there is no Hub checkpoint — no <code>hf</code> secret was set. The result JSON did persist, which is where these numbers come from.</p>
+    <p>Reports: <code>rpt_87434ce2882d5d359cece5663468a63f</code> (sample) and <code>rpt_da7164a7e673156d932b6091cae50b68</code> (full run). A Vast.ai 3090 also missed the 600s boot deadline once (<code>rpt_64af0c7e4729bc9a27728c32978f9c3b</code>, $0).</p>
+    <p>If artifacts land on your run:</p>
+<pre><code class="language-bash">compute artifacts list &lt;run_id&gt;
+compute artifacts get &lt;run_id&gt; &lt;artifact_id&gt; &lt;version&gt; --out ./weights</code></pre>
+    <p>To publish a full DistilBERT folder to the Hub, store a write token and use the secrets-backed entrypoint. Storing the secret alone does not put it on the machine.</p>
+<pre><code class="language-bash">compute secrets set hf
+compute run train.py::train_and_push --gpu cheap --timeout 3600 --wait</code></pre>
+
+    <h2>What this does not claim</h2>
+    <p>GPT-4 quality is taken as 1.0. Mixtral quality is the dataset’s 1–5 score divided by 5, not a live side-by-side with a new judge. Token counts are characters / 4. The dollar figures use the public list prices for the two models in the dataset, not whoever you actually call in 2026. The prompts are RouteLLM’s English instruction mix, not your production traffic.</p>
+    <p>Accuracy is the wrong leaderboard. DistilBERT is trained with class weights so it can spend some accuracy to find the prompts Mixtral will fail. The curve is the test.</p>
+  </main>
+  <script src="../../assets/cli-highlight.js"></script>
+</body>
+</html>

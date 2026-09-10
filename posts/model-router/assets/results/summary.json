@@ -1,0 +1,103 @@
+{
+  "run_id": "run_2538f6a593a1fedfce8b4d4ce694c3d0",
+  "provider": "vastai",
+  "sku": "RTX-3090",
+  "train_size": 109101,
+  "eval_size": 10000,
+  "eval_cheap_ok_frac": 0.8647,
+  "tfidf_accuracy": 0.7452,
+  "distilbert_accuracy": 0.7688,
+  "always_cheap": {
+    "router": "always_cheap",
+    "quality": 0.883240000000009,
+    "threshold": 1,
+    "cheap_frac": 1,
+    "mean_cost_usd": 9.20806979999999e-05
+  },
+  "always_strong": {
+    "router": "always_strong",
+    "quality": 1,
+    "threshold": 0,
+    "cheap_frac": 0,
+    "mean_cost_usd": 0.00841620100000001
+  },
+  "oracle": {
+    "router": "oracle",
+    "quality": 0.9656800000000021,
+    "cheap_frac": 0.8647,
+    "mean_cost_usd": 0.0011842329439999966
+  },
+  "tfidf_operating_point": {
+    "router": "tfidf",
+    "quality": 0.9520800000000045,
+    "threshold": 0.55,
+    "cheap_frac": 0.6605,
+    "mean_cost_usd": 0.0025906834040000004
+  },
+  "distilbert_operating_point": {
+    "router": "distilbert",
+    "quality": 0.9515800000000038,
+    "threshold": 0.575,
+    "cheap_frac": 0.6781,
+    "mean_cost_usd": 0.002355829436
+  },
+  "cost_reduction_vs_always_strong": 0.7200839861120241,
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 0.5623739822387696,
+      "train_loss": 0.5943220063939241,
+      "eval_accuracy": 0.7299
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 0.5783408451557159,
+      "train_loss": 0.5224278918664865,
+      "eval_accuracy": 0.7688
+    }
+  ],
+  "examples": {
+    "routed_cheap": [
+      {
+        "label": 1,
+        "prompt": "how do i change the ram in my computer",
+        "mixtral_score": 5,
+        "prob_cheap_ok": 0.9866
+      },
+      {
+        "label": 1,
+        "prompt": "How do I prevent my child from being so moody?",
+        "mixtral_score": 5,
+        "prob_cheap_ok": 0.9859
+      },
+      {
+        "label": 1,
+        "prompt": "How can I help my mother open up about her emotions?",
+        "mixtral_score": 5,
+        "prob_cheap_ok": 0.9856
+      }
+    ],
+    "routed_strong": [
+      {
+        "label": 0,
+        "prompt": "Given the question: What type of details about ian howat  can be gathered from the following bio?  Bio: ian howat -lrb- born 29 july 1958 , wrexham -rrb- is a former welsh professional footballer who played in the foo...",
+        "mixtral_score": 1,
+        "prob_cheap_ok": 0.5749
+      },
+      {
+        "label": 1,
+        "prompt": "modify the code to be more elegant and readable, add more comments to it: def get_reduce():  # get reduce table     for key in states:         state = states[key]         for i in state:  # i is an item             if...",
+        "mixtral_score": 5,
+        "prob_cheap_ok": 0.5748
+      },
+      {
+        "label": 1,
+        "prompt": "Lizzy: Darry is a roofer and has to climb ladders multiple times a day. He climbs his full ladder, which has 11 steps, 10 times today. He also climbs his smaller ladder, which has 6 steps, 7 times today. He did not cl...",
+        "mixtral_score": 5,
+        "prob_cheap_ok": 0.5744
+      }
+    ]
+  },
+  "headline_run_cost_usd": 0.07,
+  "issue_spend_usd": 0.08
+}
