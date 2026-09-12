@@ -6,6 +6,7 @@ One repo for the site and the training files. Each post is a folder under `posts
 
 | Post | Guide | Code |
 |---|---|---|
+| AI-text detector | [letsusecompute.com/posts/ai-text-detector](https://letsusecompute.com/posts/ai-text-detector) | [`posts/ai-text-detector`](posts/ai-text-detector) |
 | Face or Not | [letsusecompute.com/posts/face-or-not](https://letsusecompute.com/posts/face-or-not) | [`posts/face-or-not`](posts/face-or-not) |
 | Not Hotdog | [letsusecompute.com/posts/not-hotdog](https://letsusecompute.com/posts/not-hotdog) | [`posts/not-hotdog`](posts/not-hotdog) |
 | MNIST Digits | [letsusecompute.com/posts/mnist-digits](https://letsusecompute.com/posts/mnist-digits) | [`posts/mnist-digits`](posts/mnist-digits) |

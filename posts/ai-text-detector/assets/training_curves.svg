@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="t d">
+  <title id="t">Two-epoch training curves on HC3</title>
+  <desc id="d">Train and eval loss fall. Held-out accuracy rises from 99.22 percent to 99.42 percent.</desc>
+  <rect width="100%" height="100%" fill="#f7f4ef"/>
+  <text x="72" y="40" font-size="28" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Two epochs on ChatGPT answers</text>
+  <polyline fill="none" stroke="#3d6b8a" stroke-width="4" points="72.0,72.0 1128.0,448.0"/>
+  <polyline fill="none" stroke="#c45c26" stroke-width="4" points="72.0,293.1 1128.0,354.7"/>
+  <polyline fill="none" stroke="#3d6b4f" stroke-width="3" stroke-dasharray="8 6" points="72.0,169.4 1128.0,144.4"/>
+  <text x="72" y="504" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">steel = train loss · orange = eval loss · dashed green = held-out accuracy (right scale, 97.0%–100.0%)</text>
+</svg>
