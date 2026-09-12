@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="t d">
+  <title id="t">The detector catches ChatGPT and misses most GPT-4 and Llama text</title>
+  <desc id="d">On HC3 it flags 99.9 percent of ChatGPT answers. On RAID it flags 22.8 percent of GPT-4 and Llama answers.</desc>
+  <rect width="100%" height="100%" fill="#f7f4ef"/>
+  <text x="48" y="48" font-size="28" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Change the generator, keep the humans</text>
+  <rect x="48" y="96" width="520" height="220" rx="16" fill="#ffffff" stroke="#ddd4c6" stroke-width="2"/>
+  <text x="72" y="140" font-size="18" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">HC3 holdout · ChatGPT</text>
+  <text x="72" y="196" font-size="52" font-weight="700" fill="#3d6b8a" font-family="system-ui, sans-serif">99.9%</text>
+  <text x="72" y="236" font-size="16" fill="#5c5c5c" font-family="system-ui, sans-serif">of ChatGPT answers flagged</text>
+  <text x="72" y="268" font-size="16" fill="#5c5c5c" font-family="system-ui, sans-serif">1.0% of human answers flagged</text>
+  <rect x="632" y="96" width="520" height="220" rx="16" fill="#f4dccb" stroke="#c45c26" stroke-width="3"/>
+  <text x="656" y="140" font-size="18" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">RAID · GPT-4 + Llama-chat</text>
+  <text x="656" y="196" font-size="52" font-weight="700" fill="#c45c26" font-family="system-ui, sans-serif">22.8%</text>
+  <text x="656" y="236" font-size="16" fill="#5c5c5c" font-family="system-ui, sans-serif">of new-generator answers flagged</text>
+  <text x="656" y="268" font-size="16" fill="#5c5c5c" font-family="system-ui, sans-serif">77.2% walk through · 0.5% human FPR</text>
+  <text x="48" y="380" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">200 RAID humans, 200 GPT-4, 200 Llama-chat. No adversarial attacks. Threshold 0.5.</text>
+</svg>

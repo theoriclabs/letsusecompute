@@ -1,0 +1,263 @@
+{
+  "ok": true,
+  "ood": {
+    "ok": true,
+    "size": 80,
+    "counts": {
+      "gpt4": 0,
+      "human": 40,
+      "llama-chat": 40
+    },
+    "scanned": 20001,
+    "dataset_id": "liamdugan/raid"
+  },
+  "data": {
+    "config": "all",
+    "eval_size": 400,
+    "questions": 23763,
+    "dataset_id": "Hello-SimpleAI/HC3",
+    "train_size": 2000,
+    "domain_size": 400,
+    "eval_ai_frac": 0.5,
+    "skipped_short": 559,
+    "train_ai_frac": 0.5,
+    "train_sources": [
+      "finance",
+      "open_qa",
+      "reddit_eli5",
+      "wiki_csai"
+    ],
+    "domain_holdout": "medicine",
+    "eval_questions": 200,
+    "train_questions": 1000,
+    "domain_questions": 200
+  },
+  "torch": "2.5.1+cu124",
+  "compat": "ai-text-detector-small",
+  "device": "cuda",
+  "epochs": 1,
+  "encoder": "distilbert-base-uncased",
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 0.14221151649951935,
+      "train_loss": 0.31988325172662735,
+      "eval_accuracy": 0.955
+    }
+  ],
+  "hub_url": null,
+  "examples": {
+    "ai_caught": [
+      {
+        "text": "TV manufacturers have made 4K 3D TVs in the past, and it is possible to create TVs that are both 4K and 3D. However, there has been less demand for 3D TVs in recent years, so it is possible that manufacturers have foc...",
+        "label": "ai",
+        "source": "reddit_eli5",
+        "prob_ai": 0.9805
+      },
+      {
+        "text": "There are a few potential disadvantages to not having a credit card: It may be more difficult to make certain types of purchases. Some merchants only accept credit cards as a form of payment, so if you don't have a cr...",
+        "label": "ai",
+        "source": "reddit_eli5",
+        "prob_ai": 0.9804
+      },
+      {
+        "text": "It's possible that you simply prefer the taste of mini M&M's to regular M&M's. People's taste preferences can vary widely, and it's common for people to have different favorite flavors or types of food. There are a fe...",
+        "label": "ai",
+        "source": "reddit_eli5",
+        "prob_ai": 0.98
+      }
+    ],
+    "ai_called_human": [
+      {
+        "text": "\u200b \u00b7\u00b7\u00b7 ChatGPT Dec 15 Version. Free Research Preview. Our goal is to make AI systems more natural and safe to interact with. Your feedback will help us improve. New chat New chat Why Are Animation Movies Expensive? Hyp...",
+        "label": "ai",
+        "source": "reddit_eli5",
+        "prob_ai": 0.0264
+      },
+      {
+        "text": "chat.openai.comChecking if the site connection is securechat.openai.com needs to review the security of your connection before proceeding.Did you know bots historically made up nearly 40% of all Internet traffic?Why a...",
+        "label": "ai",
+        "source": "finance",
+        "prob_ai": 0.0249
+      }
+    ],
+    "human_called_ai": [
+      {
+        "text": "In cryptography, a brute-force attack consists of an attacker submitting many passwords or passphrases with the hope of eventually guessing correctly. The attacker systematically checks all possible passwords and pass...",
+        "label": "human",
+        "source": "wiki_csai",
+        "prob_ai": 0.9755
+      },
+      {
+        "text": "There are a lot of hops between your computer and the server that you 're trying to get data from . If all of those links are fast and not full then your data will get to you quickly . However , if any of those hops i...",
+        "label": "human",
+        "source": "reddit_eli5",
+        "prob_ai": 0.9676
+      },
+      {
+        "text": "With an annual income of $120,000 you can be approved for a $2800 monthly payment on your mortgage. The trickier problem is that you will save quite a bit on that mortgage payment if you can avoid PMI, which means tha...",
+        "label": "human",
+        "source": "finance",
+        "prob_ai": 0.936
+      }
+    ]
+  },
+  "tfidf_id": {
+    "n": 400,
+    "name": "tfidf_id",
+    "at_0_5": {
+      "n": 400,
+      "ai_n": 200,
+      "human_n": 200,
+      "accuracy": 0.905,
+      "ai_recall": 0.91,
+      "human_fpr": 0.1,
+      "threshold": 0.5,
+      "ai_precision": 0.900990099009901
+    },
+    "at_5pct_fpr": {
+      "n": 400,
+      "ai_n": 200,
+      "human_n": 200,
+      "accuracy": 0.5,
+      "ai_recall": 0,
+      "human_fpr": 0,
+      "threshold": 1,
+      "ai_precision": 0
+    }
+  },
+  "artifacts": [
+    {
+      "kind": "output",
+      "name": "ai-text-detector-small",
+      "version": 1,
+      "artifact_id": "artifact_485e86ee5857d86c0cab510590bd284a"
+    }
+  ],
+  "dataset_id": "Hello-SimpleAI/HC3",
+  "tfidf_raid": {
+    "n": 80,
+    "name": "tfidf_raid",
+    "at_0_5": {
+      "n": 80,
+      "ai_n": 40,
+      "human_n": 40,
+      "accuracy": 0.6625,
+      "ai_recall": 0.9,
+      "human_fpr": 0.575,
+      "threshold": 0.5,
+      "ai_precision": 0.6101694915254238
+    },
+    "at_5pct_fpr": {
+      "n": 80,
+      "ai_n": 40,
+      "human_n": 40,
+      "accuracy": 0.5,
+      "ai_recall": 0,
+      "human_fpr": 0,
+      "threshold": 1,
+      "ai_precision": 0
+    }
+  },
+  "device_name": "NVIDIA A100 80GB PCIe",
+  "param_count": 66955010,
+  "artifact_dir": "/var/lib/compute/agent/runs/run_3eaf70692b424b122f8656610c28d501/artifacts/ai-text-detector",
+  "distilbert_id": {
+    "n": 400,
+    "name": "distilbert_id",
+    "at_0_5": {
+      "n": 400,
+      "ai_n": 200,
+      "human_n": 200,
+      "accuracy": 0.955,
+      "ai_recall": 0.99,
+      "human_fpr": 0.08,
+      "threshold": 0.5,
+      "ai_precision": 0.9252336448598131
+    },
+    "at_5pct_fpr": {
+      "n": 400,
+      "ai_n": 200,
+      "human_n": 200,
+      "accuracy": 0.5,
+      "ai_recall": 0,
+      "human_fpr": 0,
+      "threshold": 1,
+      "ai_precision": 0
+    }
+  },
+  "tfidf_medicine": {
+    "n": 400,
+    "name": "tfidf_medicine",
+    "at_0_5": {
+      "n": 400,
+      "ai_n": 200,
+      "human_n": 200,
+      "accuracy": 0.8625,
+      "ai_recall": 0.885,
+      "human_fpr": 0.16,
+      "threshold": 0.5,
+      "ai_precision": 0.84688995215311
+    },
+    "at_5pct_fpr": {
+      "n": 400,
+      "ai_n": 200,
+      "human_n": 200,
+      "accuracy": 0.5,
+      "ai_recall": 0,
+      "human_fpr": 0,
+      "threshold": 1,
+      "ai_precision": 0
+    }
+  },
+  "distilbert_raid": {
+    "n": 80,
+    "name": "distilbert_raid",
+    "at_0_5": {
+      "n": 80,
+      "ai_n": 40,
+      "human_n": 40,
+      "accuracy": 0.7375,
+      "ai_recall": 0.475,
+      "human_fpr": 0,
+      "threshold": 0.5,
+      "ai_precision": 1
+    },
+    "at_5pct_fpr": {
+      "n": 80,
+      "ai_n": 40,
+      "human_n": 40,
+      "accuracy": 0.5,
+      "ai_recall": 0,
+      "human_fpr": 0,
+      "threshold": 1,
+      "ai_precision": 0
+    }
+  },
+  "distilbert_medicine": {
+    "n": 400,
+    "name": "distilbert_medicine",
+    "at_0_5": {
+      "n": 400,
+      "ai_n": 200,
+      "human_n": 200,
+      "accuracy": 0.9325,
+      "ai_recall": 0.885,
+      "human_fpr": 0.02,
+      "threshold": 0.5,
+      "ai_precision": 0.9779005524861878
+    },
+    "at_5pct_fpr": {
+      "n": 400,
+      "ai_n": 200,
+      "human_n": 200,
+      "accuracy": 0.5,
+      "ai_recall": 0,
+      "human_fpr": 0,
+      "threshold": 1,
+      "ai_precision": 0
+    }
+  },
+  "beats_baseline_id_fpr": true,
+  "beats_baseline_id_accuracy": true
+}

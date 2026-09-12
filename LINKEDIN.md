@@ -103,3 +103,23 @@ Guide: https://letsusecompute.com/posts/model-router
 #MachineLearning #GPUComputing
 
 ---
+
+## 2026-09-12 — AI-text detector
+
+Draft (post when the live guide URL is the one you want people to open):
+
+---
+
+Post #6 in the compute.cx series: an AI-text detector.
+
+We trained DistilBERT — plus a TF-IDF baseline — on HC3 to tell human answers from ChatGPT. On 4,502 held-out answers it scores 99.4% and flags 1.0% of the human text. Medicine, still ChatGPT, stays at 98%. Then we changed the generator.
+
+On a 600-row RAID slice of GPT-4, Llama-chat, and human text, accuracy is 48%. DistilBERT catches 23% of the new-generator answers and almost none of the humans. That is as far as $0.38 got us from a product like Pangram.
+
+Headline run: RunPod A100-SXM, 9 billed training minutes, $0.30. Whole issue $0.38, including a $0.08 sample. Artifacts persisted this time. No Hub checkpoint — no write token was set.
+
+Guide: https://letsusecompute.com/posts/ai-text-detector
+
+#MachineLearning #GPUComputing
+
+---

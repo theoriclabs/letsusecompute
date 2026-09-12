@@ -1,0 +1,42 @@
+{
+  "run_id": "run_ea7b0d5c56f928808c3096a232e3e0bd",
+  "provider": "runpod",
+  "gpu_sku": "A100-SXM-80GB",
+  "machine_id": "m_0aa2920cfe4240a5a961c79fbc2dfa70",
+  "locked_rate_cents_per_hour": 169,
+  "hold_cents": 137,
+  "idempotency_key": "01ad0930-2ab7-49de-bad7-25826b2aff25",
+  "status": "succeeded",
+  "machine_started_at": "2026-09-12T02:50:54.913+00:00",
+  "machine_terminated_at": "2026-09-12T02:59:16.424+00:00",
+  "lines": [
+    {
+      "kind": "boot_provider_usage",
+      "minutes": 1,
+      "cents": 3
+    },
+    {
+      "kind": "run_provider_usage",
+      "minutes": 9,
+      "cents": 25
+    },
+    {
+      "kind": "platform_fee",
+      "minutes": null,
+      "cents": 2
+    }
+  ],
+  "provider_cost_cents": 28,
+  "platform_fee_cents": 2,
+  "total_debit_cents": 30,
+  "fee_note": "Fee is a flat 7.5% of provider usage.",
+  "settlement": {
+    "status": "final",
+    "finalized_at": "2026-09-12T02:59:19.475+00:00"
+  },
+  "cleanup": {
+    "status": "confirmed",
+    "verified_at": "2026-09-12T02:59:16.424+00:00"
+  },
+  "next_poll_after_ms": null
+}

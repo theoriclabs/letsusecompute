@@ -1,0 +1,275 @@
+{
+  "ok": true,
+  "ood": {
+    "ok": true,
+    "size": 600,
+    "counts": {
+      "gpt4": 200,
+      "human": 200,
+      "llama-chat": 200
+    },
+    "scanned": 269825,
+    "dataset_id": "liamdugan/raid"
+  },
+  "data": {
+    "config": "all",
+    "eval_size": 4502,
+    "questions": 23763,
+    "dataset_id": "Hello-SimpleAI/HC3",
+    "train_size": 40536,
+    "domain_size": 2488,
+    "eval_ai_frac": 0.5,
+    "skipped_short": 559,
+    "train_ai_frac": 0.5,
+    "train_sources": [
+      "finance",
+      "open_qa",
+      "reddit_eli5",
+      "wiki_csai"
+    ],
+    "domain_holdout": "medicine",
+    "eval_questions": 2251,
+    "train_questions": 20268,
+    "domain_questions": 1244
+  },
+  "torch": "2.5.1+cu124",
+  "compat": "ai-text-detector-small",
+  "device": "cuda",
+  "epochs": 2,
+  "encoder": "distilbert-base-uncased",
+  "history": [
+    {
+      "epoch": 1,
+      "eval_loss": 0.02343050221661631,
+      "train_loss": 0.04423961348969321,
+      "eval_accuracy": 0.992225677476677
+    },
+    {
+      "epoch": 2,
+      "eval_loss": 0.017634601459238737,
+      "train_loss": 0.008857972195458327,
+      "eval_accuracy": 0.9942247889826744
+    }
+  ],
+  "hub_url": null,
+  "examples": {
+    "ai_caught": [
+      {
+        "text": "When food is not sold before the best before date, it is usually still safe to eat. The best before date is a guideline for how long the food will be at its best quality. It is not a safety date.However, if the food i...",
+        "label": "ai",
+        "source": "reddit_eli5",
+        "prob_ai": 0.9999
+      },
+      {
+        "text": "As people get older, they tend to dream less because they generally spend less time in the deeper stages of sleep, which is when dreaming occurs. Dreams are most common during the rapid eye movement (REM) stage of sle...",
+        "label": "ai",
+        "source": "reddit_eli5",
+        "prob_ai": 0.9999
+      },
+      {
+        "text": "There are a few different ways to find information on the turnover or average holding period of stocks held by investors and mutual funds. Here are some options:Company financial statements: Some companies may include...",
+        "label": "ai",
+        "source": "finance",
+        "prob_ai": 0.9999
+      }
+    ],
+    "ai_called_human": [
+      {
+        "text": "If the underlying stays below the strike price, the put option will not be exercised and will expire worthless. This means that the value of the put option will be zero.",
+        "label": "ai",
+        "source": "finance",
+        "prob_ai": 0.395
+      },
+      {
+        "text": "No, the Earth is not getting bigger. The Earth is made up of solid rock, and while the surface of the Earth can change over time (for example, through erosion, the formation of mountains, or the movement of tectonic p...",
+        "label": "ai",
+        "source": "reddit_eli5",
+        "prob_ai": 0.2023
+      },
+      {
+        "text": "Why can't poor countries just print more money",
+        "label": "ai",
+        "source": "finance",
+        "prob_ai": 0.1137
+      }
+    ],
+    "human_called_ai": [
+      {
+        "text": "Radiation is defined as waves or particles emitted from an atom as it moves from a higher energy state to a lower energy state . This comes in several forms : heat , light , beta ( + /- ) , alpha , gamma , electron , ...",
+        "label": "human",
+        "source": "reddit_eli5",
+        "prob_ai": 0.9982
+      },
+      {
+        "text": "Flo is a fictional character who appears in commercials for Progressive Insurance .She is played by actress and comedian Stephanie Courtney , and has a fan base on social networks like Facebook .Flo debuted in 2008 th...",
+        "label": "human",
+        "source": "open_qa",
+        "prob_ai": 0.9976
+      },
+      {
+        "text": "Bitcoin is much like a digital form of gold . In order to mine gold , you need to spend time and money to collect the ore and refine it . However , with Bitcoin , you need to solve a difficult math problem and the pos...",
+        "label": "human",
+        "source": "reddit_eli5",
+        "prob_ai": 0.994
+      }
+    ]
+  },
+  "tfidf_id": {
+    "n": 4502,
+    "name": "tfidf_id",
+    "at_0_5": {
+      "n": 4502,
+      "ai_n": 2251,
+      "human_n": 2251,
+      "accuracy": 0.9706796979120391,
+      "ai_recall": 0.965792980897379,
+      "human_fpr": 0.024433585073300755,
+      "threshold": 0.5,
+      "ai_precision": 0.9753252579632122
+    },
+    "at_5pct_fpr": {
+      "n": 4502,
+      "ai_n": 2251,
+      "human_n": 2251,
+      "accuracy": 0.9666814749000444,
+      "ai_recall": 0.9791203909373611,
+      "human_fpr": 0.04575744113727232,
+      "threshold": 0.425,
+      "ai_precision": 0.9553532726484613
+    }
+  },
+  "artifacts": [
+    {
+      "kind": "output",
+      "name": "ai-text-detector-small",
+      "version": 1,
+      "artifact_id": "artifact_99b3b241ce72d8e3834fa307c3e18221"
+    }
+  ],
+  "dataset_id": "Hello-SimpleAI/HC3",
+  "tfidf_raid": {
+    "n": 600,
+    "name": "tfidf_raid",
+    "at_0_5": {
+      "n": 600,
+      "ai_n": 400,
+      "human_n": 200,
+      "accuracy": 0.49333333333333335,
+      "ai_recall": 0.28,
+      "human_fpr": 0.08,
+      "threshold": 0.5,
+      "ai_precision": 0.875
+    },
+    "at_5pct_fpr": {
+      "n": 600,
+      "ai_n": 400,
+      "human_n": 200,
+      "accuracy": 0.455,
+      "ai_recall": 0.2025,
+      "human_fpr": 0.04,
+      "threshold": 0.575,
+      "ai_precision": 0.9101123595505618
+    }
+  },
+  "device_name": "NVIDIA A100-SXM4-80GB",
+  "param_count": 66955010,
+  "artifact_dir": "/var/lib/compute/agent/runs/run_ea7b0d5c56f928808c3096a232e3e0bd/artifacts/ai-text-detector",
+  "distilbert_id": {
+    "n": 4502,
+    "name": "distilbert_id",
+    "at_0_5": {
+      "n": 4502,
+      "ai_n": 2251,
+      "human_n": 2251,
+      "accuracy": 0.9942247889826744,
+      "ai_recall": 0.9986672589960017,
+      "human_fpr": 0.010217681030653044,
+      "threshold": 0.5,
+      "ai_precision": 0.9898723029502422
+    },
+    "at_5pct_fpr": {
+      "n": 4502,
+      "ai_n": 2251,
+      "human_n": 2251,
+      "accuracy": 0.9771212794313638,
+      "ai_recall": 1,
+      "human_fpr": 0.04575744113727232,
+      "threshold": 0.05,
+      "ai_precision": 0.9562446898895497
+    }
+  },
+  "tfidf_medicine": {
+    "n": 2488,
+    "name": "tfidf_medicine",
+    "at_0_5": {
+      "n": 2488,
+      "ai_n": 1244,
+      "human_n": 1244,
+      "accuracy": 0.969855305466238,
+      "ai_recall": 0.9991961414790996,
+      "human_fpr": 0.0594855305466238,
+      "threshold": 0.5,
+      "ai_precision": 0.9438116932422171
+    },
+    "at_5pct_fpr": {
+      "n": 2488,
+      "ai_n": 1244,
+      "human_n": 1244,
+      "accuracy": 0.9754823151125402,
+      "ai_recall": 0.9991961414790996,
+      "human_fpr": 0.04823151125401929,
+      "threshold": 0.525,
+      "ai_precision": 0.9539524174980814
+    }
+  },
+  "distilbert_raid": {
+    "n": 600,
+    "name": "distilbert_raid",
+    "at_0_5": {
+      "n": 600,
+      "ai_n": 400,
+      "human_n": 200,
+      "accuracy": 0.48333333333333334,
+      "ai_recall": 0.2275,
+      "human_fpr": 0.005,
+      "threshold": 0.5,
+      "ai_precision": 0.9891304347826086
+    },
+    "at_5pct_fpr": {
+      "n": 600,
+      "ai_n": 400,
+      "human_n": 200,
+      "accuracy": 0.635,
+      "ai_recall": 0.4775,
+      "human_fpr": 0.05,
+      "threshold": 0.075,
+      "ai_precision": 0.9502487562189055
+    }
+  },
+  "distilbert_medicine": {
+    "n": 2488,
+    "name": "distilbert_medicine",
+    "at_0_5": {
+      "n": 2488,
+      "ai_n": 1244,
+      "human_n": 1244,
+      "accuracy": 0.9811093247588425,
+      "ai_recall": 0.9967845659163987,
+      "human_fpr": 0.03456591639871383,
+      "threshold": 0.5,
+      "ai_precision": 0.9664848012470771
+    },
+    "at_5pct_fpr": {
+      "n": 2488,
+      "ai_n": 1244,
+      "human_n": 1244,
+      "accuracy": 0.9754823151125402,
+      "ai_recall": 0.9967845659163987,
+      "human_fpr": 0.04581993569131833,
+      "threshold": 0.375,
+      "ai_precision": 0.9560524286815728
+    }
+  },
+  "beats_baseline_id_fpr": true,
+  "beats_baseline_id_accuracy": true
+}

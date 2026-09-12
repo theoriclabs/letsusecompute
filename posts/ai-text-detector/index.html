@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A $0.38 AI-text detector — Let’s use compute</title>
+  <meta name="description" content="We trained DistilBERT on Compute to tell human answers from ChatGPT. It scores 99.4% on HC3 and 48% when the generator changes to GPT-4 and Llama. The GPU run cost $0.30." />
+  <meta property="og:title" content="A $0.38 AI-text detector" />
+  <meta property="og:description" content="99.4% on ChatGPT answers. 48% when the generator changes. The headline GPU run cost $0.30." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://letsusecompute.com/posts/ai-text-detector/" />
+  <meta property="og:image" content="https://letsusecompute.com/posts/ai-text-detector/assets/social_card.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://letsusecompute.com/posts/ai-text-detector/" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="../../assets/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="../../assets/favicon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <style>
+    .article-header .lede { margin-bottom: 1.4rem; }
+    section { margin-top: 2.25rem; }
+    section > h2:first-child { margin-top: 0; }
+    figure { margin: 1.35rem 0 1.8rem; }
+    figure .shot { margin: 0; height: auto; }
+    figcaption { color: var(--muted); font-size: 0.92rem; line-height: 1.45; margin-top: 0.55rem; }
+    .figure-label { color: var(--fg); font-weight: 700; }
+    .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem; margin: 1.2rem 0 1.5rem; }
+    .metric { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0.85rem 0.95rem; }
+    .metric dt { color: var(--muted); font-size: 0.9rem; }
+    .metric dd { font-size: 1.55rem; font-variant-numeric: tabular-nums; font-weight: 700; line-height: 1.15; margin: 0.2rem 0 0; }
+    .table-wrap { margin: 1.2rem 0 1.5rem; overflow-x: auto; }
+    .data-table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 10px; font-variant-numeric: tabular-nums; }
+    .data-table caption { color: var(--muted); font-size: 0.92rem; padding: 0.7rem 0.75rem 0.2rem; text-align: left; }
+    .data-table th, .data-table td { border-bottom: 1px solid var(--line); padding: 0.6rem 0.75rem; text-align: right; white-space: nowrap; }
+    .data-table th:first-child, .data-table td:first-child { text-align: left; }
+    .data-table tbody tr:last-child th, .data-table tbody tr:last-child td { border-bottom: 0; }
+    .examples { display: grid; gap: 0.7rem; margin: 1rem 0 1.5rem; }
+    .example { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0.85rem 0.95rem; }
+    .example header { display: flex; flex-wrap: wrap; gap: 0.4rem 0.7rem; align-items: baseline; margin-bottom: 0.45rem; }
+    .example p { margin: 0; font-size: 1.02rem; }
+    .tag { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.02em; text-transform: uppercase; border-radius: 999px; padding: 0.15rem 0.55rem; }
+    .tag-ai { background: color-mix(in srgb, var(--accent) 16%, var(--card)); color: var(--accent); }
+    .tag-human { background: color-mix(in srgb, #3d6b4f 18%, var(--card)); color: #3d6b4f; }
+    .tag-miss { background: color-mix(in srgb, var(--fg) 12%, var(--card)); color: var(--fg); }
+    .meta { color: var(--muted); font-size: 0.88rem; font-variant-numeric: tabular-nums; }
+    @media (max-width: 32rem) { .metrics { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <p><a class="back" href="../../">← Let’s use compute</a></p>
+    <header class="article-header">
+      <p class="eyebrow">2026-09-12 · post #6</p>
+      <h1>A $0.38 AI-text detector</h1>
+      <p class="byline">Harsh Gupta</p>
+      <p class="lede">It looks like a product on ChatGPT answers. Change the generator and it falls apart.</p>
+    </header>
+
+    <p>We trained a small classifier on <a href="https://compute.cx">Compute</a> that reads an answer and says human or AI. On 4,502 held-out HC3 answers it scores 99.4% and flags 1.0% of the human text. On a 600-row RAID slice — GPT-4, Llama-chat, and human, none of it ChatGPT — accuracy is 48%. The headline GPU run cost $0.30. The whole issue was $0.38.</p>
+
+    <dl class="metrics" aria-label="Headline detector result">
+      <div class="metric"><dt>HC3 accuracy</dt><dd>99.4%</dd></div>
+      <div class="metric"><dt>Human false positives</dt><dd>1.0%</dd></div>
+      <div class="metric"><dt>RAID accuracy</dt><dd>48.3%</dd></div>
+      <div class="metric"><dt>Issue spend</dt><dd>$0.38</dd></div>
+    </dl>
+
+    <figure>
+      <img class="shot evidence" src="./assets/ood_story.svg" width="1200" height="420" alt="Two cards: DistilBERT flags 99.9 percent of ChatGPT answers on HC3 and 22.8 percent of GPT-4 and Llama answers on RAID" />
+      <figcaption><span class="figure-label">The number readers should remember.</span> Same threshold. Same weights. A different generator.</figcaption>
+    </figure>
+
+    <section aria-labelledby="idea">
+      <h2 id="idea">Human or ChatGPT, on purpose</h2>
+      <p>This is not a Pangram alternative. Pangram is a product that has to survive new models, new prompts, and people who will try to fool it. This is a two-evening classifier on a 2023 ChatGPT corpus, plus one honest out-of-distribution check.</p>
+      <p>The training set is <a href="https://huggingface.co/datasets/Hello-SimpleAI/HC3"><code>Hello-SimpleAI/HC3</code></a> English: 23,763 usable questions after dropping short answers, each with one human answer and one ChatGPT answer. The job downloads that on the machine. You do not upload it.</p>
+      <p>We split by question, not by answer, so a ChatGPT reply never sits in training while its human twin sits in test. Medicine is held out entirely — same generator, new domain. 20,268 questions stay for training, 2,251 for the in-distribution holdout, 1,244 for medicine.</p>
+    </section>
+
+    <section aria-labelledby="models">
+      <h2 id="models">A laptop baseline, then DistilBERT</h2>
+      <p>Two classifiers, same labels, same splits:</p>
+      <ul>
+        <li>TF-IDF (1–2 grams, 50k features) plus logistic regression.</li>
+        <li>DistilBERT (<code>distilbert-base-uncased</code>, 66,955,010 parameters) with a two-class head.</li>
+      </ul>
+      <p>Loss is class-weighted cross-entropy. Accuracy is reported. The number that matters is the false-positive rate on human text: how often a person gets called a machine.</p>
+      <figure>
+        <img class="shot evidence" src="./assets/training_curves.svg" width="1200" height="520" alt="Two-epoch chart: train and eval loss falling, held-out accuracy rising from 99.22 percent to 99.42 percent" />
+        <figcaption>Two epochs. Eval loss kept falling. We did not pick a checkpoint from these curves — the reported numbers are the final epoch.</figcaption>
+      </figure>
+    </section>
+
+    <section aria-labelledby="results">
+      <h2 id="results">Easy on ChatGPT, then a coin flip</h2>
+      <p>Headline run <code>run_ea7b0d5c56f928808c3096a232e3e0bd</code> on a RunPod A100-SXM 80GB. DistilBERT beats TF-IDF on the HC3 holdout and on medicine. Both collapse on RAID.</p>
+      <div class="table-wrap" role="region" aria-label="Detector metrics across three tests" tabindex="0">
+        <table class="data-table">
+          <caption>Threshold 0.5. RAID is 200 human, 200 GPT-4, and 200 Llama-chat documents with no adversarial attacks.</caption>
+          <thead>
+            <tr><th scope="col">Split</th><th scope="col">Model</th><th scope="col">Accuracy</th><th scope="col">Human FPR</th><th scope="col">AI recall</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">HC3 holdout</th><td>TF-IDF</td><td>97.1%</td><td>2.4%</td><td>96.6%</td></tr>
+            <tr><th scope="row">HC3 holdout</th><td>DistilBERT</td><td>99.4%</td><td>1.0%</td><td>99.9%</td></tr>
+            <tr><th scope="row">Medicine</th><td>TF-IDF</td><td>97.0%</td><td>5.9%</td><td>99.9%</td></tr>
+            <tr><th scope="row">Medicine</th><td>DistilBERT</td><td>98.1%</td><td>3.5%</td><td>99.7%</td></tr>
+            <tr><th scope="row">RAID OOD</th><td>TF-IDF</td><td>49.3%</td><td>8.0%</td><td>28.0%</td></tr>
+            <tr><th scope="row">RAID OOD</th><td>DistilBERT</td><td>48.3%</td><td>0.5%</td><td>22.8%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figure>
+        <img class="shot evidence" src="./assets/metrics.svg" width="1200" height="560" alt="Grouped bars showing high accuracy on HC3 and medicine and near-chance accuracy on RAID, with DistilBERT human false-positive rates of 1.0, 3.5, and 0.5 percent" />
+        <figcaption><span class="figure-label">Accuracy is the wrong comfort.</span> DistilBERT is conservative on RAID humans and still misses 77% of the new-generator text.</figcaption>
+      </figure>
+      <p>Medicine still works because it is still ChatGPT. RAID does not, because GPT-4 and Llama are not the 2023 ChatGPT that wrote HC3. DistilBERT’s RAID accuracy is slightly worse than TF-IDF. It is also much less willing to accuse a human. That is the trade a detector actually has to make, and it loses on this slice.</p>
+    </section>
+
+    <section aria-labelledby="examples">
+      <h2 id="examples">What it still gets wrong on HC3</h2>
+      <p>These are the examples the run printed from the in-distribution holdout: three humans it called AI, and three ChatGPT answers it let through.</p>
+      <div class="examples">
+        <article class="example">
+          <header><span class="tag tag-ai">Human, called AI</span><span class="meta">reddit_eli5 · P=0.998</span></header>
+          <p>Radiation is defined as waves or particles emitted from an atom as it moves from a higher energy state to a lower energy state. This comes in several forms: heat, light, beta…</p>
+        </article>
+        <article class="example">
+          <header><span class="tag tag-ai">Human, called AI</span><span class="meta">open_qa · P=0.998</span></header>
+          <p>Flo is a fictional character who appears in commercials for Progressive Insurance. She is played by actress and comedian Stephanie Courtney…</p>
+        </article>
+        <article class="example">
+          <header><span class="tag tag-ai">Human, called AI</span><span class="meta">reddit_eli5 · P=0.994</span></header>
+          <p>Bitcoin is much like a digital form of gold. In order to mine gold, you need to spend time and money to collect the ore and refine it…</p>
+        </article>
+        <article class="example">
+          <header><span class="tag tag-miss">ChatGPT, called human</span><span class="meta">finance · P=0.395</span></header>
+          <p>If the underlying stays below the strike price, the put option will not be exercised and will expire worthless. This means that the value of the put option will be zero.</p>
+        </article>
+        <article class="example">
+          <header><span class="tag tag-miss">ChatGPT, called human</span><span class="meta">reddit_eli5 · P=0.202</span></header>
+          <p>No, the Earth is not getting bigger. The Earth is made up of solid rock, and while the surface of the Earth can change over time…</p>
+        </article>
+        <article class="example">
+          <header><span class="tag tag-human">ChatGPT, called human</span><span class="meta">finance · P=0.114</span></header>
+          <p>Why can't poor countries just print more money</p>
+        </article>
+      </div>
+      <p>The false positives are tidy encyclopedia sentences. The misses are short, or they look like a question that leaked into the answer field. HC3 is not a clean product dataset. The 99.4% is agreement with that dataset, including its mess.</p>
+    </section>
+
+    <section aria-labelledby="run-it">
+      <h2 id="run-it">Train it on Compute</h2>
+      <p>One file. Hand <a href="https://compute.cx/SKILL.md">compute.cx/SKILL.md</a> to your agent, plus the specials in <a href="./SKILL.md">this post’s overlay</a>.</p>
+<pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/ai-text-detector/train.py -o train.py
+curl -fsSL https://compute.cx/install.sh | sh
+compute setup
+compute credits add 10
+
+compute run train.py::train --gpu cheap --dry-run
+compute run train.py::train --provider runpod --gpu A100-PCIe-80GB --timeout 2400 --wait</code></pre>
+      <p>Dry-run only prints the upload plan. The real command quotes a GPU before spend. <code>--gpu cheap</code> is the issue default. On this account it quoted the decorator SKU and Vast had no interruptible offers, so the sample ran on RunPod A100-PCIe and the headline on A100-SXM. A short sample is enough to check the metric code first:</p>
+<pre><code class="language-bash">compute run train.py::train --provider runpod --gpu A100-PCIe-80GB --timeout 2400 --wait --args '{"max_train": 2000, "max_eval": 400, "epochs": 1, "ood_per_model": 40, "ood_scan": 20000}'</code></pre>
+      <p>Want to read the script? <a href="https://github.com/theoriclabs/letsusecompute/blob/main/posts/ai-text-detector/train.py"><code>train.py</code></a>.</p>
+    </section>
+
+    <section aria-labelledby="friction">
+      <h2 id="friction">The weights landed this time</h2>
+      <p>Sample run <code>run_3eaf70692b424b122f8656610c28d501</code> cost $0.08. Headline run <code>run_ea7b0d5c56f928808c3096a232e3e0bd</code> billed 9 minutes of training and 1 minute of boot, $0.30. Both returned <code>ok: true</code> and both persisted a five-file artifact — <code>detector.pt</code> is the classification head, not the full 250MB DistilBERT folder. There is no Hub checkpoint. No <code>hf</code> secret was set.</p>
+      <p>Reports: <code>rpt_1f125aff10b2f5922cf0cb077d8b4eeb</code> (cheap quoted Vast RTX-3090, no interruptible offers), <code>rpt_49171d9a8d52914e5af23341cb798aea</code> (same after switching the decorator to RTX-6000-ADA, which the catalog marked available), <code>rpt_b1c5888080691f47853bbab6fd1b4d2b</code> and <code>rpt_4daac4e75ba231e1857f282495c32549</code> (two RunPod A100-PCIe creates returned HTTP 500 after the sample had succeeded on that SKU).</p>
+      <p>If artifacts land on your run:</p>
+<pre><code class="language-bash">compute artifacts list &lt;run_id&gt;
+compute artifacts get &lt;run_id&gt; &lt;artifact_id&gt; &lt;version&gt; --out ./weights</code></pre>
+      <p>Storing a Hugging Face token does not put it on the machine. <code>Secret.from_name("hf")</code> on <code>train_and_push</code> does.</p>
+<pre><code class="language-bash">compute secrets set hf
+compute run train.py::train_and_push --provider runpod --gpu A100-PCIe-80GB --timeout 2400 --wait</code></pre>
+    </section>
+
+    <section aria-labelledby="limits">
+      <h2 id="limits">What this does not claim</h2>
+      <p>It does not detect “AI text” in general. It detects 2023 ChatGPT answers that look like HC3, and it does that very well. It does not locate a generator, attribute a document to a person, or survive paraphrases, decoding tricks, or models released after the training data. RAID here is 600 streamed rows, not the full benchmark. Medicine is still ChatGPT. The false-positive rate is the number that would matter in a classroom or a newsroom, and 1% of 2,251 held-out humans is still 23 people.</p>
+      <p>That is as far as $0.38 got us from Pangram.</p>
+    </section>
+  </main>
+  <script src="../../assets/cli-highlight.js"></script>
+</body>
+</html>
