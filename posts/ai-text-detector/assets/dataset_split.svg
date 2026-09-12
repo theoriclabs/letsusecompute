@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-labelledby="t d">
+  <title id="t">HC3 questions are split by question, with medicine held out</title>
+  <desc id="d">20,268 training questions, 2,251 in-distribution holdout questions, and 1,244 medicine questions.</desc>
+  <rect width="100%" height="100%" fill="#f7f4ef"/>
+  <text x="48" y="48" font-size="26" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Split by question, not by answer</text>
+  <rect x="48" y="118" width="941.6" height="72" fill="#3d6b8a"/>
+  <rect x="989.6" y="118" width="104.6" height="72" fill="#3d6b4f"/>
+  <rect x="1094.2" y="118" width="57.8" height="72" fill="#c45c26"/>
+  <text x="68" y="164" font-size="20" font-weight="700" fill="#fff" font-family="system-ui, sans-serif">train 20,268</text>
+  <rect x="48" y="210" width="14" height="14" rx="3" fill="#3d6b8a"/>
+  <text x="70" y="222" font-size="15" fill="#1a1a1a" font-family="system-ui, sans-serif">train 20,268</text>
+  <rect x="268" y="210" width="14" height="14" rx="3" fill="#3d6b4f"/>
+  <text x="290" y="222" font-size="15" fill="#1a1a1a" font-family="system-ui, sans-serif">HC3 holdout 2,251</text>
+  <rect x="548" y="210" width="14" height="14" rx="3" fill="#c45c26"/>
+  <text x="570" y="222" font-size="15" fill="#1a1a1a" font-family="system-ui, sans-serif">medicine 1,244</text>
+  <text x="48" y="268" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">23,763 English HC3 questions after dropping short answers. Each question contributes one human answer and one ChatGPT answer.</text>
+</svg>

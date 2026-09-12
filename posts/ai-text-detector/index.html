@@ -9,8 +9,11 @@
   <meta property="og:description" content="99.4% on ChatGPT answers. 48% when the generator changes. The headline GPU run cost $0.30." />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://letsusecompute.com/posts/ai-text-detector/" />
-  <meta property="og:image" content="https://letsusecompute.com/posts/ai-text-detector/assets/social_card.svg" />
+  <meta property="og:image" content="https://letsusecompute.com/posts/ai-text-detector/assets/social.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://letsusecompute.com/posts/ai-text-detector/assets/social.png" />
   <link rel="canonical" href="https://letsusecompute.com/posts/ai-text-detector/" />
   <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="../../assets/favicon.png" type="image/png" />
@@ -66,8 +69,8 @@
     </dl>
 
     <figure>
-      <img class="shot evidence" src="./assets/ood_story.svg" width="1200" height="420" alt="Two cards: DistilBERT flags 99.9 percent of ChatGPT answers on HC3 and 22.8 percent of GPT-4 and Llama answers on RAID" />
-      <figcaption><span class="figure-label">The number readers should remember.</span> Same threshold. Same weights. A different generator.</figcaption>
+      <img class="shot evidence" src="./assets/recall_story.svg" width="1200" height="420" alt="Stacked bars: DistilBERT flags 99.9 percent of ChatGPT answers on HC3 and 22.8 percent of GPT-4 and Llama answers on RAID, with 77.2 percent walking through" />
+      <figcaption><span class="figure-label">The number readers should remember.</span> Same weights. Same 0.5 threshold. A different generator.</figcaption>
     </figure>
 
     <section aria-labelledby="idea">
@@ -75,6 +78,10 @@
       <p>This is not a Pangram alternative. Pangram is a product that has to survive new models, new prompts, and people who will try to fool it. This is a two-evening classifier on a 2023 ChatGPT corpus, plus one honest out-of-distribution check.</p>
       <p>The training set is <a href="https://huggingface.co/datasets/Hello-SimpleAI/HC3"><code>Hello-SimpleAI/HC3</code></a> English: 23,763 usable questions after dropping short answers, each with one human answer and one ChatGPT answer. The job downloads that on the machine. You do not upload it.</p>
       <p>We split by question, not by answer, so a ChatGPT reply never sits in training while its human twin sits in test. Medicine is held out entirely — same generator, new domain. 20,268 questions stay for training, 2,251 for the in-distribution holdout, 1,244 for medicine.</p>
+      <figure>
+        <img class="shot evidence" src="./assets/dataset_split.svg" width="1200" height="300" alt="Stacked bar of 23,763 HC3 questions: 20,268 train, 2,251 holdout, 1,244 medicine" />
+        <figcaption>Each question contributes one human answer and one ChatGPT answer. Medicine never appears in training.</figcaption>
+      </figure>
     </section>
 
     <section aria-labelledby="models">
@@ -86,7 +93,11 @@
       </ul>
       <p>Loss is class-weighted cross-entropy. Accuracy is reported. The number that matters is the false-positive rate on human text: how often a person gets called a machine.</p>
       <figure>
-        <img class="shot evidence" src="./assets/training_curves.svg" width="1200" height="520" alt="Two-epoch chart: train and eval loss falling, held-out accuracy rising from 99.22 percent to 99.42 percent" />
+        <img class="shot evidence" src="./assets/detector_flow.svg" width="1200" height="420" alt="Flow diagram: answer text enters DistilBERT, which calls the text human or AI" />
+        <figcaption>On HC3 it almost always flags ChatGPT. On RAID most GPT-4 and Llama answers are called human.</figcaption>
+      </figure>
+      <figure>
+        <img class="shot evidence" src="./assets/training_curves.svg" width="1200" height="520" alt="Two-epoch chart with dots: train loss falling from 0.044 to 0.009, eval loss from 0.023 to 0.018, held-out accuracy rising from 99.22 percent to 99.42 percent" />
         <figcaption>Two epochs. Eval loss kept falling. We did not pick a checkpoint from these curves — the reported numbers are the final epoch.</figcaption>
       </figure>
     </section>
@@ -111,8 +122,16 @@
         </table>
       </div>
       <figure>
-        <img class="shot evidence" src="./assets/metrics.svg" width="1200" height="560" alt="Grouped bars showing high accuracy on HC3 and medicine and near-chance accuracy on RAID, with DistilBERT human false-positive rates of 1.0, 3.5, and 0.5 percent" />
-        <figcaption><span class="figure-label">Accuracy is the wrong comfort.</span> DistilBERT is conservative on RAID humans and still misses 77% of the new-generator text.</figcaption>
+        <img class="shot evidence" src="./assets/accuracy_bars.svg" width="1200" height="620" alt="Horizontal bars: DistilBERT accuracy 99.4 percent on HC3, 98.1 percent on medicine, 48.3 percent on RAID, with TF-IDF beside each" />
+        <figcaption><span class="figure-label">Accuracy is the wrong comfort.</span> Medicine still looks solved because it is still ChatGPT. RAID is a coin flip.</figcaption>
+      </figure>
+      <figure>
+        <img class="shot evidence" src="./assets/fpr_bars.svg" width="1200" height="620" alt="Horizontal bars of human false-positive rate: DistilBERT 1.0 percent on HC3, 3.5 percent on medicine, 0.5 percent on RAID" />
+        <figcaption>The classroom number. DistilBERT flags 23 of 2,251 held-out humans on HC3, and one of 200 on RAID — while missing 77% of the new-generator text.</figcaption>
+      </figure>
+      <figure>
+        <img class="shot evidence" src="./assets/confusion_matrices.svg" width="1200" height="560" alt="Side-by-side confusion matrices: HC3 is almost a perfect diagonal; RAID calls 309 of 400 GPT-4 and Llama answers human" />
+        <figcaption><span class="figure-label">The collapse, as counts.</span> Steel is a correct call. Orange is a miss. RAID’s orange square is 309 GPT-4 and Llama answers that walked through.</figcaption>
       </figure>
       <p>Medicine still works because it is still ChatGPT. RAID does not, because GPT-4 and Llama are not the 2023 ChatGPT that wrote HC3. DistilBERT’s RAID accuracy is slightly worse than TF-IDF. It is also much less willing to accuse a human. That is the trade a detector actually has to make, and it loses on this slice.</p>
     </section>

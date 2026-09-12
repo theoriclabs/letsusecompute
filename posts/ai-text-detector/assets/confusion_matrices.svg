@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-labelledby="t d">
+  <title id="t">Confusion matrices on HC3 and RAID at threshold 0.5</title>
+  <desc id="d">On HC3, DistilBERT is almost a perfect diagonal. On RAID, 309 of 400 GPT-4 and Llama answers are called human.</desc>
+  <rect width="100%" height="100%" fill="#f7f4ef"/>
+  <text x="48" y="48" font-size="28" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Same threshold, two tests</text>
+  <text x="48" y="80" font-size="16" fill="#5c5c5c" font-family="system-ui, sans-serif">Counts at 0.5. Steel is correct. Orange is wrong. The RAID miss is the big orange square.</text>
+  
+  <text x="86" y="132" font-size="20" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">HC3 holdout</text>
+  <text x="86" y="154" font-size="13" fill="#5c5c5c" font-family="system-ui, sans-serif">2,251 human + 2,251 ChatGPT</text>
+  <text x="232.0" y="178" font-size="13" fill="#5c5c5c" text-anchor="middle" font-family="system-ui, sans-serif">called human</text>
+  <text x="440.0" y="178" font-size="13" fill="#5c5c5c" text-anchor="middle" font-family="system-ui, sans-serif">called AI</text>
+  <text x="122" y="250.0" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">is human</text>
+  <text x="122" y="380.0" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">is AI</text>
+  
+  <rect x="134.0" y="186.0" width="196.0" height="118.0" rx="10" fill="rgb(62,107,138)"/>
+  <text x="232.0" y="239.0" font-size="28" font-weight="700" fill="#fff" text-anchor="middle" font-family="system-ui, sans-serif">2,228</text>
+  <text x="232.0" y="265.0" font-size="13" fill="#fff" text-anchor="middle" font-family="system-ui, sans-serif">true negative</text>
+
+  
+  <rect x="342.0" y="186.0" width="196.0" height="118.0" rx="10" fill="rgb(238,204,183)"/>
+  <text x="440.0" y="239.0" font-size="28" font-weight="700" fill="#1a1a1a" text-anchor="middle" font-family="system-ui, sans-serif">23</text>
+  <text x="440.0" y="265.0" font-size="13" fill="#1a1a1a" text-anchor="middle" font-family="system-ui, sans-serif">false positive</text>
+
+  
+  <rect x="134.0" y="316.0" width="196.0" height="118.0" rx="10" fill="rgb(238,204,183)"/>
+  <text x="232.0" y="369.0" font-size="28" font-weight="700" fill="#1a1a1a" text-anchor="middle" font-family="system-ui, sans-serif">3</text>
+  <text x="232.0" y="395.0" font-size="13" fill="#1a1a1a" text-anchor="middle" font-family="system-ui, sans-serif">missed AI</text>
+
+  
+  <rect x="342.0" y="316.0" width="196.0" height="118.0" rx="10" fill="rgb(61,107,138)"/>
+  <text x="440.0" y="369.0" font-size="28" font-weight="700" fill="#fff" text-anchor="middle" font-family="system-ui, sans-serif">2,248</text>
+  <text x="440.0" y="395.0" font-size="13" fill="#fff" text-anchor="middle" font-family="system-ui, sans-serif">caught AI</text>
+
+
+  
+  <text x="686" y="132" font-size="20" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">RAID</text>
+  <text x="686" y="154" font-size="13" fill="#5c5c5c" font-family="system-ui, sans-serif">200 human + 200 GPT-4 + 200 Llama</text>
+  <text x="832.0" y="178" font-size="13" fill="#5c5c5c" text-anchor="middle" font-family="system-ui, sans-serif">called human</text>
+  <text x="1040.0" y="178" font-size="13" fill="#5c5c5c" text-anchor="middle" font-family="system-ui, sans-serif">called AI</text>
+  <text x="722" y="250.0" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">is human</text>
+  <text x="722" y="380.0" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">is AI</text>
+  
+  <rect x="734.0" y="186.0" width="196.0" height="118.0" rx="10" fill="rgb(103,140,163)"/>
+  <text x="832.0" y="239.0" font-size="28" font-weight="700" fill="#fff" text-anchor="middle" font-family="system-ui, sans-serif">199</text>
+  <text x="832.0" y="265.0" font-size="13" fill="#fff" text-anchor="middle" font-family="system-ui, sans-serif">true negative</text>
+
+  
+  <rect x="942.0" y="186.0" width="196.0" height="118.0" rx="10" fill="rgb(238,204,183)"/>
+  <text x="1040.0" y="239.0" font-size="28" font-weight="700" fill="#1a1a1a" text-anchor="middle" font-family="system-ui, sans-serif">1</text>
+  <text x="1040.0" y="265.0" font-size="13" fill="#1a1a1a" text-anchor="middle" font-family="system-ui, sans-serif">false positive</text>
+
+  
+  <rect x="734.0" y="316.0" width="196.0" height="118.0" rx="10" fill="rgb(196,92,38)"/>
+  <text x="832.0" y="369.0" font-size="28" font-weight="700" fill="#fff" text-anchor="middle" font-family="system-ui, sans-serif">309</text>
+  <text x="832.0" y="395.0" font-size="13" fill="#fff" text-anchor="middle" font-family="system-ui, sans-serif">missed AI</text>
+
+  
+  <rect x="942.0" y="316.0" width="196.0" height="118.0" rx="10" fill="rgb(144,172,188)"/>
+  <text x="1040.0" y="369.0" font-size="28" font-weight="700" fill="#1a1a1a" text-anchor="middle" font-family="system-ui, sans-serif">91</text>
+  <text x="1040.0" y="395.0" font-size="13" fill="#1a1a1a" text-anchor="middle" font-family="system-ui, sans-serif">caught AI</text>
+
+
+  <text x="48" y="536" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">HC3 false positives: 23 humans. RAID false positives: 1 human. RAID missed AI: 309 of 400.</text>
+</svg>

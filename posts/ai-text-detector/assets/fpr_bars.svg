@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="t d">
+  <title id="t">Human false-positive rate</title>
+  <desc id="d">DistilBERT flags 1.0 percent of HC3 humans, 3.5 percent of medicine humans, and 0.5 percent of RAID humans.</desc>
+  <rect width="100%" height="100%" fill="#f7f4ef"/>
+  <text x="48" y="48" font-size="28" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Human false-positive rate</text>
+  <text x="48" y="80" font-size="16" fill="#5c5c5c" font-family="system-ui, sans-serif">How often a person gets called a machine. This is the number a classroom or newsroom would feel.</text>
+  
+  <text x="264" y="140" font-size="16" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">HC3 · DistilBERT</text>
+  <text x="264" y="160" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">23 of 2,251 humans</text>
+  <rect x="280" y="118" width="42.9" height="52" rx="8" fill="#c45c26"/>
+  <text x="336.9" y="152" font-size="18" font-weight="700" fill="#1a1a1a" text-anchor="start" font-family="system-ui, sans-serif">1.0%</text>
+
+  <text x="264" y="220" font-size="16" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">HC3 · TF-IDF</text>
+  <text x="264" y="240" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">55 of 2,251 humans</text>
+  <rect x="280" y="198" width="102.6" height="52" rx="8" fill="#c4a484"/>
+  <text x="396.6" y="232" font-size="18" font-weight="700" fill="#1a1a1a" text-anchor="start" font-family="system-ui, sans-serif">2.4%</text>
+
+  <text x="264" y="300" font-size="16" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">Medicine · DistilBERT</text>
+  <text x="264" y="320" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">43 of 1,244 humans</text>
+  <rect x="280" y="278" width="145.2" height="52" rx="8" fill="#c45c26"/>
+  <text x="439.2" y="312" font-size="18" font-weight="700" fill="#1a1a1a" text-anchor="start" font-family="system-ui, sans-serif">3.5%</text>
+
+  <text x="264" y="380" font-size="16" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">Medicine · TF-IDF</text>
+  <text x="264" y="400" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">74 of 1,244 humans</text>
+  <rect x="280" y="358" width="249.8" height="52" rx="8" fill="#c4a484"/>
+  <text x="515.8" y="392" font-size="18" font-weight="700" fill="#fff" text-anchor="end" font-family="system-ui, sans-serif">5.9%</text>
+
+  <text x="264" y="460" font-size="16" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">RAID · DistilBERT</text>
+  <text x="264" y="480" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">1 of 200 humans</text>
+  <rect x="280" y="438" width="21.0" height="52" rx="8" fill="#c45c26"/>
+  <text x="315.0" y="472" font-size="18" font-weight="700" fill="#1a1a1a" text-anchor="start" font-family="system-ui, sans-serif">0.5%</text>
+
+  <text x="264" y="540" font-size="16" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">RAID · TF-IDF</text>
+  <text x="264" y="560" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">16 of 200 humans</text>
+  <rect x="280" y="518" width="336.0" height="52" rx="8" fill="#c4a484"/>
+  <text x="602.0" y="552" font-size="18" font-weight="700" fill="#fff" text-anchor="end" font-family="system-ui, sans-serif">8.0%</text>
+
+  <text x="48" y="598" font-size="13" fill="#5c5c5c" font-family="system-ui, sans-serif">Same 0.5 threshold as the accuracy chart. DistilBERT is conservative on RAID and still misses most of the new generators.</text>
+</svg>

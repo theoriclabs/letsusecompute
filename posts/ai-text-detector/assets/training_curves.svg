@@ -1,10 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="t d">
-  <title id="t">Two-epoch training curves on HC3</title>
-  <desc id="d">Train and eval loss fall. Held-out accuracy rises from 99.22 percent to 99.42 percent.</desc>
+  <title id="t">DistilBERT train loss, eval loss, and held-out accuracy over two epochs</title>
+  <desc id="d">Train loss fell from 0.044 to 0.009. Eval loss fell from 0.023 to 0.018. Held-out accuracy rose from 99.22 percent to 99.42 percent.</desc>
   <rect width="100%" height="100%" fill="#f7f4ef"/>
-  <text x="72" y="40" font-size="28" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Two epochs on ChatGPT answers</text>
-  <polyline fill="none" stroke="#3d6b8a" stroke-width="4" points="72.0,72.0 1128.0,448.0"/>
-  <polyline fill="none" stroke="#c45c26" stroke-width="4" points="72.0,293.1 1128.0,354.7"/>
-  <polyline fill="none" stroke="#3d6b4f" stroke-width="3" stroke-dasharray="8 6" points="72.0,169.4 1128.0,144.4"/>
-  <text x="72" y="504" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">steel = train loss · orange = eval loss · dashed green = held-out accuracy (right scale, 97.0%–100.0%)</text>
+  <text x="48" y="44" font-size="28" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Two epochs on 40,536 answers</text>
+  <text x="48" y="74" font-size="16" fill="#5c5c5c" font-family="system-ui, sans-serif">Loss on the left axis. Held-out accuracy is the dashed green line, right axis 99.0%–99.6%.</text>
+  <line x1="80" y1="440.0" x2="1120" y2="440.0" stroke="#ddd4c6"/><text x="68" y="445.0" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">0.00</text><line x1="80" y1="309.8" x2="1120" y2="309.8" stroke="#ddd4c6"/><text x="68" y="314.8" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">0.02</text><line x1="80" y1="179.6" x2="1120" y2="179.6" stroke="#ddd4c6"/><text x="68" y="184.6" font-size="13" fill="#5c5c5c" text-anchor="end" font-family="system-ui, sans-serif">0.04</text><text x="1132" y="355.0" font-size="13" fill="#3d6b4f" text-anchor="start" font-family="system-ui, sans-serif">99.0%</text><text x="1132" y="265.0" font-size="13" fill="#3d6b4f" text-anchor="start" font-family="system-ui, sans-serif">99.2%</text><text x="1132" y="175.0" font-size="13" fill="#3d6b4f" text-anchor="start" font-family="system-ui, sans-serif">99.4%</text><text x="1132" y="85.0" font-size="13" fill="#3d6b4f" text-anchor="start" font-family="system-ui, sans-serif">99.6%</text>
+  <polyline fill="none" stroke="#3d6b8a" stroke-width="3.5" points="80.0,152.0 1120.0,382.3"/>
+  <polyline fill="none" stroke="#c45c26" stroke-width="3.5" points="80.0,287.5 1120.0,325.2"/>
+  <polyline fill="none" stroke="#3d6b4f" stroke-width="3.5" stroke-dasharray="8 6" points="80.0,249.8 1120.0,159.9"/>
+  <circle cx="80.0" cy="152.0" r="7" fill="#3d6b8a"/><circle cx="80.0" cy="287.5" r="7" fill="#c45c26"/><circle cx="80.0" cy="249.8" r="7" fill="#3d6b4f"/><circle cx="1120.0" cy="382.3" r="7" fill="#3d6b8a"/><circle cx="1120.0" cy="325.2" r="7" fill="#c45c26"/><circle cx="1120.0" cy="159.9" r="7" fill="#3d6b4f"/>
+  <text x="80.0" y="468" font-size="14" fill="#5c5c5c" text-anchor="middle" font-family="system-ui, sans-serif">epoch 1</text>
+  <text x="1120.0" y="468" font-size="14" fill="#5c5c5c" text-anchor="middle" font-family="system-ui, sans-serif">epoch 2</text>
+  <rect x="48" y="492" width="12" height="12" fill="#3d6b8a"/>
+  <text x="66" y="503" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">train loss 0.044 → 0.009</text>
+  <rect x="360" y="492" width="12" height="12" fill="#c45c26"/>
+  <text x="378" y="503" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">eval loss 0.023 → 0.018</text>
+  <rect x="680" y="492" width="12" height="12" fill="#3d6b4f"/>
+  <text x="698" y="503" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">holdout acc 99.2% → 99.4%</text>
 </svg>
