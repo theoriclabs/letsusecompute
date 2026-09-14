@@ -123,3 +123,23 @@ Guide: https://letsusecompute.com/posts/ai-text-detector
 #MachineLearning #GPUComputing
 
 ---
+
+## 2026-09-14 — Text compressor
+
+Draft (post when the live guide URL is the one you want people to open):
+
+---
+
+Post #7 in the compute.cx series: a language-model compressor.
+
+We trained a 3.4M-parameter character GPT on the first 90 MB of enwik8 and used its next-byte probabilities as a range coder. On the last 10 MB the bitstream is 1.82 bits per byte. gzip -9 needs 2.87. xz -9 needs 2.14. The first 32 KB of decode matched the original.
+
+Count the 6.7 MB of weights and it loses to gzip. That is the difference between a shared codec and a file you send once.
+
+Headline run: RunPod A100-SXM, 28 billed training minutes, $0.91. Whole issue $1.34, including a $0.21 sample and two failed creates. Artifacts persisted. No Hub checkpoint — no write token was set.
+
+Guide: https://letsusecompute.com/posts/text-compressor
+
+#MachineLearning #GPUComputing
+
+---

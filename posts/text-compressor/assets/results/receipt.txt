@@ -1,0 +1,20 @@
+run:              run_ea0ca7f6a97ca6bf787f075bb8dc1af1
+status:           succeeded
+machine:          runpod A100-SXM-80GB (m_997c57a351e4427d9ba11588ad558162)
+locked rate:      $1.69/hr
+credit hold:      $1.82
+idempotency key:  75a0fbd2-a126-4601-973e-ac30ec58b4a8
+machine started:  2026-09-14T16:25:40.417+00:00
+machine gone:     2026-09-14T16:51:40.113+00:00
+
+LINE                        MINUTES  AMOUNT
+boot_provider_usage         1 min    $0.03
+run_provider_usage          28 min   $0.79
+termination_provider_usage  1 min    $0.03
+platform_fee                —        $0.06
+
+provider cost:    $0.85
+platform fee:     $0.06
+total debited:    $0.91
+
+Fee is a flat 7.5% of provider usage.

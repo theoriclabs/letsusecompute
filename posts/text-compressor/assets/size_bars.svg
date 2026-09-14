@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="500" viewBox="0 0 1200 500" role="img" aria-labelledby="t d">
+  <title id="t">Compressed size of the 10 MB holdout</title>
+  <desc id="d">The model bitstream is 2.27 MB. xz is 2.68 MB. gzip is 3.59 MB. The original is 10 MB.</desc>
+  <rect width="100%" height="100%" fill="#f7f4ef"/>
+  <text x="48" y="48" font-size="28" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">10 MB in, four sizes out</text>
+  <text x="48" y="80" font-size="16" fill="#5c5c5c" font-family="system-ui, sans-serif">Bitstream only. The 6.7 MB of fp16 weights are not in these bars.</text>
+  
+  <text x="264" y="152" font-size="17" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">char LM + rANS</text>
+  <rect x="280" y="118" width="190.8" height="52" rx="8" fill="#3d6b8a"/>
+  <text x="456.8" y="152" font-size="18" font-weight="700" fill="#fff" text-anchor="end" font-family="system-ui, sans-serif">2.27 MB</text>
+
+  <text x="264" y="232" font-size="17" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">xz -9</text>
+  <rect x="280" y="198" width="225.2" height="52" rx="8" fill="#c4a484"/>
+  <text x="491.2" y="232" font-size="18" font-weight="700" fill="#fff" text-anchor="end" font-family="system-ui, sans-serif">2.68 MB</text>
+
+  <text x="264" y="312" font-size="17" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">gzip -9</text>
+  <rect x="280" y="278" width="301.5" height="52" rx="8" fill="#7a8b99"/>
+  <text x="567.5" y="312" font-size="18" font-weight="700" fill="#fff" text-anchor="end" font-family="system-ui, sans-serif">3.59 MB</text>
+
+  <text x="264" y="392" font-size="17" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">original</text>
+  <rect x="280" y="358" width="840.0" height="52" rx="8" fill="#ddd4c6"/>
+  <text x="1106.0" y="392" font-size="18" font-weight="700" fill="#1a1a1a" text-anchor="end" font-family="system-ui, sans-serif">10.00 MB</text>
+
+  <text x="48" y="476" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">Add the weights and the model is 9.0 MB — worse than gzip for a one-off file.</text>
+</svg>

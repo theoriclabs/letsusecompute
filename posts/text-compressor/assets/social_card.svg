@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="t">
+  <title id="t">A $1.34 language-model compressor</title>
+  <rect width="100%" height="100%" fill="#f7f4ef"/>
+  <text x="72" y="88" font-size="20" fill="#5c5c5c" font-family="system-ui, sans-serif">Let’s use compute · post #7</text>
+  <text x="72" y="168" font-size="48" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">A $1.34 LM compressor</text>
+  <text x="72" y="220" font-size="22" fill="#5c5c5c" font-family="system-ui, sans-serif">1.82 bits/byte on enwik8. gzip needs 2.87. xz needs 2.14.</text>
+  <text x="72" y="300" font-size="16" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">char LM + rANS</text>
+  <rect x="72" y="312" width="668.4" height="48" fill="#3d6b8a"/>
+  <text x="88" y="344" font-size="18" font-weight="700" fill="#fff" font-family="system-ui, sans-serif">1.817</text>
+  <text x="72" y="410" font-size="16" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">gzip -9</text>
+  <rect x="72" y="422" width="1055.8" height="48" fill="#7a8b99"/>
+  <text x="88" y="454" font-size="18" font-weight="700" fill="#fff" font-family="system-ui, sans-serif">2.871</text>
+  <text x="72" y="560" font-size="18" fill="#c45c26" font-family="system-ui, sans-serif">letsusecompute.com/posts/text-compressor</text>
+</svg>

@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A $1.34 language-model compressor — Let’s use compute</title>
+  <meta name="description" content="A 3.4M-parameter character GPT plus a range coder compresses 10 MB of enwik8 to 1.82 bits/byte. gzip -9 needs 2.87. xz -9 needs 2.14. The issue cost $1.34." />
+  <meta property="og:title" content="A $1.34 language-model compressor" />
+  <meta property="og:description" content="1.82 bits/byte on held-out enwik8. gzip needs 2.87. xz needs 2.14. Decode matched." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://letsusecompute.com/posts/text-compressor/" />
+  <meta property="og:image" content="https://letsusecompute.com/posts/text-compressor/assets/social.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://letsusecompute.com/posts/text-compressor/assets/social.png" />
+  <link rel="canonical" href="https://letsusecompute.com/posts/text-compressor/" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="../../assets/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="../../assets/favicon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <style>
+    .article-header .lede { margin-bottom: 1.4rem; }
+    section { margin-top: 2.25rem; }
+    section > h2:first-child { margin-top: 0; }
+    figure { margin: 1.35rem 0 1.8rem; }
+    figure .shot { margin: 0; height: auto; }
+    figcaption { color: var(--muted); font-size: 0.92rem; line-height: 1.45; margin-top: 0.55rem; }
+    .figure-label { color: var(--fg); font-weight: 700; }
+    .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem; margin: 1.2rem 0 1.5rem; }
+    .metric { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0.85rem 0.95rem; }
+    .metric dt { color: var(--muted); font-size: 0.9rem; }
+    .metric dd { font-size: 1.55rem; font-variant-numeric: tabular-nums; font-weight: 700; line-height: 1.15; margin: 0.2rem 0 0; }
+    .table-wrap { margin: 1.2rem 0 1.5rem; overflow-x: auto; }
+    .data-table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 10px; font-variant-numeric: tabular-nums; }
+    .data-table caption { color: var(--muted); font-size: 0.92rem; padding: 0.7rem 0.75rem 0.2rem; text-align: left; }
+    .data-table th, .data-table td { border-bottom: 1px solid var(--line); padding: 0.6rem 0.75rem; text-align: right; white-space: nowrap; }
+    .data-table th:first-child, .data-table td:first-child { text-align: left; }
+    .data-table tbody tr:last-child th, .data-table tbody tr:last-child td { border-bottom: 0; }
+    @media (max-width: 32rem) { .metrics { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <p><a class="back" href="../../">← Let’s use compute</a></p>
+    <header class="article-header">
+      <p class="eyebrow">2026-09-14 · post #7</p>
+      <h1>A $1.34 language-model compressor</h1>
+      <p class="byline">Harsh Gupta</p>
+      <p class="lede">A small next-byte model is already a compressor. We just had to write the bits down.</p>
+    </header>
+
+    <p>We trained a 3.4 million parameter character GPT on <a href="https://compute.cx">Compute</a> and used its next-byte probabilities as an arithmetic coder. On the last 10 MB of <a href="http://mattmahoney.net/dc/textdata.html">enwik8</a> the bitstream is 1.817 bits per byte. gzip -9 needs 2.871. xz -9 needs 2.144. The first 32,768 decoded bytes matched the original. The headline GPU run cost $0.91. The whole issue was $1.34.</p>
+
+    <dl class="metrics" aria-label="Headline compressor result">
+      <div class="metric"><dt>Model + rANS</dt><dd>1.817 bpc</dd></div>
+      <div class="metric"><dt>gzip -9</dt><dd>2.871 bpc</dd></div>
+      <div class="metric"><dt>xz -9</dt><dd>2.144 bpc</dd></div>
+      <div class="metric"><dt>Issue spend</dt><dd>$1.34</dd></div>
+    </dl>
+
+    <figure>
+      <img class="shot evidence" src="./assets/bpc_bars.svg" width="1200" height="480" alt="Horizontal bars: character LM 1.817 bits per byte, xz 2.144, gzip 2.871 on 10 MB of held-out enwik8" />
+      <figcaption><span class="figure-label">The number readers should remember.</span> Same 10,000,000 bytes. Lower is better.</figcaption>
+    </figure>
+
+    <section aria-labelledby="idea">
+      <h2 id="idea">Prediction is compression</h2>
+      <p>If you can assign a probability to the next byte, Shannon already told you how many bits it costs: −log₂ P. A language model is a conditional probability table. A range coder turns that table into an actual file. Decode inverts the same table and must reproduce the original bytes.</p>
+      <p>This is not a new idea. The Hutter Prize is exactly this bet, on this file. We wanted the smallest version that still beats gzip on a cheap GPU evening.</p>
+      <figure>
+        <img class="shot evidence" src="./assets/compressor_flow.svg" width="1200" height="400" alt="Flow: holdout bytes enter a character GPT, rANS writes a 2.27 MB bitstream" />
+        <figcaption>Cross-entropy on the holdout is 1.738 bits/byte. The coder spends 0.079 extra because frequencies are 12-bit integers.</figcaption>
+      </figure>
+    </section>
+
+    <section aria-labelledby="data">
+      <h2 id="data">enwik8, by byte offset</h2>
+      <p>enwik8 is the first 100,000,000 bytes of the 3 March 2006 English Wikipedia XML dump. The job downloads the zip on the machine. You do not upload it. Train is the first 90 MB. Test is the last 10 MB. The split is a cut in the file, not a split by article, which is how the classic benchmark does it.</p>
+      <figure>
+        <img class="shot evidence" src="./assets/dataset_split.svg" width="1200" height="280" alt="Stacked bar: 90 MB train and 10 MB holdout from enwik8" />
+        <figcaption>Matt Mahoney’s zip from a GPU datacenter sometimes comes back as an HTML page. The script also tries Wayback and, if those fail, WikiText-103. This run got the real enwik8 file.</figcaption>
+      </figure>
+    </section>
+
+    <section aria-labelledby="model">
+      <h2 id="model">A 3.4M character GPT, then rANS</h2>
+      <p>Four layers, 256-wide embeddings, four heads, 256-byte context. 3,356,160 parameters. Byte vocabulary. Trained with AdamW for 20,000 steps, batch 64. That is about 328 million training tokens, a few passes over the 90 MB.</p>
+      <p>Compression is teacher-forced: each 256-byte block is predicted from a BOS byte plus the previous bytes in the block. Those distributions are quantized to 12-bit frequencies and encoded last-to-first with 32-bit rANS. Decode re-runs the model and must land on the same byte.</p>
+      <figure>
+        <img class="shot evidence" src="./assets/training_curves.svg" width="1200" height="520" alt="Train loss falling from 5.70 nats to about 1.20 nats over 20,000 steps" />
+        <figcaption>Uniform random bytes sit at 5.55 nats. The run ended at 1.20 nats on the training windows, 1.74 bits/byte on the holdout.</figcaption>
+      </figure>
+    </section>
+
+    <section aria-labelledby="results">
+      <h2 id="results">Beats gzip. Beats xz. Loses if you count the weights.</h2>
+      <p>Headline run <code>run_ea0ca7f6a97ca6bf787f075bb8dc1af1</code> on a RunPod A100-SXM 80GB. 20,000 steps, then a 2.27 MB bitstream of the 10 MB holdout. Decode of the first 32,768 bytes matched exactly.</p>
+      <div class="table-wrap" role="region" aria-label="Compression on 10 MB of enwik8" tabindex="0">
+        <table class="data-table">
+          <caption>Same 10,000,000 held-out bytes. gzip and xz from the Python standard library.</caption>
+          <thead>
+            <tr><th scope="col">Codec</th><th scope="col">Bytes</th><th scope="col">Bits/byte</th><th scope="col">vs gzip</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">char LM + rANS</th><td>2,271,393</td><td>1.817</td><td>−36.7%</td></tr>
+            <tr><th scope="row">xz -9</th><td>2,680,572</td><td>2.144</td><td>−25.3%</td></tr>
+            <tr><th scope="row">gzip -9</th><td>3,588,805</td><td>2.871</td><td>—</td></tr>
+            <tr><th scope="row">LM + fp16 weights</th><td>8,983,713</td><td>7.187</td><td>+150%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figure>
+        <img class="shot evidence" src="./assets/size_bars.svg" width="1200" height="500" alt="Horizontal bars of compressed size: 2.27 MB model bitstream, 2.68 MB xz, 3.59 MB gzip, 10 MB original" />
+        <figcaption><span class="figure-label">The codec view.</span> Count the 6.7 MB of weights and the “compressor” is 9.0 MB — worse than gzip for a file you send once.</figcaption>
+      </figure>
+      <p>That last row is the honest one-off cost. A shared codec can amortize the weights. A zip you email to one person cannot. The ticket asked us to beat gzip on the held-out slice. The bitstream does. The weights-plus-bitstream file does not, and should not be sold as if it does.</p>
+    </section>
+
+    <section aria-labelledby="run-it">
+      <h2 id="run-it">Train it on Compute</h2>
+      <p>One file. Hand <a href="https://compute.cx/SKILL.md">compute.cx/SKILL.md</a> to your agent, plus the specials in <a href="./SKILL.md">this post’s overlay</a>.</p>
+<pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/text-compressor/train.py -o train.py
+curl -fsSL https://compute.cx/install.sh | sh
+compute setup
+compute credits add 10
+
+compute run train.py::train --gpu cheap --dry-run
+compute run train.py::train --gpu cheap --timeout 2400 --wait</code></pre>
+      <p>Dry-run only prints the upload plan. The real command quotes a GPU before spend. <code>--gpu cheap</code> is the issue default. On this account it quoted Vast RTX-3090 and that machine never came up, so the runs that finished used RunPod A100-SXM. A 1 MB slice is enough to check the coder first:</p>
+<pre><code class="language-bash">compute run train.py::train --provider runpod --gpu A100-SXM-80GB --timeout 2400 --wait --args '{"sample": true}'</code></pre>
+      <p>Want to read the script? <a href="https://github.com/theoriclabs/letsusecompute/blob/main/posts/text-compressor/train.py"><code>train.py</code></a>.</p>
+    </section>
+
+    <section aria-labelledby="friction">
+      <h2 id="friction">The bitstream landed</h2>
+      <p>Sample run <code>run_d707701d5317807fb18b5773bdf593c9</code> cost $0.21 and already sat under gzip (2.94 vs 3.00) on 100 KB, but decode drifted because encode and decode used two different quantizers. Headline run <code>run_ea0ca7f6a97ca6bf787f075bb8dc1af1</code> billed 28 minutes of training plus a minute of boot and a minute of teardown, $0.91. Both returned <code>ok: true</code>. The headline persisted a five-file artifact: <code>model.pt</code>, the 2.27 MB bitstream, <code>summary.json</code>, and two plots. There is no Hub checkpoint. No <code>hf</code> secret was set.</p>
+      <p>Reports: <code>rpt_8dd79aafd46f69367a2b77f300b6c1e2</code> (cheap quoted Vast RTX-3090; provider stayed in <code>creating</code> for the boot deadline), <code>rpt_57fccaecaab2a56955d8be7da3e9364c</code> (RunPod A100-PCIe unavailable), <code>rpt_777958be7999b4b142d11b043fdb94ea</code> (mattmahoney.net served an HTML page instead of the zip from the GPU network). Two later creates hit the six-per-hour cap and had to wait.</p>
+      <p>If artifacts land on your run:</p>
+<pre><code class="language-bash">compute artifacts list &lt;run_id&gt;
+compute artifacts get &lt;run_id&gt; &lt;artifact_id&gt; &lt;version&gt; --out ./weights</code></pre>
+      <p>Storing a Hugging Face token does not put it on the machine. <code>Secret.from_name("hf")</code> on <code>train_and_push</code> does.</p>
+<pre><code class="language-bash">compute secrets set hf
+compute run train.py::train_and_push --provider runpod --gpu A100-SXM-80GB --timeout 2400 --wait</code></pre>
+    </section>
+
+    <section aria-labelledby="limits">
+      <h2 id="limits">What this does not claim</h2>
+      <p>It does not replace gzip. It compresses this 10 MB of 2006 Wikipedia XML, with a model that already knows that dump. It does not include the 6.7 MB of weights in the headline 1.817. Decode was checked on 32,768 of 10,000,000 bytes — the full encode used the model; a sequential decode of all 10 MB would have sat on the timeout. rANS is not a free lunch: 1.817 is worse than the 1.738-bit cross-entropy because we snap probabilities to 12-bit frequencies.</p>
+      <p>That is as far as $1.34 got us from the Hutter Prize.</p>
+    </section>
+  </main>
+  <script src="../../assets/cli-highlight.js"></script>
+</body>
+</html>
