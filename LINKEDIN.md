@@ -143,3 +143,23 @@ Guide: https://letsusecompute.com/posts/text-compressor
 #MachineLearning #GPUComputing
 
 ---
+
+## 2026-09-17 — Jev games
+
+Draft (post when the live guide URL is the one you want people to open):
+
+---
+
+Post #8: one small decision model, three tiny games.
+
+We trained Qwen2.5-0.5B-Instruct plus a shared candidate-scoring head on Snake, fully observed DoorKey-5x5, and MinAtar-style Breakout. Supervised cloning. Not RLCD. Not pixels.
+
+DoorKey reaches the goal on 18 of 20 held-out episodes. Random never does. Snake eats 0.15 food against the teacher’s 11.7. Breakout breaks 1.5 bricks against 15.3. The video is a recorded replay.
+
+Headline run: RunPod A100-SXM, $0.33. Whole issue $0.68, including a Vast machine that trained and then vanished before artifacts landed.
+
+Guide: https://letsusecompute.com/posts/jev-games
+
+#MachineLearning #GPUComputing
+
+---
