@@ -6,3 +6,4 @@ __pycache__/
 weights/
 *.pt
 .env
+posts/jev-games/assets/results/run84/

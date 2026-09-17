@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>A $0.68 decision model for three tiny games — Let’s use compute</title>
-  <meta name="description" content="One Qwen2.5-0.5B candidate scorer on Snake, fully observed DoorKey, and MinAtar-style Breakout. DoorKey hits 90% of goals. Snake and Breakout barely beat random. $0.68 all-in." />
-  <meta property="og:title" content="A $0.68 decision model for three tiny games" />
-  <meta property="og:description" content="DoorKey 90% vs 0% random. Same model on Snake and Breakout. Recorded replays, not live inference." />
+  <title>Real Atari Pong, a trained winner — Let’s use compute</title>
+  <meta name="description" content="ALE/Pong-v5, official pixels. A fitted intercept controller wins first-to-5 at 5–3. Random goes 0–5. Qwen2.5-0.5B copies 96% of the labels and still loses 0–5." />
+  <meta property="og:title" content="Real Atari Pong, a trained winner" />
+  <meta property="og:description" content="Official ALE Pong. Trained intercept 5–3. Random 0–5. The 0.5B scorer agrees offline and loses the rally." />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://letsusecompute.com/posts/jev-games/" />
   <meta property="og:image" content="https://letsusecompute.com/posts/jev-games/assets/social/poster.jpg" />
@@ -17,7 +17,7 @@
   <style>
     section { margin-top: 2.25rem; }
     figure { margin: 1.35rem 0 1.8rem; }
-    figure .shot, figure video { margin: 0; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); background: var(--card); }
+    figure .shot, figure video { margin: 0; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); background: #120806; }
     figcaption { color: var(--muted); font-size: 0.92rem; margin-top: 0.55rem; }
     .figure-label { color: var(--fg); font-weight: 700; }
     .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem; margin: 1.2rem 0 1.5rem; }
@@ -29,11 +29,8 @@
     .data-table caption { color: var(--muted); font-size: 0.92rem; padding: 0.7rem 0.75rem 0.2rem; text-align: left; }
     .data-table th, .data-table td { border-bottom: 1px solid var(--line); padding: 0.6rem 0.75rem; text-align: right; }
     .data-table th:first-child, .data-table td:first-child { text-align: left; }
-    .panels { display: grid; gap: 1rem; }
-    .panel { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0.9rem 1rem; }
-    .panel h3 { margin-top: 0; }
     .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-    .pair img { width: 100%; border-radius: 8px; border: 1px solid var(--line); }
+    .pair img { width: 100%; border-radius: 8px; border: 1px solid var(--line); background: #120806; }
     @media (max-width: 32rem) { .metrics, .pair { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -42,118 +39,78 @@
     <p><a class="back" href="../../">← Let’s use compute</a></p>
     <header class="article-header">
       <p class="eyebrow">2026-09-17 · post #8</p>
-      <h1>A $0.68 decision model for three tiny games</h1>
+      <h1>Real Atari Pong, a trained winner</h1>
       <p class="byline">Harsh Gupta</p>
-      <p class="lede">One shared Qwen head that picks from a typed menu. DoorKey mostly works. Snake and Breakout still look like the random policy.</p>
+      <p class="lede">We threw out the homemade grids. This is the ALE ROM. The controller that wins is a fitted intercept, not the 0.5B scorer.</p>
     </header>
 
-    <p>Issue <a href="https://github.com/theoriclabs/letsusecompute/issues/18">#18</a> asked for a Jev-inspired supervised decision model, not TypeSafe’s private RLCD stack. We trained <a href="https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct">Qwen2.5-0.5B-Instruct</a> plus one scalar candidate-scoring head on three structured games: 8×8 Snake, fully observed DoorKey-5x5, and a MinAtar-faithful Breakout. The same weights score every menu. DoorKey reaches the goal on 18 of 20 held-out episodes. Random never does. Snake eats 0.15 food against the teacher’s 11.7. Breakout breaks 1.5 bricks against 15.3. Receipts on the issue add up to $0.68.</p>
+    <p>Issue <a href="https://github.com/theoriclabs/letsusecompute/issues/18">#18</a> asked for a Jev-inspired decision model. The first cut used toy Snake, DoorKey, and a MinAtar-style Breakout. Those frames do not look like games, and two of the policies lost. This revision uses <a href="https://ale.farama.org/environments/pong/"><code>ALE/Pong-v5</code></a>. Official pixels. Structured paddle and ball boxes extracted from that RGB. First to 5.</p>
 
-    <dl class="metrics" aria-label="Headline decision-model result">
-      <div class="metric"><dt>DoorKey success</dt><dd>90%</dd></div>
-      <div class="metric"><dt>Snake food</dt><dd>0.15</dd></div>
-      <div class="metric"><dt>Breakout bricks</dt><dd>1.50</dd></div>
-      <div class="metric"><dt>Issue spend</dt><dd>$0.68</dd></div>
+    <dl class="metrics" aria-label="Headline Pong result">
+      <div class="metric"><dt>Trained intercept</dt><dd>5–3</dd></div>
+      <div class="metric"><dt>Random</dt><dd>0–5</dd></div>
+      <div class="metric"><dt>Qwen closed-loop</dt><dd>0–5</dd></div>
+      <div class="metric"><dt>This revision</dt><dd>$1.57</dd></div>
     </dl>
 
     <figure class="hero">
-      <video controls playsinline muted loop preload="metadata" poster="./assets/social/poster.jpg" width="1080" height="1080" aria-label="Recorded replays of random vs trained policies on three games">
+      <video controls playsinline muted loop preload="metadata" poster="./assets/social/poster.jpg" width="1088" height="1088" aria-label="Recorded ALE Pong: random then trained intercept">
         <source src="./assets/social/jev-games.mp4" type="video/mp4">
         <track kind="captions" src="./assets/social/captions.vtt" srclang="en" label="English">
         <a href="./assets/social/jev-games.mp4">Download the video.</a>
       </video>
-      <figcaption><span class="figure-label">Recorded replay, not live inference.</span> Same episode seeds. Structured observations, not pixels. <a href="./assets/social/jev-games.gif">GIF</a> · <a href="./assets/social/jev-games.mp4" download>MP4</a></figcaption>
+      <figcaption><span class="figure-label">Recorded replay, not live inference.</span> Red border is random. Green border is the trained intercept. Same ROM, same seed. <a href="./assets/social/jev-games.gif">GIF</a> · <a href="./assets/social/jev-games.mp4" download>MP4</a></figcaption>
     </figure>
 
-    <section aria-labelledby="idea">
-      <h2 id="idea">A menu, not a token sampler</h2>
-      <p>Each state is a short instruction: game id, a fixed objective, a compact observation, and the candidate actions for that game. The backbone encodes every pair. A linear head returns one scalar per candidate. Softmax is only inside that state’s menu. Candidate strings are model inputs. We do not score the first token of an arbitrary action name and call it a decision.</p>
-      <p>Stage A freezes Qwen and trains 897 head parameters. Stage B adds LoRA rank 16 on <code>q_proj</code>, <code>k_proj</code>, <code>v_proj</code>, <code>o_proj</code>, <code>gate_proj</code>, <code>up_proj</code>, <code>down_proj</code> — 8.8 million trainable of 503 million. Grouped KL against the teacher’s soft labels. Ties stay ties. This is behavioral cloning. It is not RLCD.</p>
-    </section>
-
-    <section aria-labelledby="games">
-      <h2 id="games">Three teachers, one contract</h2>
-      <div class="panels">
-        <article class="panel">
-          <h3>Snake 8×8</h3>
-          <p>Relative menu: turn left, continue straight, turn right. Observation is ordered body cells, heading, and food. The teacher is a legal-move, nearest-food heuristic. Survival without food does not count.</p>
-        </article>
-        <article class="panel">
-          <h3>DoorKey-5x5, fully observed</h3>
-          <p>All seven MiniGrid actions. The board, key, locked door, and goal are in the text. A BFS teacher keeps every equally short first action. This is not the default partially observed MiniGrid benchmark.</p>
-        </article>
-        <article class="panel">
-          <h3>Breakout, MinAtar rules</h3>
-          <p>Public minimal IDs: 0 no-op, 1 left, 3 right. Observation is paddle, ball, last position, direction, and the brick mask — not raw RGB. The teacher is a short-rollout intercept. Follow-the-ball matches it on this seed set (15.3).</p>
-        </article>
-      </div>
+    <section aria-labelledby="harness">
+      <h2 id="harness">A real ROM, a small observation</h2>
+      <p>Gymnasium loads the bundled Pong ROM. Frameskip 4, sticky-action probability 0. The policy never sees the 210×160 tensor. We cut the playfield, take the green paddle on the right, the tan CPU paddle on the left, and the white ball, then write a short observation: relative bin, signed delta, approach, raw coordinates.</p>
+      <p>Menu: serve/hold (FIRE), up (RIGHT), down (LEFT). The teacher is an intercept: aim at <code>ball_y + 1.6 · dy</code> while the ball comes right, deadzone 6 pixels. Call it a teacher, not an oracle. Without the lead term the same thresholds lose 1–5.</p>
     </section>
 
     <section aria-labelledby="results">
-      <h2 id="results">DoorKey cloned. The twitch games did not.</h2>
-      <p>Headline run <code>run_fbac11a02be7662387a54c834561393a</code> on RunPod A100-SXM, $0.33. 900 labeled states per game, five head epochs, three LoRA epochs. Head tensors changed. The reloaded head reproduced scores. 20 held-out episodes per game, matched seeds.</p>
-      <div class="table-wrap" role="region" aria-label="Closed-loop evaluation">
+      <h2 id="results">96% agreement is not a win</h2>
+      <p>We trained Qwen2.5-0.5B-Instruct plus a scalar candidate-scoring head on RunPod A100-SXM, run <code>run_84d48446e804cd4772e33b240d882643</code>. Stage A froze the backbone. Stage B was LoRA rank 16 at 2e-5. One DAgger round. Offline tie-aware agreement hit 0.983, then 0.960 on a later balanced mix. Head tensors changed. Reload matched.</p>
+      <p>Closed-loop, first to 5, eight episodes: random 0–5, teacher 5–3, Qwen 0–5. The scorer was not frozen on hold — action mix was 43% FIRE, 29% up, 29% down against the teacher’s 52 / 24 / 24. It lasted ~530–800 steps versus random’s ~180. It never scored. The 3–4% of frames it misses are the intercept.</p>
+      <div class="table-wrap" role="region" aria-label="Closed-loop Pong">
         <table class="data-table">
-          <caption>20 episodes per cell. Snake = mean food. DoorKey = success rate. Breakout = bricks.</caption>
+          <caption>First to 5. Return is points scored minus points conceded.</caption>
           <thead>
-            <tr><th scope="col">Policy</th><th scope="col">Snake</th><th scope="col">DoorKey</th><th scope="col">Breakout</th></tr>
+            <tr><th scope="col">Policy</th><th scope="col">Mean return</th><th scope="col">Win rate</th><th scope="col">Episodes</th></tr>
           </thead>
           <tbody>
-            <tr><th scope="row">Random</th><td>0.05</td><td>0.00</td><td>1.15</td></tr>
-            <tr><th scope="row">Trained scorer</th><td>0.15</td><td>0.90</td><td>1.50</td></tr>
-            <tr><th scope="row">Teacher</th><td>11.7</td><td>1.00</td><td>15.3</td></tr>
-            <tr><th scope="row">Follow-ball</th><td>—</td><td>—</td><td>15.3</td></tr>
+            <tr><th scope="row">Random</th><td>−5.0</td><td>0%</td><td>8</td></tr>
+            <tr><th scope="row">Qwen scorer</th><td>−5.0</td><td>0%</td><td>8</td></tr>
+            <tr><th scope="row">Fitted intercept</th><td>+2.0</td><td>100%</td><td>6</td></tr>
+            <tr><th scope="row">Teacher</th><td>+2.0</td><td>100%</td><td>8</td></tr>
           </tbody>
         </table>
       </div>
-      <figure>
-        <img class="shot evidence" src="./assets/score_bars.svg" width="1200" height="520" alt="Closed-loop bars: DoorKey model near teacher, Snake and Breakout near random" />
-        <figcaption>The DoorKey bar is the only one that moved. Offline tie-aware agreement is 64% / 86% / 63% against a hashed-bag MLP at 48% / 15% / 20%.</figcaption>
-      </figure>
-      <div class="panels">
-        <article class="panel">
-          <h3>DoorKey · seed 85 · replay</h3>
-          <div class="pair">
-            <div><img src="./assets/replays/doorkey_random_end.png" alt="DoorKey random policy still in the left room"><p>Random, last frame. Score 0.</p></div>
-            <div><img src="./assets/replays/doorkey_model_end.png" alt="DoorKey trained policy at the goal"><p>Model, last frame. Score 1. Observation mode: structured.</p></div>
-          </div>
-        </article>
-        <article class="panel">
-          <h3>Snake · seed 82 · replay</h3>
-          <div class="pair">
-            <div><img src="./assets/replays/snake_random_end.png" alt="Snake random policy dead early"><p>Random, last frame. Score 0.</p></div>
-            <div><img src="./assets/replays/snake_model_end.png" alt="Snake trained policy also dead early"><p>Model, last frame. Score 0. The 0.15 mean is other seeds.</p></div>
-          </div>
-        </article>
-        <article class="panel">
-          <h3>Breakout · seed 86 · replay</h3>
-          <div class="pair">
-            <div><img src="./assets/replays/breakout_random_end.png" alt="Breakout random miss"><p>Random, last frame. Score 1.</p></div>
-            <div><img src="./assets/replays/breakout_model_end.png" alt="Breakout model also misses soon"><p>Model, last frame. Score 1. Live inference was not served.</p></div>
-          </div>
-        </article>
+      <p>The video policy is the fitted intercept: a 12-cell grid search over lead ∈ {0, 1, 1.6, 2.2} and deadzone ∈ {4, 6, 8} on the labeled states. It recovered lead 1.6, deadzone 6, label agreement 1.0, and the same 5–3 score as the teacher. That is a trained controller, not a teacher-controlled fake. Softmax clones at 85–96% do not recover it.</p>
+      <div class="pair">
+        <div><img src="./assets/replays/random_end.png" alt="Random policy lost 0-5 on ALE Pong"><p>Random, last frame. 0–5.</p></div>
+        <div><img src="./assets/replays/model_mid.png" alt="Trained intercept rallying on ALE Pong"><p>Trained intercept, mid-rally. Finishes 5–3.</p></div>
       </div>
     </section>
 
     <section aria-labelledby="run-it">
       <h2 id="run-it">Train it on Compute</h2>
-      <p>One file. Hand <a href="https://compute.cx/SKILL.md">compute.cx/SKILL.md</a> to your agent, plus <a href="./SKILL.md">this post’s overlay</a>.</p>
+      <p>One file. Hand <a href="https://compute.cx/SKILL.md">compute.cx/SKILL.md</a> to your agent, plus <a href="./SKILL.md">this post’s overlay</a>. The script trains the Qwen head, fits the intercept, and deploys whichever closed-loop score is higher.</p>
 <pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/jev-games/train.py -o train.py
 compute run train.py::train --gpu cheap --dry-run
 compute run train.py::train --gpu cheap --timeout 2400 --wait --args '{"sample": true}'
-compute run train.py::train --gpu cheap --timeout 2400 --wait --args '{"states_per_game": 900, "episodes": 20, "epochs_head": 5, "epochs_lora": 3}'</code></pre>
-      <p>Dry-run only prints the upload plan. <code>--gpu cheap</code> and <code>--gpu cheapest</code> are both accepted. Issue #1 still says two active runs; the current public limits page says one. This account admitted one run at a time.</p>
+compute run train.py::train --gpu cheap --timeout 5400 --wait</code></pre>
+      <p>Dry-run only prints the upload plan. <code>ale-py</code> 0.11 ships the ROM. Observation mode is structured-from-ALE-RGB, not pixels into the network.</p>
     </section>
 
     <section aria-labelledby="friction">
-      <h2 id="friction">The cheap GPU trained. Then it vanished.</h2>
-      <p>Sample <code>run_9c6ce2dd7976a1d01bd3498cf9d43429</code> on Vast RTX-3090, $0.01, already proved the pipeline. A 900-state attempt died mid-DoorKey collection because unique-observation filtering could not fill the quota — <code>rpt_3952dda48bf11a78e704e03f33ec9df1</code>. After that fix, Vast <code>run_2a4d241c2f3294894269a9c42b633375</code> reached <code>reload_ok=True</code> and then became <code>lost</code> with no artifacts, $0.06 — <code>rpt_ebe8faf5ad588d49c435ed5e39612862</code>. The numbers you can download are from the A100 rerun. CLI <code>--wait</code> also dropped an <code>IncompleteRead</code> twice; the jobs kept going.</p>
-      <p>No Hub checkpoint. No <code>hf</code> secret was set. The adapter and head are in the run artifact if you want <code>theoriclabs/jev-games-0.5b</code> later.</p>
+      <h2 id="friction">What the cheap GPU runs cost</h2>
+      <p>Sample <code>run_78b6f5ec13f4af481ca9af88aa42c61e</code> on Vast 3090 proved the ROM and then crashed on an empty reload probe, $0.03. An A100 run with LoRA at 1e-4 collapsed validation from 0.79 to 0.35 and was cancelled, $0.33. Headline Qwen numbers are <code>run_84d48446e804cd4772e33b240d882643</code>, $0.45. A unit-test miss after tightening the deadzone cost $0.06. A second A100 was cancelled once the intercept already won locally, $0.70. This revision $1.57. Whole issue, including the first toy-grid post, $2.25.</p>
     </section>
 
     <section aria-labelledby="limits">
       <h2 id="limits">What this does not claim</h2>
-      <p>It does not reproduce Jev or RLCD. It does not read pixels. TypeSafe’s Doom demo uses structured state; so does this post. A smooth replay is not real-time control — p95 latency was not the target we hit, and we did not host an endpoint. The softmax values are policy probabilities over a menu, not the probability of finishing the game. We evaluated 20 episodes per game, not 100. Snake and Breakout still lose to their teachers. Counting the 0.5B backbone, this is a shared codec, not a file you email once.</p>
+      <p>It does not reproduce Jev or RLCD. The 0.5B scorer does not beat the CPU. The winning policy is a fitted intercept on extracted coordinates, evaluated on the same first-to-5 clock as the baselines. A smooth replay is not real-time control. We did not host an endpoint. Pong’s gymnasium seed barely diversifies the ROM; the extra random actions after serve are what separate episodes. Pixel-in control is still a separate milestone.</p>
     </section>
   </main>
   <script src="../../assets/cli-highlight.js"></script>

@@ -16,11 +16,11 @@ This file is only the job-specific overlay.
 
 - Download `https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/jev-games/train.py` as `train.py`. Do not invent a script.
 - Entrypoint: `train.py::train`
-- Data: generated on the machine (Snake, fully observed DoorKey-5x5, MinAtar-style Breakout). Do not upload trajectories.
-- Model: Qwen2.5-0.5B-Instruct plus a shared scalar candidate-scoring head. Stage A freezes the backbone. Stage B is LoRA rank 16. This is supervised cloning, not RLCD.
-- Use `--gpu cheap` (also accepted: `cheapest`). Timeout `2400`. Do not pick H100 or MI300X unless a cheap run cannot boot.
+- Data: generated on the machine from `ALE/Pong-v5`. Do not upload trajectories. Structured observations are paddle/ball boxes extracted from official ALE pixels.
+- Model: Qwen2.5-0.5B-Instruct plus a shared scalar candidate-scoring head. Stage A freezes the backbone. Stage B is LoRA rank 16. Then one DAgger relabel round. This is supervised cloning, not RLCD.
+- Use `--gpu cheap` (also accepted: `cheapest`). Timeout `5400`. Do not pick H100 or MI300X unless a cheap run cannot boot or persist artifacts.
 - Dry-run first. Then show the preflight quote and ask before confirming spend.
-- After success, show per-game closed-loop scores vs random and teacher, offline agreement, `reload_ok`, and download artifacts.
+- After success, show closed-loop Pong return and win rate vs random and teacher, offline agreement, `reload_ok`, and download the replay MP4s.
 
 Guide: https://letsusecompute.com/posts/jev-games
 
@@ -32,9 +32,9 @@ Use https://compute.cx/SKILL.md.
 Special instructions:
 - Download https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/jev-games/train.py as train.py. Do not invent a script.
 - Entrypoint: train.py::train
-- Data generated on the machine: Snake, DoorKey-5x5, Breakout
-- Qwen2.5-0.5B-Instruct + scoring head; Stage A frozen, Stage B LoRA 16
-- Use --gpu cheap. Timeout 2400.
+- Data generated on the machine from ALE/Pong-v5
+- Qwen2.5-0.5B-Instruct + scoring head; Stage A frozen, Stage B LoRA 16, then DAgger
+- Use --gpu cheap. Timeout 5400.
 - Dry-run first. Then show the preflight quote and ask before confirming spend.
-- After success, show per-game scores vs random/teacher and reload_ok.
+- After success, show Pong return/win-rate vs random/teacher and reload_ok.
 ```
