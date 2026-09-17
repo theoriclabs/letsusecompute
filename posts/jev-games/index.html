@@ -48,7 +48,47 @@
     <p>In Doom, a useful decision is “turn left” or “fire.” In Pong, it might be “move the paddle up.” Neither needs a paragraph of explanation. That makes games a good place to try an idea inspired by <a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">TypeSafe’s Jev</a>: give a model the current situation and a menu of actions, then let code use its choice.</p>
     <p>Our experiment cost <strong>$1.62 in GPU runs</strong>. The small language model struggled in both games. Simple rules, fitted to the same teaching examples, did much better: <strong>9 kills per episode in Doom</strong> and <strong>5–3 in Pong</strong>.</p>
 
-    <p>Watch Doom first, then Pong. Each video shows the fitted controller’s observation and chosen action. The highlighted action is the one actually sent to the game.</p>
+    <p>Watch Doom first, then Pong. Each video starts with the Qwen model and its action probabilities, then switches to the fitted rule for comparison. The highlighted action is the one actually sent to the game.</p>
+
+    <section aria-labelledby="doom">
+      <h2 id="doom">Doom: turn toward the target, then fire</h2>
+      <p>In <a href="https://vizdoom.farama.org/">ViZDoom’s</a> Defend the Center scenario, monsters approach from around an arena. The player stays in the middle and has three actions: turn left, turn right, or attack. The engine can report targets outside the camera view, so the controller knows more than the screenshot shows.</p>
+      <p>The simple controller has one setting: how closely the player must aim before firing. We tried six angles against the teaching examples and recovered the teacher’s <strong>8-degree tolerance</strong>. It averaged 9 kills across eight episodes; random actions averaged 1.13.</p>
+      <p>The Qwen sample agreed with about 66% of the offline labels, but chose “turn right” every time during gameplay. It never fired and scored no kills in its three evaluation episodes.</p>
+      <div class="example">
+        <p><strong>The decision:</strong> target more than 8° left → turn left. More than 8° right → turn right. Within 8° → fire.</p>
+      </div>
+      <p>In the video, watch how the model distributes probability across left, right, and fire. Then compare its choices with the fitted rule’s response to the target bearing.</p>
+
+      <figure>
+        <video controls playsinline muted preload="metadata" poster="./assets/social/doom-poster.jpg" width="1088" height="1088" aria-label="Doom: Qwen gameplay with action probabilities, followed by the fitted controller">
+          <source src="./assets/social/doom.mp4" type="video/mp4">
+          <track kind="captions" src="./assets/social/doom.vtt" srclang="en" label="English">
+          <a href="./assets/social/doom.mp4">Download the Doom video.</a>
+        </video>
+        <figcaption><strong>Doom: model, then fitted rule.</strong> The first segment shows Qwen’s recorded softmax probabilities and the action it takes. The second shows the fitted controller, which has no probability estimate. These are fresh, slowed replays using the saved checkpoint; the percentages are action preferences, not measured odds of winning. <a href="./assets/social/doom.mp4" download>Download MP4</a> · <a href="./assets/social/doom-decisions.json">Decision log</a></figcaption>
+      </figure>
+    </section>
+
+    <section aria-labelledby="pong">
+      <h2 id="pong">Pong: knowing the answer is not enough</h2>
+      <p>We used <a href="https://ale.farama.org/environments/pong/">Atari Pong in the Arcade Learning Environment</a>, playing first to five points. The controller can serve or hold, move up, or move down.</p>
+      <p>Qwen agreed with the teacher on <strong>98.3% of the offline examples</strong> in the recorded successful run. Put it in charge of the paddle, though, and it lost 0–5. The run’s action mix was roughly 43% hold, 29% up, and 29% down: it moved the paddle, but never scored in the evaluation. A high average score on individual questions had hidden a failure at the moments that mattered.</p>
+      <p>For comparison, we fitted a tiny controller with just two settings: how far ahead to aim, and how close is close enough. Searching 12 combinations recovered the teacher’s settings: look ahead by 1.6 times the ball’s vertical movement, and tolerate a six-pixel gap. That controller won 5–3.</p>
+      <div class="example">
+        <p><strong>The decision:</strong> estimate the ball’s target height → compare it with the paddle → move up, move down, or hold.</p>
+      </div>
+      <p>In the video, watch the model’s probabilities for hold, up, and down. The fitted-controller segment then shows how the target height determines each move.</p>
+
+      <figure>
+        <video controls playsinline muted preload="metadata" poster="./assets/social/pong-poster.jpg" width="1088" height="1088" aria-label="Pong: Qwen gameplay with action probabilities, followed by the fitted controller">
+          <source src="./assets/social/pong.mp4" type="video/mp4">
+          <track kind="captions" src="./assets/social/pong.vtt" srclang="en" label="English">
+          <a href="./assets/social/pong.mp4">Download the Pong video.</a>
+        </video>
+        <figcaption><strong>Pong: model, then fitted rule.</strong> The first segment shows Qwen’s recorded softmax probabilities and the action it takes. The second shows the fitted controller, which has no probability estimate. These are fresh, slowed replays using the saved checkpoint; the percentages are action preferences, not measured odds of winning. <a href="./assets/social/pong.mp4" download>Download MP4</a> · <a href="./assets/social/pong-decisions.json">Decision log</a></figcaption>
+      </figure>
+    </section>
 
     <section aria-labelledby="jev">
       <h2 id="jev">What Jev changes about training</h2>
@@ -71,46 +111,6 @@
         <summary>The training details</summary>
         <p>Each input pairs the observation with one candidate action. A shared scalar head scores the candidates, and a softmax converts their scores into a distribution. Training minimizes its difference from the teacher’s labels. The scripts shuffle candidate order and group full-run splits by episode. The tiny Doom sample reused its 80-state pool across splits, so its label agreement is a training sanity check, not a held-out accuracy estimate. Stage A freezes the backbone; Stage B uses rank-16 LoRA. The Pong revision reduced the LoRA learning rate to 0.00002 after an earlier run became worse.</p>
       </details>
-    </section>
-
-    <section aria-labelledby="doom">
-      <h2 id="doom">Doom: turn toward the target, then fire</h2>
-      <p>In <a href="https://vizdoom.farama.org/">ViZDoom’s</a> Defend the Center scenario, monsters approach from around an arena. The player stays in the middle and has three actions: turn left, turn right, or attack. The engine can report targets outside the camera view, so the controller knows more than the screenshot shows.</p>
-      <p>The simple controller has one setting: how closely the player must aim before firing. We tried six angles against the teaching examples and recovered the teacher’s <strong>8-degree tolerance</strong>. It averaged 9 kills across eight episodes; random actions averaged 1.13.</p>
-      <p>The Qwen sample agreed with about 66% of the offline labels, but chose “turn right” every time during gameplay. It never fired and scored no kills in its three evaluation episodes.</p>
-      <div class="example">
-        <p><strong>The decision:</strong> target more than 8° left → turn left. More than 8° right → turn right. Within 8° → fire.</p>
-      </div>
-      <p>The video shows the fitted rule’s response to the target bearing: turn toward the target, then fire.</p>
-
-      <figure>
-        <video controls playsinline muted preload="metadata" poster="./assets/social/doom-poster.jpg" width="1088" height="1088" aria-label="Doom: fitted-controller gameplay with recorded action choices">
-          <source src="./assets/social/doom.mp4" type="video/mp4">
-          <track kind="captions" src="./assets/social/doom.vtt" srclang="en" label="English">
-          <a href="./assets/social/doom.mp4">Download the Doom video.</a>
-        </video>
-        <figcaption><strong>Doom: fitted controller.</strong> The highlighted action is the one sent to the game. These are slowed recordings of the fitted rule, which has no probability estimate. <a href="./assets/social/doom.mp4" download>Download MP4</a> · <a href="./assets/social/doom-decisions.json">Decision log</a></figcaption>
-      </figure>
-    </section>
-
-    <section aria-labelledby="pong">
-      <h2 id="pong">Pong: knowing the answer is not enough</h2>
-      <p>We used <a href="https://ale.farama.org/environments/pong/">Atari Pong in the Arcade Learning Environment</a>, playing first to five points. The controller can serve or hold, move up, or move down.</p>
-      <p>Qwen agreed with the teacher on <strong>98.3% of the offline examples</strong> in the recorded successful run. Put it in charge of the paddle, though, and it lost 0–5. The run’s action mix was roughly 43% hold, 29% up, and 29% down: it moved the paddle, but never scored in the evaluation. A high average score on individual questions had hidden a failure at the moments that mattered.</p>
-      <p>For comparison, we fitted a tiny controller with just two settings: how far ahead to aim, and how close is close enough. Searching 12 combinations recovered the teacher’s settings: look ahead by 1.6 times the ball’s vertical movement, and tolerate a six-pixel gap. That controller won 5–3.</p>
-      <div class="example">
-        <p><strong>The decision:</strong> estimate the ball’s target height → compare it with the paddle → move up, move down, or hold.</p>
-      </div>
-      <p>The video shows how the fitted rule’s target height determines each move.</p>
-
-      <figure>
-        <video controls playsinline muted preload="metadata" poster="./assets/social/pong-poster.jpg" width="1088" height="1088" aria-label="Pong: fitted-controller gameplay with recorded action choices">
-          <source src="./assets/social/pong.mp4" type="video/mp4">
-          <track kind="captions" src="./assets/social/pong.vtt" srclang="en" label="English">
-          <a href="./assets/social/pong.mp4">Download the Pong video.</a>
-        </video>
-        <figcaption><strong>Pong: fitted controller.</strong> The highlighted action is the one sent to the game. These are slowed recordings of the fitted rule, which has no probability estimate. <a href="./assets/social/pong.mp4" download>Download MP4</a> · <a href="./assets/social/pong-decisions.json">Decision log</a></figcaption>
-      </figure>
     </section>
 
     <section aria-labelledby="results">

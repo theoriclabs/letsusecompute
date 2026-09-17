@@ -144,13 +144,13 @@ Guide: https://letsusecompute.com/posts/text-compressor
 
 ---
 
-## 2026-09-17 — Pong + Doom
+## 2026-09-17 — Doom + Pong
 
 Draft (post when the live guide URL is the one you want people to open):
 
 ---
 
-Post #8: can a small model learn to play Pong and Doom?
+Post #8: can a small model learn to play Doom and Pong?
 
 We trained a half-billion-parameter model to choose the next button to press. In Pong, it copied 98.3% of the teacher’s offline answers—and still lost 0–5. In Doom, the sample model kept turning right. It never fired.
 
@@ -158,7 +158,7 @@ Two simple rules fitted to the same teaching examples did better: 5–3 in Pong 
 
 The inspiration was TypeSafe’s Jev: give a model a situation and get a decision your code can use. Jev’s RLCD training aims for calibrated probabilities. Our experiment uses supervised imitation, so it explores the interface without claiming to reproduce Jev.
 
-The combined guide explains the training, the failures, and what the rules learned. The video now shows the observation and chosen action alongside the gameplay, so you can follow each decision. These are recorded fitted-controller excerpts, not Qwen or Jev inference.
+The combined guide explains the training, the failures, and what the rules learned. Two videos show Doom first, then Pong. Each starts with the saved Qwen model’s real action probabilities and gameplay, then switches to the fitted rule. These are recorded replays; the probabilities express action preferences, not calibrated chances of winning.
 
 GPU runs: $1.62, including failed and cancelled attempts. Doom’s full model run was interrupted; its Qwen result comes from the sample.
 

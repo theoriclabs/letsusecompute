@@ -543,7 +543,7 @@ def linear_action(state, net, device) -> int:
         return int(net(x).argmax(dim=-1).item())
 
 
-def model_action(state, backbone, head, tokenizer, device) -> int:
+def model_prediction(state, backbone, head, tokenizer, device) -> dict[str, Any]:
     import torch
 
     row = {
@@ -555,7 +555,8 @@ def model_action(state, backbone, head, tokenizer, device) -> int:
     }
     with torch.no_grad():
         p = score_rows(backbone, head, tokenizer, [row], device)[0]
-        return int(p.argmax())
+        probabilities = p.detach().cpu().tolist()
+        return {"action": int(p.argmax()), "probabilities": probabilities, "menu": list(MENU)}
 
 
 def _game_var(game, name: str) -> float:
@@ -563,6 +564,9 @@ def _game_var(game, name: str) -> float:
 
     return float(game.get_game_variable(getattr(vzd.GameVariable, name)))
 
+
+def model_action(state, backbone, head, tokenizer, device) -> int:
+    return model_prediction(state, backbone, head, tokenizer, device)["action"]
 
 def closed_loop(kind: str, n_ep: int, seed0: int, max_steps: int, chooser) -> dict[str, Any]:
     scores = []
@@ -677,12 +681,15 @@ def record_episode(kind: str, seed: int, max_steps: int, chooser) -> dict[str, A
                 break
             frames.append(screen_rgb(raw))
             state = parse_state(raw)
-            action = chooser(state)
+            prediction = chooser(state)
+            action = int(prediction["action"]) if isinstance(prediction, Mapping) else int(prediction)
             decisions.append({
                 "frame": len(frames) - 1,
                 "state": state,
                 "action": int(action),
                 "choice": MENU[action],
+                **({"probabilities": list(prediction["probabilities"]), "menu": list(prediction["menu"])}
+                   if isinstance(prediction, Mapping) else {}),
             })
             ret += float(game.make_action(ACTS[action], SKIP))
         kills = _game_var(game, "KILLCOUNT")

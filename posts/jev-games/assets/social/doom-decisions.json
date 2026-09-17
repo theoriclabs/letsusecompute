@@ -2,17 +2,28 @@
   "fps": 20,
   "frames_per_decision": 4,
   "provenance": {
-    "policy": "fitted_rule"
+    "run_id": "run_577746f2c18b58372a8c404c2b8f2a1c",
+    "artifact_id": "artifact_9160b4ca29eb1f71514b07432a961087",
+    "version": 1,
+    "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+    "base_revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+    "eval_stage": "lora",
+    "inference_device": "mps",
+    "dtype": "float32",
+    "checkpoint_sha256": {
+      "head.pt": "127a2f473bee375f1dde37899420033e43a3e00539b657623d8754d114e60e86",
+      "adapter/adapter_model.safetensors": "201264ee1329a39ce97e6448ef67cbbf9ef3b3e176dfbdcf755dc3c87acd66c8",
+      "adapter/adapter_config.json": "dc43fc4296f424a4cf3cc81403efd95725b55d3ea7b4e26742459e06e46ff5ad",
+      "summary.json": "041b7aa74492bbecd3d00e8a62d84aaed862e42163fa4f150e6ad6f0b02e2528"
+    }
   },
-  "description": "Recorded fitted-controller actions; no neural probabilities.",
+  "description": "Fresh seed-77 replays. Qwen controls the first segment; the fitted rule controls the second. Qwen probabilities are uncalibrated softmax outputs, not win probabilities.",
   "clips": [
     {
       "game": "doom",
       "seed": 77,
-      "policy": "fitted_rule",
-      "parameters": {
-        "cone": 8.0
-      },
+      "policy": "qwen",
+      "parameters": null,
       "source_sha256": "a62cd6c10939b5fd044ec310d6a996d1e1310fb1edab7061688df24b6fac65a7",
       "starts_at_seconds": 0.0,
       "decisions": [
@@ -34,6 +45,16 @@
           },
           "action": 1,
           "choice": "turn right",
+          "probabilities": [
+            0.16061155498027802,
+            0.8208433985710144,
+            0.018545085564255714
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
           "video_frame": 0,
           "at_seconds": 0.0,
           "duration_seconds": 0.2,
@@ -57,6 +78,16 @@
           },
           "action": 1,
           "choice": "turn right",
+          "probabilities": [
+            0.15959389507770538,
+            0.8229844570159912,
+            0.017421646043658257
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
           "video_frame": 4,
           "at_seconds": 0.2,
           "duration_seconds": 0.2,
@@ -80,6 +111,16 @@
           },
           "action": 1,
           "choice": "turn right",
+          "probabilities": [
+            0.16137517988681793,
+            0.8182453513145447,
+            0.020379463210701942
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
           "video_frame": 8,
           "at_seconds": 0.4,
           "duration_seconds": 0.2,
@@ -103,6 +144,16 @@
           },
           "action": 1,
           "choice": "turn right",
+          "probabilities": [
+            0.16591432690620422,
+            0.8146834969520569,
+            0.01940217800438404
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
           "video_frame": 12,
           "at_seconds": 0.6,
           "duration_seconds": 0.2,
@@ -126,6 +177,16 @@
           },
           "action": 1,
           "choice": "turn right",
+          "probabilities": [
+            0.15714725852012634,
+            0.825118362903595,
+            0.017734352499246597
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
           "video_frame": 16,
           "at_seconds": 0.8,
           "duration_seconds": 0.2,
@@ -149,6 +210,16 @@
           },
           "action": 1,
           "choice": "turn right",
+          "probabilities": [
+            0.15799497067928314,
+            0.8246785402297974,
+            0.01732644997537136
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
           "video_frame": 20,
           "at_seconds": 1.0,
           "duration_seconds": 0.2,
@@ -172,6 +243,16 @@
           },
           "action": 1,
           "choice": "turn right",
+          "probabilities": [
+            0.1566668599843979,
+            0.8259157538414001,
+            0.017417436465620995
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
           "video_frame": 24,
           "at_seconds": 1.2,
           "duration_seconds": 0.2,
@@ -195,6 +276,16 @@
           },
           "action": 1,
           "choice": "turn right",
+          "probabilities": [
+            0.16492991149425507,
+            0.8153343796730042,
+            0.0197356715798378
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
           "video_frame": 28,
           "at_seconds": 1.4,
           "duration_seconds": 0.2,
@@ -218,6 +309,16 @@
           },
           "action": 1,
           "choice": "turn right",
+          "probabilities": [
+            0.162052720785141,
+            0.8186308145523071,
+            0.019316522404551506
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
           "video_frame": 32,
           "at_seconds": 1.6,
           "duration_seconds": 0.2,
@@ -241,6 +342,16 @@
           },
           "action": 1,
           "choice": "turn right",
+          "probabilities": [
+            0.15345896780490875,
+            0.7905345559120178,
+            0.05600646510720253
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
           "video_frame": 36,
           "at_seconds": 1.8,
           "duration_seconds": 0.2,
@@ -264,6 +375,16 @@
           },
           "action": 1,
           "choice": "turn right",
+          "probabilities": [
+            0.15574048459529877,
+            0.7908114194869995,
+            0.053448159247636795
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
           "video_frame": 40,
           "at_seconds": 2.0,
           "duration_seconds": 0.2,
@@ -285,10 +406,2421 @@
             "vis_name": "Demon",
             "alive": true
           },
-          "action": 2,
-          "choice": "attack",
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1612069457769394,
+            0.7729847431182861,
+            0.06580828130245209
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
           "video_frame": 44,
           "at_seconds": 2.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "e3cf86044d206797ec5f42620864ea8fcdc12f42346af338a73a540712207985"
+        },
+        {
+          "frame": 12,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 11.385790062748129,
+            "dist": 489.36163385140276,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -9.140625,
+            "vis_w": 11.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1576647013425827,
+            0.7719699144363403,
+            0.07036535441875458
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 48,
+          "at_seconds": 2.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "1af2d36fd01de9a6e49eccc47df3d4175afd36933f26cc225563ff42f9174c45"
+        },
+        {
+          "frame": 13,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 24.875935169751415,
+            "dist": 469.943802364038,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -21.09375,
+            "vis_w": 12.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15188251435756683,
+            0.7829799652099609,
+            0.06513751298189163
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 52,
+          "at_seconds": 2.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "7283d8b528d7254b0454913889aa95d4d1cc453dbbb56e822bac2bc43eec3288"
+        },
+        {
+          "frame": 14,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 38.316811294271815,
+            "dist": 450.5769055343966,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 21.9375,
+            "vis_w": 10.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16521264612674713,
+            0.816636860370636,
+            0.018150530755519867
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 56,
+          "at_seconds": 2.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "00fd65ac884dbd77000090b2f5b55076edb14f02a8bb7466dea0a9e2da7fbbac"
+        },
+        {
+          "frame": 15,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 51.70193784269378,
+            "dist": 431.26780536861565,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 9.28125,
+            "vis_w": 8.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15737085044384003,
+            0.8260963559150696,
+            0.016532767564058304
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 60,
+          "at_seconds": 3.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "258caf7bf4d9562ac87a22ec7c16b798a2b1754e050d202d5ca980ec5f3bb572"
+        },
+        {
+          "frame": 16,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 65.02368060111576,
+            "dist": 412.0246276861357,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -1.9687499999999998,
+            "vis_w": 8.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1597282439470291,
+            0.8216046094894409,
+            0.018667107447981834
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 64,
+          "at_seconds": 3.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "ee65d5dde780c167da8ab52fc18d0e2789a0d4220fde1d9e62164b6905123bbd"
+        },
+        {
+          "frame": 17,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 78.27299278229793,
+            "dist": 392.8570597790783,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -13.640624999999998,
+            "vis_w": 9.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1651681810617447,
+            0.8130815625190735,
+            0.02175023779273033
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 68,
+          "at_seconds": 3.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "c6a4e70e8155147f5491f27e9deb9b0066e6eb640039578cd85cbbc8a210ae6f"
+        },
+        {
+          "frame": 18,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 91.43908645673486,
+            "dist": 373.7767338165297,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 22.5,
+            "vis_w": 16.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1518070548772812,
+            0.7891928553581238,
+            0.059000033885240555
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 72,
+          "at_seconds": 3.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "1f3a9de2ffec7e86e5cdb505e96d8e7199c39b240cbb5d81dc63ec7f64f3f8b4"
+        },
+        {
+          "frame": 19,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 104.50901300856765,
+            "dist": 354.7977251798135,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 11.531249999999998,
+            "vis_w": 18.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1495678573846817,
+            0.7956190705299377,
+            0.05481310561299324
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 76,
+          "at_seconds": 3.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "58057c8ac2500481e0bc408ad146cc58ab199283132070c4b6579d5a79d26bc4"
+        },
+        {
+          "frame": 20,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 117.4671242381288,
+            "dist": 335.93720628848934,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 1.6875,
+            "vis_w": 20.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15144850313663483,
+            0.7903281450271606,
+            0.058223333209753036
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 80,
+          "at_seconds": 4.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "ab12e7491df468bdc7471baa7abb747c1c18a3334d81d95b550d6403b8f2d754"
+        },
+        {
+          "frame": 21,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 130.29437655812512,
+            "dist": 317.2163127441377,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -7.453125,
+            "vis_w": 19.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15404638648033142,
+            0.7824217677116394,
+            0.0635318011045456
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 84,
+          "at_seconds": 4.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "fbfd39555329e1221b324185e4efe8ae36268fd3f5890515ac80088d7d9f72ff"
+        },
+        {
+          "frame": 22,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 142.96742911682185,
+            "dist": 298.66130197765017,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -17.4375,
+            "vis_w": 18.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15135394036769867,
+            0.7849615812301636,
+            0.06368453800678253
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 88,
+          "at_seconds": 4.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "606b1442f0bcbd2e3700fd80e9d2215a690330623393a0a91c84a55df8ea88e7"
+        },
+        {
+          "frame": 23,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 155.45747290420042,
+            "dist": 280.30511813541807,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -33.609375,
+            "vis_w": 17.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15181969106197357,
+            0.7850948572158813,
+            0.06308542937040329
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 92,
+          "at_seconds": 4.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "9808575d0d60e967f76dbb06981b962e91e5eaa389d2c8a7bde8eb39bea6bc25"
+        },
+        {
+          "frame": 24,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 167.72871381500244,
+            "dist": 262.1895248341612,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 26.296875,
+            "vis_w": 9.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16342923045158386,
+            0.8172953724861145,
+            0.01927534118294716
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 96,
+          "at_seconds": 4.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "04458ae2fd356ae859f17d7d83b874cec65e65b5bd63cdc1b53dc0c05bd93f98"
+        },
+        {
+          "frame": 25,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 179.73642407561476,
+            "dist": 244.36803460874904,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 12.937499999999998,
+            "vis_w": 8.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16095279157161713,
+            0.8207917809486389,
+            0.018255366012454033
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 100,
+          "at_seconds": 5.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "926ab62e27743517c15355e73cef510ab8fa9957e3cb773f3761bba72bd205d9"
+        },
+        {
+          "frame": 26,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -168.57551152873043,
+            "dist": 226.90995454199296,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 1.5468750000000002,
+            "vis_w": 9.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15862493216991425,
+            0.8227018713951111,
+            0.01867321878671646
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 104,
+          "at_seconds": 5.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "b16e421d483473489092b99c68477fff44430dd752f757466810a5b66ed9b70d"
+        },
+        {
+          "frame": 27,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -157.27755996579447,
+            "dist": 209.90597973350555,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -9.421875,
+            "vis_w": 9.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1610998511314392,
+            0.8205550312995911,
+            0.018345100805163383
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 108,
+          "at_seconds": 5.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "e8c4733c561a2635a94511bd57fe134fb00215402e46ec6d4a527c5b180e53cb"
+        },
+        {
+          "frame": 28,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -146.45781594093995,
+            "dist": 193.4758768204537,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -21.9375,
+            "vis_w": 10.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1698857694864273,
+            0.8089651465415955,
+            0.021149078384041786
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 112,
+          "at_seconds": 5.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "e63a85b0fdd605bec9be04fe8301264179fb98735af3999da9672f75a5fde3ac"
+        },
+        {
+          "frame": 29,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -136.22489089327456,
+            "dist": 177.77882669466263,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -37.96875,
+            "vis_w": 12.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1710362732410431,
+            0.8079600930213928,
+            0.021003570407629013
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 116,
+          "at_seconds": 5.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "2b3e0d5fd994bcc4ec804596c2984f2b597851a3fd16d1c7a92c519bcee72df9"
+        },
+        {
+          "frame": 30,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -126.70861689253604,
+            "dist": 163.0267133213002,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 27.0,
+            "vis_w": 8.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15912853181362152,
+            0.8217240571975708,
+            0.019147422164678574
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 120,
+          "at_seconds": 6.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "1ee1f2f8053bf256efd42913cac8b68e59bb852e995d027f8e5794c987f06f62"
+        },
+        {
+          "frame": 31,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -118.05466382723239,
+            "dist": 149.49952848650366,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 14.203125,
+            "vis_w": 9.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15945784747600555,
+            0.8214151859283447,
+            0.01912694051861763
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 124,
+          "at_seconds": 6.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "a36d135d13562265c3dc6927daf35fedb4251adca822984cf28900ad9117a9ba"
+        },
+        {
+          "frame": 32,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -98.54049114614696,
+            "dist": 134.74263156104638,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 2.953125,
+            "vis_w": 7.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15522392094135284,
+            0.828950047492981,
+            0.0158260315656662
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 128,
+          "at_seconds": 6.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "b0593acc9ff60d0199ad3939fc55c3ddca202fcb47404fca500e0245bdbbbe94"
+        },
+        {
+          "frame": 33,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -77.76447952108168,
+            "dist": 121.49504610572343,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -7.453125,
+            "vis_w": 9.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1578056812286377,
+            0.8251060247421265,
+            0.017088277265429497
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 132,
+          "at_seconds": 6.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "1752cfe1026be262b2c8b660ceae34bc3f45575778d71baf96283e4515361374"
+        },
+        {
+          "frame": 34,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -55.49157119322149,
+            "dist": 110.30193752783687,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -19.125,
+            "vis_w": 8.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16269664466381073,
+            0.818889856338501,
+            0.018413489684462547
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 136,
+          "at_seconds": 6.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "e912e1fb968a359ea4028fce386fae710718eab45d9eba3f4f3a48b5f2f5f2a3"
+        },
+        {
+          "frame": 35,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -31.619986052800982,
+            "dist": 101.84296903804793,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 28.546875,
+            "vis_w": 99.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15681631863117218,
+            0.7852895259857178,
+            0.05789418891072273
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 140,
+          "at_seconds": 7.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "64e1635eea4c41c11b5142962aba06ce32ac909294b643ea53b5d0bc965e78b1"
+        },
+        {
+          "frame": 36,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -6.368017160179875,
+            "dist": 96.83731196445791,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 4.78125,
+            "vis_w": 96.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15733706951141357,
+            0.7777156829833984,
+            0.06494718790054321
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 144,
+          "at_seconds": 7.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "f11e32cecfd747bd6b773ef3a94b698a2e968835a35d5354afbd55b4726dfb0d"
+        },
+        {
+          "frame": 37,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 13.275262316690373,
+            "dist": 85.82775475699118,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -10.40625,
+            "vis_w": 102.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16261208057403564,
+            0.7822187542915344,
+            0.05516912415623665
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 148,
+          "at_seconds": 7.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "93fb0b37cfe6ab0edb187d6ed8772057fc460100377da550b2de8fb1e4baf140"
+        },
+        {
+          "frame": 38,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 26.351996934309568,
+            "dist": 65.86961239341117,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -21.515625,
+            "vis_w": 99.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15981346368789673,
+            0.7684932351112366,
+            0.07169327884912491
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 152,
+          "at_seconds": 7.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "5b3287abfbd4166f034dd38b32447d00f1ac8b86a946fc93240ccf56013eee9b"
+        },
+        {
+          "frame": 39,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 24.40991862226889,
+            "dist": 54.9396501902779,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -17.015625,
+            "vis_w": 133.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15782609581947327,
+            0.780322253704071,
+            0.06185159832239151
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 156,
+          "at_seconds": 7.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "fc6aa8106fd9c100d872646d0a95a08d9490e5d7308aee088f4ab38bb97d59b7"
+        },
+        {
+          "frame": 40,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 28.328194544781923,
+            "dist": 51.557199556570566,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 11.953125,
+            "vis_w": 13.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1680149883031845,
+            0.8148483633995056,
+            0.017136625945568085
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 160,
+          "at_seconds": 8.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "e51bee03b4d47208a93024fb741c7e8f1bc1e92fea40ee1c2cfd43ff85e52e8d"
+        },
+        {
+          "frame": 41,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 42.3906945480561,
+            "dist": 51.557199556570566,
+            "name": "Demon",
+            "vis_n": 3,
+            "vis_off": 0.28125,
+            "vis_w": 14.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16157129406929016,
+            0.8211991190910339,
+            0.017229575663805008
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 164,
+          "at_seconds": 8.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "799f79538d8df42aef9a22d0a22d564d487b964361d9397515b6c41daab3ec81"
+        },
+        {
+          "frame": 42,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 56.453194551330284,
+            "dist": 51.557199556570566,
+            "name": "Demon",
+            "vis_n": 3,
+            "vis_off": -11.25,
+            "vis_w": 14.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.17312607169151306,
+            0.8058622479438782,
+            0.02101167105138302
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 168,
+          "at_seconds": 8.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "c7507cd551252286570fdb9e6900d9588ecb38d9b35aa2e2968476f45fcb39b4"
+        },
+        {
+          "frame": 43,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 70.51569455460447,
+            "dist": 51.557199556570566,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -24.046875000000004,
+            "vis_w": 15.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.172072634100914,
+            0.8077524900436401,
+            0.020174888893961906
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 172,
+          "at_seconds": 8.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "04768efcc04dc6e96341a7118bb24ab0b7b672d1010fa7d701d46eb3b82e6d60"
+        },
+        {
+          "frame": 44,
+          "state": {
+            "health": 60.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 84.57819455787865,
+            "dist": 51.557199556570566,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 21.234375,
+            "vis_w": 137.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16200228035449982,
+            0.7914376854896545,
+            0.046560000628232956
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 176,
+          "at_seconds": 8.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "a0db9543e43ee6d37cce6997bec29767a546d638819b6dac6af7fda817d5a598"
+        },
+        {
+          "frame": 45,
+          "state": {
+            "health": 60.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -3.8868717193572593,
+            "dist": 58.22367221950157,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 1.6875,
+            "vis_w": 96.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1502300351858139,
+            0.7931568622589111,
+            0.05661305412650108
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 180,
+          "at_seconds": 9.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "eaf202a66ba0b91462114de1d30e0ce371216238f47483617118522c75f03ee7"
+        },
+        {
+          "frame": 46,
+          "state": {
+            "health": 60.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 21.773337474368475,
+            "dist": 56.8501962664279,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -19.40625,
+            "vis_w": 104.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1611224263906479,
+            0.7896595001220703,
+            0.04921810328960419
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 184,
+          "at_seconds": 9.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "b1203d2d28d26693e3dc2c483c8dd125f77f61adf18882ce094a91acb1f9f2a5"
+        },
+        {
+          "frame": 47,
+          "state": {
+            "health": 60.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 43.75945806596849,
+            "dist": 57.2724663874825,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -33.75,
+            "vis_w": 80.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16017493605613708,
+            0.7812150716781616,
+            0.058609940111637115
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 188,
+          "at_seconds": 9.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "945f238a2195739b0c1aefd92f1456f72dbc7c035c5ce91e48ad8df4240de2aa"
+        },
+        {
+          "frame": 48,
+          "state": {
+            "health": 60.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 63.03622738630784,
+            "dist": 58.16414138969411,
+            "name": "Demon",
+            "vis_n": 0,
+            "vis_off": 0.0,
+            "vis_w": 0.0,
+            "vis_name": "none",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.14119857549667358,
+            0.8037682771682739,
+            0.05503313988447189
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 192,
+          "at_seconds": 9.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "7a3426614b30928949a06fe0a22297318f83be0fb00e26aa097e7541a5209f61"
+        },
+        {
+          "frame": 49,
+          "state": {
+            "health": 60.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 80.50824808170665,
+            "dist": 59.02999980667246,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 37.828125,
+            "vis_w": 19.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16563928127288818,
+            0.8187490701675415,
+            0.015611687675118446
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 196,
+          "at_seconds": 9.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "49fc1e37fd0d3a41b4be821162e9977e806197af4a1200463027d2d528882bd5"
+        },
+        {
+          "frame": 50,
+          "state": {
+            "health": 60.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 96.80941319066676,
+            "dist": 59.72911654800671,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 21.9375,
+            "vis_w": 16.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16261868178844452,
+            0.8229886293411255,
+            0.014392631128430367
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 200,
+          "at_seconds": 10.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "787c58fa568c44551da885e9c82551cdbfaff4dc99e3570ade24e1576bb727cd"
+        },
+        {
+          "frame": 51,
+          "state": {
+            "health": 60.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 103.72281784330812,
+            "dist": 55.291861397045615,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 9.703125,
+            "vis_w": 15.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16634157299995422,
+            0.8196687698364258,
+            0.013989653438329697
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 204,
+          "at_seconds": 10.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "ee8349bb0310dcd9e1249c1d2cae1f7015cebdaf99089b396be05a8029d0ae65"
+        },
+        {
+          "frame": 52,
+          "state": {
+            "health": 60.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 108.95596117702263,
+            "dist": 51.83414747633053,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -1.5468750000000002,
+            "vis_w": 15.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1678595095872879,
+            0.8173879981040955,
+            0.014752443879842758
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 208,
+          "at_seconds": 10.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "2f8ffe538a526c4120ecc0b13fbf8a2f8a547ec1afe0d4a555745413406e5cce"
+        },
+        {
+          "frame": 53,
+          "state": {
+            "health": 60.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 123.8392004415739,
+            "dist": 51.86442018877261,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -13.078125000000002,
+            "vis_w": 17.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.17166197299957275,
+            0.8110842704772949,
+            0.017253827303647995
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 212,
+          "at_seconds": 10.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "48124fdb4fe9ac8a54161425027b574671f293133822b5e8abc053c3d2a06a3e"
+        },
+        {
+          "frame": 54,
+          "state": {
+            "health": 60.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 138.4545276347019,
+            "dist": 51.89093909765582,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -26.015625,
+            "vis_w": 19.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.17161624133586884,
+            0.8106274008750916,
+            0.017756395041942596
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 216,
+          "at_seconds": 10.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "80a33c832d52ee2b8cb574c21dc471a784ae4e3e4651676ebeaef0e339915025"
+        },
+        {
+          "frame": 55,
+          "state": {
+            "health": 60.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 152.88944470258826,
+            "dist": 51.91165993968954,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -42.46875,
+            "vis_w": 18.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16950741410255432,
+            0.812766969203949,
+            0.01772555336356163
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 220,
+          "at_seconds": 11.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "435a6409c9a3fd052d3b02c0cc0c1ecf4e21ffe40a247a3e0b0f178dac9730a3"
+        },
+        {
+          "frame": 56,
+          "state": {
+            "health": 44.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 167.08974619509343,
+            "dist": 51.91993299245679,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 27.984374999999996,
+            "vis_w": 17.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16461539268493652,
+            0.8201354742050171,
+            0.015249165706336498
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 224,
+          "at_seconds": 11.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "22bbe2172203617bd58ab66213dd67f4291d595ceaa7441629bb3c6b8fc4bb9d"
+        },
+        {
+          "frame": 57,
+          "state": {
+            "health": 44.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -178.8536217426419,
+            "dist": 58.86197098279428,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 14.484375000000002,
+            "vis_w": 15.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1639288365840912,
+            0.821408748626709,
+            0.014662427827715874
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 228,
+          "at_seconds": 11.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "258d7383411a9bd5630db25a76d719959b6b3a90524410ed2bd9fdf5be6493c1"
+        },
+        {
+          "frame": 58,
+          "state": {
+            "health": 44.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -169.48714646182296,
+            "dist": 54.78907799531226,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 3.2343749999999996,
+            "vis_w": 15.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15899914503097534,
+            0.8280528783798218,
+            0.012947941198945045
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 232,
+          "at_seconds": 11.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "2de2068384dc4bab4333d187a83a7a2e91317ecd71607d1e770b79bd8297cd58"
+        },
+        {
+          "frame": 59,
+          "state": {
+            "health": 44.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -161.13896677831028,
+            "dist": 49.641464631415,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -7.453125,
+            "vis_w": 15.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.161371111869812,
+            0.8250033855438232,
+            0.01362550351768732
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 236,
+          "at_seconds": 11.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "e96a21ee73e0e69a40598663fd160349fffa27027f07dbb083380bb6854e952b"
+        },
+        {
+          "frame": 60,
+          "state": {
+            "health": 44.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -146.6522540354689,
+            "dist": 51.738768064341535,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -19.40625,
+            "vis_w": 18.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16568507254123688,
+            0.8188133239746094,
+            0.015501643531024456
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 240,
+          "at_seconds": 12.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "6ee4ce17901a540ef3979472e56599318371f787eb69d408f391810dca5f401b"
+        },
+        {
+          "frame": 61,
+          "state": {
+            "health": 44.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -36.935198694201745,
+            "dist": 48.657851381632646,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 29.953125,
+            "vis_w": 105.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16065415740013123,
+            0.7994226217269897,
+            0.039923205971717834
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 244,
+          "at_seconds": 12.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "bbc99736830b9a4810ebb3b6b3478e237f04db3dbddffcff9982cd257758d6c3"
+        },
+        {
+          "frame": 62,
+          "state": {
+            "health": 44.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -24.009202568606838,
+            "dist": 48.73958163569062,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 18.421875,
+            "vis_w": 125.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15806300938129425,
+            0.7993623614311218,
+            0.042574599385261536
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 248,
+          "at_seconds": 12.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "60f1b8a2adf1721cf3eff272cb6b2e8fd83cc8da730068488f9226c77a35b961"
+        },
+        {
+          "frame": 63,
+          "state": {
+            "health": 16.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -10.711027053377734,
+            "dist": 48.80535292290346,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 7.03125,
+            "vis_w": 116.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16244345903396606,
+            0.7898743748664856,
+            0.04768221080303192
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 252,
+          "at_seconds": 12.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "10f8b7e8c0e8ed3a085af7057b3a475e105baa5a013c111f5349c8748f68058e"
+        },
+        {
+          "frame": 64,
+          "state": {
+            "health": 16.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -11.273014069380366,
+            "dist": 49.783104323549196,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 9.140625,
+            "vis_w": 121.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16049426794052124,
+            0.7896298766136169,
+            0.04987578094005585
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 256,
+          "at_seconds": 12.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "54068947aa26bdf583bc04707a9598e1055f2488293760744d0ea8039cfb8672"
+        },
+        {
+          "frame": 65,
+          "state": {
+            "health": 16.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -6.377125062464614,
+            "dist": 52.17541194256443,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 5.203125,
+            "vis_w": 113.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16055139899253845,
+            0.7884654998779297,
+            0.05098312348127365
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 260,
+          "at_seconds": 13.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "0760b626ada4286b433e6954343eb6540dedd5d8b1853825206651e9b7a99ccf"
+        },
+        {
+          "frame": 66,
+          "state": {
+            "health": 8.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 2.1354495343281314,
+            "dist": 56.38518305158235,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -0.28125,
+            "vis_w": 96.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1499909907579422,
+            0.790674090385437,
+            0.05933494120836258
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 264,
+          "at_seconds": 13.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "e32d59a3576318fc359ef5a52b854d17a0c9925274ca8e9dc018ac7dc28dd3bd"
+        },
+        {
+          "frame": 67,
+          "state": {
+            "health": 8.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 13.064053637707758,
+            "dist": 61.044785525747216,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -9.140625,
+            "vis_w": 91.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.15260733664035797,
+            0.7974337339401245,
+            0.0499589703977108
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 268,
+          "at_seconds": 13.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "669fecfac204f03541458aee9da3b215d7a092cc502674f5dfe0fa8a6763c0ca"
+        },
+        {
+          "frame": 68,
+          "state": {
+            "health": 8.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 31.38026032446723,
+            "dist": 51.534697560195724,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -25.59375,
+            "vis_w": 122.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16131339967250824,
+            0.793810248374939,
+            0.0448763333261013
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 272,
+          "at_seconds": 13.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "3c8322952088b1121c02998892ea7edced49f22813c19f028374b20660392f4d"
+        },
+        {
+          "frame": 69,
+          "state": {
+            "health": 8.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 43.77629357196176,
+            "dist": 53.6056027010995,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -34.875,
+            "vis_w": 72.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.157643660902977,
+            0.7922582626342773,
+            0.05009806901216507
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 276,
+          "at_seconds": 13.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "ff87608a2d411c6c37e4aeda6e6fa9324a9003aab48f66888eb54e420594acda"
+        },
+        {
+          "frame": 70,
+          "state": {
+            "health": 8.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 56.78604463680756,
+            "dist": 55.02642668789677,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 25.874999999999996,
+            "vis_w": 134.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1640251874923706,
+            0.7941891551017761,
+            0.04178564250469208
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 280,
+          "at_seconds": 14.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "8332ce860dc3054260e2a11b1c3f396456d29e77b2034c4861efaafc30089af0"
+        },
+        {
+          "frame": 71,
+          "state": {
+            "health": 8.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -13.414141027026403,
+            "dist": 48.93908750419024,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 8.15625,
+            "vis_w": 130.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16086547076702118,
+            0.7978543043136597,
+            0.04128027707338333
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 284,
+          "at_seconds": 14.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "ea49a4a0a075ef0dd9caa5bb0243855117cf557e6c317a5587eaef70776fc7c5"
+        },
+        {
+          "frame": 72,
+          "state": {
+            "health": 8.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 1.346338076873792,
+            "dist": 49.45385638650444,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -2.53125,
+            "vis_w": 112.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1519877016544342,
+            0.7970557808876038,
+            0.05095652863383293
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 288,
+          "at_seconds": 14.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "36bb1f01f4edbdd18539a9faf894f1ced774d07c9c3229a4dc5d994611054fb9"
+        },
+        {
+          "frame": 73,
+          "state": {
+            "health": 8.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 15.871365022539862,
+            "dist": 49.80528038262217,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -14.343749999999998,
+            "vis_w": 116.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16133666038513184,
+            0.7970731854438782,
+            0.0415901355445385
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 292,
+          "at_seconds": 14.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "8edce74570eae05bee87ba6943f44b41d4d3a5c6991f898070e6a31b31cc4c64"
+        },
+        {
+          "frame": 74,
+          "state": {
+            "health": 8.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 30.242102510242205,
+            "dist": 50.044283401641735,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -25.874999999999996,
+            "vis_w": 136.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.1622849553823471,
+            0.7919191122055054,
+            0.04579596966505051
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 296,
+          "at_seconds": 14.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "9a0274cd49fff90cab5b0457153a41291cae2a419771be5e7a549f1e3f4644f5"
+        },
+        {
+          "frame": 75,
+          "state": {
+            "health": 8.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": 44.304602513516386,
+            "dist": 50.044283401641735,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 28.828125,
+            "vis_w": 35.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "probabilities": [
+            0.16009052097797394,
+            0.829199492931366,
+            0.010710001923143864
+          ],
+          "menu": [
+            "turn left",
+            "turn right",
+            "attack"
+          ],
+          "video_frame": 300,
+          "at_seconds": 15.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "29d7b4017cef55d296af3f79cf5e9790e5cc3bedbe7af89f059371b6c69d8012"
+        }
+      ],
+      "ends_at_seconds": 15.2
+    },
+    {
+      "game": "doom",
+      "seed": 77,
+      "policy": "fitted_rule",
+      "parameters": {
+        "cone": 8.0
+      },
+      "source_sha256": "a62cd6c10939b5fd044ec310d6a996d1e1310fb1edab7061688df24b6fac65a7",
+      "starts_at_seconds": 15.2,
+      "decisions": [
+        {
+          "frame": 0,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -144.11780723836677,
+            "dist": 724.8493077682787,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -0.421875,
+            "vis_w": 5.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 304,
+          "at_seconds": 15.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "94327f9c767eba2508ff99ba4fa7fd5a054a7867516da80e8c9997daf7aa9653"
+        },
+        {
+          "frame": 1,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -137.34408945482494,
+            "dist": 705.1091170561366,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -5.625,
+            "vis_w": 8.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 308,
+          "at_seconds": 15.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "1a4a88543f06645c9db940192f55e5d04c56fe5ba7c2f5236decf07d984bca32"
+        },
+        {
+          "frame": 2,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -125.31176323537693,
+            "dist": 685.3839921278751,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -15.749999999999998,
+            "vis_w": 6.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 312,
+          "at_seconds": 15.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "6ef5c803434855f82656af4468e4e191073b06fbd7854655f682c21a8e3f2a5f"
+        },
+        {
+          "frame": 3,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -111.53775902021789,
+            "dist": 665.6752722615801,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -29.953125,
+            "vis_w": 7.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 316,
+          "at_seconds": 15.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "895fadd4f2d57a9140509e24937be0ba031219501f007b4cf5d7c3ed2f1ba3f4"
+        },
+        {
+          "frame": 4,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -97.7813507460026,
+            "dist": 645.9844589940546,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 21.65625,
+            "vis_w": 6.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 320,
+          "at_seconds": 16.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "3ef1c1b41af54187e8f2cca252a30f375413a75b3e79579c6dfebdeecb1fbf13"
+        },
+        {
+          "frame": 5,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -84.04417967930124,
+            "dist": 626.3132412372271,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 9.5625,
+            "vis_w": 6.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 324,
+          "at_seconds": 16.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "d46d27658b9a50ae799575628b22cde84b90629ec4599add3a14cab554d50bf0"
+        },
+        {
+          "frame": 6,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -70.32809507682634,
+            "dist": 606.6635251622168,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -1.40625,
+            "vis_w": 6.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 328,
+          "at_seconds": 16.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "69fdc083966227fd2d780fe8af55a882418d244d6b6cfdab9d6b83fb65e480c0"
+        },
+        {
+          "frame": 7,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -56.63518772547252,
+            "dist": 587.037469929596,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -12.515625,
+            "vis_w": 7.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 332,
+          "at_seconds": 16.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "0f2cfbc84cfb49941def9a79911975f988fc0dd3333194980e89784a792f0725"
+        },
+        {
+          "frame": 8,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -42.967830079559064,
+            "dist": 567.4375306290217,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -25.03125,
+            "vis_w": 6.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 336,
+          "at_seconds": 16.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "2665d1603033a18fd9f7bb185502db0fdf5f71174e7e2d00087557b9499af213"
+        },
+        {
+          "frame": 9,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -29.328724530528234,
+            "dist": 547.8665101622014,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 25.03125,
+            "vis_w": 10.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 340,
+          "at_seconds": 17.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "309dd3359ea540701280abcbcf391ca77c106dfa110e244c98aa50a2949b486b"
+        },
+        {
+          "frame": 10,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -15.720961756907002,
+            "dist": 528.3276222896018,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 12.515625,
+            "vis_w": 11.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 344,
+          "at_seconds": 17.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "9e1952e81092bb515adcf175bd8d4b76a5e5eccda7d6e473f4cbc1f2e7678694"
+        },
+        {
+          "frame": 11,
+          "state": {
+            "health": 100.0,
+            "ammo": 26.0,
+            "kills": 0.0,
+            "n": 5,
+            "bearing": -2.1480916401651484,
+            "dist": 508.82456870417116,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 1.6875,
+            "vis_w": 10.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 348,
+          "at_seconds": 17.4,
           "duration_seconds": 0.2,
           "rgb_sha256": "e3cf86044d206797ec5f42620864ea8fcdc12f42346af338a73a540712207985"
         },
@@ -310,8 +2842,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 48,
-          "at_seconds": 2.4,
+          "video_frame": 352,
+          "at_seconds": 17.6,
           "duration_seconds": 0.2,
           "rgb_sha256": "f1917f2b529fa3cd97a5117fdaf9e25586ea0908ce256937724eb58b86408823"
         },
@@ -333,8 +2865,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 52,
-          "at_seconds": 2.6,
+          "video_frame": 356,
+          "at_seconds": 17.8,
           "duration_seconds": 0.2,
           "rgb_sha256": "bc469e64e59fabade52b81160ec9522eb2130582227d9fd13b0df9ab94a43c6f"
         },
@@ -356,8 +2888,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 56,
-          "at_seconds": 2.8,
+          "video_frame": 360,
+          "at_seconds": 18.0,
           "duration_seconds": 0.2,
           "rgb_sha256": "ff36e93441f0d5a6a6dd934372c04d1d02f8d5d85de91103bc4ea1ea22ba4a76"
         },
@@ -379,8 +2911,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 60,
-          "at_seconds": 3.0,
+          "video_frame": 364,
+          "at_seconds": 18.2,
           "duration_seconds": 0.2,
           "rgb_sha256": "4fb387df254c92640b7552cdef883fa0798c197a1972d0ed71224889533b8588"
         },
@@ -402,8 +2934,8 @@
           },
           "action": 1,
           "choice": "turn right",
-          "video_frame": 64,
-          "at_seconds": 3.2,
+          "video_frame": 368,
+          "at_seconds": 18.4,
           "duration_seconds": 0.2,
           "rgb_sha256": "f41bcbc2a3d7f4387874ca3b82bd943f6facc4657397c83d83123f0324667f69"
         },
@@ -425,8 +2957,8 @@
           },
           "action": 1,
           "choice": "turn right",
-          "video_frame": 68,
-          "at_seconds": 3.4,
+          "video_frame": 372,
+          "at_seconds": 18.6,
           "duration_seconds": 0.2,
           "rgb_sha256": "d853895607ebe51cb1c56b621f66091b0674bf24a2c1936f30991265f851771c"
         },
@@ -448,8 +2980,8 @@
           },
           "action": 1,
           "choice": "turn right",
-          "video_frame": 72,
-          "at_seconds": 3.6,
+          "video_frame": 376,
+          "at_seconds": 18.8,
           "duration_seconds": 0.2,
           "rgb_sha256": "ecf518c3858626d1a3ab139eabb0d98a5df68c70ce11d4762f0d03b6c8fc00ac"
         },
@@ -471,8 +3003,8 @@
           },
           "action": 1,
           "choice": "turn right",
-          "video_frame": 76,
-          "at_seconds": 3.8,
+          "video_frame": 380,
+          "at_seconds": 19.0,
           "duration_seconds": 0.2,
           "rgb_sha256": "35713c51fee5e36fc34d2b9c9b31baa650cfdc5e5686e30fa7f96d5629928bd6"
         },
@@ -494,8 +3026,8 @@
           },
           "action": 1,
           "choice": "turn right",
-          "video_frame": 80,
-          "at_seconds": 4.0,
+          "video_frame": 384,
+          "at_seconds": 19.2,
           "duration_seconds": 0.2,
           "rgb_sha256": "0b162e5099810979b89222ea5b5c4ea8f32a9130927bc88086c2ab5e2e0f1e6b"
         },
@@ -517,8 +3049,8 @@
           },
           "action": 1,
           "choice": "turn right",
-          "video_frame": 84,
-          "at_seconds": 4.2,
+          "video_frame": 388,
+          "at_seconds": 19.4,
           "duration_seconds": 0.2,
           "rgb_sha256": "0ec2f4ab80cda4e208c86959dc0f204595fddb1bbf8e3e7c1329aed0500b9aa6"
         },
@@ -540,8 +3072,8 @@
           },
           "action": 1,
           "choice": "turn right",
-          "video_frame": 88,
-          "at_seconds": 4.4,
+          "video_frame": 392,
+          "at_seconds": 19.6,
           "duration_seconds": 0.2,
           "rgb_sha256": "a051c38949ad106ea076946501e16126bdf431367f2f5fcc6249de0f45dc5f4e"
         },
@@ -563,8 +3095,8 @@
           },
           "action": 1,
           "choice": "turn right",
-          "video_frame": 92,
-          "at_seconds": 4.6,
+          "video_frame": 396,
+          "at_seconds": 19.8,
           "duration_seconds": 0.2,
           "rgb_sha256": "af3b623eec77e3cff32d612d92d5c6d98ee212b9547f7c70c0ecb95686e21cc0"
         },
@@ -586,8 +3118,8 @@
           },
           "action": 1,
           "choice": "turn right",
-          "video_frame": 96,
-          "at_seconds": 4.8,
+          "video_frame": 400,
+          "at_seconds": 20.0,
           "duration_seconds": 0.2,
           "rgb_sha256": "9252e01b8ac61d3e2435cad150649a3c29183fe8916b262152bde68f9e0acea0"
         },
@@ -609,8 +3141,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 100,
-          "at_seconds": 5.0,
+          "video_frame": 404,
+          "at_seconds": 20.2,
           "duration_seconds": 0.2,
           "rgb_sha256": "b0b5212f4618a1f4cfbd5d111ee964e5a908b71f9d65e1a8caf6742f5d84d9a9"
         },
@@ -632,8 +3164,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 104,
-          "at_seconds": 5.2,
+          "video_frame": 408,
+          "at_seconds": 20.4,
           "duration_seconds": 0.2,
           "rgb_sha256": "5917cf7a0cdb491dc8a8a0f8c58335e3d5a9b645b29bc5df974a39be51ff4484"
         },
@@ -655,8 +3187,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 108,
-          "at_seconds": 5.4,
+          "video_frame": 412,
+          "at_seconds": 20.6,
           "duration_seconds": 0.2,
           "rgb_sha256": "91fc04c3e14970d4140a724daf7f69225f4ace5fa61036f2010d8e322712072f"
         },
@@ -678,8 +3210,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 112,
-          "at_seconds": 5.6,
+          "video_frame": 416,
+          "at_seconds": 20.8,
           "duration_seconds": 0.2,
           "rgb_sha256": "80c3cedf6e4f7845300e15ba039b183ac9179ae498fad813b8cdc8b6cf028082"
         },
@@ -701,8 +3233,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 116,
-          "at_seconds": 5.8,
+          "video_frame": 420,
+          "at_seconds": 21.0,
           "duration_seconds": 0.2,
           "rgb_sha256": "6c18926a597da3e1fa644ba61b0809c77f37bb0394899d91a5d4062ccc0fb604"
         },
@@ -724,8 +3256,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 120,
-          "at_seconds": 6.0,
+          "video_frame": 424,
+          "at_seconds": 21.2,
           "duration_seconds": 0.2,
           "rgb_sha256": "18d748123fb05570ec8d8c913f1601990657ad4a67c5fc9ccae4e79d9fcf293d"
         },
@@ -747,8 +3279,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 124,
-          "at_seconds": 6.2,
+          "video_frame": 428,
+          "at_seconds": 21.4,
           "duration_seconds": 0.2,
           "rgb_sha256": "becbb4db45cac118d4ada2f9a11afdce234093738b8f7e2a66c549375540269d"
         },
@@ -770,8 +3302,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 128,
-          "at_seconds": 6.4,
+          "video_frame": 432,
+          "at_seconds": 21.6,
           "duration_seconds": 0.2,
           "rgb_sha256": "b8db5f8894c190470a4623a354a6d8635ba71e7d7eb1efe7a55b27819008f5f2"
         },
@@ -793,8 +3325,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 132,
-          "at_seconds": 6.6,
+          "video_frame": 436,
+          "at_seconds": 21.8,
           "duration_seconds": 0.2,
           "rgb_sha256": "de86bc8cbf1d9b052cc0335379a07a3444cb095b89474d7a025f6a55596db6c4"
         },
@@ -816,8 +3348,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 136,
-          "at_seconds": 6.8,
+          "video_frame": 440,
+          "at_seconds": 22.0,
           "duration_seconds": 0.2,
           "rgb_sha256": "5c3bb69f145b8c1379a4a1f03f6d5a725eb5838e2697dea41fd4e2c8e5a5f813"
         },
@@ -839,8 +3371,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 140,
-          "at_seconds": 7.0,
+          "video_frame": 444,
+          "at_seconds": 22.2,
           "duration_seconds": 0.2,
           "rgb_sha256": "fe5abc34343429d105bba218017fb80cac6517c60fe53e0c361f4c8c9fc7f31b"
         },
@@ -862,8 +3394,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 144,
-          "at_seconds": 7.2,
+          "video_frame": 448,
+          "at_seconds": 22.4,
           "duration_seconds": 0.2,
           "rgb_sha256": "0625e61958b1bf291cdcf68735ee6ce398b24c6139da0bfdf3ad0b6c843fa2b5"
         },
@@ -885,8 +3417,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 148,
-          "at_seconds": 7.4,
+          "video_frame": 452,
+          "at_seconds": 22.6,
           "duration_seconds": 0.2,
           "rgb_sha256": "26dfdb87adf509c79c65c1b415a9d9ebe008c509580b76142692b6f5d15579a1"
         },
@@ -908,8 +3440,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 152,
-          "at_seconds": 7.6,
+          "video_frame": 456,
+          "at_seconds": 22.8,
           "duration_seconds": 0.2,
           "rgb_sha256": "c0e51fe7dd0ecd75ca4259050a6b41c6fd142f2fb1901201d3e261889fa439e1"
         },
@@ -931,8 +3463,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 156,
-          "at_seconds": 7.8,
+          "video_frame": 460,
+          "at_seconds": 23.0,
           "duration_seconds": 0.2,
           "rgb_sha256": "23f31fcfab5f62dd850ec7c1a0675d4853f183d40a181e8cde245d2c767351de"
         },
@@ -954,8 +3486,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 160,
-          "at_seconds": 8.0,
+          "video_frame": 464,
+          "at_seconds": 23.2,
           "duration_seconds": 0.2,
           "rgb_sha256": "037692eb058aebc6ef7af1a9de93e3ee53c8ad1ab651b820377219598be107f4"
         },
@@ -977,8 +3509,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 164,
-          "at_seconds": 8.2,
+          "video_frame": 468,
+          "at_seconds": 23.4,
           "duration_seconds": 0.2,
           "rgb_sha256": "7695f421824498f1a622fc9621d42481d06108ba02db586de08833b54f510f6f"
         },
@@ -1000,8 +3532,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 168,
-          "at_seconds": 8.4,
+          "video_frame": 472,
+          "at_seconds": 23.6,
           "duration_seconds": 0.2,
           "rgb_sha256": "3141ac4178edf796d754eae8afe990aa835fbcbaa3c667e4740c3701d16c68f1"
         },
@@ -1023,8 +3555,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 172,
-          "at_seconds": 8.6,
+          "video_frame": 476,
+          "at_seconds": 23.8,
           "duration_seconds": 0.2,
           "rgb_sha256": "d6e38550927a58dbb1e597aaf1fe819d7c8cf6d7c974b58248093cb97a302ca3"
         },
@@ -1046,8 +3578,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 176,
-          "at_seconds": 8.8,
+          "video_frame": 480,
+          "at_seconds": 24.0,
           "duration_seconds": 0.2,
           "rgb_sha256": "9ec6837502a53015961638487295d2413120bdb2af605c1a75805588eb1f19f7"
         },
@@ -1069,8 +3601,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 180,
-          "at_seconds": 9.0,
+          "video_frame": 484,
+          "at_seconds": 24.2,
           "duration_seconds": 0.2,
           "rgb_sha256": "f083b3dc33aac39d297cbe628ed8475b08ab47bd9ebda019bd797fa8bd1e0010"
         },
@@ -1092,8 +3624,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 184,
-          "at_seconds": 9.2,
+          "video_frame": 488,
+          "at_seconds": 24.4,
           "duration_seconds": 0.2,
           "rgb_sha256": "34942258be89c8fb04b1fe0f75846f79818552dea0bcfbc98dac60074a781cbc"
         },
@@ -1115,8 +3647,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 188,
-          "at_seconds": 9.4,
+          "video_frame": 492,
+          "at_seconds": 24.6,
           "duration_seconds": 0.2,
           "rgb_sha256": "5f77bb1971401d377e1a6852493c94c5ad4616508b237c4e1fcd11256279ad9e"
         },
@@ -1138,8 +3670,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 192,
-          "at_seconds": 9.6,
+          "video_frame": 496,
+          "at_seconds": 24.8,
           "duration_seconds": 0.2,
           "rgb_sha256": "e820389fed031ecd6e7d179efd71b1b40fbf7a8e2f24ee19da1be3587fdf1613"
         },
@@ -1161,8 +3693,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 196,
-          "at_seconds": 9.8,
+          "video_frame": 500,
+          "at_seconds": 25.0,
           "duration_seconds": 0.2,
           "rgb_sha256": "6c3c987a8eb0bf7390f9c791c36603861e9b35203643df5057f3dd0ab5061802"
         },
@@ -1184,8 +3716,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 200,
-          "at_seconds": 10.0,
+          "video_frame": 504,
+          "at_seconds": 25.2,
           "duration_seconds": 0.2,
           "rgb_sha256": "7ee62cdc7365c7869b62f535fb5e5921e3e23524617d1f480c2ddb0cd11ce6fe"
         },
@@ -1207,8 +3739,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 204,
-          "at_seconds": 10.2,
+          "video_frame": 508,
+          "at_seconds": 25.4,
           "duration_seconds": 0.2,
           "rgb_sha256": "f096f356704273520359540f656ce9ec10fcd9ab56435edfdb0667090c609993"
         },
@@ -1230,8 +3762,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 208,
-          "at_seconds": 10.4,
+          "video_frame": 512,
+          "at_seconds": 25.6,
           "duration_seconds": 0.2,
           "rgb_sha256": "5419ca893be5c2eea35628257bc82299205d1f0cd06caf155cc9a23c1e7bcb5e"
         },
@@ -1253,8 +3785,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 212,
-          "at_seconds": 10.6,
+          "video_frame": 516,
+          "at_seconds": 25.8,
           "duration_seconds": 0.2,
           "rgb_sha256": "dd49bc9035874cabbe9c64136b78b4bf09249c4cf00794a4d939b4fc645ecea4"
         },
@@ -1276,8 +3808,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 216,
-          "at_seconds": 10.8,
+          "video_frame": 520,
+          "at_seconds": 26.0,
           "duration_seconds": 0.2,
           "rgb_sha256": "a724917f567f5b7bc0f4fe028d81ef931f66c34403d68561408cd856bab4846c"
         },
@@ -1299,8 +3831,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 220,
-          "at_seconds": 11.0,
+          "video_frame": 524,
+          "at_seconds": 26.2,
           "duration_seconds": 0.2,
           "rgb_sha256": "e36125acf340641de3486499877877c32a673b199c7684893aed730b5ce4dfdd"
         },
@@ -1322,8 +3854,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 224,
-          "at_seconds": 11.2,
+          "video_frame": 528,
+          "at_seconds": 26.4,
           "duration_seconds": 0.2,
           "rgb_sha256": "0aeb22b7554761c88af0d26f20f99dfeda543408eecc30542e3f5f43ce039a02"
         },
@@ -1345,8 +3877,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 228,
-          "at_seconds": 11.4,
+          "video_frame": 532,
+          "at_seconds": 26.6,
           "duration_seconds": 0.2,
           "rgb_sha256": "a8860b27754d501dae14e2f72924a313b3432a05334ecd41cfb369502a5ad26e"
         },
@@ -1368,8 +3900,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 232,
-          "at_seconds": 11.6,
+          "video_frame": 536,
+          "at_seconds": 26.8,
           "duration_seconds": 0.2,
           "rgb_sha256": "76c68d5c1bee3c3239db5f4fdd7daedb2ad0a4316ced23e82e7c2ca396db1b6e"
         },
@@ -1391,8 +3923,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 236,
-          "at_seconds": 11.8,
+          "video_frame": 540,
+          "at_seconds": 27.0,
           "duration_seconds": 0.2,
           "rgb_sha256": "69df1e0928ace651ddb345fa3ae682e2c3316c1bb1a886d3475860d21ffd5eba"
         },
@@ -1414,8 +3946,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 240,
-          "at_seconds": 12.0,
+          "video_frame": 544,
+          "at_seconds": 27.2,
           "duration_seconds": 0.2,
           "rgb_sha256": "51bddefced7560730470c4e44820e353865c95903fd895535e3a4099d3da6827"
         },
@@ -1437,8 +3969,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 244,
-          "at_seconds": 12.2,
+          "video_frame": 548,
+          "at_seconds": 27.4,
           "duration_seconds": 0.2,
           "rgb_sha256": "7b609eeacf0eae9f5658ca132f46b65ec7c51b4ed6d445b6870de8c64e934892"
         },
@@ -1460,8 +3992,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 248,
-          "at_seconds": 12.4,
+          "video_frame": 552,
+          "at_seconds": 27.6,
           "duration_seconds": 0.2,
           "rgb_sha256": "d05310dafda8060e0508194f37a62f55b8d8e6e4d62465250946731d094c3a88"
         },
@@ -1483,8 +4015,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 252,
-          "at_seconds": 12.6,
+          "video_frame": 556,
+          "at_seconds": 27.8,
           "duration_seconds": 0.2,
           "rgb_sha256": "66a040a99f6c70d1ae13610c4acc1dd2edaf5d67acc44b8ea08c3dd4ea70e0ce"
         },
@@ -1506,8 +4038,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 256,
-          "at_seconds": 12.8,
+          "video_frame": 560,
+          "at_seconds": 28.0,
           "duration_seconds": 0.2,
           "rgb_sha256": "2bfd957bb66a9a374ca5f7a19d23fb54d93b839e24f00e7b204cd4953d699edb"
         },
@@ -1529,8 +4061,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 260,
-          "at_seconds": 13.0,
+          "video_frame": 564,
+          "at_seconds": 28.2,
           "duration_seconds": 0.2,
           "rgb_sha256": "18aabc0603257aac2bdf9d23f1801bff783bb32c33b92be79bc4ae333bcdc7d7"
         },
@@ -1552,8 +4084,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 264,
-          "at_seconds": 13.2,
+          "video_frame": 568,
+          "at_seconds": 28.4,
           "duration_seconds": 0.2,
           "rgb_sha256": "381f815fa25778a0f1bbf9d3dac1e31c3ef042b73a7af71d04e067980f707a56"
         },
@@ -1575,8 +4107,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 268,
-          "at_seconds": 13.4,
+          "video_frame": 572,
+          "at_seconds": 28.6,
           "duration_seconds": 0.2,
           "rgb_sha256": "fd82032b8e643fa6fd93e0a2d6abc9fc1e997695e27b680c868f2f751e3a4f7a"
         },
@@ -1598,8 +4130,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 272,
-          "at_seconds": 13.6,
+          "video_frame": 576,
+          "at_seconds": 28.8,
           "duration_seconds": 0.2,
           "rgb_sha256": "1f5e688aaa790c7aee65aa79e3607a36efe5fa23a41caa8fa49615618974da3c"
         },
@@ -1621,8 +4153,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 276,
-          "at_seconds": 13.8,
+          "video_frame": 580,
+          "at_seconds": 29.0,
           "duration_seconds": 0.2,
           "rgb_sha256": "3d38040a88b225fa59b1e4921485f5f1286caf52ac87515e4591791ffb689695"
         },
@@ -1644,8 +4176,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 280,
-          "at_seconds": 14.0,
+          "video_frame": 584,
+          "at_seconds": 29.2,
           "duration_seconds": 0.2,
           "rgb_sha256": "7f21d2c4480795b6398ba5ce228b7cc32bcbde86d4d79a028e43b0066173cd87"
         },
@@ -1667,8 +4199,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 284,
-          "at_seconds": 14.2,
+          "video_frame": 588,
+          "at_seconds": 29.4,
           "duration_seconds": 0.2,
           "rgb_sha256": "0f98cfae4058640049248d7e8fe4780bb3dcaee1ce4844e538654df3f956ca53"
         },
@@ -1690,8 +4222,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 288,
-          "at_seconds": 14.4,
+          "video_frame": 592,
+          "at_seconds": 29.6,
           "duration_seconds": 0.2,
           "rgb_sha256": "e22c5e52cf0a4b7d59b670c384da2f2b9075fac62bde6fd0b5234c443de604c4"
         },
@@ -1713,8 +4245,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 292,
-          "at_seconds": 14.6,
+          "video_frame": 596,
+          "at_seconds": 29.8,
           "duration_seconds": 0.2,
           "rgb_sha256": "19c69f7b614507422da58c5d14776d31278d0cff03fc52641d3495ad5590a7eb"
         },
@@ -1736,8 +4268,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 296,
-          "at_seconds": 14.8,
+          "video_frame": 600,
+          "at_seconds": 30.0,
           "duration_seconds": 0.2,
           "rgb_sha256": "59c0aa780e842fd1761204f439901be8d3d8a31fbb143df964410b85ba1dead7"
         },
@@ -1759,8 +4291,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 300,
-          "at_seconds": 15.0,
+          "video_frame": 604,
+          "at_seconds": 30.2,
           "duration_seconds": 0.2,
           "rgb_sha256": "b66e03eac143917d72d3136cbea3026dcebe954e2270222c2e3d4d808c0ac2e8"
         },
@@ -1782,8 +4314,8 @@
           },
           "action": 0,
           "choice": "turn left",
-          "video_frame": 304,
-          "at_seconds": 15.2,
+          "video_frame": 608,
+          "at_seconds": 30.4,
           "duration_seconds": 0.2,
           "rgb_sha256": "e2f5a0c23b168331ffae42f8da569ec93bc6d2c1ba252e8826a4379f6a5c2f50"
         },
@@ -1805,8 +4337,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 308,
-          "at_seconds": 15.4,
+          "video_frame": 612,
+          "at_seconds": 30.6,
           "duration_seconds": 0.2,
           "rgb_sha256": "978c62c807c3019fb3b3f858e87299800257846e2166dfa5191d529107e5e3b3"
         },
@@ -1828,8 +4360,8 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 312,
-          "at_seconds": 15.6,
+          "video_frame": 616,
+          "at_seconds": 30.8,
           "duration_seconds": 0.2,
           "rgb_sha256": "547ed18a8612da1a39351f32919dcef46b7ee0ba289468c00654607973526599"
         },
@@ -1851,13 +4383,13 @@
           },
           "action": 2,
           "choice": "attack",
-          "video_frame": 316,
-          "at_seconds": 15.8,
+          "video_frame": 620,
+          "at_seconds": 31.0,
           "duration_seconds": 0.2,
           "rgb_sha256": "576b3e96c477d62dc58b9c9ced465b2292dc6b72da2731c911d8393cbe90fe5a"
         }
       ],
-      "ends_at_seconds": 16.0
+      "ends_at_seconds": 31.2
     }
   ]
 }
