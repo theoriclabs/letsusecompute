@@ -1,16 +1,13 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:01.200
-One decision model, three games.
+00:00:00.000 --> 00:00:08.000
+Random policy on ALE/Pong-v5. Recorded replay.
 
-00:00:01.200 --> 00:00:04.000
-Random policy vs the trained scorer. Same seeds. Recorded replay.
+00:00:08.000 --> 00:00:16.000
+Random finishes 0-5.
 
-00:00:04.000 --> 00:00:08.000
-Snake 8×8 — random, then the model.
+00:00:16.000 --> 00:00:40.000
+Trained intercept controller. Same ROM. Recorded replay.
 
-00:00:08.000 --> 00:00:14.000
-DoorKey-5x5, fully observed — random fails; the model often reaches the goal.
-
-00:00:14.000 --> 00:00:18.000
-MinAtar-style Breakout — structured channels, not raw RGB.
+00:00:40.000 --> 00:00:50.000
+Trained intercept finishes 5-3.

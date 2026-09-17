@@ -1,26 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420">
   <rect width="100%" height="100%" fill="#f7f4ef"/>
-  <text x="48" y="48" font-size="26" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Closed-loop scores · 20 held-out episodes</text>
-  <text x="48" y="76" font-size="15" fill="#5c5c5c" font-family="system-ui, sans-serif">DoorKey is success rate. Snake is food eaten. Breakout is bricks broken. Same seeds for every policy.</text>
-  <text x="80" y="130" font-size="16" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">DoorKey success</text>
-  <rect x="280" y="108" width="8" height="28" rx="4" fill="#7a8b99"/>
-  <text x="300" y="128" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">random 0.00</text>
-  <rect x="280" y="144" width="738" height="28" rx="4" fill="#3d6b8a"/>
-  <text x="1028" y="164" font-size="14" fill="#1a1a1a" font-family="system-ui, sans-serif">model 0.90</text>
-  <rect x="280" y="180" width="820" height="28" rx="4" fill="#c4a484"/>
-  <text x="1110" y="200" font-size="14" fill="#1a1a1a" font-family="system-ui, sans-serif">teacher 1.00</text>
-  <text x="80" y="250" font-size="16" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Snake food</text>
-  <rect x="280" y="228" width="12" height="28" rx="4" fill="#7a8b99"/>
-  <text x="300" y="248" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">random 0.05</text>
-  <rect x="280" y="264" width="20" height="28" rx="4" fill="#3d6b8a"/>
-  <text x="308" y="284" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">model 0.15</text>
-  <rect x="280" y="300" width="820" height="28" rx="4" fill="#c4a484"/>
-  <text x="1110" y="320" font-size="14" fill="#1a1a1a" font-family="system-ui, sans-serif">teacher 11.7</text>
-  <text x="80" y="370" font-size="16" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Breakout bricks</text>
-  <rect x="280" y="348" width="62" height="28" rx="4" fill="#7a8b99"/>
-  <text x="350" y="368" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">random 1.15</text>
-  <rect x="280" y="384" width="80" height="28" rx="4" fill="#3d6b8a"/>
-  <text x="368" y="404" font-size="14" fill="#5c5c5c" font-family="system-ui, sans-serif">model 1.50</text>
-  <rect x="280" y="420" width="820" height="28" rx="4" fill="#c4a484"/>
-  <text x="1110" y="440" font-size="14" fill="#1a1a1a" font-family="system-ui, sans-serif">teacher 15.3</text>
+  <text x="48" y="48" font-size="26" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Atari Pong return, first to 5</text>
+  <text x="48" y="118" font-size="22" fill="#1a1a1a" font-family="system-ui, sans-serif">Random</text>
+  <rect x="280" y="90" width="164" height="44" fill="#8a6a4a"/>
+  <text x="456" y="120" font-size="22" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">-5.0</text>
+  <text x="48" y="208" font-size="22" fill="#1a1a1a" font-family="system-ui, sans-serif">Qwen scorer</text>
+  <rect x="280" y="180" width="164" height="44" fill="#6a5a4a"/>
+  <text x="456" y="210" font-size="22" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">-5.0</text>
+  <text x="48" y="298" font-size="22" fill="#1a1a1a" font-family="system-ui, sans-serif">Fitted intercept</text>
+  <rect x="444" y="270" width="66" height="44" fill="#3d6b8a"/>
+  <text x="522" y="300" font-size="22" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">+2.0</text>
+  <text x="48" y="388" font-size="22" fill="#1a1a1a" font-family="system-ui, sans-serif">Teacher</text>
+  <rect x="444" y="360" width="66" height="44" fill="#3d6b4f"/>
+  <text x="522" y="390" font-size="22" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">+2.0</text>
 </svg>

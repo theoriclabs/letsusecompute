@@ -1,15 +1,8 @@
-issue #18 receipts
-
-run_9c6ce2dd7976a1d01bd3498cf9d43429  sample Vast 3090 succeeded           $0.01
-run_8923e51e4a794c6d19134e2a82301f58  Vast 3090 lost mid-collection        $0.01
-run_5b731fee882d9736c056593c3ef0387d  A100 hung unique-DoorKey, cancelled  $0.25
-run_2a4d241c2f3294894269a9c42b633375  Vast 3090 trained then lost artifacts $0.06
-run_fbac11a02be7662387a54c834561393a  headline A100 artifacts persisted    $0.33
-
-receipts ~$0.66
-account $7.33 → $6.65  ($0.68)
-
-reports
-rpt_fe45a4dd3edc643d657574fe35b08d4a  first Vast lost
-rpt_3952dda48bf11a78e704e03f33ec9df1  hung DoorKey unique collection
-rpt_ebe8faf5ad588d49c435ed5e39612862  trained then lost, no artifacts
+revision spend (this Atari Pong cut)
+  run_78b6f5ec13f4af481ca9af88aa42c61e  Vast RTX-3090 sample     $0.03  failed empty reload probe
+  run_cd32f4b722f2f0f98ab5dabba64f5a90  RunPod A100-SXM         $0.33  cancelled, LoRA 1e-4 collapsed
+  run_84d48446e804cd4772e33b240d882643  RunPod A100-SXM         $0.45  Qwen offline 0.983, closed-loop 0-5
+  run_0cdd2b89bb629f9bb33debaab16601b5  RunPod A100-SXM         $0.06  unit-test fail after deadzone change
+  run_e8e773a6b717ac7ed360dff144e01087  RunPod A100-SXM         $0.70  cancelled after intercept already won
+  revision total                                                $1.57
+  issue total including first toy-grid post                     $2.25

@@ -1,27 +1,23 @@
-"""Train one shared instruction-conditioned decision model on three games.
+"""Train a Jev-inspired decision model on real Atari Pong.
 
-Games: 8x8 Snake, fully observed MiniGrid-style DoorKey-5x5, and a
-MinAtar-faithful Breakout (public minimal action IDs 0/1/3). Teachers are
-documented heuristics, not oracles. Qwen2.5-0.5B-Instruct plus a shared
-scalar candidate-scoring head: Stage A freezes the backbone, Stage B adds
-LoRA rank 16. This is supervised decision cloning, not RLCD.
+The policy sees structured paddle/ball state extracted from ALE pixels, not
+the RGB tensor. Qwen2.5-0.5B-Instruct plus one scalar candidate-scoring head:
+Stage A freezes the backbone, Stage B adds LoRA rank 16, then one DAgger
+relabel round. Supervised cloning, not RLCD.
 
     compute run train.py::train --gpu cheap --dry-run
-    compute run train.py::train --gpu cheap --timeout 1800 --wait
+    compute run train.py::train --gpu cheap --timeout 5400 --wait
 """
 
 from __future__ import annotations
 
 import hashlib
-import io
 import json
 import math
 import os
 import random
 import tempfile
-from collections import deque
 from collections.abc import Mapping
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -38,6 +34,9 @@ image = compute.Image.cuda_pytorch().pip_install(
     "accelerate==1.2.1",
     "huggingface_hub>=0.33,<1",
     "pillow",
+    "gymnasium[atari]==1.1.1",
+    "ale-py==0.11.2",
+    "opencv-python-headless",
 )
 hf_secret = compute.Secret.from_name("hf")
 
@@ -49,23 +48,19 @@ ARTIFACT_MARKER = ".compute-artifact.json"
 DEFAULT_ARTIFACT_FALLBACK = Path("/tmp/compute-jev-games")
 MAX_LEN = 256
 
-SNAKE_ACTIONS = ("turn left", "continue straight", "turn right")
-DOOR_ACTIONS = (
-    "turn left",
-    "turn right",
-    "move forward",
-    "pick up object",
-    "drop object",
-    "toggle door or object",
-    "done",
-)
-# MinAtar full map is n,l,u,r,d,f. Breakout minimal set is n,l,r → IDs 0,1,3.
-BREAK_ACTIONS = {0: "no-op", 1: "move paddle left", 3: "move paddle right"}
-BREAK_MENU = (0, 1, 3)
-DIRS = ((0, -1), (1, 0), (0, 1), (-1, 0))  # N E S W
-DIR_NAME = "NESW"
-MG_DIRS = ((1, 0), (0, 1), (-1, 0), (0, -1))  # MiniGrid: right, down, left, up
-MG_DIR_NAME = "RDLU"
+GAME = "pong"
+OBJECTIVE = "score against the CPU paddle on Atari Pong"
+# ALE/Pong-v5 meanings: NOOP, FIRE, RIGHT, LEFT, RIGHTFIRE, LEFTFIRE.
+# RIGHT moves the right paddle up; LEFT moves it down.
+MENU = ("serve or hold", "move paddle up", "move paddle down")
+MENU_IDS = (1, 2, 3)  # FIRE, RIGHT, LEFT
+ENV_ID = "ALE/Pong-v5"
+PLAY_TOP = 34
+PLAY_BOTTOM = 194
+PADDLE_X_MIN = 136
+CPU_X_MAX = 24
+DEADZONE = 6
+FAR = 18
 
 
 def _bridge_hf_token() -> None:
@@ -155,451 +150,214 @@ def _soft(ids: list[int], n: int) -> list[float]:
     return mass
 
 
-# ---------------------------------------------------------------------------
-# Snake
-# ---------------------------------------------------------------------------
+def make_env():
+    import ale_py
+    import gymnasium as gym
 
-
-@dataclass
-class SnakeState:
-    body: list[tuple[int, int]]
-    heading: int
-    food: tuple[int, int]
-    steps: int
-    since_food: int
-    dead: bool
-    eaten: int
-
-
-def snake_reset(rng: random.Random, size: int = 8) -> SnakeState:
-    hx, hy = rng.randint(2, size - 3), rng.randint(2, size - 3)
-    heading = rng.randint(0, 3)
-    dx, dy = DIRS[heading]
-    body = [(hx, hy), (hx - dx, hy - dy)]
-    food = _snake_food(rng, body, size)
-    return SnakeState(body, heading, food, 0, 0, False, 0)
-
-
-def _snake_food(rng: random.Random, body: list[tuple[int, int]], size: int) -> tuple[int, int]:
-    free = [(x, y) for x in range(size) for y in range(size) if (x, y) not in body]
-    return rng.choice(free) if free else body[0]
-
-
-def snake_step(state: SnakeState, action: int, rng: random.Random, size: int = 8) -> SnakeState:
-    if state.dead:
-        return state
-    heading = (state.heading + {0: -1, 1: 0, 2: 1}[action]) % 4
-    dx, dy = DIRS[heading]
-    hx, hy = state.body[0]
-    nxt = (hx + dx, hy + dy)
-    grow = nxt == state.food
-    body = list(state.body)
-    hit = (
-        not (0 <= nxt[0] < size and 0 <= nxt[1] < size)
-        or nxt in body[:-1]
-        or (nxt in body[-1:] and grow)
-    )
-    if hit or state.since_food >= 32:
-        return SnakeState(body, heading, state.food, state.steps + 1, state.since_food + 1, True, state.eaten)
-    body = [nxt] + (body if grow else body[:-1])
-    food = _snake_food(rng, body, size) if grow else state.food
-    return SnakeState(body, heading, food, state.steps + 1, 0 if grow else state.since_food + 1, False, state.eaten + int(grow))
-
-
-def _snake_legal(state: SnakeState, size: int = 8) -> list[int]:
-    legal = []
-    for action in range(3):
-        heading = (state.heading + {0: -1, 1: 0, 2: 1}[action]) % 4
-        dx, dy = DIRS[heading]
-        nxt = (state.body[0][0] + dx, state.body[0][1] + dy)
-        grow = nxt == state.food
-        occ = state.body[:-1] if not grow else state.body
-        if 0 <= nxt[0] < size and 0 <= nxt[1] < size and nxt not in occ:
-            legal.append(action)
-    return legal
-
-
-def snake_teacher(state: SnakeState, size: int = 8) -> list[float]:
-    """Safety/food heuristic: legal moves, then nearest food. Ties kept."""
-    legal = _snake_legal(state, size)
-    if not legal:
-        return _soft([], 3)
-    fx, fy = state.food
-
-    def dist(action: int) -> int:
-        heading = (state.heading + {0: -1, 1: 0, 2: 1}[action]) % 4
-        dx, dy = DIRS[heading]
-        nx, ny = state.body[0][0] + dx, state.body[0][1] + dy
-        return abs(nx - fx) + abs(ny - fy)
-
-    best = min(dist(a) for a in legal)
-    return _soft([a for a in legal if dist(a) == best], 3)
-
-
-def snake_obs(state: SnakeState) -> str:
-    body = " ".join(f"{x},{y}" for x, y in state.body)
-    return (
-        f"8x8 snake head={state.body[0][0]},{state.body[0][1]} "
-        f"dir={DIR_NAME[state.heading]} body={body} "
-        f"food={state.food[0]},{state.food[1]} len={len(state.body)}"
+    gym.register_envs(ale_py)
+    return gym.make(
+        ENV_ID,
+        obs_type="rgb",
+        render_mode="rgb_array",
+        frameskip=4,
+        repeat_action_probability=0.0,
+        full_action_space=False,
     )
 
 
-def snake_frame(state: SnakeState, size: int = 8) -> list[str]:
-    grid = [["."] * size for _ in range(size)]
-    for i, (x, y) in enumerate(state.body):
-        grid[y][x] = "H" if i == 0 else "o"
-    fx, fy = state.food
-    if grid[fy][fx] == ".":
-        grid[fy][fx] = "*"
-    return ["".join(row) for row in grid]
+def objects(rgb) -> dict[str, dict[str, float] | None]:
+    import numpy as np
+
+    play = rgb[PLAY_TOP:PLAY_BOTTOM]
+    h, w = play.shape[:2]
+    xs = np.arange(w)[None, :]
+    white = (play[:, :, 0] > 200) & (play[:, :, 1] > 200) & (play[:, :, 2] > 200)
+    green = (play[:, :, 1] > 150) & (play[:, :, 0] < 140) & (play[:, :, 2] < 140)
+    tan = (play[:, :, 0] > 180) & (play[:, :, 1] > 100) & (play[:, :, 1] < 170) & (play[:, :, 2] < 120)
+
+    def bbox(mask):
+        yy, xx = np.where(mask)
+        if len(xx) == 0:
+            return None
+        return {
+            "x": float(xx.mean()),
+            "y": float(yy.mean()),
+            "ymin": float(yy.min()),
+            "ymax": float(yy.max()),
+            "n": float(len(xx)),
+        }
+
+    return {
+        "ball": bbox(white & (xs > 8) & (xs < 150)),
+        "player": bbox(green & (xs >= PADDLE_X_MIN)),
+        "cpu": bbox(tan & (xs <= CPU_X_MAX)),
+    }
 
 
-# ---------------------------------------------------------------------------
-# DoorKey-5x5, fully observed
-# ---------------------------------------------------------------------------
-
-
-@dataclass
-class DoorState:
-    x: int
-    y: int
-    direction: int
-    has_key: bool
-    door_open: bool
-    key: tuple[int, int]
-    door: tuple[int, int]
-    goal: tuple[int, int]
-    steps: int
-    done: bool
-    success: bool
-
-
-def door_reset(rng: random.Random) -> DoorState:
-    door_y = rng.randint(1, 3)
-    key_y = rng.randint(1, 3)
-    agent_y = rng.randint(1, 3)
-    goal_y = rng.randint(1, 3)
-    direction = rng.randint(0, 3)
-    return DoorState(1, agent_y, direction, False, False, (1, key_y), (2, door_y), (3, goal_y), 0, False, False)
-
-
-def _door_front(state: DoorState) -> tuple[int, int]:
-    dx, dy = MG_DIRS[state.direction]
-    return state.x + dx, state.y + dy
-
-
-def _door_blocked(state: DoorState, x: int, y: int) -> bool:
-    if not (1 <= x <= 3 and 1 <= y <= 3):
-        return True
-    if x == 2 and (x, y) != state.door:
-        return True
-    if (x, y) == state.door and not state.door_open:
-        return True
-    return False
-
-
-def door_step(state: DoorState, action: int) -> DoorState:
-    if state.done:
-        return state
-    x, y, direction = state.x, state.y, state.direction
-    has_key, door_open = state.has_key, state.door_open
-    key = state.key
-    fx, fy = _door_front(state)
-    if action == 0:
-        direction = (direction - 1) % 4
-    elif action == 1:
-        direction = (direction + 1) % 4
-    elif action == 2:
-        nx, ny = fx, fy
-        if not _door_blocked(state, nx, ny):
-            x, y = nx, ny
-    elif action == 3 and (fx, fy) == key and not has_key:
-        has_key = True
-        key = (-1, -1)
-    elif action == 5 and (fx, fy) == state.door:
-        if door_open:
-            door_open = False
-        elif has_key:
-            door_open = True
-    success = (x, y) == state.goal
-    done = success or state.steps + 1 >= 64
-    return DoorState(x, y, direction, has_key, door_open, key, state.door, state.goal, state.steps + 1, done, success)
-
-
-def door_teacher(state: DoorState) -> list[float]:
-    """BFS over (x,y,dir,key,door). All equally short first actions kept."""
-    start = (state.x, state.y, state.direction, state.has_key, state.door_open)
-    queue = deque([(start, [])])
-    seen = {start}
-    best: list[int] | None = None
-    best_len = None
-    while queue:
-        cur, path = queue.popleft()
-        if best_len is not None and len(path) > best_len:
-            break
-        key_pos = (-1, -1) if cur[3] else state.key
-        probe = DoorState(cur[0], cur[1], cur[2], cur[3], cur[4], key_pos, state.door, state.goal, 0, False, False)
-        if (probe.x, probe.y) == state.goal:
-            if not path:
-                return _soft([6], 7)
-            if best_len is None:
-                best_len = len(path)
-                best = []
-            if len(path) == best_len:
-                best.append(path[0])
-            continue
-        for action in range(7):
-            nxt_s = door_step(probe, action)
-            key = (nxt_s.x, nxt_s.y, nxt_s.direction, nxt_s.has_key, nxt_s.door_open)
-            if key in seen:
-                continue
-            seen.add(key)
-            queue.append((key, path + [action]))
-    return _soft(sorted(set(best or [])), 7)
-
-
-def door_obs(state: DoorState) -> str:
-    key = "held" if state.has_key else f"{state.key[0]},{state.key[1]}"
-    door = "open" if state.door_open else "locked"
-    return (
-        f"doorkey-5x5 fully-observed pos={state.x},{state.y} "
-        f"dir={MG_DIR_NAME[state.direction]} key={key} "
-        f"door={state.door[0]},{state.door[1]}:{door} "
-        f"goal={state.goal[0]},{state.goal[1]}"
-    )
-
-
-def door_frame(state: DoorState) -> list[str]:
-    grid = [["W"] * 5 for _ in range(5)]
-    for x in range(1, 4):
-        for y in range(1, 4):
-            grid[y][x] = "W" if x == 2 and (x, y) != state.door else "."
-    grid[state.door[1]][state.door[0]] = "d" if state.door_open else "D"
-    if not state.has_key and state.key[0] >= 0:
-        grid[state.key[1]][state.key[0]] = "K"
-    grid[state.goal[1]][state.goal[0]] = "G"
-    grid[state.y][state.x] = MG_DIR_NAME[state.direction]
-    return ["".join(row) for row in grid]
-
-
-# ---------------------------------------------------------------------------
-# Breakout — MinAtar rules, original code, public minimal IDs
-# ---------------------------------------------------------------------------
-
-
-@dataclass
-class BreakState:
-    paddle: int
-    ball_x: int
-    ball_y: int
-    last_x: int
-    last_y: int
-    ball_dir: int
-    bricks: list[list[int]]
-    strike: bool
-    terminal: bool
-    reward: int
-    steps: int
-
-
-def break_reset(rng: random.Random) -> BreakState:
-    paddle = rng.randint(0, 9)
-    ball_x = rng.randint(0, 9)
-    bricks = [[0] * 10 for _ in range(10)]
-    for y in range(1, 4):
-        for x in range(10):
-            bricks[y][x] = 1
-    return BreakState(paddle, ball_x, 4, ball_x, 5, rng.randint(0, 1), bricks, False, False, 0, 0)
-
-
-def break_step(state: BreakState, action: int) -> BreakState:
-    if state.terminal:
-        return state
-    paddle = state.paddle
-    if action == 1:
-        paddle = max(0, paddle - 1)
-    elif action == 3:
-        paddle = min(9, paddle + 1)
-    last_x, last_y = state.ball_x, state.ball_y
-    if state.ball_dir == 0:
-        new_x, new_y = state.ball_x - 1, state.ball_y - 1
-    elif state.ball_dir == 1:
-        new_x, new_y = state.ball_x + 1, state.ball_y - 1
-    elif state.ball_dir == 2:
-        new_x, new_y = state.ball_x + 1, state.ball_y + 1
+def parse_state(rgb, prev: tuple[float, float] | None) -> dict[str, Any]:
+    obj = objects(rgb)
+    ball, player = obj["ball"], obj["player"]
+    in_play = ball is not None and player is not None
+    if not in_play:
+        return {
+            "in_play": False,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 0.0 if player is None else player["y"],
+            "obj": obj,
+        }
+    dx = 0.0 if prev is None else ball["x"] - prev[0]
+    dy = 0.0 if prev is None else ball["y"] - prev[1]
+    delta = ball["y"] - player["y"]
+    if abs(delta) <= DEADZONE:
+        rel = "aligned"
+    elif delta < -FAR:
+        rel = "above_far"
+    elif delta < 0:
+        rel = "above"
+    elif delta > FAR:
+        rel = "below_far"
     else:
-        new_x, new_y = state.ball_x - 1, state.ball_y + 1
-    ball_dir = state.ball_dir
-    bricks = [row[:] for row in state.bricks]
-    strike = state.strike
-    reward = 0
-    terminal = False
-    strike_toggle = False
-    if new_x < 0 or new_x > 9:
-        new_x = 0 if new_x < 0 else 9
-        ball_dir = [1, 0, 3, 2][ball_dir]
-    if new_y < 0:
-        new_y = 0
-        ball_dir = [3, 2, 1, 0][ball_dir]
-    elif 0 <= new_y < 10 and bricks[new_y][new_x] == 1:
-        strike_toggle = True
-        if not strike:
-            reward += 1
-            strike = True
-        bricks[new_y][new_x] = 0
-        new_y = last_y
-        ball_dir = [3, 2, 1, 0][ball_dir]
-    elif new_y == 9:
-        if sum(sum(row) for row in bricks) == 0:
-            for y in range(1, 4):
-                bricks[y] = [1] * 10
-        if last_x == paddle:
-            ball_dir = [3, 2, 1, 0][ball_dir]
-            new_y = last_y
-        elif new_x == paddle:
-            ball_dir = [2, 3, 0, 1][ball_dir]
-            new_y = last_y
-        else:
-            terminal = True
-    if not strike_toggle:
-        strike = False
-    return BreakState(paddle, new_x, new_y, last_x, last_y, ball_dir, bricks, strike, terminal, state.reward + reward, state.steps + 1)
+        rel = "below"
+    if dx > 1:
+        approach = "toward"
+    elif dx < -1:
+        approach = "away"
+    else:
+        approach = "none"
+    return {
+        "in_play": True,
+        "delta": float(delta),
+        "dx": float(dx),
+        "dy": float(dy),
+        "rel": rel,
+        "approach": approach,
+        "ball_x": float(ball["x"]),
+        "ball_y": float(ball["y"]),
+        "paddle_y": float(player["y"]),
+        "obj": obj,
+    }
 
 
-def _break_land(state: BreakState) -> int:
-    probe = state
-    for _ in range(20):
-        if probe.terminal or probe.ball_y >= 8:
-            return probe.ball_x
-        probe = break_step(probe, 0)
-    return probe.ball_x
+def state_feat(state: dict[str, Any]) -> list[float]:
+    return [
+        float(state["delta"]) / 80.0,
+        float(state["dx"]) / 12.0,
+        float(state["dy"]) / 12.0,
+        1.0 if state["in_play"] else 0.0,
+    ]
 
 
-def break_teacher(state: BreakState) -> list[float]:
-    """Short-rollout intercept. Ties if already aligned."""
-    target = _break_land(state)
-    if state.paddle < target:
-        return _soft([2], 3)  # menu index 2 is action 3 (right)
-    if state.paddle > target:
-        return _soft([1], 3)
-    return _soft([0], 3)
-
-
-def break_follow(state: BreakState) -> list[float]:
-    if state.paddle < state.ball_x:
-        return _soft([2], 3)
-    if state.paddle > state.ball_x:
-        return _soft([1], 3)
-    return _soft([0], 3)
-
-
-def break_obs(state: BreakState) -> str:
-    bricks = "".join("1" if state.bricks[y][x] else "0" for y in range(1, 4) for x in range(10))
+def state_obs(state: dict[str, Any]) -> str:
+    if not state["in_play"]:
+        return "in_play=no ball=hidden paddle_ready=yes serve=yes"
     return (
-        f"breakout-minatar 10x10 paddle={state.paddle} "
-        f"ball={state.ball_x},{state.ball_y} last={state.last_x},{state.last_y} "
-        f"dir={state.ball_dir} bricks={bricks}"
+        f"in_play=yes ball_rel={state['rel']} delta={state['delta']:.0f} "
+        f"approach={state['approach']} dx={state['dx']:.0f} dy={state['dy']:.0f} "
+        f"ball=({state['ball_x']:.0f},{state['ball_y']:.0f}) paddle_y={state['paddle_y']:.0f}"
     )
 
 
-def break_frame(state: BreakState) -> list[str]:
-    grid = [["."] * 10 for _ in range(10)]
-    for y in range(10):
-        for x in range(10):
-            if state.bricks[y][x]:
-                grid[y][x] = "#"
-    grid[9][state.paddle] = "="
-    if 0 <= state.ball_y < 10 and 0 <= state.ball_x < 10:
-        grid[state.ball_y][state.ball_x] = "o"
-    return ["".join(row) for row in grid]
+def teacher_target(state: dict[str, Any]) -> list[float]:
+    if not state["in_play"]:
+        return _soft([0], 3)
+    target_y = state["ball_y"] + (1.6 * state["dy"] if state["approach"] == "toward" else 0.0)
+    err = target_y - state["paddle_y"]
+    if err < -DEADZONE:
+        return _soft([1], 3)
+    if err > DEADZONE:
+        return _soft([2], 3)
+    return _soft([0], 3)
 
 
-# ---------------------------------------------------------------------------
-# Dataset
-# ---------------------------------------------------------------------------
+def teacher_action(state: dict[str, Any]) -> int:
+    target = teacher_target(state)
+    return MENU_IDS[max(range(3), key=lambda i: target[i])]
 
 
-GAMES = {
-    "snake": {
-        "objective": "eat food and survive; do not hit walls or the body",
-        "menu": list(SNAKE_ACTIONS),
-        "reset": snake_reset,
-        "step": lambda s, a, rng: snake_step(s, a, rng),
-        "teacher": snake_teacher,
-        "obs": snake_obs,
-        "frame": snake_frame,
-        "action_from_menu": lambda i: i,
-        "success": lambda s: s.eaten,
-        "done": lambda s: s.dead or s.steps >= 80,
-    },
-    "doorkey": {
-        "objective": "use the key to open the door and reach the goal",
-        "menu": list(DOOR_ACTIONS),
-        "reset": door_reset,
-        "step": lambda s, a, rng: door_step(s, a),
-        "teacher": door_teacher,
-        "obs": door_obs,
-        "frame": door_frame,
-        "action_from_menu": lambda i: i,
-        "success": lambda s: int(s.success),
-        "done": lambda s: s.done,
-    },
-    "breakout": {
-        "objective": "keep the ball in play and break bricks",
-        "menu": [BREAK_ACTIONS[i] for i in BREAK_MENU],
-        "reset": break_reset,
-        "step": lambda s, a, rng: break_step(s, BREAK_MENU[a]),
-        "teacher": break_teacher,
-        "obs": break_obs,
-        "frame": break_frame,
-        "action_from_menu": lambda i: BREAK_MENU[i],
-        "success": lambda s: s.reward,
-        "done": lambda s: s.terminal or s.steps >= 200,
-    },
-}
+def reset_env(env, seed: int):
+    rgb, _info = env.reset(seed=int(seed) % (2**31))
+    rng = random.Random(seed)
+    for _ in range(rng.randint(0, 8)):
+        rgb, *_ = env.step(0)
+    for _ in range(24):
+        if objects(rgb)["ball"] is not None:
+            break
+        rgb, *_ = env.step(1)
+    extra = 2 + (seed % 9)
+    for _ in range(extra):
+        rgb, *_ = env.step(rng.choice(MENU_IDS))
+    return rgb
 
 
-def fingerprint_state(game: str, obs: str) -> str:
-    return hashlib.sha256(f"{game}|{obs}".encode()).hexdigest()[:16]
+def pair_text(row: dict[str, Any], cand: str) -> str:
+    return (
+        f"Game: {row['game']}\nObjective: {row['objective']}\n"
+        f"Observation: {row['obs']}\nCandidate action: {cand}"
+    )
 
 
-def collect_game(game: str, n_states: int, seed0: int, perturb: float) -> list[dict[str, Any]]:
-    spec = GAMES[game]
-    rows = []
+def collect_states(
+    n_states: int,
+    seed0: int,
+    perturb: float,
+    policy=None,
+) -> list[dict[str, Any]]:
+    env = make_env()
+    rows: list[dict[str, Any]] = []
     seed = seed0
-    max_eps = max(80, n_states)
-    while len(rows) < n_states and seed < seed0 + max_eps:
-        rng = random.Random(seed)
-        state = spec["reset"](rng)
-        for _ in range(96):
-            if spec["done"](state) or len(rows) >= n_states:
-                break
-            target = spec["teacher"](state)
-            obs = spec["obs"](state)
-            fp = fingerprint_state(game, obs)
-            order = list(range(len(spec["menu"])))
-            rng.shuffle(order)
-            rows.append(
-                {
-                    "game": game,
-                    "objective": spec["objective"],
-                    "obs": obs,
-                    "menu": [spec["menu"][i] for i in order],
-                    "target": [target[i] for i in order],
-                    "order": order,
-                    "episode_seed": seed,
-                    "fingerprint": fp,
-                }
-            )
-            if rng.random() < perturb:
-                action = rng.choice(list(range(len(target))))
-            else:
-                action = max(range(len(target)), key=lambda i: target[i])
-            state = spec["step"](state, action, rng)
-        seed += 1
-        if (seed - seed0) % 25 == 0:
-            print(f"collect {game} episodes={seed - seed0} states={len(rows)}", flush=True)
+    max_eps = max(40, n_states // 8)
+    try:
+        while len(rows) < n_states and seed < seed0 + max_eps:
+            rng = random.Random(seed)
+            rgb = reset_env(env, seed)
+            prev = None
+            for _ in range(80):
+                if len(rows) >= n_states:
+                    break
+                state = parse_state(rgb, prev)
+                target = teacher_target(state)
+                is_hold = target[0] >= 0.99
+                if is_hold and rng.random() > 0.35:
+                    action = teacher_action(state) if policy is None else policy(state, rng)
+                    prev = (state["ball_x"], state["ball_y"]) if state["in_play"] else None
+                    rgb, _r, term, trunc, _ = env.step(action)
+                    if term or trunc:
+                        break
+                    continue
+                order = list(range(3))
+                rng.shuffle(order)
+                rows.append(
+                    {
+                        "game": GAME,
+                        "objective": OBJECTIVE,
+                        "obs": state_obs(state),
+                        "menu": [MENU[i] for i in order],
+                        "target": [target[i] for i in order],
+                        "order": order,
+                        "episode_seed": seed,
+                        "fingerprint": hashlib.sha256(state_obs(state).encode()).hexdigest()[:16],
+                        "feat": state_feat(state),
+                    }
+                )
+                if policy is None:
+                    action = rng.choice(MENU_IDS) if rng.random() < perturb else teacher_action(state)
+                else:
+                    action = policy(state, rng)
+                prev = (state["ball_x"], state["ball_y"]) if state["in_play"] else None
+                rgb, _r, term, trunc, _ = env.step(action)
+                if term or trunc:
+                    break
+            seed += 1
+            if (seed - seed0) % 10 == 0:
+                print(f"collect episodes={seed - seed0} states={len(rows)}", flush=True)
+    finally:
+        env.close()
     return rows
 
 
@@ -611,17 +369,29 @@ def split_rows(rows: list[dict[str, Any]], seed: int) -> dict[str, list[dict[str
     rng = random.Random(seed)
     rng.shuffle(seeds)
     n = len(seeds)
-    n_train = max(1, int(0.7 * n))
-    n_val = max(1, int(0.15 * n))
-    n_cal = max(1, int(0.05 * n))
-    parts = {
-        "train": seeds[:n_train],
-        "val": seeds[n_train : n_train + n_val],
-        "cal": seeds[n_train + n_val : n_train + n_val + n_cal],
-        "test": seeds[n_train + n_val + n_cal :],
-    }
-    if not parts["test"]:
-        parts["test"] = parts["val"][-1:]
+    if n < 4:
+        parts = {
+            "train": seeds[: max(1, n - 2)] or seeds,
+            "val": seeds[-2:-1] or seeds[:1],
+            "cal": seeds[-2:-1] or seeds[:1],
+            "test": seeds[-1:] or seeds[:1],
+        }
+    else:
+        n_train = max(1, int(0.7 * n))
+        n_val = max(1, int(0.15 * n))
+        n_cal = max(1, int(0.05 * n))
+        parts = {
+            "train": seeds[:n_train],
+            "val": seeds[n_train : n_train + n_val],
+            "cal": seeds[n_train + n_val : n_train + n_val + n_cal],
+            "test": seeds[n_train + n_val + n_cal :],
+        }
+        if not parts["test"]:
+            parts["test"] = parts["val"][-1:]
+        if not parts["val"]:
+            parts["val"] = parts["train"][-1:]
+        if not parts["cal"]:
+            parts["cal"] = parts["val"][:1]
     out = {name: [] for name in parts}
     for name, chosen in parts.items():
         for s in chosen:
@@ -632,88 +402,7 @@ def split_rows(rows: list[dict[str, Any]], seed: int) -> dict[str, list[dict[str
     return out
 
 
-def pair_text(row: dict[str, Any], cand: str) -> str:
-    return (
-        f"Game: {row['game']}\nObjective: {row['objective']}\n"
-        f"Observation: {row['obs']}\nCandidate action: {cand}"
-    )
-
-
-# ---------------------------------------------------------------------------
-# Rendering
-# ---------------------------------------------------------------------------
-
-
-def render_grid_png(lines: list[str], path: Path, title: str) -> None:
-    from PIL import Image, ImageDraw
-
-    cell = 18
-    h, w = len(lines), max(len(row) for row in lines)
-    img = Image.new("RGB", (w * cell + 16, h * cell + 40), (247, 244, 239))
-    draw = ImageDraw.Draw(img)
-    draw.text((8, 8), title[:48], fill=(26, 26, 26))
-    colors = {
-        ".": (236, 230, 220),
-        "W": (90, 84, 74),
-        "H": (196, 92, 38),
-        "o": (61, 107, 138),
-        "*": (196, 92, 38),
-        "#": (122, 139, 153),
-        "=": (61, 107, 79),
-        "K": (196, 164, 56),
-        "D": (140, 80, 60),
-        "d": (180, 150, 110),
-        "G": (61, 138, 90),
-        "R": (196, 92, 38),
-        "L": (196, 92, 38),
-        "U": (196, 92, 38),
-    }
-    for y, row in enumerate(lines):
-        for x, ch in enumerate(row):
-            draw.rectangle(
-                [8 + x * cell, 28 + y * cell, 8 + (x + 1) * cell - 1, 28 + (y + 1) * cell - 1],
-                fill=colors.get(ch, (40, 40, 40)),
-            )
-    path.parent.mkdir(parents=True, exist_ok=True)
-    img.save(path)
-
-
-# ---------------------------------------------------------------------------
-# Unit tests
-# ---------------------------------------------------------------------------
-
-
-def run_unit_tests() -> dict[str, bool]:
-    rng = random.Random(0)
-    s = snake_reset(rng)
-    assert s.body[0] != s.food
-    moved = snake_step(s, 1, random.Random(1))
-    assert moved.steps == 1
-    grow_state = SnakeState([(2, 2)], 1, (3, 2), 0, 0, False, 0)
-    grown = snake_step(grow_state, 1, random.Random(2))
-    assert len(grown.body) == 2 and grown.eaten == 1
-    d = door_reset(random.Random(3))
-    assert d.x == 1 and d.goal[0] == 3
-    opened = DoorState(1, d.door[1], 0, True, False, (-1, -1), d.door, d.goal, 0, False, False)
-    toggled = door_step(opened, 5)
-    assert toggled.door_open
-    t = door_teacher(door_reset(random.Random(4)))
-    assert abs(sum(t) - 1) < 1e-6
-    b = break_reset(random.Random(5))
-    assert sum(sum(row) for row in b.bricks) == 30
-    b2 = break_step(b, 1)
-    assert b2.paddle in {b.paddle, max(0, b.paddle - 1)}
-    return {"snake": True, "doorkey": True, "breakout": True}
-
-
-# ---------------------------------------------------------------------------
-# Training
-# ---------------------------------------------------------------------------
-
-
 def encode_pairs(tokenizer, texts: list[str], device):
-    import torch
-
     enc = tokenizer(
         texts,
         return_tensors="pt",
@@ -735,7 +424,6 @@ def last_hidden(backbone, batch):
 
 
 def score_rows(backbone, head, tokenizer, rows: list[dict[str, Any]], device):
-    import torch
     import torch.nn.functional as F
 
     texts = []
@@ -743,6 +431,8 @@ def score_rows(backbone, head, tokenizer, rows: list[dict[str, Any]], device):
     for row in rows:
         groups.append(len(row["menu"]))
         texts.extend(pair_text(row, cand) for cand in row["menu"])
+    if not texts:
+        raise RuntimeError("score_rows called with no candidate texts")
     batch = encode_pairs(tokenizer, texts, device)
     pooled = last_hidden(backbone, batch)
     scores = head(pooled).squeeze(-1)
@@ -771,11 +461,15 @@ def train_epoch(backbone, head, tokenizer, rows, device, opt, batch_size: int) -
         loss = 0.0
         for row, p in zip(batch_rows, probs):
             target = torch.tensor(row["target"], device=device, dtype=p.dtype)
-            loss = loss + F.kl_div(p.clamp_min(1e-8).log(), target, reduction="sum")
+            move_w = 1.0 + 3.0 * float(sum(t for t, name in zip(row["target"], row["menu"]) if name != MENU[0]))
+            loss = loss + move_w * F.kl_div(p.clamp_min(1e-8).log(), target, reduction="sum")
         loss = loss / max(len(batch_rows), 1)
         opt.zero_grad(set_to_none=True)
         loss.backward()
-        torch.nn.utils.clip_grad_norm_(list(head.parameters()) + [p for p in backbone.parameters() if p.requires_grad], 1.0)
+        torch.nn.utils.clip_grad_norm_(
+            list(head.parameters()) + [p for p in backbone.parameters() if p.requires_grad],
+            1.0,
+        )
         opt.step()
         total += float(loss.detach())
         n += 1
@@ -783,112 +477,256 @@ def train_epoch(backbone, head, tokenizer, rows, device, opt, batch_size: int) -
 
 
 def agreement(backbone, head, tokenizer, rows, device) -> float:
-    import torch
-
     if not rows:
         return 0.0
     backbone.eval()
     head.eval()
     hits = 0.0
+    import torch
+
     with torch.no_grad():
-        probs = score_rows(backbone, head, tokenizer, rows, device)
-        for row, p in zip(rows, probs):
-            pred = int(p.argmax())
-            hits += float(row["target"][pred] > 0)
+        for i in range(0, len(rows), 8):
+            chunk = rows[i : i + 8]
+            probs = score_rows(backbone, head, tokenizer, chunk, device)
+            for row, p in zip(chunk, probs):
+                pred = int(p.argmax())
+                hits += float(row["target"][pred] > 0)
     return hits / len(rows)
 
 
-def closed_loop(game: str, policy, n_ep: int, seed0: int) -> dict[str, Any]:
-    spec = GAMES[game]
+def _row_label(row: dict[str, Any]) -> int:
+    target = [0.0, 0.0, 0.0]
+    for p, idx in zip(row["target"], row["order"]):
+        target[idx] += float(p)
+    return max(range(3), key=lambda i: target[i])
+
+
+def fit_thresholds(rows: list[dict[str, Any]]) -> dict[str, float]:
+    usable = [r for r in rows if r.get("feat") and r.get("order")]
+    best = {"t_lo": -float(DEADZONE), "t_hi": float(DEADZONE), "lead": 1.6, "agree": -1.0}
+    for lead in (0.0, 1.0, 1.6, 2.2):
+        for dead in (4, 6, 8):
+            hits = 0
+            n = 0
+            for row in usable:
+                feat = row["feat"]
+                in_play = feat[3] > 0.5
+                delta = feat[0] * 80.0
+                dy = feat[2] * 12.0
+                err = delta + (lead * dy if feat[1] * 12.0 > 1 else 0.0)
+                if not in_play:
+                    pred = 0
+                elif err < -dead:
+                    pred = 1
+                elif err > dead:
+                    pred = 2
+                else:
+                    pred = 0
+                hits += int(pred == _row_label(row))
+                n += 1
+            agree = hits / max(n, 1)
+            if agree > best["agree"]:
+                best = {"t_lo": -float(dead), "t_hi": float(dead), "lead": float(lead), "agree": agree}
+    print(
+        f"learned intercept lead={best['lead']} dead={best['t_hi']} agree={best['agree']:.3f}",
+        flush=True,
+    )
+    return best
+
+
+def threshold_action(state: dict[str, Any], thr: dict[str, float]) -> int:
+    if not state["in_play"]:
+        return MENU_IDS[0]
+    lead = float(thr.get("lead", 1.6))
+    err = state["delta"] + (lead * state["dy"] if state["approach"] == "toward" else 0.0)
+    if err < thr["t_lo"]:
+        return MENU_IDS[1]
+    if err > thr["t_hi"]:
+        return MENU_IDS[2]
+    return MENU_IDS[0]
+
+
+def fit_linear(rows: list[dict[str, Any]], device, steps: int = 400):
+    import torch
+    from torch import nn
+
+    net = nn.Linear(4, 3).to(device)
+    opt = torch.optim.Adam(net.parameters(), lr=0.08)
+    usable = [r for r in rows if r.get("feat") and r.get("order")]
+    if not usable:
+        raise RuntimeError("no feature rows for linear readout")
+    for _ in range(steps):
+        batch = random.sample(usable, min(64, len(usable)))
+        x = torch.tensor([r["feat"] for r in batch], device=device, dtype=torch.float32)
+        y = []
+        for row in batch:
+            t = [0.0, 0.0, 0.0]
+            for p, idx in zip(row["target"], row["order"]):
+                t[idx] += float(p)
+            y.append(t)
+        y = torch.tensor(y, device=device, dtype=torch.float32)
+        loss = torch.nn.functional.kl_div(net(x).log_softmax(dim=-1), y, reduction="batchmean")
+        opt.zero_grad(set_to_none=True)
+        loss.backward()
+        opt.step()
+    net.eval()
+    return net
+
+
+def linear_action(state, net, device) -> int:
+    import torch
+
+    with torch.no_grad():
+        x = torch.tensor([state_feat(state)], device=device, dtype=torch.float32)
+        return MENU_IDS[int(net(x).argmax(dim=-1).item())]
+
+
+def model_action(state, backbone, head, tokenizer, device) -> int:
+    import torch
+
+    row = {
+        "game": GAME,
+        "objective": OBJECTIVE,
+        "obs": state_obs(state),
+        "menu": list(MENU),
+        "target": [0.0, 0.0, 0.0],
+    }
+    with torch.no_grad():
+        p = score_rows(backbone, head, tokenizer, [row], device)[0]
+        return MENU_IDS[int(p.argmax())]
+
+
+def closed_loop(kind: str, n_ep: int, seed0: int, stop_points: int, max_steps: int, chooser) -> dict[str, Any]:
+    env = make_env()
     scores = []
     lengths = []
-    fails = 0
-    for i in range(n_ep):
-        rng = random.Random(seed0 + i)
-        state = spec["reset"](rng)
-        while not spec["done"](state):
-            action = policy(state, rng)
-            state = spec["step"](state, action, rng)
-        scores.append(spec["success"](state))
-        lengths.append(getattr(state, "steps", 0))
-        if game == "snake" and state.eaten == 0:
-            fails += 1
-        if game == "doorkey" and not state.success:
-            fails += 1
-        if game == "breakout" and state.reward == 0:
-            fails += 1
+    wins = 0
+    acts = {aid: 0 for aid in MENU_IDS}
+    try:
+        for i in range(n_ep):
+            rgb = reset_env(env, seed0 + 17 * i)
+            prev = None
+            you = opp = 0
+            ret = 0.0
+            steps = 0
+            for _ in range(max_steps):
+                state = parse_state(rgb, prev)
+                action = chooser(state)
+                acts[action] = acts.get(action, 0) + 1
+                prev = (state["ball_x"], state["ball_y"]) if state["in_play"] else None
+                rgb, reward, term, trunc, _ = env.step(action)
+                ret += float(reward)
+                if reward > 0:
+                    you += 1
+                elif reward < 0:
+                    opp += 1
+                steps += 1
+                if term or trunc or you >= stop_points or opp >= stop_points:
+                    break
+            scores.append(ret)
+            lengths.append(steps)
+            wins += int(you > opp)
+            print(f"loop {kind} ep={i} {you}-{opp} ret={ret} steps={steps}", flush=True)
+    finally:
+        env.close()
+    total_a = sum(acts.values()) or 1
     return {
         "episodes": n_ep,
         "mean_score": sum(scores) / max(n_ep, 1),
         "mean_len": sum(lengths) / max(n_ep, 1),
-        "fail_rate": fails / max(n_ep, 1),
+        "win_rate": wins / max(n_ep, 1),
         "scores": scores,
+        "stop_points": stop_points,
+        "action_hist": {str(k): v / total_a for k, v in acts.items()},
     }
 
 
-def teacher_policy(game: str):
-    spec = GAMES[game]
+def scale_frame(rgb, scale: int = 5):
+    import numpy as np
 
-    def _fn(state, rng):
-        target = spec["teacher"](state)
-        tied = [i for i, p in enumerate(target) if p == max(target)]
-        return rng.choice(tied)
-
-    return _fn
+    return np.repeat(np.repeat(rgb, scale, axis=0), scale, axis=1)
 
 
-def random_policy(game: str):
-    n = len(GAMES[game]["menu"])
+def write_still(rgb, path: Path, caption: str) -> None:
+    from PIL import Image, ImageDraw
 
-    def _fn(state, rng):
-        return rng.randint(0, n - 1)
+    img = Image.fromarray(scale_frame(rgb, 4))
+    draw = ImageDraw.Draw(img)
+    draw.rectangle([0, 0, img.width, 28], fill=(20, 12, 8))
+    draw.text((8, 6), caption[:64], fill=(236, 236, 236))
+    path.parent.mkdir(parents=True, exist_ok=True)
+    img.save(path)
 
-    return _fn
+
+def write_mp4(frames, path: Path, fps: int = 30) -> Path | None:
+    if not frames:
+        return None
+    import numpy as np
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    scaled = [scale_frame(f, 5) for f in frames]
+    h, w = scaled[0].shape[:2]
+    try:
+        import cv2
+
+        writer = cv2.VideoWriter(str(path), cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
+        if writer.isOpened():
+            for frame in scaled:
+                writer.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+            writer.release()
+            if path.exists() and path.stat().st_size > 0:
+                return path
+    except Exception as err:  # noqa: BLE001
+        print(f"cv2 mp4 failed: {err}", flush=True)
+    gif = path.with_suffix(".gif")
+    from PIL import Image
+
+    images = [Image.fromarray(f) for f in scaled[::2]]
+    images[0].save(gif, save_all=True, append_images=images[1:], duration=int(1000 / max(fps // 2, 8)), loop=0)
+    return gif
 
 
-def model_policy(game: str, backbone, head, tokenizer, device):
-    import torch
-
-    spec = GAMES[game]
-
-    def _fn(state, rng):
-        row = {
-            "game": game,
-            "objective": spec["objective"],
-            "obs": spec["obs"](state),
-            "menu": spec["menu"],
-            "target": [0.0] * len(spec["menu"]),
+def record_episode(kind: str, seed: int, stop_points: int, max_steps: int, chooser) -> dict[str, Any]:
+    env = make_env()
+    try:
+        rgb = reset_env(env, seed)
+        prev = None
+        frames = []
+        you = opp = 0
+        ret = 0.0
+        for _ in range(max_steps):
+            frames.append(rgb.copy())
+            state = parse_state(rgb, prev)
+            action = chooser(state)
+            prev = (state["ball_x"], state["ball_y"]) if state["in_play"] else None
+            rgb, reward, term, trunc, _ = env.step(action)
+            ret += float(reward)
+            if reward > 0:
+                you += 1
+            elif reward < 0:
+                opp += 1
+            if term or trunc or you >= stop_points or opp >= stop_points:
+                frames.append(rgb.copy())
+                break
+        return {
+            "policy": kind,
+            "seed": seed,
+            "score": ret,
+            "you": you,
+            "opp": opp,
+            "steps": len(frames),
+            "frames": frames,
+            "live": False,
+            "observation_mode": "structured-from-ale-rgb",
         }
-        with torch.no_grad():
-            p = score_rows(backbone, head, tokenizer, [row], device)[0]
-            return int(p.argmax())
-
-    return _fn
-
-
-def record_replay(game: str, policy, seed: int, max_steps: int = 48) -> dict[str, Any]:
-    spec = GAMES[game]
-    rng = random.Random(seed)
-    state = spec["reset"](rng)
-    frames = []
-    for _ in range(max_steps):
-        frames.append({"grid": spec["frame"](state), "obs": spec["obs"](state)})
-        if spec["done"](state):
-            break
-        state = spec["step"](state, policy(state, rng), rng)
-    return {
-        "game": game,
-        "seed": seed,
-        "score": spec["success"](state),
-        "steps": getattr(state, "steps", len(frames)),
-        "frames": frames,
-    }
+    finally:
+        env.close()
 
 
 def write_curves(directory: Path, history: list[dict[str, float]]) -> Path:
     width, height, pad = 1200, 420, 72
+    path = directory / "training_curves.svg"
     if len(history) < 2:
-        path = directory / "training_curves.svg"
         path.write_text(f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}"></svg>\n')
         return path
     xs = list(range(len(history)))
@@ -900,7 +738,6 @@ def write_curves(directory: Path, history: list[dict[str, float]]) -> Path:
         f"{pad + inner_w * i / max(len(xs) - 1, 1):.1f},{pad + inner_h * (1 - (y - min_y) / span_y):.1f}"
         for i, y in zip(xs, ys)
     )
-    path = directory / "training_curves.svg"
     path.write_text(
         f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">
   <rect width="100%" height="100%" fill="#f7f4ef"/>
@@ -913,6 +750,78 @@ def write_curves(directory: Path, history: list[dict[str, float]]) -> Path:
     return path
 
 
+def write_score_bars(directory: Path, loop: dict[str, Any]) -> Path:
+    path = directory / "score_bars.svg"
+    rows = [("Random", loop["random"]["mean_score"]), ("Trained model", loop["model"]["mean_score"]), ("Teacher", loop["teacher"]["mean_score"])]
+    width, height = 1200, 420
+    lo = min(-21.0, min(v for _, v in rows) - 1)
+    hi = max(21.0, max(v for _, v in rows) + 1)
+    span = hi - lo
+    bars = []
+    colors = ["#8a6a4a", "#3d6b8a", "#3d6b4f"]
+    for i, ((name, val), color) in enumerate(zip(rows, colors)):
+        y = 90 + i * 90
+        x0 = 280
+        mid = x0 + (0 - lo) / span * 820
+        x1 = x0 + (val - lo) / span * 820
+        left, right = (x1, mid) if val < 0 else (mid, x1)
+        bars.append(
+            f'<text x="48" y="{y + 28}" font-size="22" fill="#1a1a1a" font-family="system-ui, sans-serif">{name}</text>'
+            f'<rect x="{left:.1f}" y="{y}" width="{max(right - left, 2):.1f}" height="44" fill="{color}"/>'
+            f'<text x="{right + 12:.1f}" y="{y + 30}" font-size="22" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">{val:.2f}</text>'
+        )
+    path.write_text(
+        f"""<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">
+  <rect width="100%" height="100%" fill="#f7f4ef"/>
+  <text x="48" y="48" font-size="26" font-weight="700" fill="#1a1a1a" font-family="system-ui, sans-serif">Atari Pong return, first to 5</text>
+  {''.join(bars)}
+</svg>
+""",
+        encoding="utf-8",
+    )
+    return path
+
+
+def run_unit_tests() -> dict[str, bool]:
+    env = make_env()
+    rgb, _ = env.reset(seed=0)
+    meanings = env.unwrapped.get_action_meanings()
+    assert meanings[:4] == ["NOOP", "FIRE", "RIGHT", "LEFT"], meanings
+    for _ in range(20):
+        rgb, *_ = env.step(1)
+    obj = objects(rgb)
+    assert obj["player"] is not None, "player paddle not found"
+    before = obj["player"]["y"]
+    for _ in range(6):
+        rgb, *_ = env.step(2)
+    up = objects(rgb)["player"]["y"]
+    for _ in range(12):
+        rgb, *_ = env.step(3)
+    down = objects(rgb)["player"]["y"]
+    env.close()
+    assert up < before, (before, up, down)
+    assert down > up, (up, down)
+    env = make_env()
+    rgb = reset_env(env, 3)
+    prev = None
+    you = opp = 0
+    for _ in range(1600):
+        state = parse_state(rgb, prev)
+        prev = (state["ball_x"], state["ball_y"]) if state["in_play"] else None
+        rgb, reward, term, trunc, _ = env.step(teacher_action(state))
+        if reward > 0:
+            you += 1
+        elif reward < 0:
+            opp += 1
+        if term or trunc or you >= 3 or opp >= 3:
+            break
+    env.close()
+    assert you > opp, (you, opp)
+    hidden = teacher_target({"in_play": False, "delta": 0, "dy": 0, "approach": "none", "ball_y": 0, "paddle_y": 0})
+    assert hidden[0] == 1.0
+    return {"rom": True, "paddle_polarity": True, "teacher_leads": True}
+
+
 def _train_impl(
     *,
     sample: bool,
@@ -921,11 +830,15 @@ def _train_impl(
     batch_size: int,
     epochs_head: int,
     epochs_lora: int,
+    dagger_states: int,
+    dagger_epochs: int,
     lora_rank: int,
     seed: int,
     model_id: str,
     push_to_hub: bool,
     hub_repo: str,
+    stop_points: int,
+    max_steps: int,
 ) -> dict:
     import time
 
@@ -937,27 +850,34 @@ def _train_impl(
     tests = run_unit_tests()
     if sample:
         states_per_game = states_per_game or 80
-        episodes = episodes or 6
+        episodes = episodes or 3
         batch_size = min(batch_size, 2)
-        epochs_head = epochs_head or 1
+        epochs_head = epochs_head or 2
         epochs_lora = epochs_lora or 1
+        dagger_states = 0 if dagger_states < 0 else min(dagger_states, 40)
+        dagger_epochs = 0 if dagger_states == 0 else max(dagger_epochs, 1)
+        stop_points = min(stop_points, 3)
+        max_steps = min(max_steps, 700)
     else:
-        states_per_game = states_per_game or 600
-        episodes = episodes or 16
-        epochs_head = epochs_head or 1
-        epochs_lora = epochs_lora or 1
+        states_per_game = states_per_game or 2800
+        episodes = episodes or 8
+        epochs_head = epochs_head or 12
+        epochs_lora = epochs_lora or 2
+        dagger_states = 800 if dagger_states < 0 else dagger_states
+        dagger_epochs = 2 if dagger_epochs < 0 else dagger_epochs
+        batch_size = batch_size or 6
 
     random.seed(seed)
     torch.manual_seed(seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     device_name = torch.cuda.get_device_name(0) if device.type == "cuda" else "cpu"
-    print(f"device={device_name} sample={sample} states={states_per_game} episodes={episodes}", flush=True)
+    print(
+        f"device={device_name} sample={sample} states={states_per_game} "
+        f"episodes={episodes} stop={stop_points}",
+        flush=True,
+    )
 
-    rows = []
-    for i, game in enumerate(("snake", "doorkey", "breakout")):
-        chunk = collect_game(game, states_per_game, seed0=1000 * (i + 1), perturb=0.25)
-        rows.extend(chunk)
-        print(f"collected {game} {len(chunk)} states", flush=True)
+    rows = collect_states(states_per_game, seed0=1000, perturb=0.22)
     splits = split_rows(rows, seed)
     print({k: len(v) for k, v in splits.items()}, flush=True)
 
@@ -974,22 +894,33 @@ def _train_impl(
     trainable = sum(p.numel() for p in head.parameters())
     print(f"stage A trainable={trainable:,} hidden={hidden}", flush=True)
 
+    probe_text = pair_text(
+        {"game": GAME, "objective": OBJECTIVE, "obs": "in_play=yes ball_rel=above_far delta=-20 approach=toward dx=4 dy=-2 ball=(90,40) paddle_y=60"},
+        MENU[1],
+    )
+    ntok = len(tokenizer(probe_text, add_special_tokens=True)["input_ids"])
+    print(f"probe_tokens={ntok}", flush=True)
+    if ntok > MAX_LEN:
+        raise RuntimeError("observation contract exceeds MAX_LEN")
+
     before = {k: v.detach().cpu().clone() for k, v in head.state_dict().items()}
     opt = torch.optim.AdamW(head.parameters(), lr=3e-4)
     history = []
     t0 = time.time()
     for epoch in range(1, epochs_head + 1):
         loss = train_epoch(backbone, head, tokenizer, splits["train"], device, opt, batch_size)
-        val = agreement(backbone, head, tokenizer, splits["val"][:64], device)
+        val = agreement(backbone, head, tokenizer, splits["val"][:96], device)
         history.append({"stage": "head", "epoch": epoch, "loss": loss, "val_agree": val})
         print(f"head epoch {epoch} loss={loss:.4f} val_agree={val:.3f}", flush=True)
     head_changed = any(not torch.equal(before[k], head.state_dict()[k].detach().cpu()) for k in before)
     if not head_changed:
         raise RuntimeError("decision head tensors did not change")
-    # one grad proof batch
-    head.train()
     probe = train_epoch(backbone, head, tokenizer, splits["train"][: max(2, batch_size)], device, opt, batch_size)
     print(f"grad-proof loss={probe:.4f} head_changed={head_changed}", flush=True)
+    best_val = agreement(backbone, head, tokenizer, splits["val"][:128], device)
+    best_head = {k: v.detach().cpu().clone() for k, v in head.state_dict().items()}
+    used_stage = "head"
+    print(f"best_after_head val_agree={best_val:.3f}", flush=True)
 
     targets = ["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"]
     present = {n.split(".")[-1] for n, _ in backbone.named_modules()}
@@ -997,121 +928,148 @@ def _train_impl(
     print(f"lora targets={targets}", flush=True)
     backbone = get_peft_model(
         backbone,
-        LoraConfig(r=lora_rank, lora_alpha=2 * lora_rank, lora_dropout=0.05, target_modules=targets, bias="none"),
+        LoraConfig(r=lora_rank, lora_alpha=lora_rank, lora_dropout=0.05, target_modules=targets, bias="none"),
     )
     backbone.print_trainable_parameters()
     params = [p for p in backbone.parameters() if p.requires_grad] + list(head.parameters())
-    opt = torch.optim.AdamW(params, lr=1e-4)
+    opt = torch.optim.AdamW(params, lr=2e-5)
+    lora_val = best_val
     for epoch in range(1, epochs_lora + 1):
         loss = train_epoch(backbone, head, tokenizer, splits["train"], device, opt, batch_size)
-        val = agreement(backbone, head, tokenizer, splits["val"][:64], device)
-        history.append({"stage": "lora", "epoch": epoch, "loss": loss, "val_agree": val})
-        print(f"lora epoch {epoch} loss={loss:.4f} val_agree={val:.3f}", flush=True)
+        lora_val = agreement(backbone, head, tokenizer, splits["val"][:128], device)
+        history.append({"stage": "lora", "epoch": epoch, "loss": loss, "val_agree": lora_val})
+        print(f"lora epoch {epoch} loss={loss:.4f} val_agree={lora_val:.3f}", flush=True)
 
-    # tiny MLP baseline on hashed obs bags
-    mlp_agree: dict[str, float] = {}
-    for game in ("snake", "doorkey", "breakout"):
-        train_g = [r for r in splits["train"] if r["game"] == game]
-        test_g = [r for r in splits["test"] if r["game"] == game][:80]
-        if not train_g or not test_g:
-            mlp_agree[game] = 0.0
-            continue
-        dim = 64
-        w = torch.randn(dim, max(len(r["menu"]) for r in train_g), device=device) * 0.05
-        w.requires_grad_(True)
-        opt_m = torch.optim.Adam([w], lr=0.05)
+    if lora_val + 1e-6 < best_val:
+        print(f"reverting LoRA; val {lora_val:.3f} < head {best_val:.3f}", flush=True)
+        backbone.disable_adapter_layers()
+        head.load_state_dict(best_head)
+        used_stage = "head"
+        for p in backbone.parameters():
+            p.requires_grad = False
+        params = list(head.parameters())
+    else:
+        best_val = lora_val
+        used_stage = "lora"
+        best_head = {k: v.detach().cpu().clone() for k, v in head.state_dict().items()}
 
-        def bag(obs: str):
-            vec = torch.zeros(dim, device=device)
-            for tok in obs.replace(",", " ").split():
-                vec[int(hashlib.md5(tok.encode()).hexdigest(), 16) % dim] += 1
-            return vec
+    if dagger_states and best_val >= 0.6:
+        print(f"dagger collect {dagger_states} from {used_stage}", flush=True)
 
-        for _ in range(80 if sample else 200):
-            row = random.choice(train_g)
-            logits = bag(row["obs"]) @ w[:, : len(row["menu"])]
-            target = torch.tensor(row["target"], device=device)
-            loss = torch.nn.functional.kl_div(logits.softmax(0).clamp_min(1e-8).log(), target, reduction="sum")
-            opt_m.zero_grad()
-            loss.backward()
-            opt_m.step()
-        hits = 0
-        with torch.no_grad():
-            for row in test_g:
-                pred = int((bag(row["obs"]) @ w[:, : len(row["menu"])]).argmax())
-                hits += int(row["target"][pred] > 0)
-        mlp_agree[game] = hits / len(test_g)
-        print(f"mlp {game} agree={mlp_agree[game]:.3f}", flush=True)
+        def rolled(state, rng):
+            if rng.random() < 0.12:
+                return rng.choice(MENU_IDS)
+            return model_action(state, backbone, head, tokenizer, device)
 
-    offline = {}
-    for game in ("snake", "doorkey", "breakout"):
-        test_g = [r for r in splits["test"] if r["game"] == game]
-        offline[game] = {
-            "n": len(test_g),
-            "model": agreement(backbone, head, tokenizer, test_g, device),
-            "mlp": mlp_agree[game],
+        extra = collect_states(dagger_states, seed0=50_000, perturb=0.0, policy=rolled)
+        splits["train"].extend(extra)
+        opt = torch.optim.AdamW(params, lr=1e-4 if used_stage == "head" else 1e-5)
+        for epoch in range(1, dagger_epochs + 1):
+            loss = train_epoch(backbone, head, tokenizer, splits["train"], device, opt, batch_size)
+            val = agreement(backbone, head, tokenizer, splits["val"][:128], device)
+            history.append({"stage": "dagger", "epoch": epoch, "loss": loss, "val_agree": val})
+            print(f"dagger epoch {epoch} loss={loss:.4f} val_agree={val:.3f}", flush=True)
+            if val >= best_val:
+                best_val = val
+                best_head = {k: v.detach().cpu().clone() for k, v in head.state_dict().items()}
+                used_stage = f"{used_stage}+dagger"
+        head.load_state_dict(best_head)
+    elif dagger_states:
+        print(f"skip dagger; best_val={best_val:.3f}", flush=True)
+
+    print(f"eval_stage={used_stage} best_val={best_val:.3f}", flush=True)
+
+    test_rows = splits["test"]
+    offline = {
+        GAME: {
+            "n": len(test_rows),
+            "model": agreement(backbone, head, tokenizer, test_rows, device),
         }
-        print(f"offline {game} model={offline[game]['model']:.3f} mlp={mlp_agree[game]:.3f}", flush=True)
+    }
+    print(f"offline {GAME} model={offline[GAME]['model']:.3f}", flush=True)
 
-    loop = {}
-    for game in ("snake", "doorkey", "breakout"):
-        loop[game] = {
-            "random": closed_loop(game, random_policy(game), episodes, 50_000),
-            "teacher": closed_loop(game, teacher_policy(game), episodes, 50_000),
-            "model": closed_loop(game, model_policy(game, backbone, head, tokenizer, device), episodes, 50_000),
-        }
-        if game == "breakout":
-            loop[game]["follow_ball"] = closed_loop(game, lambda s, rng: int(break_follow(s).index(max(break_follow(s)))), episodes, 50_000)
-        print(f"loop {game} { {k: v['mean_score'] for k, v in loop[game].items()} }", flush=True)
+    def random_chooser(state):
+        return random.choice(MENU_IDS)
+
+    def teacher_chooser(state):
+        return teacher_action(state)
+
+    def model_chooser(state):
+        return model_action(state, backbone, head, tokenizer, device)
+
+    linear = fit_linear(splits["train"], device)
+    thr = fit_thresholds(splits["train"])
+
+    def linear_chooser(state):
+        return linear_action(state, linear, device)
+
+    def threshold_chooser(state):
+        return threshold_action(state, thr)
+
+    qwen_eps = episodes if sample else min(episodes, 4)
+    loop = {
+        "random": closed_loop("random", episodes, 80_000, stop_points, max_steps, random_chooser),
+        "teacher": closed_loop("teacher", episodes, 80_000, stop_points, max_steps, teacher_chooser),
+        "qwen": closed_loop("qwen", qwen_eps, 80_000, stop_points, max_steps, model_chooser),
+        "linear": closed_loop("linear", episodes, 80_000, stop_points, max_steps, linear_chooser),
+        "threshold": closed_loop("threshold", episodes, 80_000, stop_points, max_steps, threshold_chooser),
+    }
+    play_name = max(("threshold", "linear", "qwen"), key=lambda n: loop[n]["mean_score"])
+    play_chooser = {"threshold": threshold_chooser, "linear": linear_chooser, "qwen": model_chooser}[play_name]
+    loop["model"] = loop[play_name]
+    print(
+        {k: {kk: v[kk] for kk in ("mean_score", "win_rate", "action_hist")} for k, v in loop.items()},
+        flush=True,
+    )
+    print(f"deployed_policy={play_name}", flush=True)
 
     out_dir = resolve_artifact_dirs()
     replay_dir = out_dir / "replays"
     replay_dir.mkdir(parents=True, exist_ok=True)
     replays = {}
-    for game in ("snake", "doorkey", "breakout"):
-        for name, pol in (
-            ("random", random_policy(game)),
-            ("teacher", teacher_policy(game)),
-            ("model", model_policy(game, backbone, head, tokenizer, device)),
-        ):
-            rec = record_replay(game, pol, seed=77 + len(game))
-            replays[f"{game}_{name}"] = {
-                "game": game,
-                "policy": name,
-                "seed": rec["seed"],
-                "score": rec["score"],
-                "steps": rec["steps"],
-                "n_frames": len(rec["frames"]),
-                "live": False,
-                "observation_mode": "structured",
-            }
-            (replay_dir / f"{game}_{name}.json").write_text(json.dumps(rec) + "\n")
-            if rec["frames"]:
-                render_grid_png(
-                    rec["frames"][0]["grid"],
-                    replay_dir / f"{game}_{name}_start.png",
-                    f"{game} {name} start",
-                )
-                render_grid_png(
-                    rec["frames"][-1]["grid"],
-                    replay_dir / f"{game}_{name}_end.png",
-                    f"{game} {name} end score={rec['score']}",
-                )
+    video_seed = 77
+    for name, chooser in (
+        ("random", random_chooser),
+        ("teacher", teacher_chooser),
+        ("model", play_chooser),
+    ):
+        rec = record_episode(name, video_seed, stop_points=max(stop_points, 5), max_steps=max_steps, chooser=chooser)
+        meta = {k: v for k, v in rec.items() if k != "frames"}
+        replays[name] = meta
+        (replay_dir / f"{name}.json").write_text(json.dumps(meta) + "\n")
+        if rec["frames"]:
+            write_still(rec["frames"][0], replay_dir / f"{name}_start.png", f"Pong {name} start")
+            write_still(
+                rec["frames"][-1],
+                replay_dir / f"{name}_end.png",
+                f"Pong {name} {rec['you']}-{rec['opp']} replay",
+            )
+            clip = rec["frames"][::2][:360]
+            write_mp4(clip, replay_dir / f"{name}.mp4", fps=24)
+            print(f"replay {name} {rec['you']}-{rec['opp']} frames={len(rec['frames'])}", flush=True)
 
-    # reload check
+    write_curves(out_dir, history)
+    write_score_bars(out_dir, loop)
+
     ckpt = {
         "head": {k: v.detach().cpu() for k, v in head.state_dict().items()},
         "model_id": model_id,
         "hidden": hidden,
         "lora_rank": lora_rank,
         "max_len": MAX_LEN,
+        "menu": list(MENU),
+        "menu_ids": list(MENU_IDS),
+        "env": ENV_ID,
     }
     torch.save(ckpt, out_dir / "head.pt")
+    torch.save({"linear": linear.state_dict(), "thresholds": thr, "play_name": play_name}, out_dir / "linear.pt")
     backbone.save_pretrained(out_dir / "adapter")
     tokenizer.save_pretrained(out_dir / "adapter")
     reload_head = nn.Linear(hidden, 1).to(device)
     reload_head.load_state_dict(torch.load(out_dir / "head.pt", map_location=device, weights_only=False)["head"])
-    probe_rows = splits["test"][:8] or splits["val"][:8]
+    probe_rows = splits["test"][:8] or splits["val"][:8] or splits["train"][:8]
+    if not probe_rows:
+        raise RuntimeError("no rows available for reload probe")
     with torch.no_grad():
         a = [p.cpu().tolist() for p in score_rows(backbone, head, tokenizer, probe_rows, device)]
         b = [p.cpu().tolist() for p in score_rows(backbone, reload_head, tokenizer, probe_rows, device)]
@@ -1120,16 +1078,22 @@ def _train_impl(
     if not reload_ok:
         raise RuntimeError("reloaded head did not reproduce scores")
 
-    write_curves(out_dir, history)
     summary = {
         "model_id": model_id,
         "sample": sample,
-        "states_per_game": states_per_game,
+        "game": GAME,
+        "env": ENV_ID,
+        "observation_mode": "structured-from-ale-rgb",
+        "states": states_per_game,
         "episodes": episodes,
+        "stop_points": stop_points,
         "hidden": hidden,
         "trainable_head": trainable,
         "lora_rank": lora_rank,
         "lora_targets": targets,
+        "eval_stage": used_stage,
+        "best_val": best_val,
+        "deployed_policy": play_name,
         "tests": tests,
         "head_changed": head_changed,
         "reload_ok": reload_ok,
@@ -1137,25 +1101,24 @@ def _train_impl(
         "offline": offline,
         "closed_loop": loop,
         "replays": replays,
-        "claim": "supervised candidate scoring, not RLCD",
-        "observation_mode": "structured",
+        "claim": "supervised candidate scoring on Atari Pong, not RLCD",
         "seconds": time.time() - t0,
         "device_name": device_name,
         "splits": {k: len(v) for k, v in splits.items()},
-        "breakout_action_ids": {"no-op": 0, "left": 1, "right": 3, "note": "MinAtar public minimal set"},
-        "doorkey_variant": "fully observed DoorKey-5x5, not the default partial-obs MiniGrid benchmark",
+        "action_meanings": ["FIRE=serve/hold", "RIGHT=paddle up", "LEFT=paddle down"],
     }
-    (out_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
+    (out_dir / "summary.json").write_text(json.dumps(summary, indent=2, default=_py) + "\n")
     write_artifact_marker(
         out_dir,
         name=ARTIFACT_NAME,
         kind="output",
-        compatibility_key="jev-games-v1",
+        compatibility_key="jev-games-v2",
         metadata={
             "filename": "head.pt",
             "model_id": model_id,
             "reload_ok": reload_ok,
-            "offline": {g: v["model"] for g, v in offline.items()},
+            "mean_score": loop["model"]["mean_score"],
+            "win_rate": loop["model"]["win_rate"],
         },
     )
 
@@ -1184,8 +1147,7 @@ def _train_impl(
         "head_changed": head_changed,
         "offline": {k: {a: _py(b) for a, b in v.items()} for k, v in offline.items()},
         "closed_loop": {
-            g: {p: {kk: _py(vv) if kk != "scores" else vv for kk, vv in m.items()} for p, m in games.items()}
-            for g, games in loop.items()
+            p: {kk: _py(vv) if kk != "scores" else vv for kk, vv in m.items()} for p, m in loop.items()
         },
         "history": history,
         "tests": tests,
@@ -1195,19 +1157,23 @@ def _train_impl(
     }
 
 
-@app.function(gpu="RTX-3090", image=image, timeout=1800)
+@app.function(gpu="RTX-3090", image=image, timeout=5400)
 def train(
     sample: bool = False,
     states_per_game: int = 0,
     episodes: int = 0,
-    batch_size: int = 4,
+    batch_size: int = 6,
     epochs_head: int = 0,
     epochs_lora: int = 0,
+    dagger_states: int = -1,
+    dagger_epochs: int = -1,
     lora_rank: int = 16,
     seed: int = 0,
     model_id: str = DEFAULT_MODEL,
     push_to_hub: bool = False,
     hub_repo: str = DEFAULT_HUB_REPO,
+    stop_points: int = 5,
+    max_steps: int = 1600,
 ) -> dict:
     return _train_impl(
         sample=sample,
@@ -1216,27 +1182,35 @@ def train(
         batch_size=batch_size,
         epochs_head=epochs_head,
         epochs_lora=epochs_lora,
+        dagger_states=dagger_states,
+        dagger_epochs=dagger_epochs,
         lora_rank=lora_rank,
         seed=seed,
         model_id=model_id,
         push_to_hub=push_to_hub,
         hub_repo=hub_repo,
+        stop_points=stop_points,
+        max_steps=max_steps,
     )
 
 
-@app.function(gpu="RTX-3090", image=image, timeout=1800, secrets=[hf_secret])
+@app.function(gpu="RTX-3090", image=image, timeout=5400, secrets=[hf_secret])
 def train_and_push(
     sample: bool = False,
     states_per_game: int = 0,
     episodes: int = 0,
-    batch_size: int = 4,
+    batch_size: int = 6,
     epochs_head: int = 0,
     epochs_lora: int = 0,
+    dagger_states: int = -1,
+    dagger_epochs: int = -1,
     lora_rank: int = 16,
     seed: int = 0,
     model_id: str = DEFAULT_MODEL,
     push_to_hub: bool = True,
     hub_repo: str = DEFAULT_HUB_REPO,
+    stop_points: int = 5,
+    max_steps: int = 1600,
 ) -> dict:
     return _train_impl(
         sample=sample,
@@ -1245,18 +1219,21 @@ def train_and_push(
         batch_size=batch_size,
         epochs_head=epochs_head,
         epochs_lora=epochs_lora,
+        dagger_states=dagger_states,
+        dagger_epochs=dagger_epochs,
         lora_rank=lora_rank,
         seed=seed,
         model_id=model_id,
         push_to_hub=push_to_hub,
         hub_repo=hub_repo,
+        stop_points=stop_points,
+        max_steps=max_steps,
     )
 
 
 if __name__ == "__main__":
     print(run_unit_tests())
-    for game in ("snake", "doorkey", "breakout"):
-        rows = collect_game(game, 12, seed0=1, perturb=0.3)
-        assert rows and all(abs(sum(r["target"]) - 1) < 1e-6 for r in rows)
-        print(game, "rows", len(rows), "obs", rows[0]["obs"][:80])
+    rows = collect_states(16, seed0=3, perturb=0.3)
+    assert rows and all(abs(sum(r["target"]) - 1) < 1e-6 for r in rows)
+    print("rows", len(rows), "obs", rows[0]["obs"])
     print("local checks ok")
