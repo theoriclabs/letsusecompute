@@ -7,3 +7,7 @@ weights/
 *.pt
 .env
 posts/jev-games/assets/results/run84/
+posts/jev-doom/assets/results/run*/
+posts/jev-doom/assets/replays/*.mp4
+posts/jev-doom/_vizdoom.ini
+_vizdoom.ini

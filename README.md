@@ -6,6 +6,7 @@ One repo for the site and the training files. Each post is a folder under `posts
 
 | Post | Guide | Code |
 |---|---|---|
+| Jev Doom / ViZDoom | [letsusecompute.com/posts/jev-doom](https://letsusecompute.com/posts/jev-doom) | [`posts/jev-doom`](posts/jev-doom) |
 | Jev games / Atari Pong | [letsusecompute.com/posts/jev-games](https://letsusecompute.com/posts/jev-games) | [`posts/jev-games`](posts/jev-games) |
 | Text compressor | [letsusecompute.com/posts/text-compressor](https://letsusecompute.com/posts/text-compressor) | [`posts/text-compressor`](posts/text-compressor) |
 | AI-text detector | [letsusecompute.com/posts/ai-text-detector](https://letsusecompute.com/posts/ai-text-detector) | [`posts/ai-text-detector`](posts/ai-text-detector) |

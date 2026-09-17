@@ -161,3 +161,21 @@ Guide: https://letsusecompute.com/posts/jev-games
 #MachineLearning #GPUComputing
 
 ---
+
+## 2026-09-17 — Jev Doom
+
+Draft (post when the live guide URL is the one you want people to open):
+
+---
+
+Post #9: real Doom. Pong still looked like a toy.
+
+ViZDoom Defend the Center. Freedoom frames. Structured monster bearings from the engine, not pixels. A fitted 8° aim cone averages 9 kills. Random averages 1.1. Qwen2.5-0.5B copies 66% of a sample and never fires.
+
+The video is a recorded engine replay, not live inference. $0.05 this revision.
+
+Guide: https://letsusecompute.com/posts/jev-doom
+
+#MachineLearning #GPUComputing
+
+---
