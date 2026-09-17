@@ -4,7 +4,7 @@ Real ViZDoom Defend the Center. Freedoom frames. Structured monster bearings fro
 
 Combined guide: https://letsusecompute.com/posts/jev-games/#doom
 
-The former Doom article now redirects to the combined Pong + Doom guide. Its synchronized decision video is built by [`../jev-games/assets/make_video.py`](../jev-games/assets/make_video.py). This directory retains the standalone Doom training script and original run evidence.
+The former Doom article now redirects to the combined Doom + Pong guide. Its synchronized decision video is built by [`../jev-games/assets/make_video.py`](../jev-games/assets/make_video.py). This directory retains the standalone Doom training script and original run evidence.
 
 ## Quick start
 

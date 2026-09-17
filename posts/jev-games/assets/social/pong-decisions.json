@@ -1,0 +1,3523 @@
+{
+  "fps": 20,
+  "frames_per_decision": 4,
+  "provenance": {
+    "policy": "fitted_rule"
+  },
+  "description": "Recorded fitted-controller actions; no neural probabilities.",
+  "clips": [
+    {
+      "game": "pong",
+      "seed": 77,
+      "policy": "fitted_rule",
+      "parameters": {
+        "t_lo": -6.0,
+        "t_hi": 6.0,
+        "lead": 1.6
+      },
+      "source_sha256": "eaa95bb4eb871a7cae3f246b9e5d5a5dc67cfe0e28742472ad0a49cbc0b63d10",
+      "starts_at_seconds": 0.0,
+      "decisions": [
+        {
+          "frame": 0,
+          "state": {
+            "in_play": true,
+            "delta": 96.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "below_far",
+            "approach": "none",
+            "ball_x": 49.5,
+            "ball_y": 111.5,
+            "paddle_y": 15.5,
+            "obj": {
+              "ball": {
+                "x": 49.5,
+                "y": 111.5,
+                "ymin": 110.0,
+                "ymax": 113.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 15.5,
+                "ymin": 8.0,
+                "ymax": 23.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 116.5,
+                "ymin": 109.0,
+                "ymax": 124.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 0,
+          "at_seconds": 0.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "9767ab0fa5997e7b50a4831187e4821b9de821a830c77a77a1683ff0d85b784a"
+        },
+        {
+          "frame": 1,
+          "state": {
+            "in_play": true,
+            "delta": 102.0,
+            "dx": -4.0,
+            "dy": 4.0,
+            "rel": "below_far",
+            "approach": "away",
+            "ball_x": 45.5,
+            "ball_y": 115.5,
+            "paddle_y": 13.5,
+            "obj": {
+              "ball": {
+                "x": 45.5,
+                "y": 115.5,
+                "ymin": 114.0,
+                "ymax": 117.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 13.5,
+                "ymin": 6.0,
+                "ymax": 21.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 120.5,
+                "ymin": 113.0,
+                "ymax": 128.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 4,
+          "at_seconds": 0.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "b42c18bfccf019bf65c352f59866f4a2fb42df53f5bf33d8541423c37e1e1c77"
+        },
+        {
+          "frame": 2,
+          "state": {
+            "in_play": true,
+            "delta": 90.0,
+            "dx": -4.0,
+            "dy": 4.0,
+            "rel": "below_far",
+            "approach": "away",
+            "ball_x": 41.5,
+            "ball_y": 119.5,
+            "paddle_y": 29.5,
+            "obj": {
+              "ball": {
+                "x": 41.5,
+                "y": 119.5,
+                "ymin": 118.0,
+                "ymax": 121.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 29.5,
+                "ymin": 22.0,
+                "ymax": 37.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 124.5,
+                "ymin": 117.0,
+                "ymax": 132.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 8,
+          "at_seconds": 0.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "dd5de77433628e295992f23b81bbe405efcc491b049f17a0c91e5d6cf4718957"
+        },
+        {
+          "frame": 3,
+          "state": {
+            "in_play": true,
+            "delta": 72.0,
+            "dx": -4.0,
+            "dy": 4.0,
+            "rel": "below_far",
+            "approach": "away",
+            "ball_x": 37.5,
+            "ball_y": 123.5,
+            "paddle_y": 51.5,
+            "obj": {
+              "ball": {
+                "x": 37.5,
+                "y": 123.5,
+                "ymin": 122.0,
+                "ymax": 125.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 51.5,
+                "ymin": 44.0,
+                "ymax": 59.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 128.5,
+                "ymin": 121.0,
+                "ymax": 136.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 12,
+          "at_seconds": 0.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "471371d0a32e86c9de323020fff1c1f3597e071061f579d7e84a4e7679064e7b"
+        },
+        {
+          "frame": 4,
+          "state": {
+            "in_play": true,
+            "delta": 54.0,
+            "dx": -4.0,
+            "dy": 4.0,
+            "rel": "below_far",
+            "approach": "away",
+            "ball_x": 33.5,
+            "ball_y": 127.5,
+            "paddle_y": 73.5,
+            "obj": {
+              "ball": {
+                "x": 33.5,
+                "y": 127.5,
+                "ymin": 126.0,
+                "ymax": 129.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 73.5,
+                "ymin": 66.0,
+                "ymax": 81.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 132.5,
+                "ymin": 125.0,
+                "ymax": 140.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 16,
+          "at_seconds": 0.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "2ac441043affb9c72e3f4cb074f52ff9724009e1c2018abc3f1034483dcbe635"
+        },
+        {
+          "frame": 5,
+          "state": {
+            "in_play": true,
+            "delta": 34.0,
+            "dx": -4.0,
+            "dy": 4.0,
+            "rel": "below_far",
+            "approach": "away",
+            "ball_x": 29.5,
+            "ball_y": 131.5,
+            "paddle_y": 97.5,
+            "obj": {
+              "ball": {
+                "x": 29.5,
+                "y": 131.5,
+                "ymin": 130.0,
+                "ymax": 133.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 97.5,
+                "ymin": 90.0,
+                "ymax": 105.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 136.5,
+                "ymin": 129.0,
+                "ymax": 144.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 20,
+          "at_seconds": 1.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "bc72f9523b3df58f3c34e64691e05000b543feb006a30d01dda4c73079150fa6"
+        },
+        {
+          "frame": 6,
+          "state": {
+            "in_play": true,
+            "delta": 14.0,
+            "dx": -4.0,
+            "dy": 4.0,
+            "rel": "below",
+            "approach": "away",
+            "ball_x": 25.5,
+            "ball_y": 135.5,
+            "paddle_y": 121.5,
+            "obj": {
+              "ball": {
+                "x": 25.5,
+                "y": 135.5,
+                "ymin": 134.0,
+                "ymax": 137.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 121.5,
+                "ymin": 114.0,
+                "ymax": 129.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 140.5,
+                "ymin": 133.0,
+                "ymax": 148.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 24,
+          "at_seconds": 1.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "008d9bb023a27e747134851ad8e005732309deb3852cce2995f5acb108417427"
+        },
+        {
+          "frame": 7,
+          "state": {
+            "in_play": true,
+            "delta": -4.0,
+            "dx": -4.0,
+            "dy": 4.0,
+            "rel": "aligned",
+            "approach": "away",
+            "ball_x": 21.5,
+            "ball_y": 139.5,
+            "paddle_y": 143.5,
+            "obj": {
+              "ball": {
+                "x": 21.5,
+                "y": 139.5,
+                "ymin": 138.0,
+                "ymax": 141.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 143.5,
+                "ymin": 136.0,
+                "ymax": 151.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 144.5,
+                "ymin": 137.0,
+                "ymax": 152.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 28,
+          "at_seconds": 1.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "360cc0f40a5cf105a04976e81667d583220f11193455ab091f5384a71c9432da"
+        },
+        {
+          "frame": 8,
+          "state": {
+            "in_play": true,
+            "delta": -17.0,
+            "dx": 0.0,
+            "dy": -2.0,
+            "rel": "above",
+            "approach": "none",
+            "ball_x": 21.5,
+            "ball_y": 137.5,
+            "paddle_y": 154.5,
+            "obj": {
+              "ball": {
+                "x": 21.5,
+                "y": 137.5,
+                "ymin": 136.0,
+                "ymax": 139.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 154.5,
+                "ymin": 150.0,
+                "ymax": 159.0,
+                "n": 40.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 142.5,
+                "ymin": 135.0,
+                "ymax": 150.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 32,
+          "at_seconds": 1.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "38363589a1b1bc49facde0104afb3a4fa0f396aaa44f3b85f3cb7331058bf2d9"
+        },
+        {
+          "frame": 9,
+          "state": {
+            "in_play": true,
+            "delta": -20.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "above_far",
+            "approach": "toward",
+            "ball_x": 25.5,
+            "ball_y": 129.5,
+            "paddle_y": 149.5,
+            "obj": {
+              "ball": {
+                "x": 25.5,
+                "y": 129.5,
+                "ymin": 128.0,
+                "ymax": 131.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 149.5,
+                "ymin": 142.0,
+                "ymax": 157.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 136.5,
+                "ymin": 129.0,
+                "ymax": 144.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 36,
+          "at_seconds": 1.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "e784ed9f6e4de2615c0c0a434d88f2210522834cef9faa9e7381f3ec5c8165ac"
+        },
+        {
+          "frame": 10,
+          "state": {
+            "in_play": true,
+            "delta": -10.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 29.5,
+            "ball_y": 121.5,
+            "paddle_y": 131.5,
+            "obj": {
+              "ball": {
+                "x": 29.5,
+                "y": 121.5,
+                "ymin": 120.0,
+                "ymax": 123.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 131.5,
+                "ymin": 124.0,
+                "ymax": 139.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 128.5,
+                "ymin": 121.0,
+                "ymax": 136.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 40,
+          "at_seconds": 2.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "cb50bda5b213ce9fc432d59089442208ef2cc8b970c5f87992898a42f73597a7"
+        },
+        {
+          "frame": 11,
+          "state": {
+            "in_play": true,
+            "delta": 4.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 33.5,
+            "ball_y": 113.5,
+            "paddle_y": 109.5,
+            "obj": {
+              "ball": {
+                "x": 33.5,
+                "y": 113.5,
+                "ymin": 112.0,
+                "ymax": 115.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 109.5,
+                "ymin": 102.0,
+                "ymax": 117.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 122.5,
+                "ymin": 115.0,
+                "ymax": 130.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 44,
+          "at_seconds": 2.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "247c8bc5058f34167e94c9f15547b41abd13535786e3c14da3854575f6c205db"
+        },
+        {
+          "frame": 12,
+          "state": {
+            "in_play": true,
+            "delta": 20.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "below_far",
+            "approach": "toward",
+            "ball_x": 37.5,
+            "ball_y": 105.5,
+            "paddle_y": 85.5,
+            "obj": {
+              "ball": {
+                "x": 37.5,
+                "y": 105.5,
+                "ymin": 104.0,
+                "ymax": 107.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 85.5,
+                "ymin": 78.0,
+                "ymax": 93.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 114.5,
+                "ymin": 107.0,
+                "ymax": 122.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 48,
+          "at_seconds": 2.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "889a9dffa91c6a12f42be62bb0d03860ec7983e3a57f7d3b9ed7848678b2d22d"
+        },
+        {
+          "frame": 13,
+          "state": {
+            "in_play": true,
+            "delta": 16.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 41.5,
+            "ball_y": 97.5,
+            "paddle_y": 81.5,
+            "obj": {
+              "ball": {
+                "x": 41.5,
+                "y": 97.5,
+                "ymin": 96.0,
+                "ymax": 99.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 81.5,
+                "ymin": 74.0,
+                "ymax": 89.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 108.5,
+                "ymin": 101.0,
+                "ymax": 116.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 52,
+          "at_seconds": 2.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "a1966417ca48379a98192fe252960b4a0c3dbe185bc8aecb27b22e43a77e9170"
+        },
+        {
+          "frame": 14,
+          "state": {
+            "in_play": true,
+            "delta": 0.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 45.5,
+            "ball_y": 89.5,
+            "paddle_y": 89.5,
+            "obj": {
+              "ball": {
+                "x": 45.5,
+                "y": 89.5,
+                "ymin": 88.0,
+                "ymax": 91.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 89.5,
+                "ymin": 82.0,
+                "ymax": 97.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 100.5,
+                "ymin": 93.0,
+                "ymax": 108.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 56,
+          "at_seconds": 2.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "02e3657c517e943e9cf53ec478bc872f5d458bede9a7b991104a0ae41950a1cc"
+        },
+        {
+          "frame": 15,
+          "state": {
+            "in_play": true,
+            "delta": 2.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 49.5,
+            "ball_y": 81.5,
+            "paddle_y": 79.5,
+            "obj": {
+              "ball": {
+                "x": 49.5,
+                "y": 81.5,
+                "ymin": 80.0,
+                "ymax": 83.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 79.5,
+                "ymin": 72.0,
+                "ymax": 87.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 94.5,
+                "ymin": 87.0,
+                "ymax": 102.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 60,
+          "at_seconds": 3.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "772fb6f4d409da1f7e4a1c06a3c612575b9e0edca8e8cb00b11ca67efef896f8"
+        },
+        {
+          "frame": 16,
+          "state": {
+            "in_play": true,
+            "delta": 12.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 53.5,
+            "ball_y": 73.5,
+            "paddle_y": 61.5,
+            "obj": {
+              "ball": {
+                "x": 53.5,
+                "y": 73.5,
+                "ymin": 72.0,
+                "ymax": 75.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 61.5,
+                "ymin": 54.0,
+                "ymax": 69.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 86.5,
+                "ymin": 79.0,
+                "ymax": 94.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 64,
+          "at_seconds": 3.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "ee2d12e3ebe3ca405925786661a088970233649f0581ac64509b8531665b9ff8"
+        },
+        {
+          "frame": 17,
+          "state": {
+            "in_play": true,
+            "delta": 16.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 57.5,
+            "ball_y": 65.5,
+            "paddle_y": 49.5,
+            "obj": {
+              "ball": {
+                "x": 57.5,
+                "y": 65.5,
+                "ymin": 64.0,
+                "ymax": 67.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 49.5,
+                "ymin": 42.0,
+                "ymax": 57.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 80.5,
+                "ymin": 73.0,
+                "ymax": 88.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 68,
+          "at_seconds": 3.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "364884f19ba79c61dee205a1e3a2c1741867d45ce7d33ec546ddbbf2bf7b540f"
+        },
+        {
+          "frame": 18,
+          "state": {
+            "in_play": true,
+            "delta": 10.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 61.5,
+            "ball_y": 57.5,
+            "paddle_y": 47.5,
+            "obj": {
+              "ball": {
+                "x": 61.5,
+                "y": 57.5,
+                "ymin": 56.0,
+                "ymax": 59.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 47.5,
+                "ymin": 40.0,
+                "ymax": 55.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 72.5,
+                "ymin": 65.0,
+                "ymax": 80.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 72,
+          "at_seconds": 3.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "56f44ad969fce8d43cf07e6b27860b905a671d68d11e2ed0fc83460c06a8dcea"
+        },
+        {
+          "frame": 19,
+          "state": {
+            "in_play": true,
+            "delta": 4.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 65.5,
+            "ball_y": 49.5,
+            "paddle_y": 45.5,
+            "obj": {
+              "ball": {
+                "x": 65.5,
+                "y": 49.5,
+                "ymin": 48.0,
+                "ymax": 51.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 45.5,
+                "ymin": 38.0,
+                "ymax": 53.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 66.5,
+                "ymin": 59.0,
+                "ymax": 74.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 76,
+          "at_seconds": 3.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "407c40dcbfa8d5deb4793e9df19b1a9f910ff3146544c391e2889740619cad51"
+        },
+        {
+          "frame": 20,
+          "state": {
+            "in_play": true,
+            "delta": 6.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 69.5,
+            "ball_y": 41.5,
+            "paddle_y": 35.5,
+            "obj": {
+              "ball": {
+                "x": 69.5,
+                "y": 41.5,
+                "ymin": 40.0,
+                "ymax": 43.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 35.5,
+                "ymin": 28.0,
+                "ymax": 43.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 58.5,
+                "ymin": 51.0,
+                "ymax": 66.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 80,
+          "at_seconds": 4.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "20d574c566d5eac7ee1603ab61490724e64b1b002be22a41fc7b2f2dde92cd40"
+        },
+        {
+          "frame": 21,
+          "state": {
+            "in_play": true,
+            "delta": 18.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 73.5,
+            "ball_y": 33.5,
+            "paddle_y": 15.5,
+            "obj": {
+              "ball": {
+                "x": 73.5,
+                "y": 33.5,
+                "ymin": 32.0,
+                "ymax": 35.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 15.5,
+                "ymin": 8.0,
+                "ymax": 23.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 52.5,
+                "ymin": 45.0,
+                "ymax": 60.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 84,
+          "at_seconds": 4.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "697d2aa6680e79e24150ba0a7ff938840e1d52c9b08c1d01cde3c326b4b6da6a"
+        },
+        {
+          "frame": 22,
+          "state": {
+            "in_play": true,
+            "delta": 20.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "below_far",
+            "approach": "toward",
+            "ball_x": 77.5,
+            "ball_y": 25.5,
+            "paddle_y": 5.5,
+            "obj": {
+              "ball": {
+                "x": 77.5,
+                "y": 25.5,
+                "ymin": 24.0,
+                "ymax": 27.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 5.5,
+                "ymin": 0.0,
+                "ymax": 11.0,
+                "n": 48.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 44.5,
+                "ymin": 37.0,
+                "ymax": 52.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 88,
+          "at_seconds": 4.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "e77f74d2bf3825b2685eb02dfb8adf7a90392a48edb83868248c0c645fe373d3"
+        },
+        {
+          "frame": 23,
+          "state": {
+            "in_play": true,
+            "delta": 6.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 81.5,
+            "ball_y": 17.5,
+            "paddle_y": 11.5,
+            "obj": {
+              "ball": {
+                "x": 81.5,
+                "y": 17.5,
+                "ymin": 16.0,
+                "ymax": 19.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 11.5,
+                "ymin": 4.0,
+                "ymax": 19.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 38.5,
+                "ymin": 31.0,
+                "ymax": 46.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 92,
+          "at_seconds": 4.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "d12d9c86ca7d40ad6c349d9bdf7b0fd9768dce9cf74115c8388a9167b1ff374f"
+        },
+        {
+          "frame": 24,
+          "state": {
+            "in_play": true,
+            "delta": 0.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 85.5,
+            "ball_y": 9.5,
+            "paddle_y": 9.5,
+            "obj": {
+              "ball": {
+                "x": 85.5,
+                "y": 9.5,
+                "ymin": 8.0,
+                "ymax": 11.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 9.5,
+                "ymin": 2.0,
+                "ymax": 17.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 30.5,
+                "ymin": 23.0,
+                "ymax": 38.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 96,
+          "at_seconds": 4.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "d8573df5581b6b032b79fae57ae6b1290a879d75a4595400115c359bfc06f00b"
+        },
+        {
+          "frame": 25,
+          "state": {
+            "in_play": true,
+            "delta": -3.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 89.5,
+            "ball_y": 1.5,
+            "paddle_y": 4.5,
+            "obj": {
+              "ball": {
+                "x": 89.5,
+                "y": 1.5,
+                "ymin": 0.0,
+                "ymax": 3.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 4.5,
+                "ymin": 0.0,
+                "ymax": 9.0,
+                "n": 40.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 24.5,
+                "ymin": 17.0,
+                "ymax": 32.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 100,
+          "at_seconds": 5.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "564c93be7adc03266cd78e3334de688ed720ae205da4431d70e2ab0a86b43e9a"
+        },
+        {
+          "frame": 26,
+          "state": {
+            "in_play": true,
+            "delta": 0.0,
+            "dx": 4.0,
+            "dy": 1.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 93.5,
+            "ball_y": 2.5,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": {
+                "x": 93.5,
+                "y": 2.5,
+                "ymin": 1.0,
+                "ymax": 4.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 16.5,
+                "ymin": 9.0,
+                "ymax": 24.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 104,
+          "at_seconds": 5.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "838c006cc4d4da8b4d3cd817d81b1e3f23d2c637088f5532e57c75b1cd4df6ea"
+        },
+        {
+          "frame": 27,
+          "state": {
+            "in_play": true,
+            "delta": 8.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 97.5,
+            "ball_y": 10.5,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": {
+                "x": 97.5,
+                "y": 10.5,
+                "ymin": 9.0,
+                "ymax": 12.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 14.5,
+                "ymin": 7.0,
+                "ymax": 22.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 108,
+          "at_seconds": 5.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "fa52d1bbfeee2cfd308fb9714408687c2b758caa53438292b723d7bf332e3e56"
+        },
+        {
+          "frame": 28,
+          "state": {
+            "in_play": true,
+            "delta": 16.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 101.5,
+            "ball_y": 18.5,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": {
+                "x": 101.5,
+                "y": 18.5,
+                "ymin": 17.0,
+                "ymax": 20.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 22.5,
+                "ymin": 15.0,
+                "ymax": 30.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 112,
+          "at_seconds": 5.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "7b27af8897a165362ea8048659a4681c119a3351e00bdc9dc2f3132c91d3ee2e"
+        },
+        {
+          "frame": 29,
+          "state": {
+            "in_play": true,
+            "delta": 19.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "below_far",
+            "approach": "toward",
+            "ball_x": 105.5,
+            "ball_y": 26.5,
+            "paddle_y": 7.5,
+            "obj": {
+              "ball": {
+                "x": 105.5,
+                "y": 26.5,
+                "ymin": 25.0,
+                "ymax": 28.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 7.5,
+                "ymin": 0.0,
+                "ymax": 15.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 28.5,
+                "ymin": 21.0,
+                "ymax": 36.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 116,
+          "at_seconds": 5.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "10a9fe5b95744da62ea2059efae3664c9243b2b228d25c9a3de1f58f3d49622d"
+        },
+        {
+          "frame": 30,
+          "state": {
+            "in_play": true,
+            "delta": 7.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 109.5,
+            "ball_y": 34.5,
+            "paddle_y": 27.5,
+            "obj": {
+              "ball": {
+                "x": 109.5,
+                "y": 34.5,
+                "ymin": 33.0,
+                "ymax": 36.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 27.5,
+                "ymin": 20.0,
+                "ymax": 35.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 36.5,
+                "ymin": 29.0,
+                "ymax": 44.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 120,
+          "at_seconds": 6.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "9efbc5ed0a341f904208690246272663af99e67c96426a9cc41ac270e801f197"
+        },
+        {
+          "frame": 31,
+          "state": {
+            "in_play": true,
+            "delta": -5.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 113.5,
+            "ball_y": 42.5,
+            "paddle_y": 47.5,
+            "obj": {
+              "ball": {
+                "x": 113.5,
+                "y": 42.5,
+                "ymin": 41.0,
+                "ymax": 44.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 47.5,
+                "ymin": 40.0,
+                "ymax": 55.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 42.5,
+                "ymin": 35.0,
+                "ymax": 50.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 124,
+          "at_seconds": 6.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "8f55414c752ab379d567aebd371ca018be8e89b1b424f01d3d16272b35ccc9ad"
+        },
+        {
+          "frame": 32,
+          "state": {
+            "in_play": true,
+            "delta": -21.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "above_far",
+            "approach": "toward",
+            "ball_x": 117.5,
+            "ball_y": 50.5,
+            "paddle_y": 71.5,
+            "obj": {
+              "ball": {
+                "x": 117.5,
+                "y": 50.5,
+                "ymin": 49.0,
+                "ymax": 52.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 71.5,
+                "ymin": 64.0,
+                "ymax": 79.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 50.5,
+                "ymin": 43.0,
+                "ymax": 58.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 128,
+          "at_seconds": 6.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "18fe3706b01eb27f1f7d8272e48adb67efdb85dfacdadd2a81697f0734768be2"
+        },
+        {
+          "frame": 33,
+          "state": {
+            "in_play": true,
+            "delta": -17.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 121.5,
+            "ball_y": 58.5,
+            "paddle_y": 75.5,
+            "obj": {
+              "ball": {
+                "x": 121.5,
+                "y": 58.5,
+                "ymin": 57.0,
+                "ymax": 60.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 75.5,
+                "ymin": 68.0,
+                "ymax": 83.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 56.5,
+                "ymin": 49.0,
+                "ymax": 64.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 132,
+          "at_seconds": 6.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "b98eaa18a755179175d67faaa31ee79acd4424b6e68a832c64089a6f63bc0574"
+        },
+        {
+          "frame": 34,
+          "state": {
+            "in_play": true,
+            "delta": -1.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 125.5,
+            "ball_y": 66.5,
+            "paddle_y": 67.5,
+            "obj": {
+              "ball": {
+                "x": 125.5,
+                "y": 66.5,
+                "ymin": 65.0,
+                "ymax": 68.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 67.5,
+                "ymin": 60.0,
+                "ymax": 75.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 64.5,
+                "ymin": 57.0,
+                "ymax": 72.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 136,
+          "at_seconds": 6.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "6d4bfc0696af188a56a35ed0074713917306295e26b0c6f0bce3c5769245a380"
+        },
+        {
+          "frame": 35,
+          "state": {
+            "in_play": true,
+            "delta": -4.0,
+            "dx": 4.0,
+            "dy": 7.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 129.5,
+            "ball_y": 73.5,
+            "paddle_y": 77.5,
+            "obj": {
+              "ball": {
+                "x": 129.5,
+                "y": 73.5,
+                "ymin": 72.0,
+                "ymax": 75.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 77.5,
+                "ymin": 70.0,
+                "ymax": 85.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 70.5,
+                "ymin": 63.0,
+                "ymax": 78.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 140,
+          "at_seconds": 7.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "be20a84b76e256dc133be3ccc828d2d123c8a9bbd68c44da02fd0165caae3e3f"
+        },
+        {
+          "frame": 36,
+          "state": {
+            "in_play": true,
+            "delta": -14.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 133.5,
+            "ball_y": 81.5,
+            "paddle_y": 95.5,
+            "obj": {
+              "ball": {
+                "x": 133.5,
+                "y": 81.5,
+                "ymin": 80.0,
+                "ymax": 83.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 95.5,
+                "ymin": 88.0,
+                "ymax": 103.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 78.5,
+                "ymin": 71.0,
+                "ymax": 86.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 144,
+          "at_seconds": 7.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "e4d38be7a42f1f0e0a48bb2f6af69eee2fd2e35d1fd2b535e14b07e4890515ff"
+        },
+        {
+          "frame": 37,
+          "state": {
+            "in_play": true,
+            "delta": -18.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 137.5,
+            "ball_y": 89.5,
+            "paddle_y": 107.5,
+            "obj": {
+              "ball": {
+                "x": 137.5,
+                "y": 89.5,
+                "ymin": 88.0,
+                "ymax": 91.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 107.5,
+                "ymin": 100.0,
+                "ymax": 115.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 84.5,
+                "ymin": 77.0,
+                "ymax": 92.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 148,
+          "at_seconds": 7.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "bea9219f490714d62ac5bc74586453604838f5180c714618794bd8c0ea8c68f6"
+        },
+        {
+          "frame": 38,
+          "state": {
+            "in_play": true,
+            "delta": -12.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 141.5,
+            "ball_y": 97.5,
+            "paddle_y": 109.5,
+            "obj": {
+              "ball": {
+                "x": 141.5,
+                "y": 97.5,
+                "ymin": 96.0,
+                "ymax": 99.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 109.5,
+                "ymin": 102.0,
+                "ymax": 117.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 92.5,
+                "ymin": 85.0,
+                "ymax": 100.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 152,
+          "at_seconds": 7.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "33a80cb29b4727cb7476a1a1dddc224e2d16d94f7b60e276051d0f5ca046ba80"
+        },
+        {
+          "frame": 39,
+          "state": {
+            "in_play": true,
+            "delta": -6.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 145.5,
+            "ball_y": 105.5,
+            "paddle_y": 111.5,
+            "obj": {
+              "ball": {
+                "x": 145.5,
+                "y": 105.5,
+                "ymin": 104.0,
+                "ymax": 107.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 111.5,
+                "ymin": 104.0,
+                "ymax": 119.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 98.5,
+                "ymin": 91.0,
+                "ymax": 106.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 156,
+          "at_seconds": 7.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "99ca6df4e79fd8816f2b47e52457a2d660605a70e40caf43d026c14f4effb49a"
+        },
+        {
+          "frame": 40,
+          "state": {
+            "in_play": true,
+            "delta": -8.0,
+            "dx": 3.5,
+            "dy": 8.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 149.0,
+            "ball_y": 113.5,
+            "paddle_y": 121.5,
+            "obj": {
+              "ball": {
+                "x": 149.0,
+                "y": 113.5,
+                "ymin": 112.0,
+                "ymax": 115.0,
+                "n": 4.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 121.5,
+                "ymin": 114.0,
+                "ymax": 129.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 106.5,
+                "ymin": 99.0,
+                "ymax": 114.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 160,
+          "at_seconds": 8.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "aebb2f457e4b48c4b46f6d02dde9ab7bbebb8544ca5067d40384aa7ecb94cac1"
+        },
+        {
+          "frame": 41,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 131.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 131.5,
+                "ymin": 124.0,
+                "ymax": 139.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 112.5,
+                "ymin": 105.0,
+                "ymax": 120.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 164,
+          "at_seconds": 8.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "2eddda0364c43a80a71e44fc7306e0232c8aff9695742a674cb9b15b19c4a323"
+        },
+        {
+          "frame": 42,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 120.5,
+                "ymin": 113.0,
+                "ymax": 128.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 168,
+          "at_seconds": 8.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "43da7e95db224cba55b8c055f5033ece2525213c41e49d746055c289555dac43"
+        },
+        {
+          "frame": 43,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 114.5,
+                "ymin": 107.0,
+                "ymax": 122.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 172,
+          "at_seconds": 8.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "aa471fb352b19a370ca8fbb044f3e0e3f0b2cd3556542878bcfe9108f5e11ef2"
+        },
+        {
+          "frame": 44,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 106.5,
+                "ymin": 99.0,
+                "ymax": 114.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 176,
+          "at_seconds": 8.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "cdcfa690ff359835f1934ac8d058cdfc52917cf371552edd9ecee80c203601eb"
+        },
+        {
+          "frame": 45,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 100.5,
+                "ymin": 93.0,
+                "ymax": 108.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 180,
+          "at_seconds": 9.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "b413709d8d8023f57b4fd0a0fec3b09fb80a1f2b01df79e8d66387a04c3716ad"
+        },
+        {
+          "frame": 46,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 92.5,
+                "ymin": 85.0,
+                "ymax": 100.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 184,
+          "at_seconds": 9.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "781061c835a53ecf5f7694ebc49271cd1f3c423c6972487fcea59995cb2a0904"
+        },
+        {
+          "frame": 47,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 86.5,
+                "ymin": 79.0,
+                "ymax": 94.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 188,
+          "at_seconds": 9.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "b06b1881f0f6ed6ba0bedeaf5de3443a795d1c0ee4286bafc8445dd9fbfef530"
+        },
+        {
+          "frame": 48,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 78.5,
+                "ymin": 71.0,
+                "ymax": 86.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 192,
+          "at_seconds": 9.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "54f7e1773c5b48510e49999a58dc6f44f57e0c78a03c1f3ba0e58afdf0ef7497"
+        },
+        {
+          "frame": 49,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 72.5,
+                "ymin": 65.0,
+                "ymax": 80.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 196,
+          "at_seconds": 9.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "1d766acede71010c59b366576e8963efc664bd72363328d061d51f372284a42b"
+        },
+        {
+          "frame": 50,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 64.5,
+                "ymin": 57.0,
+                "ymax": 72.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 200,
+          "at_seconds": 10.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "57e8e4e54d2cb85797c75077ebea871fb694cec42524975ef198bb6864df565b"
+        },
+        {
+          "frame": 51,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 58.5,
+                "ymin": 51.0,
+                "ymax": 66.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 204,
+          "at_seconds": 10.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "89137726b0f229c39d6e4ff2e7a57c5d6599b9d11779e03dff64f71c15f98b0b"
+        },
+        {
+          "frame": 52,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 50.5,
+                "ymin": 43.0,
+                "ymax": 58.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 208,
+          "at_seconds": 10.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "d6f8acab68755bd804c8e7a36cb044916f4956c6beafb8b4b3499561dd290bac"
+        },
+        {
+          "frame": 53,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 44.5,
+                "ymin": 37.0,
+                "ymax": 52.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 212,
+          "at_seconds": 10.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "2646613f27e8f31cf70f79db62c3e8cf50bf66e50ce9c31cbac8c5108249386a"
+        },
+        {
+          "frame": 54,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 36.5,
+                "ymin": 29.0,
+                "ymax": 44.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 216,
+          "at_seconds": 10.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "16656401a6584e7ce56627ac5ed2c942db0743362771d4874e1a35fcc572276e"
+        },
+        {
+          "frame": 55,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 30.5,
+                "ymin": 23.0,
+                "ymax": 38.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 220,
+          "at_seconds": 11.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "1aa8ea4228623414aaacb1895560c3f6cc3dba9ea08a9578fdd7467a67e80a80"
+        },
+        {
+          "frame": 56,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 22.5,
+                "ymin": 15.0,
+                "ymax": 30.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 224,
+          "at_seconds": 11.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "2b92f11e913b764731c72dea7a394dbfb40a19c67ecb8cf5bbd0279296db6d5c"
+        },
+        {
+          "frame": 57,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 16.5,
+                "ymin": 9.0,
+                "ymax": 24.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 228,
+          "at_seconds": 11.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "c56edc459deb06ccf67ebe55822a23b5510a0b11df8e6eb0c97cdc55fc562ce2"
+        },
+        {
+          "frame": 58,
+          "state": {
+            "in_play": true,
+            "delta": -50.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "above_far",
+            "approach": "none",
+            "ball_x": 81.5,
+            "ball_y": 83.5,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": {
+                "x": 81.5,
+                "y": 83.5,
+                "ymin": 82.0,
+                "ymax": 85.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 88.5,
+                "ymin": 81.0,
+                "ymax": 96.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 232,
+          "at_seconds": 11.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "0bacb4dab1c68f1d3fbee284f517f0d8d3cf37a29b277f5f3c50d8ccdcca2f62"
+        },
+        {
+          "frame": 59,
+          "state": {
+            "in_play": true,
+            "delta": -36.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "above_far",
+            "approach": "toward",
+            "ball_x": 85.5,
+            "ball_y": 87.5,
+            "paddle_y": 123.5,
+            "obj": {
+              "ball": {
+                "x": 85.5,
+                "y": 87.5,
+                "ymin": 86.0,
+                "ymax": 89.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 123.5,
+                "ymin": 116.0,
+                "ymax": 131.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 92.5,
+                "ymin": 85.0,
+                "ymax": 100.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 236,
+          "at_seconds": 11.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "10c610ba01aa28c59f566aab3cd8a7762dfaff0f0823a3e451738ba8e6d1163f"
+        },
+        {
+          "frame": 60,
+          "state": {
+            "in_play": true,
+            "delta": -12.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 89.5,
+            "ball_y": 91.5,
+            "paddle_y": 103.5,
+            "obj": {
+              "ball": {
+                "x": 89.5,
+                "y": 91.5,
+                "ymin": 90.0,
+                "ymax": 93.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 103.5,
+                "ymin": 96.0,
+                "ymax": 111.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 96.5,
+                "ymin": 89.0,
+                "ymax": 104.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 240,
+          "at_seconds": 12.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "c5d491dbe1ad19d8440f0dc4bc3c982fc13064d0d195a41cbce13f2a487e911b"
+        },
+        {
+          "frame": 61,
+          "state": {
+            "in_play": true,
+            "delta": 4.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 93.5,
+            "ball_y": 95.5,
+            "paddle_y": 91.5,
+            "obj": {
+              "ball": {
+                "x": 93.5,
+                "y": 95.5,
+                "ymin": 94.0,
+                "ymax": 97.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 91.5,
+                "ymin": 84.0,
+                "ymax": 99.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 100.5,
+                "ymin": 93.0,
+                "ymax": 108.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 244,
+          "at_seconds": 12.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "5766e1890015ca26adfca77301a11a813416a25128178b11dfae69ed67743602"
+        },
+        {
+          "frame": 62,
+          "state": {
+            "in_play": true,
+            "delta": 0.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 97.5,
+            "ball_y": 99.5,
+            "paddle_y": 99.5,
+            "obj": {
+              "ball": {
+                "x": 97.5,
+                "y": 99.5,
+                "ymin": 98.0,
+                "ymax": 101.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 99.5,
+                "ymin": 92.0,
+                "ymax": 107.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 104.5,
+                "ymin": 97.0,
+                "ymax": 112.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 248,
+          "at_seconds": 12.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "5c37efe809ba24838ec56ac9563a8aa2c4d50e47800ca9e4f6c3154a641ea8fc"
+        },
+        {
+          "frame": 63,
+          "state": {
+            "in_play": true,
+            "delta": -16.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 101.5,
+            "ball_y": 103.5,
+            "paddle_y": 119.5,
+            "obj": {
+              "ball": {
+                "x": 101.5,
+                "y": 103.5,
+                "ymin": 102.0,
+                "ymax": 105.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 119.5,
+                "ymin": 112.0,
+                "ymax": 127.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 108.5,
+                "ymin": 101.0,
+                "ymax": 116.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 252,
+          "at_seconds": 12.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "be762036bc05979d91decf36f0fa419b79a6d344e501672cfed6b9e850cd1f3d"
+        },
+        {
+          "frame": 64,
+          "state": {
+            "in_play": true,
+            "delta": -14.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 105.5,
+            "ball_y": 107.5,
+            "paddle_y": 121.5,
+            "obj": {
+              "ball": {
+                "x": 105.5,
+                "y": 107.5,
+                "ymin": 106.0,
+                "ymax": 109.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 121.5,
+                "ymin": 114.0,
+                "ymax": 129.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 112.5,
+                "ymin": 105.0,
+                "ymax": 120.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 256,
+          "at_seconds": 12.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "e20401e45567387ad0834151cbb30cc0541f1e6404d5ff745dae080f250fddfb"
+        },
+        {
+          "frame": 65,
+          "state": {
+            "in_play": true,
+            "delta": 8.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 109.5,
+            "ball_y": 111.5,
+            "paddle_y": 103.5,
+            "obj": {
+              "ball": {
+                "x": 109.5,
+                "y": 111.5,
+                "ymin": 110.0,
+                "ymax": 113.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 103.5,
+                "ymin": 96.0,
+                "ymax": 111.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 116.5,
+                "ymin": 109.0,
+                "ymax": 124.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 260,
+          "at_seconds": 13.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "da19815dea5146c26b09dfbeb17626f77766502d9a47bf5534640c845eed866e"
+        },
+        {
+          "frame": 66,
+          "state": {
+            "in_play": true,
+            "delta": 14.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 113.5,
+            "ball_y": 115.5,
+            "paddle_y": 101.5,
+            "obj": {
+              "ball": {
+                "x": 113.5,
+                "y": 115.5,
+                "ymin": 114.0,
+                "ymax": 117.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 101.5,
+                "ymin": 94.0,
+                "ymax": 109.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 120.5,
+                "ymin": 113.0,
+                "ymax": 128.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 264,
+          "at_seconds": 13.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "61b5f83096648de6b8a7559a3978f51e79fde9f46effc7f448a6aa75702bcd57"
+        },
+        {
+          "frame": 67,
+          "state": {
+            "in_play": true,
+            "delta": 0.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 117.5,
+            "ball_y": 119.5,
+            "paddle_y": 119.5,
+            "obj": {
+              "ball": {
+                "x": 117.5,
+                "y": 119.5,
+                "ymin": 118.0,
+                "ymax": 121.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 119.5,
+                "ymin": 112.0,
+                "ymax": 127.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 124.5,
+                "ymin": 117.0,
+                "ymax": 132.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 268,
+          "at_seconds": 13.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "5f6f87da95d9f68497debb7e0a8d62e60aa7ec045e1cac48cdca5d05fd698421"
+        },
+        {
+          "frame": 68,
+          "state": {
+            "in_play": true,
+            "delta": -18.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 121.5,
+            "ball_y": 123.5,
+            "paddle_y": 141.5,
+            "obj": {
+              "ball": {
+                "x": 121.5,
+                "y": 123.5,
+                "ymin": 122.0,
+                "ymax": 125.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 141.5,
+                "ymin": 134.0,
+                "ymax": 149.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 128.5,
+                "ymin": 121.0,
+                "ymax": 136.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 272,
+          "at_seconds": 13.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "e3d6c99ec2a3c9c8bde3c56da993ea5f179ffd9e92a8245e11e3643da3f75f72"
+        },
+        {
+          "frame": 69,
+          "state": {
+            "in_play": true,
+            "delta": -16.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 125.5,
+            "ball_y": 127.5,
+            "paddle_y": 143.5,
+            "obj": {
+              "ball": {
+                "x": 125.5,
+                "y": 127.5,
+                "ymin": 126.0,
+                "ymax": 129.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 143.5,
+                "ymin": 136.0,
+                "ymax": 151.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 132.5,
+                "ymin": 125.0,
+                "ymax": 140.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 276,
+          "at_seconds": 13.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "752ac8a0950c0507c5a757d9d24078d4486e5c46a923f5da8e83b0af0a70a4f9"
+        },
+        {
+          "frame": 70,
+          "state": {
+            "in_play": true,
+            "delta": 4.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 129.5,
+            "ball_y": 131.5,
+            "paddle_y": 127.5,
+            "obj": {
+              "ball": {
+                "x": 129.5,
+                "y": 131.5,
+                "ymin": 130.0,
+                "ymax": 133.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 127.5,
+                "ymin": 120.0,
+                "ymax": 135.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 136.5,
+                "ymin": 129.0,
+                "ymax": 144.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 280,
+          "at_seconds": 14.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "67f80917dafb741ad20ea60679c278f48479969b61a82b0157ecf67276bfc25e"
+        },
+        {
+          "frame": 71,
+          "state": {
+            "in_play": true,
+            "delta": 10.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 133.5,
+            "ball_y": 135.5,
+            "paddle_y": 125.5,
+            "obj": {
+              "ball": {
+                "x": 133.5,
+                "y": 135.5,
+                "ymin": 134.0,
+                "ymax": 137.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 125.5,
+                "ymin": 118.0,
+                "ymax": 133.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 140.5,
+                "ymin": 133.0,
+                "ymax": 148.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 284,
+          "at_seconds": 14.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "1335dae2b97f27f578819b59907fcc10738de7c5e1347d3630726e430558745e"
+        },
+        {
+          "frame": 72,
+          "state": {
+            "in_play": true,
+            "delta": -2.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 137.5,
+            "ball_y": 139.5,
+            "paddle_y": 141.5,
+            "obj": {
+              "ball": {
+                "x": 137.5,
+                "y": 139.5,
+                "ymin": 138.0,
+                "ymax": 141.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 141.5,
+                "ymin": 134.0,
+                "ymax": 149.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 144.5,
+                "ymin": 137.0,
+                "ymax": 152.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 288,
+          "at_seconds": 14.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "f78d946ddd40e6d8eb337920ca1ffe9064387202f3c8e46ca945ab136f6b8396"
+        },
+        {
+          "frame": 73,
+          "state": {
+            "in_play": true,
+            "delta": -15.0,
+            "dx": -2.0,
+            "dy": -2.0,
+            "rel": "above",
+            "approach": "away",
+            "ball_x": 135.5,
+            "ball_y": 137.5,
+            "paddle_y": 152.5,
+            "obj": {
+              "ball": {
+                "x": 135.5,
+                "y": 137.5,
+                "ymin": 136.0,
+                "ymax": 139.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 152.5,
+                "ymin": 146.0,
+                "ymax": 159.0,
+                "n": 56.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 142.5,
+                "ymin": 135.0,
+                "ymax": 150.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 292,
+          "at_seconds": 14.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "71e1df14c8133d566ef88689fe8d410f6b6507b7cbc05371cf9befb700b2be02"
+        },
+        {
+          "frame": 74,
+          "state": {
+            "in_play": true,
+            "delta": -16.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "above",
+            "approach": "away",
+            "ball_x": 127.5,
+            "ball_y": 129.5,
+            "paddle_y": 145.5,
+            "obj": {
+              "ball": {
+                "x": 127.5,
+                "y": 129.5,
+                "ymin": 128.0,
+                "ymax": 131.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 145.5,
+                "ymin": 138.0,
+                "ymax": 153.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 134.5,
+                "ymin": 127.0,
+                "ymax": 142.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 296,
+          "at_seconds": 14.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "1a1d9c5da7c7eee9c53816d6a184d1408f78d97d49d972dcbb7177fc1800cf0b"
+        },
+        {
+          "frame": 75,
+          "state": {
+            "in_play": true,
+            "delta": -6.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "away",
+            "ball_x": 119.5,
+            "ball_y": 121.5,
+            "paddle_y": 127.5,
+            "obj": {
+              "ball": {
+                "x": 119.5,
+                "y": 121.5,
+                "ymin": 120.0,
+                "ymax": 123.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 127.5,
+                "ymin": 120.0,
+                "ymax": 135.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 128.5,
+                "ymin": 121.0,
+                "ymax": 136.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 300,
+          "at_seconds": 15.0,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "320384fdbb5ff718b5a38e48839db3f6b587c5948753ca76c445dd9f7aac2f83"
+        },
+        {
+          "frame": 76,
+          "state": {
+            "in_play": true,
+            "delta": -2.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "away",
+            "ball_x": 111.5,
+            "ball_y": 113.5,
+            "paddle_y": 115.5,
+            "obj": {
+              "ball": {
+                "x": 111.5,
+                "y": 113.5,
+                "ymin": 112.0,
+                "ymax": 115.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 115.5,
+                "ymin": 108.0,
+                "ymax": 123.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 120.5,
+                "ymin": 113.0,
+                "ymax": 128.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 304,
+          "at_seconds": 15.2,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "b9f5663d64a5d7ffe2b6997714c10539b6f00215f64ec3117d98e16c1f55257d"
+        },
+        {
+          "frame": 77,
+          "state": {
+            "in_play": true,
+            "delta": -8.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "above",
+            "approach": "away",
+            "ball_x": 103.5,
+            "ball_y": 105.5,
+            "paddle_y": 113.5,
+            "obj": {
+              "ball": {
+                "x": 103.5,
+                "y": 105.5,
+                "ymin": 104.0,
+                "ymax": 107.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 113.5,
+                "ymin": 106.0,
+                "ymax": 121.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 114.5,
+                "ymin": 107.0,
+                "ymax": 122.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 308,
+          "at_seconds": 15.4,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "8d0557b257bcf98333e25960ee334c6c345ef6436e41238f44266e609b5be894"
+        },
+        {
+          "frame": 78,
+          "state": {
+            "in_play": true,
+            "delta": -4.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "away",
+            "ball_x": 95.5,
+            "ball_y": 97.5,
+            "paddle_y": 101.5,
+            "obj": {
+              "ball": {
+                "x": 95.5,
+                "y": 97.5,
+                "ymin": 96.0,
+                "ymax": 99.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 101.5,
+                "ymin": 94.0,
+                "ymax": 109.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 106.5,
+                "ymin": 99.0,
+                "ymax": 114.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 312,
+          "at_seconds": 15.6,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "109a26d13ad1cb3198f517f9619a3dfb12bcd82b9710224036828cf18364a32e"
+        },
+        {
+          "frame": 79,
+          "state": {
+            "in_play": true,
+            "delta": -2.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "away",
+            "ball_x": 87.5,
+            "ball_y": 89.5,
+            "paddle_y": 91.5,
+            "obj": {
+              "ball": {
+                "x": 87.5,
+                "y": 89.5,
+                "ymin": 88.0,
+                "ymax": 91.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 91.5,
+                "ymin": 84.0,
+                "ymax": 99.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 100.5,
+                "ymin": 93.0,
+                "ymax": 108.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 316,
+          "at_seconds": 15.8,
+          "duration_seconds": 0.2,
+          "rgb_sha256": "578ff84b66a5f2e35bf907a89e31affa0ff541bcb34200a58747ba7cdb95471c"
+        }
+      ],
+      "ends_at_seconds": 16.0
+    }
+  ]
+}

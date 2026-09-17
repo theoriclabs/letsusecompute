@@ -6,7 +6,7 @@ One repo for the site and the training files. Each post is a folder under `posts
 
 | Post | Guide | Code |
 |---|---|---|
-| Pong + Doom: a Jev-inspired experiment | [letsusecompute.com/posts/jev-games](https://letsusecompute.com/posts/jev-games) | [Pong](posts/jev-games) · [Doom](posts/jev-doom) |
+| Doom + Pong: a Jev-inspired experiment | [letsusecompute.com/posts/jev-games](https://letsusecompute.com/posts/jev-games) | [Pong](posts/jev-games) · [Doom](posts/jev-doom) |
 | Text compressor | [letsusecompute.com/posts/text-compressor](https://letsusecompute.com/posts/text-compressor) | [`posts/text-compressor`](posts/text-compressor) |
 | AI-text detector | [letsusecompute.com/posts/ai-text-detector](https://letsusecompute.com/posts/ai-text-detector) | [`posts/ai-text-detector`](posts/ai-text-detector) |
 | Face or Not | [letsusecompute.com/posts/face-or-not](https://letsusecompute.com/posts/face-or-not) | [`posts/face-or-not`](posts/face-or-not) |
