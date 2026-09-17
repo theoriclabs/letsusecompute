@@ -1,0 +1,8 @@
+run_1c8fae3cd5201a889109c9299e553898  vastai RTX-3090  boot_failed  $0.00  sku_unavailable  rpt_3765dde7b612ab979225675be64024c2
+create refused after cheap quoted decorator 3090            $0.00  rpt_17c4f166bd41577a1b20044c5236bae8
+run_bedff795237d0ebdf3d6781b49ed2b8c  vastai RTX-6000-ADA  boot_failed  $0.00  no interruptible offers  rpt_239cad5208c8a985365282daf72ead4f
+run_577746f2c18b58372a8c404c2b8f2a1c  vastai L4  sample succeeded  $0.03
+  offline agree 0.662  qwen 0 kills (always turn right)  threshold 10.3 kills  reload_ok
+run_6390d2547371c10b15795294dfe811e9  vastai L4  lost after head epoch 1  $0.02  rpt_e6fa8e2d373259c1dcc2f1f0858c3cc5
+headline closed-loop (local, 8 eps, same teacher/cone): random 1.13 kills, cone/teacher 9.00
+revision $0.05

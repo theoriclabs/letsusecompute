@@ -1,0 +1,13 @@
+WEBVTT
+
+00:00:00.000 --> 00:00:06.000
+Random policy on ViZDoom Defend the Center. Recorded replay.
+
+00:00:06.000 --> 00:00:12.000
+Random dies with a couple of kills.
+
+00:00:12.000 --> 00:00:28.000
+Trained aim-cone controller. Same scenario. Recorded replay.
+
+00:00:28.000 --> 00:00:36.000
+Trained policy keeps killing. Mean 9 kills vs random 1.1.
