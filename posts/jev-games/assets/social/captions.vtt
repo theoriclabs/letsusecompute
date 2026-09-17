@@ -1,13 +1,7 @@
 WEBVTT
 
-00:00:00.000 --> 00:00:08.000
-Random policy on ALE/Pong-v5. Recorded replay.
+00:00:00.000 --> 00:00:16.000
+Pong: the fitted controller predicts a target height and selects hold, up or down. The highlighted button is its recorded choice.
 
-00:00:08.000 --> 00:00:16.000
-Random finishes 0-5.
-
-00:00:16.000 --> 00:00:40.000
-Trained intercept controller. Same ROM. Recorded replay.
-
-00:00:40.000 --> 00:00:50.000
-Trained intercept finishes 5-3.
+00:00:16.000 --> 00:00:32.000
+Doom: the fitted controller reads the target bearing, turns toward it, and fires within eight degrees. These are actions, not confidence scores.

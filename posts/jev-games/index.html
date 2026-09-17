@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Real Atari Pong, a trained winner — Let’s use compute</title>
-  <meta name="description" content="ALE/Pong-v5, official pixels. A fitted intercept controller wins first-to-5 at 5–3. Random goes 0–5. Qwen2.5-0.5B copies 96% of the labels and still loses 0–5." />
-  <meta property="og:title" content="Real Atari Pong, a trained winner" />
-  <meta property="og:description" content="Official ALE Pong. Trained intercept 5–3. Random 0–5. The 0.5B scorer agrees offline and loses the rally." />
+  <title>Can a small model learn to play Pong and Doom? — Let’s use compute</title>
+  <meta name="description" content="A Jev-inspired experiment in choosing actions: how we trained a small model, why it struggled in Pong and Doom, and what the simpler controllers got right. $1.62 in GPU runs." />
+  <meta property="og:title" content="Can a small model learn to play Pong and Doom?" />
+  <meta property="og:description" content="High training accuracy, poor gameplay. A $1.62 experiment in making decisions, with the controller’s choices visible in the replay." />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://letsusecompute.com/posts/jev-games/" />
   <meta property="og:image" content="https://letsusecompute.com/posts/jev-games/assets/social/poster.jpg" />
@@ -16,101 +16,138 @@
   <link rel="stylesheet" href="../../styles.css" />
   <style>
     section { margin-top: 2.25rem; }
-    figure { margin: 1.35rem 0 1.8rem; }
-    figure .shot, figure video { margin: 0; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); background: #120806; }
-    figcaption { color: var(--muted); font-size: 0.92rem; margin-top: 0.55rem; }
-    .figure-label { color: var(--fg); font-weight: 700; }
-    .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem; margin: 1.2rem 0 1.5rem; }
-    .metric { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0.85rem 0.95rem; }
-    .metric dt { color: var(--muted); font-size: 0.9rem; }
-    .metric dd { font-size: 1.55rem; font-variant-numeric: tabular-nums; font-weight: 700; margin: 0.2rem 0 0; }
-    .table-wrap { overflow-x: auto; margin: 1.2rem 0 1.5rem; }
-    .data-table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 10px; font-variant-numeric: tabular-nums; }
-    .data-table caption { color: var(--muted); font-size: 0.92rem; padding: 0.7rem 0.75rem 0.2rem; text-align: left; }
-    .data-table th, .data-table td { border-bottom: 1px solid var(--line); padding: 0.6rem 0.75rem; text-align: right; }
-    .data-table th:first-child, .data-table td:first-child { text-align: left; }
-    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-    .pair img { width: 100%; border-radius: 8px; border: 1px solid var(--line); background: #120806; }
-    @media (max-width: 32rem) { .metrics, .pair { grid-template-columns: 1fr; } }
+    figure { margin: 1.5rem 0 2rem; }
+    video { display: block; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); background: #101820; }
+    figcaption, .small { color: var(--muted); font-size: 0.95rem; }
+    figcaption { margin-top: 0.65rem; }
+    .steps { padding-left: 1.4rem; font-size: 1.08rem; }
+    .steps li { padding-left: 0.2rem; margin: 0.85rem 0; }
+    .table-wrap { overflow-x: auto; margin: 1.3rem 0; }
+    table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+    caption { text-align: left; color: var(--muted); font-size: 0.95rem; padding-bottom: 0.7rem; }
+    th, td { padding: 0.7rem 0.65rem; text-align: left; border-bottom: 1px solid var(--line); }
+    thead th { font-size: 0.95rem; }
+    tbody th { font-weight: 400; }
+    .example { padding: 1rem 1.2rem; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+    .example p { margin: 0.3rem 0; }
+    details { margin: 1.2rem 0; }
+    summary { cursor: pointer; font-size: 1.08rem; font-weight: 700; }
+    :target { scroll-margin-top: 1rem; }
   </style>
 </head>
 <body>
   <main class="wrap">
     <p><a class="back" href="../../">← Let’s use compute</a></p>
     <header class="article-header">
-      <p class="eyebrow">2026-09-17 · post #8</p>
-      <h1>Real Atari Pong, a trained winner</h1>
+      <p class="eyebrow">2026-09-17 · post #8 · Pong + Doom</p>
+      <h1>Can a small model learn to play Pong and Doom?</h1>
       <p class="byline">Harsh Gupta</p>
-      <p class="lede">We threw out the homemade grids. This is the ALE ROM. The controller that wins is a fitted intercept, not the 0.5B scorer.</p>
+      <p class="lede">We trained a model to choose the next button to press. It learned to copy most of the training answers—and still lost. Two simple controllers show what it was missing.</p>
     </header>
 
-    <p>Issue <a href="https://github.com/theoriclabs/letsusecompute/issues/18">#18</a> asked for a Jev-inspired decision model. The first cut used toy Snake, DoorKey, and a MinAtar-style Breakout. Those frames do not look like games, and two of the policies lost. This revision uses <a href="https://ale.farama.org/environments/pong/"><code>ALE/Pong-v5</code></a>. Official pixels. Structured paddle and ball boxes extracted from that RGB. First to 5.</p>
+    <p>In Pong, a useful decision is “move the paddle up.” In Doom, it might be “turn left” or “fire.” Neither needs a paragraph of explanation. That makes games a good place to try an idea inspired by <a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev">TypeSafe’s Jev</a>: give a model the current situation and a menu of actions, then let code use its choice.</p>
+    <p>Our experiment cost <strong>$1.62 in GPU runs</strong>. The small language model struggled in both games. Simple rules, fitted to the same teaching examples, did much better: <strong>5–3 in Pong</strong> and <strong>9 kills per episode in Doom</strong>.</p>
 
-    <dl class="metrics" aria-label="Headline Pong result">
-      <div class="metric"><dt>Trained intercept</dt><dd>5–3</dd></div>
-      <div class="metric"><dt>Random</dt><dd>0–5</dd></div>
-      <div class="metric"><dt>Qwen closed-loop</dt><dd>0–5</dd></div>
-      <div class="metric"><dt>This revision</dt><dd>$1.57</dd></div>
-    </dl>
-
-    <figure class="hero">
-      <video controls playsinline muted loop preload="metadata" poster="./assets/social/poster.jpg" width="1088" height="1088" aria-label="Recorded ALE Pong: random then trained intercept">
+    <figure>
+      <video controls playsinline muted preload="metadata" poster="./assets/social/poster.jpg" width="1088" height="1088" aria-label="Pong and Doom replays with synchronized observations and controller action predictions">
         <source src="./assets/social/jev-games.mp4" type="video/mp4">
         <track kind="captions" src="./assets/social/captions.vtt" srclang="en" label="English">
         <a href="./assets/social/jev-games.mp4">Download the video.</a>
       </video>
-      <figcaption><span class="figure-label">Recorded replay, not live inference.</span> Red border is random. Green border is the trained intercept. Same ROM, same seed. <a href="./assets/social/jev-games.gif">GIF</a> · <a href="./assets/social/jev-games.mp4" download>MP4</a></figcaption>
+      <figcaption><strong>Watch the decisions as they happen.</strong> The highlighted button is the action chosen for that frame; the panel shows the input and rule behind it. These are newly recorded excerpts of the fitted controllers, not Qwen or Jev. Playback is slowed to make the choices readable. <a href="./assets/social/jev-games.mp4" download>Download MP4</a> · <a href="./assets/social/decisions.json">Decision log</a></figcaption>
     </figure>
 
-    <section aria-labelledby="harness">
-      <h2 id="harness">A real ROM, a small observation</h2>
-      <p>Gymnasium loads the bundled Pong ROM. Frameskip 4, sticky-action probability 0. The policy never sees the 210×160 tensor. We cut the playfield, take the green paddle on the right, the tan CPU paddle on the left, and the white ball, then write a short observation: relative bin, signed delta, approach, raw coordinates.</p>
-      <p>Menu: serve/hold (FIRE), up (RIGHT), down (LEFT). The teacher is an intercept: aim at <code>ball_y + 1.6 · dy</code> while the ball comes right, deadzone 6 pixels. Call it a teacher, not an oracle. Without the lead term the same thresholds lose 1–5.</p>
+    <section aria-labelledby="jev">
+      <h2 id="jev">What Jev changes about training</h2>
+      <p>Jev takes a situation and returns structured decisions with probabilities. For a game, that could mean a probability for each allowed action. TypeSafe says it computes its outputs in parallel, without writing an answer one token at a time. Its own Doom demo also uses a text description of game state, rather than images.</p>
+      <p>TypeSafe calls its training method <strong>Reinforcement Learning for Calibrated Decisions (RLCD)</strong>. The goal is useful uncertainty: across many predictions assigned an 80% probability, the predicted outcome should happen about 80% of the time. That lets software decide when to act and when to ask for help. It is a different objective from rewarding answers people prefer (RLHF), or rewarding answers that pass a correctness check (RLVR). <a href="https://docs.typesafe.ai/introduction/machine-learning-primer">TypeSafe’s training primer</a> explains the distinction.</p>
+      <p>The launch material describes that goal, but does not give a training recipe we can reproduce. Our experiment borrows the <em>interface</em>—state in, action out. We train by copying a teacher’s choices, and we do not establish that our model’s probabilities are calibrated.</p>
+    </section>
+
+    <section aria-labelledby="training">
+      <h2 id="training">How we taught our model</h2>
+      <p>We used Qwen2.5-0.5B-Instruct, a language model with roughly half a billion parameters. A small scoring layer gives each candidate action a number; the highest-scoring action becomes the next button press.</p>
+      <ol class="steps">
+        <li><strong>Describe the situation.</strong> In Pong, extract the ball and paddle positions from the game image. In Doom, read the nearest object’s direction and distance from the engine. The model receives text, not the screenshot.</li>
+        <li><strong>Collect teaching examples.</strong> A hand-written controller picks an action for each situation. Pong’s teacher follows where the ball is heading. Doom’s teacher turns toward the nearest target and fires when it is lined up.</li>
+        <li><strong>Learn to score the choices.</strong> First train only the scoring layer. Then use LoRA, which updates a small set of additional weights, to adapt the language model too.</li>
+        <li><strong>Practice after making mistakes.</strong> The training script includes a DAgger round: let the learner visit new situations, ask the teacher what it should have done, and train on those examples. Finally, measure how it actually plays.</li>
+      </ol>
+      <p>This is supervised imitation learning. The game score evaluates the policy; it is not the reward used to train Qwen. The Doom full run was interrupted before it finished this pipeline, so its Qwen result below comes from the smaller sample run.</p>
+      <details>
+        <summary>The training details</summary>
+        <p>Each input pairs the observation with one candidate action. A shared scalar head scores the candidates, and a softmax converts their scores into a distribution. Training minimizes its difference from the teacher’s labels. The scripts shuffle candidate order and split examples by episode. Stage A freezes the backbone; Stage B uses rank-16 LoRA. The Pong revision reduced the LoRA learning rate to 0.00002 after an earlier run became worse.</p>
+      </details>
+    </section>
+
+    <section aria-labelledby="pong">
+      <h2 id="pong">Pong: knowing the answer is not enough</h2>
+      <p>We used <a href="https://ale.farama.org/environments/pong/">Atari Pong in the Arcade Learning Environment</a>, playing first to five points. The controller can serve or hold, move up, or move down.</p>
+      <p>Qwen agreed with the teacher on <strong>98.3% of the offline examples</strong> in the recorded successful run. Put it in charge of the paddle, though, and it lost 0–5. It mostly chose to hold still. A high average score on individual questions had hidden a failure at the moments that mattered.</p>
+      <p>For comparison, we fitted a tiny controller with just two settings: how far ahead to aim, and how close is close enough. Searching 12 combinations recovered the teacher’s settings: look ahead by 1.6 times the ball’s vertical movement, and tolerate a six-pixel gap. That controller won 5–3.</p>
+      <div class="example">
+        <p><strong>The decision:</strong> estimate the ball’s target height → compare it with the paddle → move up, move down, or hold.</p>
+      </div>
+      <p>The replay shows that target and the selected move changing together. The rule is simple enough to inspect, which makes a missed ball easier to explain.</p>
+    </section>
+
+    <section aria-labelledby="doom">
+      <h2 id="doom">Doom: turn toward the target, then fire</h2>
+      <p>In <a href="https://vizdoom.farama.org/">ViZDoom’s</a> Defend the Center scenario, monsters approach from around an arena. The player stays in the middle and has three actions: turn left, turn right, or attack. The engine can report targets outside the camera view, so the controller knows more than the screenshot shows.</p>
+      <p>The simple controller has one setting: how closely the player must aim before firing. We tried six angles against the teaching examples and recovered the teacher’s <strong>8-degree tolerance</strong>. It averaged 9 kills across eight episodes; random actions averaged 1.13.</p>
+      <p>The Qwen sample agreed with about 66% of the offline labels, but chose “turn right” every time during gameplay. It never fired and scored no kills in its three evaluation episodes.</p>
+      <div class="example">
+        <p><strong>The decision:</strong> target more than 8° left → turn left. More than 8° right → turn right. Within 8° → fire.</p>
+      </div>
+      <p>The video displays the actual bearing and selected button for each recorded decision. The displayed controller follows this fitted rule; its action indicator is not a confidence estimate.</p>
     </section>
 
     <section aria-labelledby="results">
-      <h2 id="results">96% agreement is not a win</h2>
-      <p>We trained Qwen2.5-0.5B-Instruct plus a scalar candidate-scoring head on RunPod A100-SXM, run <code>run_84d48446e804cd4772e33b240d882643</code>. Stage A froze the backbone. Stage B was LoRA rank 16 at 2e-5. One DAgger round. Offline tie-aware agreement hit 0.983, then 0.960 on a later balanced mix. Head tensors changed. Reload matched.</p>
-      <p>Closed-loop, first to 5, eight episodes: random 0–5, teacher 5–3, Qwen 0–5. The scorer was not frozen on hold — action mix was 43% FIRE, 29% up, 29% down against the teacher’s 52 / 24 / 24. It lasted ~530–800 steps versus random’s ~180. It never scored. The 3–4% of frames it misses are the intercept.</p>
-      <div class="table-wrap" role="region" aria-label="Closed-loop Pong">
-        <table class="data-table">
-          <caption>First to 5. Return is points scored minus points conceded.</caption>
-          <thead>
-            <tr><th scope="col">Policy</th><th scope="col">Mean return</th><th scope="col">Win rate</th><th scope="col">Episodes</th></tr>
-          </thead>
+      <h2 id="results">What actually worked</h2>
+      <div class="table-wrap" role="region" aria-label="Gameplay results" tabindex="0">
+        <table>
+          <caption>Pong scores are player–CPU, first to five. Doom reports mean kills per episode. Episode counts differ, as shown.</caption>
+          <thead><tr><th scope="col">Controller</th><th scope="col">Pong</th><th scope="col">Doom</th></tr></thead>
           <tbody>
-            <tr><th scope="row">Random</th><td>−5.0</td><td>0%</td><td>8</td></tr>
-            <tr><th scope="row">Qwen scorer</th><td>−5.0</td><td>0%</td><td>8</td></tr>
-            <tr><th scope="row">Fitted intercept</th><td>+2.0</td><td>100%</td><td>6</td></tr>
-            <tr><th scope="row">Teacher</th><td>+2.0</td><td>100%</td><td>8</td></tr>
+            <tr><th scope="row">Random actions</th><td>0–5 · 8 games</td><td>1.13 · 8 games</td></tr>
+            <tr><th scope="row">Qwen scorer</th><td>0–5 · 8 games</td><td>0 · 3 games</td></tr>
+            <tr><th scope="row">Fitted rule</th><td>5–3 · 6 games</td><td>9.00 · 8 games</td></tr>
+            <tr><th scope="row">Hand-written teacher</th><td>5–3 · 8 games</td><td>9.00 · 8 games</td></tr>
           </tbody>
         </table>
       </div>
-      <p>The video policy is the fitted intercept: a 12-cell grid search over lead ∈ {0, 1, 1.6, 2.2} and deadzone ∈ {4, 6, 8} on the labeled states. It recovered lead 1.6, deadzone 6, label agreement 1.0, and the same 5–3 score as the teacher. That is a trained controller, not a teacher-controlled fake. Softmax clones at 85–96% do not recover it.</p>
-      <div class="pair">
-        <div><img src="./assets/replays/random_end.png" alt="Random policy lost 0-5 on ALE Pong"><p>Random, last frame. 0–5.</p></div>
-        <div><img src="./assets/replays/model_mid.png" alt="Trained intercept rallying on ALE Pong"><p>Trained intercept, mid-rally. Finishes 5–3.</p></div>
-      </div>
+      <p>The rules recovered the settings of the teachers that supplied their labels. They did not discover a new strategy. These are small evaluations on structured observations, with limited variation in Pong’s starting states.</p>
+      <p>The useful lesson is how to judge an action model: <strong>test the sequence of decisions, not just isolated answers.</strong> A missed move changes the next situation. Repeated mistakes compound. Jev’s emphasis on calibrated decisions is interesting, but this experiment tests a much smaller question: can our imitation learner turn good-looking training numbers into useful control? So far, it cannot.</p>
+    </section>
+
+    <section aria-labelledby="cost">
+      <h2 id="cost">What the experiment cost</h2>
+      <p>The Pong revision used <strong>$1.57</strong> in GPU runs, including failed and cancelled attempts. Doom added <strong>$0.05</strong>: a $0.03 sample and a $0.02 run lost when its rented machine disappeared. That is <strong>$1.62</strong> for these two experiments, or $2.30 including an earlier $0.68 prototype. Local controller evaluation and replay rendering are outside those GPU charges.</p>
+      <p>The Doom result table comes from local evaluation of the fitted rule, not a completed full Qwen training run. The per-run records are available in the <a href="./assets/results/receipt.txt">Pong receipt</a> and <a href="../jev-doom/assets/results/receipt.txt">Doom receipt</a>.</p>
     </section>
 
     <section aria-labelledby="run-it">
-      <h2 id="run-it">Train it on Compute</h2>
-      <p>One file. Hand <a href="https://compute.cx/SKILL.md">compute.cx/SKILL.md</a> to your agent, plus <a href="./SKILL.md">this post’s overlay</a>. The script trains the Qwen head, fits the intercept, and deploys whichever closed-loop score is higher.</p>
+      <h2 id="run-it">Try the experiment</h2>
+      <p>Each game has a standalone training script. Start with the sample run, then check gameplay as well as label agreement before spending more. An agent can use the <a href="https://compute.cx/SKILL.md">Compute setup guide</a> with the <a href="./SKILL.md">Pong instructions</a> or <a href="../jev-doom/SKILL.md">Doom instructions</a>.</p>
+      <details>
+        <summary>Run Pong</summary>
 <pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/jev-games/train.py -o train.py
 compute run train.py::train --gpu cheap --dry-run
 compute run train.py::train --gpu cheap --timeout 2400 --wait --args '{"sample": true}'
+# Full training:
 compute run train.py::train --gpu cheap --timeout 5400 --wait</code></pre>
-      <p>Dry-run only prints the upload plan. <code>ale-py</code> 0.11 ships the ROM. Observation mode is structured-from-ALE-RGB, not pixels into the network.</p>
-    </section>
-
-    <section aria-labelledby="friction">
-      <h2 id="friction">What the cheap GPU runs cost</h2>
-      <p>Sample <code>run_78b6f5ec13f4af481ca9af88aa42c61e</code> on Vast 3090 proved the ROM and then crashed on an empty reload probe, $0.03. An A100 run with LoRA at 1e-4 collapsed validation from 0.79 to 0.35 and was cancelled, $0.33. Headline Qwen numbers are <code>run_84d48446e804cd4772e33b240d882643</code>, $0.45. A unit-test miss after tightening the deadzone cost $0.06. A second A100 was cancelled once the intercept already won locally, $0.70. This revision $1.57. Whole issue, including the first toy-grid post, $2.25.</p>
-    </section>
-
-    <section aria-labelledby="limits">
-      <h2 id="limits">What this does not claim</h2>
-      <p>It does not reproduce Jev or RLCD. The 0.5B scorer does not beat the CPU. The winning policy is a fitted intercept on extracted coordinates, evaluated on the same first-to-5 clock as the baselines. A smooth replay is not real-time control. We did not host an endpoint. Pong’s gymnasium seed barely diversifies the ROM; the extra random actions after serve are what separate episodes. Pixel-in control is still a separate milestone.</p>
+      </details>
+      <details>
+        <summary>Run Doom</summary>
+<pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/jev-doom/train.py -o train.py
+compute run train.py::train --gpu cheap --dry-run
+compute gpu list
+compute run train.py::train --gpu L4 --timeout 2400 --wait --args '{"sample": true}'
+# Full training:
+compute run train.py::train --gpu L4 --timeout 5400 --wait</code></pre>
+        <p>The pinned ViZDoom package includes Freedoom. If the requested GPU is unavailable, choose an available SKU from <code>compute gpu list</code> and check its quote.</p>
+      </details>
+      <p class="small">This guide combines the original Pong and Doom posts. Both training scripts remain available. Replays are recordings, and do not measure live inference speed.</p>
     </section>
   </main>
   <script src="../../assets/cli-highlight.js"></script>

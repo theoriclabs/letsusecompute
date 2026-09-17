@@ -1,6 +1,6 @@
-# Atari Pong decision model on compute.cx
+# Pong + Doom: a Jev-inspired decision model
 
-Real `ALE/Pong-v5`. Structured paddle/ball observations extracted from official ALE pixels. A fitted intercept controller wins first-to-5. Qwen2.5-0.5B candidate scoring copies the labels offline and loses closed-loop.
+The combined guide covers Atari Pong and ViZDoom, Jev’s calibrated-decision training objective, and our smaller supervised-imitation experiment. This directory contains the Pong script; the Doom script remains in [`../jev-doom`](../jev-doom).
 
 Guide: https://letsusecompute.com/posts/jev-games
 
@@ -36,3 +36,20 @@ The Qwen model never sees the RGB tensor. Replays are the real ALE frames. The d
 ## Licenses
 
 [Arcade Learning Environment](https://github.com/Farama-Foundation/Arcade-Learning-Environment) / `ale-py` and the bundled Pong ROM. We do not vendor ALE source.
+
+## Combined replay with decisions
+
+From the repository root, using Python 3.12:
+
+```bash
+python -m pip install -r posts/jev-games/assets/requirements-video.txt
+python posts/jev-games/assets/make_video.py
+```
+
+This renders locally on CPU. It records fresh seed-77 gameplay using the published fitted parameters (Pong lead 1.6 / deadzone 6; Doom cone 8°), then shows contiguous decisions 20–99 from each game. Each pre-action frame is paired with the observation and action actually used to advance the engine. Playback holds each decision for 0.2 seconds, slowing both games. The action tiles are choices, not neural confidence scores. No Qwen checkpoint or Jev API is used.
+
+Outputs: `assets/social/jev-games.mp4`, `.gif`, `poster.jpg`, `captions.vtt`, and `decisions.json`. The JSON records source-code hashes, fitted parameters, game seeds, original frame indices and video timestamps. These short excerpts explain the controller; the historical evaluation results remain in the article and receipts.
+
+Both training scripts also export `replays/<policy>_decisions.json` for future runs. Its `frame` refers to the original captured frames; the raw replay MP4 samples every second frame, up to 360 frames. A final Pong terminal frame can have no next action.
+
+Combined revision GPU spend: $1.62 ($1.57 Pong + $0.05 Doom); $2.30 including the earlier $0.68 prototype. `assets/results/summary.json` and `run-result.json` are archived results from that earlier Snake / DoorKey / Breakout prototype, not the Pong evaluation. The Pong revision’s run record is `assets/results/receipt.txt`.

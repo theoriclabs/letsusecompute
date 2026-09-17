@@ -1,0 +1,5117 @@
+{
+  "fps": 20,
+  "frames_per_decision": 4,
+  "description": "Actual pre-action state and action; fitted rules, no neural probabilities. Contiguous decisions 20\u201399 from fresh seed-77 recordings.",
+  "clips": [
+    {
+      "game": "pong",
+      "seed": 77,
+      "policy": "fitted_rule",
+      "parameters": {
+        "t_lo": -6.0,
+        "t_hi": 6.0,
+        "lead": 1.6
+      },
+      "source_sha256": "ae9ec97d919ff3ad77bc0fcad29dbe9cbad20d738b61f6d72d0b05eb9a52100d",
+      "starts_at_seconds": 0.0,
+      "decisions": [
+        {
+          "frame": 20,
+          "state": {
+            "in_play": true,
+            "delta": 6.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 69.5,
+            "ball_y": 41.5,
+            "paddle_y": 35.5,
+            "obj": {
+              "ball": {
+                "x": 69.5,
+                "y": 41.5,
+                "ymin": 40.0,
+                "ymax": 43.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 35.5,
+                "ymin": 28.0,
+                "ymax": 43.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 58.5,
+                "ymin": 51.0,
+                "ymax": 66.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 0,
+          "at_seconds": 0.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 21,
+          "state": {
+            "in_play": true,
+            "delta": 18.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 73.5,
+            "ball_y": 33.5,
+            "paddle_y": 15.5,
+            "obj": {
+              "ball": {
+                "x": 73.5,
+                "y": 33.5,
+                "ymin": 32.0,
+                "ymax": 35.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 15.5,
+                "ymin": 8.0,
+                "ymax": 23.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 52.5,
+                "ymin": 45.0,
+                "ymax": 60.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 4,
+          "at_seconds": 0.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 22,
+          "state": {
+            "in_play": true,
+            "delta": 20.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "below_far",
+            "approach": "toward",
+            "ball_x": 77.5,
+            "ball_y": 25.5,
+            "paddle_y": 5.5,
+            "obj": {
+              "ball": {
+                "x": 77.5,
+                "y": 25.5,
+                "ymin": 24.0,
+                "ymax": 27.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 5.5,
+                "ymin": 0.0,
+                "ymax": 11.0,
+                "n": 48.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 44.5,
+                "ymin": 37.0,
+                "ymax": 52.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 8,
+          "at_seconds": 0.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 23,
+          "state": {
+            "in_play": true,
+            "delta": 6.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 81.5,
+            "ball_y": 17.5,
+            "paddle_y": 11.5,
+            "obj": {
+              "ball": {
+                "x": 81.5,
+                "y": 17.5,
+                "ymin": 16.0,
+                "ymax": 19.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 11.5,
+                "ymin": 4.0,
+                "ymax": 19.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 38.5,
+                "ymin": 31.0,
+                "ymax": 46.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 12,
+          "at_seconds": 0.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 24,
+          "state": {
+            "in_play": true,
+            "delta": 0.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 85.5,
+            "ball_y": 9.5,
+            "paddle_y": 9.5,
+            "obj": {
+              "ball": {
+                "x": 85.5,
+                "y": 9.5,
+                "ymin": 8.0,
+                "ymax": 11.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 9.5,
+                "ymin": 2.0,
+                "ymax": 17.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 30.5,
+                "ymin": 23.0,
+                "ymax": 38.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 16,
+          "at_seconds": 0.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 25,
+          "state": {
+            "in_play": true,
+            "delta": -3.0,
+            "dx": 4.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 89.5,
+            "ball_y": 1.5,
+            "paddle_y": 4.5,
+            "obj": {
+              "ball": {
+                "x": 89.5,
+                "y": 1.5,
+                "ymin": 0.0,
+                "ymax": 3.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 4.5,
+                "ymin": 0.0,
+                "ymax": 9.0,
+                "n": 40.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 24.5,
+                "ymin": 17.0,
+                "ymax": 32.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 20,
+          "at_seconds": 1.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 26,
+          "state": {
+            "in_play": true,
+            "delta": 0.0,
+            "dx": 4.0,
+            "dy": 1.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 93.5,
+            "ball_y": 2.5,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": {
+                "x": 93.5,
+                "y": 2.5,
+                "ymin": 1.0,
+                "ymax": 4.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 16.5,
+                "ymin": 9.0,
+                "ymax": 24.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 24,
+          "at_seconds": 1.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 27,
+          "state": {
+            "in_play": true,
+            "delta": 8.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 97.5,
+            "ball_y": 10.5,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": {
+                "x": 97.5,
+                "y": 10.5,
+                "ymin": 9.0,
+                "ymax": 12.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 14.5,
+                "ymin": 7.0,
+                "ymax": 22.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 28,
+          "at_seconds": 1.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 28,
+          "state": {
+            "in_play": true,
+            "delta": 16.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 101.5,
+            "ball_y": 18.5,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": {
+                "x": 101.5,
+                "y": 18.5,
+                "ymin": 17.0,
+                "ymax": 20.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 22.5,
+                "ymin": 15.0,
+                "ymax": 30.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 32,
+          "at_seconds": 1.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 29,
+          "state": {
+            "in_play": true,
+            "delta": 19.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "below_far",
+            "approach": "toward",
+            "ball_x": 105.5,
+            "ball_y": 26.5,
+            "paddle_y": 7.5,
+            "obj": {
+              "ball": {
+                "x": 105.5,
+                "y": 26.5,
+                "ymin": 25.0,
+                "ymax": 28.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 7.5,
+                "ymin": 0.0,
+                "ymax": 15.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 28.5,
+                "ymin": 21.0,
+                "ymax": 36.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 36,
+          "at_seconds": 1.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 30,
+          "state": {
+            "in_play": true,
+            "delta": 7.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 109.5,
+            "ball_y": 34.5,
+            "paddle_y": 27.5,
+            "obj": {
+              "ball": {
+                "x": 109.5,
+                "y": 34.5,
+                "ymin": 33.0,
+                "ymax": 36.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 27.5,
+                "ymin": 20.0,
+                "ymax": 35.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 36.5,
+                "ymin": 29.0,
+                "ymax": 44.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 40,
+          "at_seconds": 2.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 31,
+          "state": {
+            "in_play": true,
+            "delta": -5.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 113.5,
+            "ball_y": 42.5,
+            "paddle_y": 47.5,
+            "obj": {
+              "ball": {
+                "x": 113.5,
+                "y": 42.5,
+                "ymin": 41.0,
+                "ymax": 44.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 47.5,
+                "ymin": 40.0,
+                "ymax": 55.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 42.5,
+                "ymin": 35.0,
+                "ymax": 50.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 44,
+          "at_seconds": 2.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 32,
+          "state": {
+            "in_play": true,
+            "delta": -21.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "above_far",
+            "approach": "toward",
+            "ball_x": 117.5,
+            "ball_y": 50.5,
+            "paddle_y": 71.5,
+            "obj": {
+              "ball": {
+                "x": 117.5,
+                "y": 50.5,
+                "ymin": 49.0,
+                "ymax": 52.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 71.5,
+                "ymin": 64.0,
+                "ymax": 79.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 50.5,
+                "ymin": 43.0,
+                "ymax": 58.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 48,
+          "at_seconds": 2.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 33,
+          "state": {
+            "in_play": true,
+            "delta": -17.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 121.5,
+            "ball_y": 58.5,
+            "paddle_y": 75.5,
+            "obj": {
+              "ball": {
+                "x": 121.5,
+                "y": 58.5,
+                "ymin": 57.0,
+                "ymax": 60.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 75.5,
+                "ymin": 68.0,
+                "ymax": 83.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 56.5,
+                "ymin": 49.0,
+                "ymax": 64.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 52,
+          "at_seconds": 2.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 34,
+          "state": {
+            "in_play": true,
+            "delta": -1.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 125.5,
+            "ball_y": 66.5,
+            "paddle_y": 67.5,
+            "obj": {
+              "ball": {
+                "x": 125.5,
+                "y": 66.5,
+                "ymin": 65.0,
+                "ymax": 68.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 67.5,
+                "ymin": 60.0,
+                "ymax": 75.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 64.5,
+                "ymin": 57.0,
+                "ymax": 72.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 56,
+          "at_seconds": 2.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 35,
+          "state": {
+            "in_play": true,
+            "delta": -4.0,
+            "dx": 4.0,
+            "dy": 7.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 129.5,
+            "ball_y": 73.5,
+            "paddle_y": 77.5,
+            "obj": {
+              "ball": {
+                "x": 129.5,
+                "y": 73.5,
+                "ymin": 72.0,
+                "ymax": 75.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 77.5,
+                "ymin": 70.0,
+                "ymax": 85.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 70.5,
+                "ymin": 63.0,
+                "ymax": 78.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 60,
+          "at_seconds": 3.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 36,
+          "state": {
+            "in_play": true,
+            "delta": -14.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 133.5,
+            "ball_y": 81.5,
+            "paddle_y": 95.5,
+            "obj": {
+              "ball": {
+                "x": 133.5,
+                "y": 81.5,
+                "ymin": 80.0,
+                "ymax": 83.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 95.5,
+                "ymin": 88.0,
+                "ymax": 103.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 78.5,
+                "ymin": 71.0,
+                "ymax": 86.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 64,
+          "at_seconds": 3.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 37,
+          "state": {
+            "in_play": true,
+            "delta": -18.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 137.5,
+            "ball_y": 89.5,
+            "paddle_y": 107.5,
+            "obj": {
+              "ball": {
+                "x": 137.5,
+                "y": 89.5,
+                "ymin": 88.0,
+                "ymax": 91.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 107.5,
+                "ymin": 100.0,
+                "ymax": 115.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 84.5,
+                "ymin": 77.0,
+                "ymax": 92.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 68,
+          "at_seconds": 3.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 38,
+          "state": {
+            "in_play": true,
+            "delta": -12.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 141.5,
+            "ball_y": 97.5,
+            "paddle_y": 109.5,
+            "obj": {
+              "ball": {
+                "x": 141.5,
+                "y": 97.5,
+                "ymin": 96.0,
+                "ymax": 99.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 109.5,
+                "ymin": 102.0,
+                "ymax": 117.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 92.5,
+                "ymin": 85.0,
+                "ymax": 100.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 72,
+          "at_seconds": 3.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 39,
+          "state": {
+            "in_play": true,
+            "delta": -6.0,
+            "dx": 4.0,
+            "dy": 8.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 145.5,
+            "ball_y": 105.5,
+            "paddle_y": 111.5,
+            "obj": {
+              "ball": {
+                "x": 145.5,
+                "y": 105.5,
+                "ymin": 104.0,
+                "ymax": 107.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 111.5,
+                "ymin": 104.0,
+                "ymax": 119.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 98.5,
+                "ymin": 91.0,
+                "ymax": 106.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 76,
+          "at_seconds": 3.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 40,
+          "state": {
+            "in_play": true,
+            "delta": -8.0,
+            "dx": 3.5,
+            "dy": 8.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 149.0,
+            "ball_y": 113.5,
+            "paddle_y": 121.5,
+            "obj": {
+              "ball": {
+                "x": 149.0,
+                "y": 113.5,
+                "ymin": 112.0,
+                "ymax": 115.0,
+                "n": 4.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 121.5,
+                "ymin": 114.0,
+                "ymax": 129.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 106.5,
+                "ymin": 99.0,
+                "ymax": 114.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 80,
+          "at_seconds": 4.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 41,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 131.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 131.5,
+                "ymin": 124.0,
+                "ymax": 139.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 112.5,
+                "ymin": 105.0,
+                "ymax": 120.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 0,
+          "video_frame": 84,
+          "at_seconds": 4.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 42,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 120.5,
+                "ymin": 113.0,
+                "ymax": 128.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 88,
+          "at_seconds": 4.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 43,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 114.5,
+                "ymin": 107.0,
+                "ymax": 122.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 92,
+          "at_seconds": 4.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 44,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 106.5,
+                "ymin": 99.0,
+                "ymax": 114.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 96,
+          "at_seconds": 4.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 45,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 100.5,
+                "ymin": 93.0,
+                "ymax": 108.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 100,
+          "at_seconds": 5.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 46,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 92.5,
+                "ymin": 85.0,
+                "ymax": 100.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 104,
+          "at_seconds": 5.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 47,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 86.5,
+                "ymin": 79.0,
+                "ymax": 94.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 108,
+          "at_seconds": 5.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 48,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 78.5,
+                "ymin": 71.0,
+                "ymax": 86.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 112,
+          "at_seconds": 5.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 49,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 72.5,
+                "ymin": 65.0,
+                "ymax": 80.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 116,
+          "at_seconds": 5.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 50,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 64.5,
+                "ymin": 57.0,
+                "ymax": 72.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 120,
+          "at_seconds": 6.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 51,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 58.5,
+                "ymin": 51.0,
+                "ymax": 66.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 124,
+          "at_seconds": 6.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 52,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 50.5,
+                "ymin": 43.0,
+                "ymax": 58.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 128,
+          "at_seconds": 6.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 53,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 44.5,
+                "ymin": 37.0,
+                "ymax": 52.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 132,
+          "at_seconds": 6.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 54,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 36.5,
+                "ymin": 29.0,
+                "ymax": 44.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 136,
+          "at_seconds": 6.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 55,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 30.5,
+                "ymin": 23.0,
+                "ymax": 38.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 140,
+          "at_seconds": 7.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 56,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 22.5,
+                "ymin": 15.0,
+                "ymax": 30.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 144,
+          "at_seconds": 7.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 57,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 16.5,
+                "ymin": 9.0,
+                "ymax": 24.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 148,
+          "at_seconds": 7.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 58,
+          "state": {
+            "in_play": true,
+            "delta": -50.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "above_far",
+            "approach": "none",
+            "ball_x": 81.5,
+            "ball_y": 83.5,
+            "paddle_y": 133.5,
+            "obj": {
+              "ball": {
+                "x": 81.5,
+                "y": 83.5,
+                "ymin": 82.0,
+                "ymax": 85.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 133.5,
+                "ymin": 126.0,
+                "ymax": 141.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 88.5,
+                "ymin": 81.0,
+                "ymax": 96.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 152,
+          "at_seconds": 7.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 59,
+          "state": {
+            "in_play": true,
+            "delta": -36.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "above_far",
+            "approach": "toward",
+            "ball_x": 85.5,
+            "ball_y": 87.5,
+            "paddle_y": 123.5,
+            "obj": {
+              "ball": {
+                "x": 85.5,
+                "y": 87.5,
+                "ymin": 86.0,
+                "ymax": 89.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 123.5,
+                "ymin": 116.0,
+                "ymax": 131.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 92.5,
+                "ymin": 85.0,
+                "ymax": 100.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 156,
+          "at_seconds": 7.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 60,
+          "state": {
+            "in_play": true,
+            "delta": -12.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 89.5,
+            "ball_y": 91.5,
+            "paddle_y": 103.5,
+            "obj": {
+              "ball": {
+                "x": 89.5,
+                "y": 91.5,
+                "ymin": 90.0,
+                "ymax": 93.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 103.5,
+                "ymin": 96.0,
+                "ymax": 111.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 96.5,
+                "ymin": 89.0,
+                "ymax": 104.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 160,
+          "at_seconds": 8.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 61,
+          "state": {
+            "in_play": true,
+            "delta": 4.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 93.5,
+            "ball_y": 95.5,
+            "paddle_y": 91.5,
+            "obj": {
+              "ball": {
+                "x": 93.5,
+                "y": 95.5,
+                "ymin": 94.0,
+                "ymax": 97.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 91.5,
+                "ymin": 84.0,
+                "ymax": 99.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 100.5,
+                "ymin": 93.0,
+                "ymax": 108.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 164,
+          "at_seconds": 8.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 62,
+          "state": {
+            "in_play": true,
+            "delta": 0.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 97.5,
+            "ball_y": 99.5,
+            "paddle_y": 99.5,
+            "obj": {
+              "ball": {
+                "x": 97.5,
+                "y": 99.5,
+                "ymin": 98.0,
+                "ymax": 101.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 99.5,
+                "ymin": 92.0,
+                "ymax": 107.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 104.5,
+                "ymin": 97.0,
+                "ymax": 112.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 168,
+          "at_seconds": 8.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 63,
+          "state": {
+            "in_play": true,
+            "delta": -16.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 101.5,
+            "ball_y": 103.5,
+            "paddle_y": 119.5,
+            "obj": {
+              "ball": {
+                "x": 101.5,
+                "y": 103.5,
+                "ymin": 102.0,
+                "ymax": 105.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 119.5,
+                "ymin": 112.0,
+                "ymax": 127.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 108.5,
+                "ymin": 101.0,
+                "ymax": 116.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 172,
+          "at_seconds": 8.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 64,
+          "state": {
+            "in_play": true,
+            "delta": -14.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 105.5,
+            "ball_y": 107.5,
+            "paddle_y": 121.5,
+            "obj": {
+              "ball": {
+                "x": 105.5,
+                "y": 107.5,
+                "ymin": 106.0,
+                "ymax": 109.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 121.5,
+                "ymin": 114.0,
+                "ymax": 129.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 112.5,
+                "ymin": 105.0,
+                "ymax": 120.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 176,
+          "at_seconds": 8.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 65,
+          "state": {
+            "in_play": true,
+            "delta": 8.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 109.5,
+            "ball_y": 111.5,
+            "paddle_y": 103.5,
+            "obj": {
+              "ball": {
+                "x": 109.5,
+                "y": 111.5,
+                "ymin": 110.0,
+                "ymax": 113.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 103.5,
+                "ymin": 96.0,
+                "ymax": 111.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 116.5,
+                "ymin": 109.0,
+                "ymax": 124.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 180,
+          "at_seconds": 9.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 66,
+          "state": {
+            "in_play": true,
+            "delta": 14.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 113.5,
+            "ball_y": 115.5,
+            "paddle_y": 101.5,
+            "obj": {
+              "ball": {
+                "x": 113.5,
+                "y": 115.5,
+                "ymin": 114.0,
+                "ymax": 117.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 101.5,
+                "ymin": 94.0,
+                "ymax": 109.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 120.5,
+                "ymin": 113.0,
+                "ymax": 128.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 184,
+          "at_seconds": 9.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 67,
+          "state": {
+            "in_play": true,
+            "delta": 0.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 117.5,
+            "ball_y": 119.5,
+            "paddle_y": 119.5,
+            "obj": {
+              "ball": {
+                "x": 117.5,
+                "y": 119.5,
+                "ymin": 118.0,
+                "ymax": 121.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 119.5,
+                "ymin": 112.0,
+                "ymax": 127.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 124.5,
+                "ymin": 117.0,
+                "ymax": 132.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 188,
+          "at_seconds": 9.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 68,
+          "state": {
+            "in_play": true,
+            "delta": -18.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 121.5,
+            "ball_y": 123.5,
+            "paddle_y": 141.5,
+            "obj": {
+              "ball": {
+                "x": 121.5,
+                "y": 123.5,
+                "ymin": 122.0,
+                "ymax": 125.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 141.5,
+                "ymin": 134.0,
+                "ymax": 149.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 128.5,
+                "ymin": 121.0,
+                "ymax": 136.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 192,
+          "at_seconds": 9.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 69,
+          "state": {
+            "in_play": true,
+            "delta": -16.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "above",
+            "approach": "toward",
+            "ball_x": 125.5,
+            "ball_y": 127.5,
+            "paddle_y": 143.5,
+            "obj": {
+              "ball": {
+                "x": 125.5,
+                "y": 127.5,
+                "ymin": 126.0,
+                "ymax": 129.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 143.5,
+                "ymin": 136.0,
+                "ymax": 151.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 132.5,
+                "ymin": 125.0,
+                "ymax": 140.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 196,
+          "at_seconds": 9.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 70,
+          "state": {
+            "in_play": true,
+            "delta": 4.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 129.5,
+            "ball_y": 131.5,
+            "paddle_y": 127.5,
+            "obj": {
+              "ball": {
+                "x": 129.5,
+                "y": 131.5,
+                "ymin": 130.0,
+                "ymax": 133.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 127.5,
+                "ymin": 120.0,
+                "ymax": 135.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 136.5,
+                "ymin": 129.0,
+                "ymax": 144.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 200,
+          "at_seconds": 10.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 71,
+          "state": {
+            "in_play": true,
+            "delta": 10.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "below",
+            "approach": "toward",
+            "ball_x": 133.5,
+            "ball_y": 135.5,
+            "paddle_y": 125.5,
+            "obj": {
+              "ball": {
+                "x": 133.5,
+                "y": 135.5,
+                "ymin": 134.0,
+                "ymax": 137.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 125.5,
+                "ymin": 118.0,
+                "ymax": 133.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 140.5,
+                "ymin": 133.0,
+                "ymax": 148.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 3,
+          "choice": "move paddle down",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 204,
+          "at_seconds": 10.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 72,
+          "state": {
+            "in_play": true,
+            "delta": -2.0,
+            "dx": 4.0,
+            "dy": 4.0,
+            "rel": "aligned",
+            "approach": "toward",
+            "ball_x": 137.5,
+            "ball_y": 139.5,
+            "paddle_y": 141.5,
+            "obj": {
+              "ball": {
+                "x": 137.5,
+                "y": 139.5,
+                "ymin": 138.0,
+                "ymax": 141.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 141.5,
+                "ymin": 134.0,
+                "ymax": 149.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 144.5,
+                "ymin": 137.0,
+                "ymax": 152.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 208,
+          "at_seconds": 10.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 73,
+          "state": {
+            "in_play": true,
+            "delta": -15.0,
+            "dx": -2.0,
+            "dy": -2.0,
+            "rel": "above",
+            "approach": "away",
+            "ball_x": 135.5,
+            "ball_y": 137.5,
+            "paddle_y": 152.5,
+            "obj": {
+              "ball": {
+                "x": 135.5,
+                "y": 137.5,
+                "ymin": 136.0,
+                "ymax": 139.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 152.5,
+                "ymin": 146.0,
+                "ymax": 159.0,
+                "n": 56.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 142.5,
+                "ymin": 135.0,
+                "ymax": 150.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 212,
+          "at_seconds": 10.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 74,
+          "state": {
+            "in_play": true,
+            "delta": -16.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "above",
+            "approach": "away",
+            "ball_x": 127.5,
+            "ball_y": 129.5,
+            "paddle_y": 145.5,
+            "obj": {
+              "ball": {
+                "x": 127.5,
+                "y": 129.5,
+                "ymin": 128.0,
+                "ymax": 131.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 145.5,
+                "ymin": 138.0,
+                "ymax": 153.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 134.5,
+                "ymin": 127.0,
+                "ymax": 142.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 216,
+          "at_seconds": 10.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 75,
+          "state": {
+            "in_play": true,
+            "delta": -6.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "away",
+            "ball_x": 119.5,
+            "ball_y": 121.5,
+            "paddle_y": 127.5,
+            "obj": {
+              "ball": {
+                "x": 119.5,
+                "y": 121.5,
+                "ymin": 120.0,
+                "ymax": 123.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 127.5,
+                "ymin": 120.0,
+                "ymax": 135.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 128.5,
+                "ymin": 121.0,
+                "ymax": 136.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 220,
+          "at_seconds": 11.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 76,
+          "state": {
+            "in_play": true,
+            "delta": -2.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "away",
+            "ball_x": 111.5,
+            "ball_y": 113.5,
+            "paddle_y": 115.5,
+            "obj": {
+              "ball": {
+                "x": 111.5,
+                "y": 113.5,
+                "ymin": 112.0,
+                "ymax": 115.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 115.5,
+                "ymin": 108.0,
+                "ymax": 123.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 120.5,
+                "ymin": 113.0,
+                "ymax": 128.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 224,
+          "at_seconds": 11.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 77,
+          "state": {
+            "in_play": true,
+            "delta": -8.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "above",
+            "approach": "away",
+            "ball_x": 103.5,
+            "ball_y": 105.5,
+            "paddle_y": 113.5,
+            "obj": {
+              "ball": {
+                "x": 103.5,
+                "y": 105.5,
+                "ymin": 104.0,
+                "ymax": 107.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 113.5,
+                "ymin": 106.0,
+                "ymax": 121.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 114.5,
+                "ymin": 107.0,
+                "ymax": 122.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 228,
+          "at_seconds": 11.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 78,
+          "state": {
+            "in_play": true,
+            "delta": -4.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "away",
+            "ball_x": 95.5,
+            "ball_y": 97.5,
+            "paddle_y": 101.5,
+            "obj": {
+              "ball": {
+                "x": 95.5,
+                "y": 97.5,
+                "ymin": 96.0,
+                "ymax": 99.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 101.5,
+                "ymin": 94.0,
+                "ymax": 109.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 106.5,
+                "ymin": 99.0,
+                "ymax": 114.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 232,
+          "at_seconds": 11.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 79,
+          "state": {
+            "in_play": true,
+            "delta": -2.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "away",
+            "ball_x": 87.5,
+            "ball_y": 89.5,
+            "paddle_y": 91.5,
+            "obj": {
+              "ball": {
+                "x": 87.5,
+                "y": 89.5,
+                "ymin": 88.0,
+                "ymax": 91.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 91.5,
+                "ymin": 84.0,
+                "ymax": 99.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 100.5,
+                "ymin": 93.0,
+                "ymax": 108.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 236,
+          "at_seconds": 11.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 80,
+          "state": {
+            "in_play": true,
+            "delta": -6.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "away",
+            "ball_x": 79.5,
+            "ball_y": 81.5,
+            "paddle_y": 87.5,
+            "obj": {
+              "ball": {
+                "x": 79.5,
+                "y": 81.5,
+                "ymin": 80.0,
+                "ymax": 83.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 87.5,
+                "ymin": 80.0,
+                "ymax": 95.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 92.5,
+                "ymin": 85.0,
+                "ymax": 100.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 240,
+          "at_seconds": 12.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 81,
+          "state": {
+            "in_play": true,
+            "delta": -14.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "above",
+            "approach": "away",
+            "ball_x": 71.5,
+            "ball_y": 73.5,
+            "paddle_y": 87.5,
+            "obj": {
+              "ball": {
+                "x": 71.5,
+                "y": 73.5,
+                "ymin": 72.0,
+                "ymax": 75.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 87.5,
+                "ymin": 80.0,
+                "ymax": 95.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 86.5,
+                "ymin": 79.0,
+                "ymax": 94.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 244,
+          "at_seconds": 12.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 82,
+          "state": {
+            "in_play": true,
+            "delta": -14.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "above",
+            "approach": "away",
+            "ball_x": 63.5,
+            "ball_y": 65.5,
+            "paddle_y": 79.5,
+            "obj": {
+              "ball": {
+                "x": 63.5,
+                "y": 65.5,
+                "ymin": 64.0,
+                "ymax": 67.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 79.5,
+                "ymin": 72.0,
+                "ymax": 87.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 78.5,
+                "ymin": 71.0,
+                "ymax": 86.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 248,
+          "at_seconds": 12.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 83,
+          "state": {
+            "in_play": true,
+            "delta": 0.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "away",
+            "ball_x": 55.5,
+            "ball_y": 57.5,
+            "paddle_y": 57.5,
+            "obj": {
+              "ball": {
+                "x": 55.5,
+                "y": 57.5,
+                "ymin": 56.0,
+                "ymax": 59.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 57.5,
+                "ymin": 50.0,
+                "ymax": 65.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 72.5,
+                "ymin": 65.0,
+                "ymax": 80.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 252,
+          "at_seconds": 12.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 84,
+          "state": {
+            "in_play": true,
+            "delta": 4.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "away",
+            "ball_x": 47.5,
+            "ball_y": 49.5,
+            "paddle_y": 45.5,
+            "obj": {
+              "ball": {
+                "x": 47.5,
+                "y": 49.5,
+                "ymin": 48.0,
+                "ymax": 51.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 45.5,
+                "ymin": 38.0,
+                "ymax": 53.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 64.5,
+                "ymin": 57.0,
+                "ymax": 72.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 256,
+          "at_seconds": 12.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 85,
+          "state": {
+            "in_play": true,
+            "delta": -2.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "away",
+            "ball_x": 39.5,
+            "ball_y": 41.5,
+            "paddle_y": 43.5,
+            "obj": {
+              "ball": {
+                "x": 39.5,
+                "y": 41.5,
+                "ymin": 40.0,
+                "ymax": 43.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 43.5,
+                "ymin": 36.0,
+                "ymax": 51.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 58.5,
+                "ymin": 51.0,
+                "ymax": 66.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 260,
+          "at_seconds": 13.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 86,
+          "state": {
+            "in_play": true,
+            "delta": -8.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "above",
+            "approach": "away",
+            "ball_x": 31.5,
+            "ball_y": 33.5,
+            "paddle_y": 41.5,
+            "obj": {
+              "ball": {
+                "x": 31.5,
+                "y": 33.5,
+                "ymin": 32.0,
+                "ymax": 35.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 41.5,
+                "ymin": 34.0,
+                "ymax": 49.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 50.5,
+                "ymin": 43.0,
+                "ymax": 58.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 264,
+          "at_seconds": 13.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 87,
+          "state": {
+            "in_play": true,
+            "delta": -8.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "above",
+            "approach": "away",
+            "ball_x": 23.5,
+            "ball_y": 25.5,
+            "paddle_y": 33.5,
+            "obj": {
+              "ball": {
+                "x": 23.5,
+                "y": 25.5,
+                "ymin": 24.0,
+                "ymax": 27.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 33.5,
+                "ymin": 26.0,
+                "ymax": 41.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 44.5,
+                "ymin": 37.0,
+                "ymax": 52.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 2,
+          "choice": "move paddle up",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 268,
+          "at_seconds": 13.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 88,
+          "state": {
+            "in_play": true,
+            "delta": 6.0,
+            "dx": -8.0,
+            "dy": -8.0,
+            "rel": "aligned",
+            "approach": "away",
+            "ball_x": 15.5,
+            "ball_y": 17.5,
+            "paddle_y": 11.5,
+            "obj": {
+              "ball": {
+                "x": 15.5,
+                "y": 17.5,
+                "ymin": 16.0,
+                "ymax": 19.0,
+                "n": 8.0
+              },
+              "player": {
+                "x": 141.5,
+                "y": 11.5,
+                "ymin": 4.0,
+                "ymax": 19.0,
+                "n": 64.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 36.5,
+                "ymin": 29.0,
+                "ymax": 44.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 272,
+          "at_seconds": 13.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 89,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 4.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 4.5,
+                "ymin": 0.0,
+                "ymax": 9.0,
+                "n": 40.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 30.5,
+                "ymin": 23.0,
+                "ymax": 38.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 0,
+          "opp": 1,
+          "video_frame": 276,
+          "at_seconds": 13.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 90,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 22.5,
+                "ymin": 15.0,
+                "ymax": 30.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 1,
+          "opp": 1,
+          "video_frame": 280,
+          "at_seconds": 14.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 91,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 16.5,
+                "ymin": 9.0,
+                "ymax": 24.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 1,
+          "opp": 1,
+          "video_frame": 284,
+          "at_seconds": 14.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 92,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 8.5,
+                "ymin": 1.0,
+                "ymax": 16.0,
+                "n": 64.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 1,
+          "opp": 1,
+          "video_frame": 288,
+          "at_seconds": 14.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 93,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 5.0,
+                "ymin": 0.0,
+                "ymax": 10.0,
+                "n": 44.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 1,
+          "opp": 1,
+          "video_frame": 292,
+          "at_seconds": 14.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 94,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": {
+                "x": 17.5,
+                "y": 1.0,
+                "ymin": 0.0,
+                "ymax": 2.0,
+                "n": 12.0
+              }
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 1,
+          "opp": 1,
+          "video_frame": 296,
+          "at_seconds": 14.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 95,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": null
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 1,
+          "opp": 1,
+          "video_frame": 300,
+          "at_seconds": 15.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 96,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": null
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 1,
+          "opp": 1,
+          "video_frame": 304,
+          "at_seconds": 15.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 97,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": null
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 1,
+          "opp": 1,
+          "video_frame": 308,
+          "at_seconds": 15.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 98,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": null
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 1,
+          "opp": 1,
+          "video_frame": 312,
+          "at_seconds": 15.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 99,
+          "state": {
+            "in_play": false,
+            "delta": 0.0,
+            "dx": 0.0,
+            "dy": 0.0,
+            "rel": "none",
+            "approach": "none",
+            "ball_x": 0.0,
+            "ball_y": 0.0,
+            "paddle_y": 2.5,
+            "obj": {
+              "ball": null,
+              "player": {
+                "x": 141.5,
+                "y": 2.5,
+                "ymin": 0.0,
+                "ymax": 5.0,
+                "n": 24.0
+              },
+              "cpu": null
+            }
+          },
+          "action": 1,
+          "choice": "serve or hold",
+          "you": 1,
+          "opp": 1,
+          "video_frame": 316,
+          "at_seconds": 15.8,
+          "duration_seconds": 0.2
+        }
+      ],
+      "ends_at_seconds": 16.0
+    },
+    {
+      "game": "doom",
+      "seed": 77,
+      "policy": "fitted_rule",
+      "parameters": {
+        "cone": 8.0
+      },
+      "source_sha256": "b997cb5829e03cbcf05e7f1782b81254ba88c8376a562ed7cc7215a22a1f97f7",
+      "starts_at_seconds": 16.0,
+      "decisions": [
+        {
+          "frame": 20,
+          "state": {
+            "health": 100.0,
+            "ammo": 24.0,
+            "kills": 1.0,
+            "n": 4,
+            "bearing": -75.7245792599913,
+            "dist": 409.0925064764596,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 16.03125,
+            "vis_w": 10.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 320,
+          "at_seconds": 16.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 21,
+          "state": {
+            "health": 100.0,
+            "ammo": 24.0,
+            "kills": 1.0,
+            "n": 4,
+            "bearing": -59.58004679132361,
+            "dist": 395.439313193007,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 4.21875,
+            "vis_w": 10.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 324,
+          "at_seconds": 16.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 22,
+          "state": {
+            "health": 100.0,
+            "ammo": 24.0,
+            "kills": 1.0,
+            "n": 4,
+            "bearing": -43.28979259414018,
+            "dist": 382.3451630501542,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -6.890625000000001,
+            "vis_w": 9.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 328,
+          "at_seconds": 16.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 23,
+          "state": {
+            "health": 100.0,
+            "ammo": 24.0,
+            "kills": 1.0,
+            "n": 4,
+            "bearing": -26.845443000749043,
+            "dist": 369.86943469698593,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -19.125,
+            "vis_w": 10.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 332,
+          "at_seconds": 16.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 24,
+          "state": {
+            "health": 100.0,
+            "ammo": 24.0,
+            "kills": 1.0,
+            "n": 4,
+            "bearing": -10.239562562940534,
+            "dist": 358.0767731425956,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 8.15625,
+            "vis_w": 24.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 336,
+          "at_seconds": 16.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 25,
+          "state": {
+            "health": 100.0,
+            "ammo": 24.0,
+            "kills": 1.0,
+            "n": 4,
+            "bearing": 1.907164600301087,
+            "dist": 341.8546057566183,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": -1.828125,
+            "vis_w": 15.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 340,
+          "at_seconds": 17.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 26,
+          "state": {
+            "health": 100.0,
+            "ammo": 24.0,
+            "kills": 1.0,
+            "n": 4,
+            "bearing": -0.19685336791340546,
+            "dist": 326.0524025609059,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 0.0,
+            "vis_w": 20.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 344,
+          "at_seconds": 17.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 27,
+          "state": {
+            "health": 100.0,
+            "ammo": 23.0,
+            "kills": 2.0,
+            "n": 4,
+            "bearing": 0.000766677451281339,
+            "dist": 295.9859250590997,
+            "name": "Blood",
+            "vis_n": 1,
+            "vis_off": -0.28125,
+            "vis_w": 8.0,
+            "vis_name": "Blood",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 348,
+          "at_seconds": 17.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 28,
+          "state": {
+            "health": 100.0,
+            "ammo": 23.0,
+            "kills": 2.0,
+            "n": 3,
+            "bearing": 51.769438577032986,
+            "dist": 506.87639354796545,
+            "name": "MarineChainsawVzd",
+            "vis_n": 0,
+            "vis_off": 0.0,
+            "vis_w": 0.0,
+            "vis_name": "none",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 352,
+          "at_seconds": 17.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 29,
+          "state": {
+            "health": 100.0,
+            "ammo": 23.0,
+            "kills": 2.0,
+            "n": 3,
+            "bearing": 44.9463096005679,
+            "dist": 499.08779286374977,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": -44.015625,
+            "vis_w": 7.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 356,
+          "at_seconds": 17.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 30,
+          "state": {
+            "health": 100.0,
+            "ammo": 23.0,
+            "kills": 2.0,
+            "n": 3,
+            "bearing": 32.85633889863098,
+            "dist": 491.3059860323043,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": -29.390624999999996,
+            "vis_w": 13.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 360,
+          "at_seconds": 18.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 31,
+          "state": {
+            "health": 100.0,
+            "ammo": 23.0,
+            "kills": 2.0,
+            "n": 3,
+            "bearing": 19.01546374245268,
+            "dist": 483.53130106838864,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": -15.749999999999998,
+            "vis_w": 12.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 364,
+          "at_seconds": 18.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 32,
+          "state": {
+            "health": 100.0,
+            "ammo": 23.0,
+            "kills": 2.0,
+            "n": 3,
+            "bearing": 5.181828495913834,
+            "dist": 475.764087117503,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": -4.359375,
+            "vis_w": 11.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 368,
+          "at_seconds": 18.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 33,
+          "state": {
+            "health": 100.0,
+            "ammo": 23.0,
+            "kills": 2.0,
+            "n": 3,
+            "bearing": 5.418286141794226,
+            "dist": 468.0047161565378,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": -4.640625,
+            "vis_w": 11.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 372,
+          "at_seconds": 18.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 34,
+          "state": {
+            "health": 100.0,
+            "ammo": 22.0,
+            "kills": 2.0,
+            "n": 4,
+            "bearing": 5.662712435519381,
+            "dist": 460.2535848583044,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -0.28125,
+            "vis_w": 2.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 376,
+          "at_seconds": 18.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 35,
+          "state": {
+            "health": 100.0,
+            "ammo": 22.0,
+            "kills": 2.0,
+            "n": 5,
+            "bearing": 5.91550773308694,
+            "dist": 452.51111663828505,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -0.28125,
+            "vis_w": 2.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 380,
+          "at_seconds": 19.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 36,
+          "state": {
+            "health": 100.0,
+            "ammo": 22.0,
+            "kills": 2.0,
+            "n": 5,
+            "bearing": 6.177098977320924,
+            "dist": 444.7777639042706,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -0.28125,
+            "vis_w": 2.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 384,
+          "at_seconds": 19.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 37,
+          "state": {
+            "health": 100.0,
+            "ammo": 21.0,
+            "kills": 2.0,
+            "n": 5,
+            "bearing": 6.447941877241675,
+            "dist": 437.0540105322075,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -1.125,
+            "vis_w": 0.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 388,
+          "at_seconds": 19.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 38,
+          "state": {
+            "health": 100.0,
+            "ammo": 21.0,
+            "kills": 2.0,
+            "n": 5,
+            "bearing": 6.728523297875398,
+            "dist": 429.34037459460893,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -1.265625,
+            "vis_w": 1.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 392,
+          "at_seconds": 19.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 39,
+          "state": {
+            "health": 100.0,
+            "ammo": 21.0,
+            "kills": 2.0,
+            "n": 5,
+            "bearing": 7.019363883552529,
+            "dist": 421.63741137135776,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -1.265625,
+            "vis_w": 3.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 396,
+          "at_seconds": 19.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 40,
+          "state": {
+            "health": 100.0,
+            "ammo": 21.0,
+            "kills": 2.0,
+            "n": 5,
+            "bearing": 7.321020940504752,
+            "dist": 413.9457166767019,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -1.265625,
+            "vis_w": 3.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 400,
+          "at_seconds": 20.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 41,
+          "state": {
+            "health": 100.0,
+            "ammo": 20.0,
+            "kills": 2.0,
+            "n": 5,
+            "bearing": 7.6340916076725875,
+            "dist": 406.2659305408041,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -0.421875,
+            "vis_w": 1.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 404,
+          "at_seconds": 20.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 42,
+          "state": {
+            "health": 100.0,
+            "ammo": 20.0,
+            "kills": 2.0,
+            "n": 5,
+            "bearing": 7.959216348124215,
+            "dist": 398.59874128944625,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -0.28125,
+            "vis_w": 2.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 408,
+          "at_seconds": 20.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 43,
+          "state": {
+            "health": 100.0,
+            "ammo": 20.0,
+            "kills": 2.0,
+            "n": 5,
+            "bearing": 8.297082797401288,
+            "dist": 390.9448900715095,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -0.421875,
+            "vis_w": 3.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 412,
+          "at_seconds": 20.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 44,
+          "state": {
+            "health": 100.0,
+            "ammo": 19.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": -0.40569664051358245,
+            "dist": 372.28774655753693,
+            "name": "Blood",
+            "vis_n": 1,
+            "vis_off": 0.140625,
+            "vis_w": 3.0,
+            "vis_name": "Blood",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 416,
+          "at_seconds": 20.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 45,
+          "state": {
+            "health": 100.0,
+            "ammo": 19.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": -0.40569664051358245,
+            "dist": 372.28774655753693,
+            "name": "Blood",
+            "vis_n": 1,
+            "vis_off": 0.140625,
+            "vis_w": 3.0,
+            "vis_name": "Blood",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 420,
+          "at_seconds": 21.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 46,
+          "state": {
+            "health": 100.0,
+            "ammo": 19.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": -0.40569664051358245,
+            "dist": 372.28774655753693,
+            "name": "Blood",
+            "vis_n": 1,
+            "vis_off": 0.28125,
+            "vis_w": 6.0,
+            "vis_name": "Blood",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 424,
+          "at_seconds": 21.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 47,
+          "state": {
+            "health": 100.0,
+            "ammo": 19.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": -0.40569664051358245,
+            "dist": 372.28774655753693,
+            "name": "Blood",
+            "vis_n": 1,
+            "vis_off": 0.140625,
+            "vis_w": 7.0,
+            "vis_name": "Blood",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 428,
+          "at_seconds": 21.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 48,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": 113.88763461071238,
+            "dist": 423.5736402773134,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": 0.703125,
+            "vis_w": 1.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 432,
+          "at_seconds": 21.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 49,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 5,
+            "bearing": 107.55789578618186,
+            "dist": 417.45043517906413,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": 6.187500000000001,
+            "vis_w": 2.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 436,
+          "at_seconds": 21.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 50,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 5,
+            "bearing": 95.97549342773186,
+            "dist": 411.39166642112895,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": 16.734375,
+            "vis_w": 3.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 440,
+          "at_seconds": 22.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 51,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": 82.65674913194846,
+            "dist": 405.40022304688637,
+            "name": "MarineChainsawVzd",
+            "vis_n": 0,
+            "vis_off": 0.0,
+            "vis_w": 0.0,
+            "vis_name": "none",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 444,
+          "at_seconds": 22.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 52,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": 162.86738360969957,
+            "dist": 399.0801924425716,
+            "name": "MarineChainsawVzd",
+            "vis_n": 0,
+            "vis_off": 0.0,
+            "vis_w": 0.0,
+            "vis_name": "none",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 448,
+          "at_seconds": 22.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 53,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": 148.8283785714949,
+            "dist": 391.0818328687744,
+            "name": "MarineChainsawVzd",
+            "vis_n": 0,
+            "vis_off": 0.0,
+            "vis_w": 0.0,
+            "vis_name": "none",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 452,
+          "at_seconds": 22.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 54,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": 134.79035462678405,
+            "dist": 383.08354180256816,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": -41.765625,
+            "vis_w": 13.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 456,
+          "at_seconds": 22.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 55,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": 120.75337452862681,
+            "dist": 375.085323626505,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": -24.750000000000004,
+            "vis_w": 14.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 460,
+          "at_seconds": 23.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 56,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": 106.71750649758536,
+            "dist": 367.0871831050493,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": -11.953125,
+            "vis_w": 15.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 464,
+          "at_seconds": 23.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 57,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": 92.68282483034295,
+            "dist": 359.0891254271006,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": -0.84375,
+            "vis_w": 14.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 468,
+          "at_seconds": 23.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 58,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": 78.64941059145804,
+            "dist": 351.0911562543266,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": 10.546875,
+            "vis_w": 15.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 472,
+          "at_seconds": 23.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 59,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": 64.61735240180855,
+            "dist": 343.09328177625395,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": 23.203125,
+            "vis_w": 17.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 476,
+          "at_seconds": 23.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 60,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": 50.586747339866974,
+            "dist": 335.0955087732451,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": 39.796875,
+            "vis_w": 21.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 480,
+          "at_seconds": 24.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 61,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": 36.55770197509975,
+            "dist": 327.09784468871084,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": -33.890625,
+            "vis_w": 21.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 484,
+          "at_seconds": 24.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 62,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": 22.530333556650703,
+            "dist": 319.100297712177,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": -18.984375,
+            "vis_w": 19.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 488,
+          "at_seconds": 24.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 63,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": 8.504771385222227,
+            "dist": 311.1028768751585,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": -6.890625000000001,
+            "vis_w": 17.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 492,
+          "at_seconds": 24.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 64,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": -5.518841514223936,
+            "dist": 303.10559216220344,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": 4.078125,
+            "vis_w": 19.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 496,
+          "at_seconds": 24.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 65,
+          "state": {
+            "health": 100.0,
+            "ammo": 18.0,
+            "kills": 3.0,
+            "n": 4,
+            "bearing": -5.477846877468892,
+            "dist": 295.10845463998487,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": 3.7968750000000004,
+            "vis_w": 19.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 500,
+          "at_seconds": 25.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 66,
+          "state": {
+            "health": 100.0,
+            "ammo": 17.0,
+            "kills": 3.0,
+            "n": 5,
+            "bearing": -5.4345685525571525,
+            "dist": 287.1114766079545,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -0.28125,
+            "vis_w": 2.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 504,
+          "at_seconds": 25.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 67,
+          "state": {
+            "health": 100.0,
+            "ammo": 17.0,
+            "kills": 3.0,
+            "n": 6,
+            "bearing": -5.38881029969977,
+            "dist": 279.1146717748818,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -0.28125,
+            "vis_w": 2.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 508,
+          "at_seconds": 25.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 68,
+          "state": {
+            "health": 100.0,
+            "ammo": 17.0,
+            "kills": 3.0,
+            "n": 6,
+            "bearing": -5.340352738686732,
+            "dist": 271.1180554666177,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -0.28125,
+            "vis_w": 2.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 512,
+          "at_seconds": 25.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 69,
+          "state": {
+            "health": 100.0,
+            "ammo": 16.0,
+            "kills": 3.0,
+            "n": 6,
+            "bearing": -5.2889498354944635,
+            "dist": 263.1216448717209,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -0.84375,
+            "vis_w": 2.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 516,
+          "at_seconds": 25.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 70,
+          "state": {
+            "health": 100.0,
+            "ammo": 16.0,
+            "kills": 3.0,
+            "n": 6,
+            "bearing": -5.234324728941118,
+            "dist": 255.12545933324648,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -0.84375,
+            "vis_w": 2.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 520,
+          "at_seconds": 26.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 71,
+          "state": {
+            "health": 100.0,
+            "ammo": 16.0,
+            "kills": 3.0,
+            "n": 6,
+            "bearing": 92.4026250223701,
+            "dist": 246.00410267876705,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -0.84375,
+            "vis_w": 2.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 524,
+          "at_seconds": 26.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 72,
+          "state": {
+            "health": 100.0,
+            "ammo": 16.0,
+            "kills": 3.0,
+            "n": 5,
+            "bearing": 82.47262562394502,
+            "dist": 230.0295210585117,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 9.421875,
+            "vis_w": 23.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 528,
+          "at_seconds": 26.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 73,
+          "state": {
+            "health": 100.0,
+            "ammo": 16.0,
+            "kills": 3.0,
+            "n": 5,
+            "bearing": 66.84656655958645,
+            "dist": 214.73039912401364,
+            "name": "Demon",
+            "vis_n": 1,
+            "vis_off": 19.96875,
+            "vis_w": 26.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 532,
+          "at_seconds": 26.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 74,
+          "state": {
+            "health": 100.0,
+            "ammo": 16.0,
+            "kills": 3.0,
+            "n": 5,
+            "bearing": 48.96830551599581,
+            "dist": 200.26160336778267,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 35.4375,
+            "vis_w": 32.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 536,
+          "at_seconds": 26.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 75,
+          "state": {
+            "health": 100.0,
+            "ammo": 16.0,
+            "kills": 3.0,
+            "n": 5,
+            "bearing": 30.518846194302455,
+            "dist": 186.81615825414835,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -26.4375,
+            "vis_w": 42.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 540,
+          "at_seconds": 27.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 76,
+          "state": {
+            "health": 100.0,
+            "ammo": 16.0,
+            "kills": 3.0,
+            "n": 5,
+            "bearing": 11.423947232271189,
+            "dist": 174.63059844188217,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -8.859375,
+            "vis_w": 43.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 0,
+          "choice": "turn left",
+          "video_frame": 544,
+          "at_seconds": 27.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 77,
+          "state": {
+            "health": 100.0,
+            "ammo": 16.0,
+            "kills": 3.0,
+            "n": 5,
+            "bearing": -3.5158859541769516,
+            "dist": 160.72305716836553,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": 2.25,
+            "vis_w": 52.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 548,
+          "at_seconds": 27.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 78,
+          "state": {
+            "health": 100.0,
+            "ammo": 16.0,
+            "kills": 3.0,
+            "n": 5,
+            "bearing": 0.9317206793100183,
+            "dist": 144.59751922134208,
+            "name": "Demon",
+            "vis_n": 2,
+            "vis_off": -1.125,
+            "vis_w": 54.0,
+            "vis_name": "Demon",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 552,
+          "at_seconds": 27.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 79,
+          "state": {
+            "health": 100.0,
+            "ammo": 15.0,
+            "kills": 4.0,
+            "n": 5,
+            "bearing": 0.04411323678618828,
+            "dist": 114.61138250905381,
+            "name": "Blood",
+            "vis_n": 2,
+            "vis_off": -0.5625,
+            "vis_w": 14.0,
+            "vis_name": "Blood",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 556,
+          "at_seconds": 27.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 80,
+          "state": {
+            "health": 100.0,
+            "ammo": 15.0,
+            "kills": 4.0,
+            "n": 5,
+            "bearing": 0.04411323678618828,
+            "dist": 114.61138250905381,
+            "name": "Blood",
+            "vis_n": 2,
+            "vis_off": -0.140625,
+            "vis_w": 23.0,
+            "vis_name": "Blood",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 560,
+          "at_seconds": 28.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 81,
+          "state": {
+            "health": 100.0,
+            "ammo": 15.0,
+            "kills": 4.0,
+            "n": 5,
+            "bearing": 0.04411323678618828,
+            "dist": 114.61138250905381,
+            "name": "Blood",
+            "vis_n": 2,
+            "vis_off": -0.140625,
+            "vis_w": 23.0,
+            "vis_name": "Blood",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 564,
+          "at_seconds": 28.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 82,
+          "state": {
+            "health": 100.0,
+            "ammo": 14.0,
+            "kills": 4.0,
+            "n": 5,
+            "bearing": -79.73680996638821,
+            "dist": 159.20113064925135,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -0.28125,
+            "vis_w": 0.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 568,
+          "at_seconds": 28.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 83,
+          "state": {
+            "health": 100.0,
+            "ammo": 14.0,
+            "kills": 4.0,
+            "n": 5,
+            "bearing": -72.55323490142175,
+            "dist": 151.21177202850313,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -5.765624999999999,
+            "vis_w": 1.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 572,
+          "at_seconds": 28.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 84,
+          "state": {
+            "health": 100.0,
+            "ammo": 14.0,
+            "kills": 4.0,
+            "n": 5,
+            "bearing": -60.079229431411676,
+            "dist": 143.22360140703069,
+            "name": "MarineChainsawVzd",
+            "vis_n": 2,
+            "vis_off": -16.03125,
+            "vis_w": 2.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 576,
+          "at_seconds": 28.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 85,
+          "state": {
+            "health": 100.0,
+            "ammo": 14.0,
+            "kills": 4.0,
+            "n": 5,
+            "bearing": -45.827410591663295,
+            "dist": 135.2368293032634,
+            "name": "MarineChainsawVzd",
+            "vis_n": 3,
+            "vis_off": -29.671875000000004,
+            "vis_w": 3.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 580,
+          "at_seconds": 29.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 86,
+          "state": {
+            "health": 100.0,
+            "ammo": 14.0,
+            "kills": 4.0,
+            "n": 4,
+            "bearing": -31.55182946900976,
+            "dist": 127.251719045363,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": 27.281249999999996,
+            "vis_w": 52.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 584,
+          "at_seconds": 29.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 87,
+          "state": {
+            "health": 100.0,
+            "ammo": 14.0,
+            "kills": 4.0,
+            "n": 4,
+            "bearing": -17.247719914863893,
+            "dist": 119.26860441876563,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": 13.781250000000002,
+            "vis_w": 48.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 588,
+          "at_seconds": 29.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 88,
+          "state": {
+            "health": 100.0,
+            "ammo": 14.0,
+            "kills": 4.0,
+            "n": 4,
+            "bearing": -2.908952189853437,
+            "dist": 111.28791488746656,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": 2.109375,
+            "vis_w": 51.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 592,
+          "at_seconds": 29.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 89,
+          "state": {
+            "health": 100.0,
+            "ammo": 14.0,
+            "kills": 4.0,
+            "n": 4,
+            "bearing": -2.5900088122042746,
+            "dist": 103.31021246711285,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": 1.265625,
+            "vis_w": 55.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 596,
+          "at_seconds": 29.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 90,
+          "state": {
+            "health": 100.0,
+            "ammo": 13.0,
+            "kills": 5.0,
+            "n": 4,
+            "bearing": 0.00017610517679145232,
+            "dist": 87.68731443809675,
+            "name": "Blood",
+            "vis_n": 1,
+            "vis_off": -0.421875,
+            "vis_w": 19.0,
+            "vis_name": "Blood",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 600,
+          "at_seconds": 30.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 91,
+          "state": {
+            "health": 100.0,
+            "ammo": 13.0,
+            "kills": 5.0,
+            "n": 4,
+            "bearing": 0.00017610517679145232,
+            "dist": 87.68731443809675,
+            "name": "Blood",
+            "vis_n": 1,
+            "vis_off": 0.0,
+            "vis_w": 30.0,
+            "vis_name": "Blood",
+            "alive": true
+          },
+          "action": 2,
+          "choice": "attack",
+          "video_frame": 604,
+          "at_seconds": 30.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 92,
+          "state": {
+            "health": 100.0,
+            "ammo": 13.0,
+            "kills": 5.0,
+            "n": 4,
+            "bearing": -100.53057222720936,
+            "dist": 83.98358151405468,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": 0.0,
+            "vis_w": 30.0,
+            "vis_name": "Blood",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 608,
+          "at_seconds": 30.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 93,
+          "state": {
+            "health": 100.0,
+            "ammo": 12.0,
+            "kills": 5.0,
+            "n": 4,
+            "bearing": -93.8674451912908,
+            "dist": 76.00006598901159,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": -2.25,
+            "vis_w": 2.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 612,
+          "at_seconds": 30.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 94,
+          "state": {
+            "health": 100.0,
+            "ammo": 12.0,
+            "kills": 5.0,
+            "n": 4,
+            "bearing": -82.0172741480909,
+            "dist": 68.02042411467579,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": -12.09375,
+            "vis_w": 2.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 616,
+          "at_seconds": 30.8,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 95,
+          "state": {
+            "health": 100.0,
+            "ammo": 12.0,
+            "kills": 5.0,
+            "n": 4,
+            "bearing": -68.53005605316406,
+            "dist": 60.046200239037745,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": -25.03125,
+            "vis_w": 2.0,
+            "vis_name": "BulletPuff",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 620,
+          "at_seconds": 31.0,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 96,
+          "state": {
+            "health": 100.0,
+            "ammo": 12.0,
+            "kills": 5.0,
+            "n": 3,
+            "bearing": -55.2189283866291,
+            "dist": 52.07988315609845,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": 41.0625,
+            "vis_w": 26.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 624,
+          "at_seconds": 31.2,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 97,
+          "state": {
+            "health": 100.0,
+            "ammo": 12.0,
+            "kills": 5.0,
+            "n": 3,
+            "bearing": -41.15642838335492,
+            "dist": 52.07988315609845,
+            "name": "MarineChainsawVzd",
+            "vis_n": 1,
+            "vis_off": 33.328125,
+            "vis_w": 81.0,
+            "vis_name": "MarineChainsawVzd",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 628,
+          "at_seconds": 31.4,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 98,
+          "state": {
+            "health": 88.0,
+            "ammo": 12.0,
+            "kills": 5.0,
+            "n": 4,
+            "bearing": -24.19173630284274,
+            "dist": 18.86658021407241,
+            "name": "Blood",
+            "vis_n": 2,
+            "vis_off": 18.703125,
+            "vis_w": 101.0,
+            "vis_name": "Blood",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 632,
+          "at_seconds": 31.6,
+          "duration_seconds": 0.2
+        },
+        {
+          "frame": 99,
+          "state": {
+            "health": 74.0,
+            "ammo": 12.0,
+            "kills": 5.0,
+            "n": 5,
+            "bearing": -16.26018176521643,
+            "dist": 21.496460967240182,
+            "name": "Blood",
+            "vis_n": 3,
+            "vis_off": 7.593750000000001,
+            "vis_w": 66.0,
+            "vis_name": "Blood",
+            "alive": true
+          },
+          "action": 1,
+          "choice": "turn right",
+          "video_frame": 636,
+          "at_seconds": 31.8,
+          "duration_seconds": 0.2
+        }
+      ],
+      "ends_at_seconds": 32.0
+    }
+  ]
+}

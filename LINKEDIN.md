@@ -144,37 +144,25 @@ Guide: https://letsusecompute.com/posts/text-compressor
 
 ---
 
-## 2026-09-17 — Jev games
+## 2026-09-17 — Pong + Doom
 
 Draft (post when the live guide URL is the one you want people to open):
 
 ---
 
-Post #8: real Atari Pong. We threw out the homemade grids.
+Post #8: can a small model learn to play Pong and Doom?
 
-Official ALE/Pong-v5 pixels. Structured paddle and ball boxes. A fitted intercept controller wins first-to-5 at 5–3. Random goes 0–5. Qwen2.5-0.5B copies 96% of the labels and still loses 0–5.
+We trained a half-billion-parameter model to choose the next button to press. In Pong, it copied 98.3% of the teacher’s offline answers—and still lost 0–5. In Doom, the sample model kept turning right. It never fired.
 
-The video is a recorded ROM replay, not live inference. Revision spend $1.57.
+Two simple rules fitted to the same teaching examples did better: 5–3 in Pong and 9 kills per episode in Doom.
+
+The inspiration was TypeSafe’s Jev: give a model a situation and get a decision your code can use. Jev’s RLCD training aims for calibrated probabilities. Our experiment uses supervised imitation, so it explores the interface without claiming to reproduce Jev.
+
+The combined guide explains the training, the failures, and what the rules learned. The video now shows the observation and chosen action alongside the gameplay, so you can follow each decision. These are recorded fitted-controller excerpts, not Qwen or Jev inference.
+
+GPU runs: $1.62, including failed and cancelled attempts. Doom’s full model run was interrupted; its Qwen result comes from the sample.
 
 Guide: https://letsusecompute.com/posts/jev-games
-
-#MachineLearning #GPUComputing
-
----
-
-## 2026-09-17 — Jev Doom
-
-Draft (post when the live guide URL is the one you want people to open):
-
----
-
-Post #9: real Doom. Pong still looked like a toy.
-
-ViZDoom Defend the Center. Freedoom frames. Structured monster bearings from the engine, not pixels. A fitted 8° aim cone averages 9 kills. Random averages 1.1. Qwen2.5-0.5B copies 66% of a sample and never fires.
-
-The video is a recorded engine replay, not live inference. $0.05 this revision.
-
-Guide: https://letsusecompute.com/posts/jev-doom
 
 #MachineLearning #GPUComputing
 

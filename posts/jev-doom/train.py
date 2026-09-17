@@ -669,6 +669,7 @@ def record_episode(kind: str, seed: int, max_steps: int, chooser) -> dict[str, A
     try:
         game.new_episode()
         frames = []
+        decisions = []
         ret = 0.0
         while len(frames) < max_steps and not game.is_episode_finished():
             raw = game.get_state()
@@ -677,6 +678,12 @@ def record_episode(kind: str, seed: int, max_steps: int, chooser) -> dict[str, A
             frames.append(screen_rgb(raw))
             state = parse_state(raw)
             action = chooser(state)
+            decisions.append({
+                "frame": len(frames) - 1,
+                "state": state,
+                "action": int(action),
+                "choice": MENU[action],
+            })
             ret += float(game.make_action(ACTS[action], SKIP))
         kills = _game_var(game, "KILLCOUNT")
         return {
@@ -686,6 +693,7 @@ def record_episode(kind: str, seed: int, max_steps: int, chooser) -> dict[str, A
             "kills": kills,
             "steps": len(frames),
             "frames": frames,
+            "decisions": decisions,
             "live": False,
             "observation_mode": "structured-vizdoom-objects",
         }
@@ -1032,9 +1040,10 @@ def _train_impl(
         ("model", play_chooser),
     ):
         rec = record_episode(name, video_seed, max_steps=max_steps, chooser=chooser)
-        meta = {k: v for k, v in rec.items() if k != "frames"}
+        meta = {k: v for k, v in rec.items() if k not in ("frames", "decisions")}
         replays[name] = meta
         (replay_dir / f"{name}.json").write_text(json.dumps(meta) + "\n")
+        (replay_dir / f"{name}_decisions.json").write_text(json.dumps(rec["decisions"]) + "\n")
         if rec["frames"]:
             write_still(rec["frames"][0], replay_dir / f"{name}_start.png", f"Doom {name} start")
             mid = rec["frames"][len(rec["frames"]) // 2]

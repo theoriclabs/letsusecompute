@@ -3,122 +3,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Real Doom, a trained winner — Let’s use compute</title>
-  <meta name="description" content="ViZDoom Defend the Center. Freedoom pixels. A fitted aim-cone controller averages 9 kills. Random averages 1.1. Structured monster bearings, not pixels into the net." />
-  <meta property="og:title" content="Real Doom, a trained winner" />
-  <meta property="og:description" content="Official ViZDoom. Fitted aim cone 9.0 kills. Random 1.1. Same 0.5B scorer as Pong, same honesty rule." />
-  <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://letsusecompute.com/posts/jev-doom/" />
-  <meta property="og:image" content="https://letsusecompute.com/posts/jev-doom/assets/social/poster.jpg" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <link rel="canonical" href="https://letsusecompute.com/posts/jev-doom/" />
+  <title>Pong and Doom — Let’s use compute</title>
+  <meta http-equiv="refresh" content="0; url=../jev-games/#doom" />
+  <link rel="canonical" href="https://letsusecompute.com/posts/jev-games/" />
   <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="../../styles.css" />
-  <style>
-    section { margin-top: 2.25rem; }
-    figure { margin: 1.35rem 0 1.8rem; }
-    figure .shot, figure video { margin: 0; width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); background: #120806; }
-    figcaption { color: var(--muted); font-size: 0.92rem; margin-top: 0.55rem; }
-    .figure-label { color: var(--fg); font-weight: 700; }
-    .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem; margin: 1.2rem 0 1.5rem; }
-    .metric { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0.85rem 0.95rem; }
-    .metric dt { color: var(--muted); font-size: 0.9rem; }
-    .metric dd { font-size: 1.55rem; font-variant-numeric: tabular-nums; font-weight: 700; margin: 0.2rem 0 0; }
-    .table-wrap { overflow-x: auto; margin: 1.2rem 0 1.5rem; }
-    .data-table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 10px; font-variant-numeric: tabular-nums; }
-    .data-table caption { color: var(--muted); font-size: 0.92rem; padding: 0.7rem 0.75rem 0.2rem; text-align: left; }
-    .data-table th, .data-table td { border-bottom: 1px solid var(--line); padding: 0.6rem 0.75rem; text-align: right; }
-    .data-table th:first-child, .data-table td:first-child { text-align: left; }
-    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-    .pair img { width: 100%; border-radius: 8px; border: 1px solid var(--line); background: #120806; }
-    @media (max-width: 32rem) { .metrics, .pair { grid-template-columns: 1fr; } }
-  </style>
 </head>
 <body>
   <main class="wrap">
-    <p><a class="back" href="../../">← Let’s use compute</a></p>
-    <header class="article-header">
-      <p class="eyebrow">2026-09-17 · post #9</p>
-      <h1>Real Doom, a trained winner</h1>
-      <p class="byline">Harsh Gupta</p>
-      <p class="lede">Pong still looked like a toy. This is ViZDoom. Freedoom frames. The controller that wins is a fitted aim cone on engine object state.</p>
-    </header>
-
-    <p>Issue <a href="https://github.com/theoriclabs/letsusecompute/issues/21">#21</a> asked for a game people recognise, using a harness someone else already maintains. We did not write a renderer. <a href="https://vizdoom.farama.org/">ViZDoom</a> 1.3 ships Freedoom and, if you turn them on, <code>state.objects</code> and <code>state.labels</code>. That is the same structured-state interface TypeSafe’s Jev Doom demo uses.</p>
-
-    <dl class="metrics" aria-label="Headline Doom result">
-      <div class="metric"><dt>Trained aim cone</dt><dd>9.0 kills</dd></div>
-      <div class="metric"><dt>Random</dt><dd>1.1 kills</dd></div>
-      <div class="metric"><dt>Episodes ≥3 kills</dt><dd>8 / 8</dd></div>
-      <div class="metric"><dt>This revision</dt><dd>$0.05</dd></div>
-    </dl>
-
-    <figure class="hero">
-      <video controls playsinline muted loop preload="metadata" poster="./assets/social/poster.jpg" width="1088" height="1088" aria-label="Recorded ViZDoom: random then trained aim cone">
-        <source src="./assets/social/jev-doom.mp4" type="video/mp4">
-        <track kind="captions" src="./assets/social/captions.vtt" srclang="en" label="English">
-        <a href="./assets/social/jev-doom.mp4">Download the video.</a>
-      </video>
-      <figcaption><span class="figure-label">Recorded replay, not live inference.</span> Red border is random. Green border is the trained aim cone. Same scenario, same seed. <a href="./assets/social/jev-doom.gif">GIF</a> · <a href="./assets/social/jev-doom.mp4" download>MP4</a></figcaption>
-    </figure>
-
-    <section aria-labelledby="harness">
-      <h2 id="harness">A real engine, a small observation</h2>
-      <p>The scenario is Defend the Center: you stand in the middle of an arena, pistol out, monsters spawn on the ring. Three buttons — turn left, turn right, attack. Timeout 2100 tics. Reward is +1 per kill, −1 on death.</p>
-      <p>The policy never sees the 320×240 tensor. ViZDoom already lists every actor. We drop <code>DoomPlayer</code>, take the nearest remaining object, and write a short observation: health, ammo, threat count, nearest name, distance, signed bearing in degrees, plus the tightest on-screen label if one exists.</p>
-      <p>The teacher aims at that nearest monster. Attack when <code>|bearing| ≤ 8°</code>. Otherwise turn toward it. TURN_LEFT increases Doom angle; we checked that with a unit test before any GPU job. Call it a teacher, not an oracle. Skip 4 tics per decision.</p>
-    </section>
-
-    <section aria-labelledby="results">
-      <h2 id="results">The fitted cone is the winner</h2>
-      <p>We search cone ∈ {4, 6, 8, 10, 12, 16} on the labeled states and keep the best agreement. It recovers 8°. That controller is trained on the same labels as the Qwen head. Closed-loop, eight episodes, identical seeds:</p>
-      <div class="table-wrap" role="region" aria-label="Closed-loop Doom">
-        <table class="data-table">
-          <caption>Defend the Center. A “win” here is ≥3 kills before death.</caption>
-          <thead>
-            <tr><th scope="col">Policy</th><th scope="col">Mean kills</th><th scope="col">Mean return</th><th scope="col">Win rate</th><th scope="col">Episodes</th></tr>
-          </thead>
-          <tbody>
-            <tr><th scope="row">Random</th><td>1.13</td><td>+0.13</td><td>13%</td><td>8</td></tr>
-            <tr><th scope="row">Qwen scorer</th><td>0.00</td><td>−1.00</td><td>0%</td><td>3</td></tr>
-            <tr><th scope="row">Fitted aim cone</th><td>9.00</td><td>+8.00</td><td>100%</td><td>8</td></tr>
-            <tr><th scope="row">Teacher</th><td>9.00</td><td>+8.00</td><td>100%</td><td>8</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <figure>
-        <img class="shot" src="./assets/score_bars.svg" alt="Bar chart of mean kills: random 1.12, trained 9.00, teacher 9.00" width="1200" height="420">
-        <figcaption>Same eight seeds. The fitted cone matches the teacher. Random does not.</figcaption>
-      </figure>
-      <p>Sample Qwen on Vast L4, <code>run_577746f2c18b58372a8c404c2b8f2a1c</code>: offline agreement 0.662 after one LoRA epoch, then 0 kills closed-loop. Action histogram was 100% turn right. Head tensors changed. Reload matched. The 0.5B scorer copied a sliver of the labels and never fired. Same honesty rule as <a href="../jev-games/">Pong</a>.</p>
-      <p>The video policy is the fitted cone. Same clock as the baselines. Deploy whichever closed-loop kill count is higher; here that is the cone.</p>
-      <div class="pair">
-        <div><img src="./assets/replays/random_end.png" alt="Random policy dying in ViZDoom Defend the Center"><p>Random, last frame.</p></div>
-        <div><img src="./assets/replays/model_mid.png" alt="Trained aim cone fighting in ViZDoom Defend the Center"><p>Trained cone, mid-fight. Finishes 11 kills on this seed.</p></div>
-      </div>
-    </section>
-
-    <section aria-labelledby="run-it">
-      <h2 id="run-it">Train it on Compute</h2>
-      <p>One file. Hand <a href="https://compute.cx/SKILL.md">compute.cx/SKILL.md</a> to your agent, plus <a href="./SKILL.md">this post’s overlay</a>. The script trains the Qwen head, fits the cone, and deploys whichever closed-loop kill count is higher.</p>
-<pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/jev-doom/train.py -o train.py
-compute run train.py::train --gpu cheap --dry-run
-compute gpu list
-compute run train.py::train --gpu L4 --timeout 2400 --wait --args '{"sample": true}'
-compute run train.py::train --gpu L4 --timeout 5400 --wait</code></pre>
-      <p>Dry-run only prints the upload plan. <code>vizdoom==1.3.0</code> ships the Freedoom WAD. Observation mode is structured objects, not pixels into the network. If <code>--gpu cheap</code> quotes a sold-out SKU from the decorator, pass an available SKU from the live list.</p>
-    </section>
-
-    <section aria-labelledby="friction">
-      <h2 id="friction">What the cheap GPU runs cost</h2>
-      <p>Vast RTX-3090 was listed available, then <code>sku_unavailable</code> on create, $0, <code>rpt_3765dde7b612ab979225675be64024c2</code>. <code>--gpu cheap</code> kept quoting the decorator SKU and hit a ten-minute cooldown. RTX-6000-ADA listed yes, then no interruptible offers, $0, <code>rpt_239cad5208c8a985365282daf72ead4f</code>. Sample on L4, <code>run_577746f2c18b58372a8c404c2b8f2a1c</code>, $0.03: 80 states, Qwen 0 kills, threshold 10.3 kills, <code>reload_ok</code>. Full L4 run <code>run_6390d2547371c10b15795294dfe811e9</code> collected 1,600 states, hit val 0.594 on head epoch 1, then the spot machine was marked <code>lost</code>, $0.02, <code>rpt_e6fa8e2d373259c1dcc2f1f0858c3cc5</code>. Headline kill table is eight local episodes of the same cone. This revision $0.05. <code>vizdoom</code> pip install on the machine took 120 seconds.</p>
-    </section>
-
-    <section aria-labelledby="limits">
-      <h2 id="limits">What this does not claim</h2>
-      <p>It does not reproduce Jev or RLCD. The winning policy is a one-parameter aim cone on engine coordinates, evaluated on the same kill clock as random. A smooth replay is not real-time control. We did not host an endpoint. Pixel-in Doom is still a separate milestone. Pokémon Red is a sibling ticket and needs a ROM you already own.</p>
-    </section>
+    <h1>Pong and Doom are now one guide</h1>
+    <p><a href="../jev-games/#doom">Read the combined experiment, including the Doom results.</a></p>
   </main>
-  <script src="../../assets/cli-highlight.js"></script>
 </body>
 </html>

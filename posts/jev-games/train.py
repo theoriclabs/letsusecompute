@@ -692,12 +692,21 @@ def record_episode(kind: str, seed: int, stop_points: int, max_steps: int, choos
         rgb = reset_env(env, seed)
         prev = None
         frames = []
+        decisions = []
         you = opp = 0
         ret = 0.0
         for _ in range(max_steps):
             frames.append(rgb.copy())
             state = parse_state(rgb, prev)
             action = chooser(state)
+            decisions.append({
+                "frame": len(frames) - 1,
+                "state": state,
+                "action": int(action),
+                "choice": MENU[MENU_IDS.index(action)],
+                "you": you,
+                "opp": opp,
+            })
             prev = (state["ball_x"], state["ball_y"]) if state["in_play"] else None
             rgb, reward, term, trunc, _ = env.step(action)
             ret += float(reward)
@@ -716,6 +725,7 @@ def record_episode(kind: str, seed: int, stop_points: int, max_steps: int, choos
             "opp": opp,
             "steps": len(frames),
             "frames": frames,
+            "decisions": decisions,
             "live": False,
             "observation_mode": "structured-from-ale-rgb",
         }
@@ -1034,9 +1044,10 @@ def _train_impl(
         ("model", play_chooser),
     ):
         rec = record_episode(name, video_seed, stop_points=max(stop_points, 5), max_steps=max_steps, chooser=chooser)
-        meta = {k: v for k, v in rec.items() if k != "frames"}
+        meta = {k: v for k, v in rec.items() if k not in ("frames", "decisions")}
         replays[name] = meta
         (replay_dir / f"{name}.json").write_text(json.dumps(meta) + "\n")
+        (replay_dir / f"{name}_decisions.json").write_text(json.dumps(rec["decisions"]) + "\n")
         if rec["frames"]:
             write_still(rec["frames"][0], replay_dir / f"{name}_start.png", f"Pong {name} start")
             write_still(

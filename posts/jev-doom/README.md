@@ -2,7 +2,9 @@
 
 Real ViZDoom Defend the Center. Freedoom frames. Structured monster bearings from the engine, not pixels. A fitted aim-cone controller averages 9 kills. Random averages 1.1.
 
-Guide: https://letsusecompute.com/posts/jev-doom
+Combined guide: https://letsusecompute.com/posts/jev-games/#doom
+
+The former Doom article now redirects to the combined Pong + Doom guide. Its synchronized decision video is built by [`../jev-games/assets/make_video.py`](../jev-games/assets/make_video.py). This directory retains the standalone Doom training script and original run evidence.
 
 ## Quick start
 
