@@ -1,0 +1,163 @@
+[
+  {
+    "user": "First command for train.py::train? Do not spend yet.",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "dry-run"
+    ],
+    "tag": "dry_run"
+  },
+  {
+    "user": "How do I dry-run sft.py::train on a cheap GPU?",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "dry-run"
+    ],
+    "tag": "dry_run"
+  },
+  {
+    "user": "Fine-tune Qwen3-0.6B LoRA with train.py::train. Keep it cheap.",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "train.py::train",
+      "--gpu"
+    ],
+    "tag": "small_lora"
+  },
+  {
+    "user": "0.6B LoRA SFT, one GPU, under an hour.",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "--gpu"
+    ],
+    "tag": "small_lora"
+  },
+  {
+    "user": "Qwen3-1.7B LoRA after the 0.6B run already worked.",
+    "expect_gpu": "H100-SXM",
+    "expect_in_command": [
+      "H100"
+    ],
+    "tag": "large_lora"
+  },
+  {
+    "user": "Bump train.py::train to 1.7B. What GPU?",
+    "expect_gpu": "H100-SXM",
+    "expect_in_command": [
+      "H100"
+    ],
+    "tag": "large_lora"
+  },
+  {
+    "user": "--gpu cheap quoted a sold-out SKU. Try L4 for train.py::train.",
+    "expect_gpu": "L4",
+    "expect_in_command": [
+      "L4"
+    ],
+    "tag": "sku_fallback"
+  },
+  {
+    "user": "gpu list shows RTX-3090 available. Use that for the sample.",
+    "expect_gpu": "RTX-3090",
+    "expect_in_command": [
+      "RTX-3090"
+    ],
+    "tag": "sku_fallback"
+  },
+  {
+    "user": "The last run was marked lost after epoch 1. Same script train.py::train.",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "train.py::train"
+    ],
+    "tag": "lost"
+  },
+  {
+    "user": "Spot machine vanished mid-train. Retry train.py::train?",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "train.py::train"
+    ],
+    "tag": "lost"
+  },
+  {
+    "user": "Balance is $4. How do I add credit before the full run?",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "credits add"
+    ],
+    "tag": "credits"
+  },
+  {
+    "user": "create refused: hold exceeds remaining credit.",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "credits"
+    ],
+    "tag": "credits"
+  },
+  {
+    "user": "I set compute secrets set hf. Does train.py::train see the token?",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "train_and_push"
+    ],
+    "tag": "secrets"
+  },
+  {
+    "user": "Explain Secret.from_name('hf') vs listing it on the function.",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "train_and_push"
+    ],
+    "tag": "secrets"
+  },
+  {
+    "user": "CUDA OOM on batch 8 for 0.6B LoRA. Next command?",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "batch_size"
+    ],
+    "tag": "oom"
+  },
+  {
+    "user": "The 0.6B run died with out of memory. Keep cheap GPU.",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "batch_size"
+    ],
+    "tag": "oom"
+  },
+  {
+    "user": "Preflight looked fine. Confirm train.py::train on cheap. I approved spend.",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "--yes"
+    ],
+    "tag": "confirm"
+  },
+  {
+    "user": "Show the quote then start train.py::train. I already approved spend.",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "--yes"
+    ],
+    "tag": "confirm"
+  },
+  {
+    "user": "Preflight train.py::train_and_push without creating a machine.",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "dry-run"
+    ],
+    "tag": "dry_run"
+  },
+  {
+    "user": "Small Qwen LoRA sample in train.py::train, cheap GPU.",
+    "expect_gpu": "cheap",
+    "expect_in_command": [
+      "train.py::train"
+    ],
+    "tag": "small_lora"
+  }
+]

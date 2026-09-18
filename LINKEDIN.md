@@ -167,3 +167,21 @@ Guide: https://letsusecompute.com/posts/jev-games
 #MachineLearning #GPUComputing
 
 ---
+
+## 2026-09-19 — Fine-tune Qwen LoRA
+
+Draft (post when the live guide URL is the one you want people to open):
+
+---
+
+Post: fine-tune Qwen on a JSONL you wrote.
+
+Qwen3-0.6B, LoRA rank 16, homemade job cards. Twenty held-out prompts: 0/20 before, 18/20 after two epochs. The base model invented BERT commands. The adapter writes compute run … --dry-run.
+
+$0.06 on a Vast L4. No Hugging Face secret on the account, so the adapter stayed in the artifact.
+
+Guide: https://letsusecompute.com/posts/finetune-qwen-lora
+
+#MachineLearning #GPUComputing
+
+---
