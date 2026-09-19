@@ -435,10 +435,6 @@ def build_model(vocab_size: int, n_embd: int, n_head: int, n_layer: int, block_s
             self.c_attn = nn.Linear(n_embd, 3 * n_embd)
             self.c_proj = nn.Linear(n_embd, n_embd)
             self.resid_dropout = nn.Dropout(dropout)
-            self.register_buffer(
-                "bias",
-                torch.tril(torch.ones(block_size, block_size)).view(1, 1, block_size, block_size),
-            )
 
         def forward(self, x):
             batch, steps, width = x.size()
@@ -447,10 +443,8 @@ def build_model(vocab_size: int, n_embd: int, n_head: int, n_layer: int, block_s
             q = q.view(batch, steps, self.n_head, head).transpose(1, 2)
             k = k.view(batch, steps, self.n_head, head).transpose(1, 2)
             v = v.view(batch, steps, self.n_head, head).transpose(1, 2)
-            att = (q @ k.transpose(-2, -1)) * (1.0 / math.sqrt(head))
-            att = att.masked_fill(self.bias[:, :, :steps, :steps] == 0, float("-inf"))
-            att = F.softmax(att, dim=-1)
-            out = (att @ v).transpose(1, 2).contiguous().view(batch, steps, width)
+            out = F.scaled_dot_product_attention(q, k, v, is_causal=True)
+            out = out.transpose(1, 2).contiguous().view(batch, steps, width)
             return self.resid_dropout(self.c_proj(out))
 
     class Block(nn.Module):
@@ -482,6 +476,19 @@ def build_model(vocab_size: int, n_embd: int, n_head: int, n_layer: int, block_s
             self.ln_f = nn.LayerNorm(n_embd)
             self.lm_head = nn.Linear(n_embd, vocab_size, bias=False)
             self.lm_head.weight = self.tok.weight
+            self.apply(self._init_weights)
+            for name, param in self.named_parameters():
+                if name.endswith("c_proj.weight") or name.endswith("mlp.2.weight"):
+                    nn.init.normal_(param, mean=0.0, std=0.02 / math.sqrt(2 * n_layer))
+
+        @staticmethod
+        def _init_weights(module) -> None:
+            if isinstance(module, nn.Linear):
+                nn.init.normal_(module.weight, mean=0.0, std=0.02)
+                if module.bias is not None:
+                    nn.init.zeros_(module.bias)
+            elif isinstance(module, nn.Embedding):
+                nn.init.normal_(module.weight, mean=0.0, std=0.02)
 
         def forward(self, idx):
             _batch, steps = idx.shape
@@ -832,6 +839,7 @@ def _train_impl(
     max_train_minutes: float,
     max_positions: int,
     max_steps: int,
+    epochs: int,
     batch_size: int,
     block_size: int,
     n_embd: int,
@@ -930,13 +938,40 @@ def _train_impl(
     y_train = torch.tensor(ys, dtype=torch.long)
     n_train = x_train.size(0)
     steps_per_epoch = max(1, math.ceil(n_train / batch_size))
-    n_epochs = 3 if sample else 2
+    n_epochs = 3 if sample else epochs
     planned_steps = steps_per_epoch * n_epochs
     if max_steps > 0:
         planned_steps = min(planned_steps, max_steps)
     warmup = min(100, max(1, planned_steps // 10))
     pad = stoi[PAD_TOK]
     deadline = time.time() + max_train_minutes * 60
+    log_every = max(20, planned_steps // 100)
+    hold_pairs = [encode_game(g["moves"], stoi, block_size) for g in holdout[:256]]
+    x_hold = torch.tensor([p[0] for p in hold_pairs], dtype=torch.long) if hold_pairs else None
+    y_hold = torch.tensor([p[1] for p in hold_pairs], dtype=torch.long) if hold_pairs else None
+
+    def holdout_loss() -> float:
+        if x_hold is None:
+            return float("nan")
+        model.eval()
+        total, count = 0.0, 0
+        with torch.no_grad(), autocast:
+            for start in range(0, x_hold.size(0), batch_size):
+                xb = x_hold[start : start + batch_size].to(device)
+                yb = y_hold[start : start + batch_size].to(device)
+                logits = model(xb)
+                total += float(
+                    F.cross_entropy(
+                        logits.reshape(-1, logits.size(-1)),
+                        yb.reshape(-1),
+                        ignore_index=pad,
+                        reduction="sum",
+                    )
+                )
+                count += int((yb != pad).sum().item())
+        model.train()
+        return total / max(count, 1)
+
     history: list[dict[str, float]] = []
     t_train = time.time()
     step = 0
@@ -946,7 +981,7 @@ def _train_impl(
     for epoch in range(1, n_epochs + 1):
         perm = torch.randperm(n_train)
         for start in range(0, n_train, batch_size):
-            if time.time() >= deadline or (max_steps > 0 and step >= max_steps):
+            if time.time() >= deadline or step >= planned_steps:
                 stop = True
                 break
             step += 1
@@ -973,9 +1008,20 @@ def _train_impl(
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
             last_loss = float(loss.detach())
-            if step == 1 or step % 20 == 0 or step == planned_steps:
+            if step == 50:
+                # Shrink the cosine schedule to what fits the time budget so the LR still decays to zero.
+                rate = 50 / max(time.time() - t_train, 1e-6)
+                budget_steps = 50 + int(rate * (deadline - time.time()) * 0.9)
+                if budget_steps < planned_steps:
+                    print(f"time budget caps steps at {budget_steps} ({rate:.1f} steps/s)", flush=True)
+                    planned_steps = budget_steps
+                    log_every = max(20, planned_steps // 100)
+            if step == 1 or step % log_every == 0 or step == planned_steps:
+                hold = holdout_loss()
+                history.append({"step": float(step), "train_loss": last_loss, "test_loss": hold})
                 print(
-                    f"step {step}/{planned_steps} epoch={epoch} loss={last_loss:.4f} lr={lr_now:.2e}",
+                    f"step {step}/{planned_steps} epoch={epoch} loss={last_loss:.4f} "
+                    f"holdout={hold:.4f} lr={lr_now:.2e}",
                     flush=True,
                 )
         if stop:
@@ -993,8 +1039,9 @@ def _train_impl(
         device,
         legal_eval_positions=legal_eval_positions,
     )
-    val_loss = last_loss
-    history.append({"train_loss": last_loss, "test_loss": val_loss, "step": float(step)})
+    if not history or history[-1]["step"] != float(step):
+        history.append({"step": float(step), "train_loss": last_loss, "test_loss": holdout_loss()})
+    val_loss = history[-1]["test_loss"]
 
     engine, stockfish_status = resolve_stockfish()
     print(f"stockfish: {stockfish_status}", flush=True)
@@ -1047,6 +1094,7 @@ def _train_impl(
         "lr": lr,
         "max_positions": max_positions,
         "max_train_minutes": max_train_minutes,
+        "epochs": n_epochs,
         "min_elo": min_elo,
         "min_plies": min_plies,
         "games_vs_random": games_vs_random,
@@ -1233,6 +1281,7 @@ def train(
     max_train_minutes: float = 25,
     max_positions: int = 4_000_000,
     max_steps: int = 0,
+    epochs: int = 8,
     batch_size: int = 32,
     block_size: int = 256,
     n_embd: int = 512,
@@ -1256,6 +1305,7 @@ def train(
         max_train_minutes=max_train_minutes,
         max_positions=max_positions,
         max_steps=max_steps,
+        epochs=epochs,
         batch_size=batch_size,
         block_size=block_size,
         n_embd=n_embd,
@@ -1286,6 +1336,7 @@ def train_and_push(
     max_train_minutes: float = 25,
     max_positions: int = 4_000_000,
     max_steps: int = 0,
+    epochs: int = 8,
     batch_size: int = 32,
     block_size: int = 256,
     n_embd: int = 512,
@@ -1309,6 +1360,7 @@ def train_and_push(
         max_train_minutes=max_train_minutes,
         max_positions=max_positions,
         max_steps=max_steps,
+        epochs=epochs,
         batch_size=batch_size,
         block_size=block_size,
         n_embd=n_embd,

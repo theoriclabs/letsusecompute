@@ -6,6 +6,7 @@ __pycache__/
 weights/
 *.pt
 .env
+.claude/settings.local.json
 posts/jev-games/assets/results/run84/
 posts/jev-doom/assets/results/run*/
 posts/jev-doom/assets/replays/*.mp4
