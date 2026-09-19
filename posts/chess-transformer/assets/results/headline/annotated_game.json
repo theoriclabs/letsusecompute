@@ -1,0 +1,2686 @@
+{
+  "random": {
+    "opponent": "random",
+    "model_color": "white",
+    "result": "1/2-1/2",
+    "model_result": "draw",
+    "plies": [
+      {
+        "ply": 1,
+        "mover": "model",
+        "played": "e4",
+        "argmax": "e4",
+        "legal": true,
+        "prob": 0.523133397102356,
+        "top3": [
+          {
+            "move": "e4",
+            "p": 0.523133397102356
+          },
+          {
+            "move": "d4",
+            "p": 0.2700629234313965
+          },
+          {
+            "move": "Nf3",
+            "p": 0.05635418742895126
+          }
+        ]
+      },
+      {
+        "ply": 2,
+        "mover": "random",
+        "played": "h6"
+      },
+      {
+        "ply": 3,
+        "mover": "model",
+        "played": "d4",
+        "argmax": "d4",
+        "legal": true,
+        "prob": 0.40137889981269836,
+        "top3": [
+          {
+            "move": "d4",
+            "p": 0.40137889981269836
+          },
+          {
+            "move": "Nf3",
+            "p": 0.2960553765296936
+          },
+          {
+            "move": "Nc3",
+            "p": 0.10672925412654877
+          }
+        ]
+      },
+      {
+        "ply": 4,
+        "mover": "random",
+        "played": "a5"
+      },
+      {
+        "ply": 5,
+        "mover": "model",
+        "played": "Nf3",
+        "argmax": "Nf3",
+        "legal": true,
+        "prob": 0.23852621018886566,
+        "top3": [
+          {
+            "move": "Nf3",
+            "p": 0.23852621018886566
+          },
+          {
+            "move": "Nc3",
+            "p": 0.21133117377758026
+          },
+          {
+            "move": "f4",
+            "p": 0.1538175344467163
+          }
+        ]
+      },
+      {
+        "ply": 6,
+        "mover": "random",
+        "played": "Nc6"
+      },
+      {
+        "ply": 7,
+        "mover": "model",
+        "played": "Nc3",
+        "argmax": "Nc3",
+        "legal": true,
+        "prob": 0.22819867730140686,
+        "top3": [
+          {
+            "move": "Nc3",
+            "p": 0.22819867730140686
+          },
+          {
+            "move": "Bc4",
+            "p": 0.18351708352565765
+          },
+          {
+            "move": "d5",
+            "p": 0.14114046096801758
+          }
+        ]
+      },
+      {
+        "ply": 8,
+        "mover": "random",
+        "played": "Nxd4"
+      },
+      {
+        "ply": 9,
+        "mover": "model",
+        "played": "Nxd4",
+        "argmax": "Nxd4",
+        "legal": true,
+        "prob": 0.6595354676246643,
+        "top3": [
+          {
+            "move": "Nxd4",
+            "p": 0.6595354676246643
+          },
+          {
+            "move": "Bc4",
+            "p": 0.12580770254135132
+          },
+          {
+            "move": "Be3",
+            "p": 0.09018800407648087
+          }
+        ]
+      },
+      {
+        "ply": 10,
+        "mover": "random",
+        "played": "Ra7"
+      },
+      {
+        "ply": 11,
+        "mover": "model",
+        "played": "Be3",
+        "argmax": "Be3",
+        "legal": true,
+        "prob": 0.6331070065498352,
+        "top3": [
+          {
+            "move": "Be3",
+            "p": 0.6331070065498352
+          },
+          {
+            "move": "Bc4",
+            "p": 0.11531571298837662
+          },
+          {
+            "move": "Bd3",
+            "p": 0.06432987749576569
+          }
+        ]
+      },
+      {
+        "ply": 12,
+        "mover": "random",
+        "played": "d5"
+      },
+      {
+        "ply": 13,
+        "mover": "model",
+        "played": "exd5",
+        "argmax": "exd5",
+        "legal": true,
+        "prob": 0.6285766959190369,
+        "top3": [
+          {
+            "move": "exd5",
+            "p": 0.6285766959190369
+          },
+          {
+            "move": "Qd2",
+            "p": 0.15420381724834442
+          },
+          {
+            "move": "f3",
+            "p": 0.058318108320236206
+          }
+        ]
+      },
+      {
+        "ply": 14,
+        "mover": "random",
+        "played": "b5"
+      },
+      {
+        "ply": 15,
+        "mover": "model",
+        "played": "Be2",
+        "argmax": "Nxb5",
+        "legal": false,
+        "prob": 0.15438596904277802,
+        "top3": [
+          {
+            "move": "Nxb5",
+            "p": 0.26011037826538086
+          },
+          {
+            "move": "Be2",
+            "p": 0.15438596904277802
+          },
+          {
+            "move": "Bxb5",
+            "p": 0.08812349289655685
+          }
+        ]
+      },
+      {
+        "ply": 16,
+        "mover": "random",
+        "played": "Rb7"
+      },
+      {
+        "ply": 17,
+        "mover": "model",
+        "played": "O-O",
+        "argmax": "O-O",
+        "legal": true,
+        "prob": 0.4105816185474396,
+        "top3": [
+          {
+            "move": "O-O",
+            "p": 0.4105816185474396
+          },
+          {
+            "move": "Nxb5",
+            "p": 0.18863488733768463
+          },
+          {
+            "move": "Bxb5",
+            "p": 0.09495320916175842
+          }
+        ]
+      },
+      {
+        "ply": 18,
+        "mover": "random",
+        "played": "f6"
+      },
+      {
+        "ply": 19,
+        "mover": "model",
+        "played": "Bf3",
+        "argmax": "Nxb5",
+        "legal": false,
+        "prob": 0.1437339037656784,
+        "top3": [
+          {
+            "move": "Nxb5",
+            "p": 0.17559446394443512
+          },
+          {
+            "move": "Bf3",
+            "p": 0.1437339037656784
+          },
+          {
+            "move": "a3",
+            "p": 0.08783726394176483
+          }
+        ]
+      },
+      {
+        "ply": 20,
+        "mover": "random",
+        "played": "a4"
+      },
+      {
+        "ply": 21,
+        "mover": "model",
+        "played": "a3",
+        "argmax": "Nxb5",
+        "legal": false,
+        "prob": 0.15152212977409363,
+        "top3": [
+          {
+            "move": "Nxb5",
+            "p": 0.4888871908187866
+          },
+          {
+            "move": "a3",
+            "p": 0.15152212977409363
+          },
+          {
+            "move": "Bxb5",
+            "p": 0.040472231805324554
+          }
+        ]
+      },
+      {
+        "ply": 22,
+        "mover": "random",
+        "played": "Ra7"
+      },
+      {
+        "ply": 23,
+        "mover": "model",
+        "played": "b4",
+        "argmax": "Nxb5",
+        "legal": false,
+        "prob": 0.1313009411096573,
+        "top3": [
+          {
+            "move": "Nxb5",
+            "p": 0.2461146116256714
+          },
+          {
+            "move": "b4",
+            "p": 0.1313009411096573
+          },
+          {
+            "move": "Bxa7",
+            "p": 0.052343789488077164
+          }
+        ]
+      },
+      {
+        "ply": 24,
+        "mover": "random",
+        "played": "axb3"
+      },
+      {
+        "ply": 25,
+        "mover": "model",
+        "played": "cxb3",
+        "argmax": "Nxb5",
+        "legal": false,
+        "prob": 0.10158511996269226,
+        "top3": [
+          {
+            "move": "Nxb5",
+            "p": 0.5583368539810181
+          },
+          {
+            "move": "cxb3",
+            "p": 0.10158511996269226
+          },
+          {
+            "move": "Qxb3",
+            "p": 0.05545809492468834
+          }
+        ]
+      },
+      {
+        "ply": 26,
+        "mover": "random",
+        "played": "Bd7"
+      },
+      {
+        "ply": 27,
+        "mover": "model",
+        "played": "Na4",
+        "argmax": "Nxb5",
+        "legal": false,
+        "prob": 0.07314163446426392,
+        "top3": [
+          {
+            "move": "Nxb5",
+            "p": 0.11551091820001602
+          },
+          {
+            "move": "Qb3",
+            "p": 0.09470991045236588
+          },
+          {
+            "move": "Nb5",
+            "p": 0.07444038987159729
+          }
+        ]
+      },
+      {
+        "ply": 28,
+        "mover": "random",
+        "played": "Qb8"
+      },
+      {
+        "ply": 29,
+        "mover": "model",
+        "played": "Nc5",
+        "argmax": "Nc5",
+        "legal": true,
+        "prob": 0.8270664811134338,
+        "top3": [
+          {
+            "move": "Nc5",
+            "p": 0.8270664811134338
+          },
+          {
+            "move": "Rc1",
+            "p": 0.014627911150455475
+          },
+          {
+            "move": "Rb1",
+            "p": 0.013103019446134567
+          }
+        ]
+      },
+      {
+        "ply": 30,
+        "mover": "random",
+        "played": "Rb7"
+      },
+      {
+        "ply": 31,
+        "mover": "model",
+        "played": "Nxb7",
+        "argmax": "Nxb7",
+        "legal": true,
+        "prob": 0.6174213290214539,
+        "top3": [
+          {
+            "move": "Nxb7",
+            "p": 0.6174213290214539
+          },
+          {
+            "move": "Nxd7",
+            "p": 0.1269526481628418
+          },
+          {
+            "move": "Ne6",
+            "p": 0.04915245622396469
+          }
+        ]
+      },
+      {
+        "ply": 32,
+        "mover": "random",
+        "played": "Rh7"
+      },
+      {
+        "ply": 33,
+        "mover": "model",
+        "played": "Nc5",
+        "argmax": "Nc5",
+        "legal": true,
+        "prob": 0.7161615490913391,
+        "top3": [
+          {
+            "move": "Nc5",
+            "p": 0.7161615490913391
+          },
+          {
+            "move": "Rb1",
+            "p": 0.026926647871732712
+          },
+          {
+            "move": "Rc1",
+            "p": 0.012485814280807972
+          }
+        ]
+      },
+      {
+        "ply": 34,
+        "mover": "random",
+        "played": "Bf5"
+      },
+      {
+        "ply": 35,
+        "mover": "model",
+        "played": "Nxb7",
+        "argmax": "Nxb7",
+        "legal": true,
+        "prob": 0.1170995905995369,
+        "top3": [
+          {
+            "move": "Nxb7",
+            "p": 0.1170995905995369
+          },
+          {
+            "move": "Ne6",
+            "p": 0.10999985039234161
+          },
+          {
+            "move": "Nxd7",
+            "p": 0.05399855971336365
+          }
+        ]
+      },
+      {
+        "ply": 36,
+        "mover": "random",
+        "played": "Be4"
+      },
+      {
+        "ply": 37,
+        "mover": "model",
+        "played": "Bxe4",
+        "argmax": "Bxe4",
+        "legal": true,
+        "prob": 0.3233628571033478,
+        "top3": [
+          {
+            "move": "Bxe4",
+            "p": 0.3233628571033478
+          },
+          {
+            "move": "Nc5",
+            "p": 0.2904511094093323
+          },
+          {
+            "move": "f3",
+            "p": 0.045117758214473724
+          }
+        ]
+      },
+      {
+        "ply": 38,
+        "mover": "random",
+        "played": "Kf7"
+      },
+      {
+        "ply": 39,
+        "mover": "model",
+        "played": "Bf3",
+        "argmax": "Bf3",
+        "legal": true,
+        "prob": 0.2009102702140808,
+        "top3": [
+          {
+            "move": "Bf3",
+            "p": 0.2009102702140808
+          },
+          {
+            "move": "Nc5",
+            "p": 0.14932413399219513
+          },
+          {
+            "move": "Bh5+",
+            "p": 0.05966884642839432
+          }
+        ]
+      },
+      {
+        "ply": 40,
+        "mover": "random",
+        "played": "b4"
+      },
+      {
+        "ply": 41,
+        "mover": "model",
+        "played": "axb4",
+        "argmax": "axb4",
+        "legal": true,
+        "prob": 0.31884029507637024,
+        "top3": [
+          {
+            "move": "axb4",
+            "p": 0.31884029507637024
+          },
+          {
+            "move": "Qb3",
+            "p": 0.03356386721134186
+          },
+          {
+            "move": "Rb1",
+            "p": 0.0285190436989069
+          }
+        ]
+      },
+      {
+        "ply": 42,
+        "mover": "random",
+        "played": "Kg6"
+      },
+      {
+        "ply": 43,
+        "mover": "model",
+        "played": "b5",
+        "argmax": "b5",
+        "legal": true,
+        "prob": 0.333116739988327,
+        "top3": [
+          {
+            "move": "b5",
+            "p": 0.333116739988327
+          },
+          {
+            "move": "bxa5",
+            "p": 0.04808179289102554
+          },
+          {
+            "move": "Nc5",
+            "p": 0.04469709470868111
+          }
+        ]
+      },
+      {
+        "ply": 44,
+        "mover": "random",
+        "played": "f5"
+      },
+      {
+        "ply": 45,
+        "mover": "model",
+        "played": "b6",
+        "argmax": "Bc6",
+        "legal": false,
+        "prob": 0.17731982469558716,
+        "top3": [
+          {
+            "move": "Bc6",
+            "p": 0.24461010098457336
+          },
+          {
+            "move": "b6",
+            "p": 0.17731982469558716
+          },
+          {
+            "move": "Bd3",
+            "p": 0.03148282691836357
+          }
+        ]
+      },
+      {
+        "ply": 46,
+        "mover": "random",
+        "played": "Rh8"
+      },
+      {
+        "ply": 47,
+        "mover": "model",
+        "played": "h3",
+        "argmax": "b7",
+        "legal": false,
+        "prob": 0.012750163674354553,
+        "top3": [
+          {
+            "move": "b7",
+            "p": 0.7722053527832031
+          },
+          {
+            "move": "Qa4",
+            "p": 0.014500122517347336
+          },
+          {
+            "move": "h3",
+            "p": 0.012750163674354553
+          }
+        ]
+      },
+      {
+        "ply": 48,
+        "mover": "random",
+        "played": "Qd8"
+      },
+      {
+        "ply": 49,
+        "mover": "model",
+        "played": "Nc5",
+        "argmax": "b7",
+        "legal": false,
+        "prob": 0.06308218836784363,
+        "top3": [
+          {
+            "move": "b7",
+            "p": 0.5541788339614868
+          },
+          {
+            "move": "Nc5",
+            "p": 0.06308218836784363
+          },
+          {
+            "move": "Nxd8",
+            "p": 0.026874208822846413
+          }
+        ]
+      },
+      {
+        "ply": 50,
+        "mover": "random",
+        "played": "Kf7"
+      },
+      {
+        "ply": 51,
+        "mover": "model",
+        "played": "b7",
+        "argmax": "Ne6",
+        "legal": false,
+        "prob": 0.07556767016649246,
+        "top3": [
+          {
+            "move": "Ne6",
+            "p": 0.3198331594467163
+          },
+          {
+            "move": "b7",
+            "p": 0.07556767016649246
+          },
+          {
+            "move": "Nc6",
+            "p": 0.06734281033277512
+          }
+        ]
+      },
+      {
+        "ply": 52,
+        "mover": "random",
+        "played": "Rh7"
+      },
+      {
+        "ply": 53,
+        "mover": "model",
+        "played": "Nc6",
+        "argmax": "Ne6",
+        "legal": false,
+        "prob": 0.06933582574129105,
+        "top3": [
+          {
+            "move": "Ne6",
+            "p": 0.4411918818950653
+          },
+          {
+            "move": "Nc6",
+            "p": 0.06933582574129105
+          },
+          {
+            "move": "Nxd7",
+            "p": 0.05342213436961174
+          }
+        ]
+      },
+      {
+        "ply": 54,
+        "mover": "random",
+        "played": "Nf6"
+      },
+      {
+        "ply": 55,
+        "mover": "model",
+        "played": "b8=Q",
+        "argmax": "b8=Q",
+        "legal": true,
+        "prob": 0.12784184515476227,
+        "top3": [
+          {
+            "move": "b8=Q",
+            "p": 0.12784184515476227
+          },
+          {
+            "move": "Nxe7",
+            "p": 0.11350511759519577
+          },
+          {
+            "move": "Nxd8",
+            "p": 0.049942586570978165
+          }
+        ]
+      },
+      {
+        "ply": 56,
+        "mover": "random",
+        "played": "Qe8"
+      },
+      {
+        "ply": 57,
+        "mover": "model",
+        "played": "Qxe8+",
+        "argmax": "Qxe8+",
+        "legal": true,
+        "prob": 0.11595360934734344,
+        "top3": [
+          {
+            "move": "Qxe8+",
+            "p": 0.11595360934734344
+          },
+          {
+            "move": "Qxa8",
+            "p": 0.06880849599838257
+          },
+          {
+            "move": "Qxe8",
+            "p": 0.05637939274311066
+          }
+        ]
+      },
+      {
+        "ply": 58,
+        "mover": "random",
+        "played": "Nxe8"
+      },
+      {
+        "ply": 59,
+        "mover": "model",
+        "played": "Nxd8",
+        "argmax": "Nxd8",
+        "legal": true,
+        "prob": 0.09188428521156311,
+        "top3": [
+          {
+            "move": "Nxd8",
+            "p": 0.09188428521156311
+          },
+          {
+            "move": "c8=Q",
+            "p": 0.0812305137515068
+          },
+          {
+            "move": "b8=Q",
+            "p": 0.046032048761844635
+          }
+        ]
+      },
+      {
+        "ply": 60,
+        "mover": "random",
+        "played": "Kf6"
+      },
+      {
+        "ply": 61,
+        "mover": "model",
+        "played": "Nc6",
+        "argmax": "Nc6",
+        "legal": true,
+        "prob": 0.5448859930038452,
+        "top3": [
+          {
+            "move": "Nc6",
+            "p": 0.5448859930038452
+          },
+          {
+            "move": "Ne6",
+            "p": 0.17613232135772705
+          },
+          {
+            "move": "Bc6",
+            "p": 0.02930397540330887
+          }
+        ]
+      },
+      {
+        "ply": 62,
+        "mover": "random",
+        "played": "Nd6"
+      },
+      {
+        "ply": 63,
+        "mover": "model",
+        "played": "Nxe7",
+        "argmax": "c8=Q",
+        "legal": false,
+        "prob": 0.029453406110405922,
+        "top3": [
+          {
+            "move": "c8=Q",
+            "p": 0.15400606393814087
+          },
+          {
+            "move": "Bxd6",
+            "p": 0.09775096923112869
+          },
+          {
+            "move": "b6",
+            "p": 0.049527622759342194
+          }
+        ]
+      },
+      {
+        "ply": 64,
+        "mover": "random",
+        "played": "g6"
+      },
+      {
+        "ply": 65,
+        "mover": "model",
+        "played": "Nc6",
+        "argmax": "Nc6",
+        "legal": true,
+        "prob": 0.19424958527088165,
+        "top3": [
+          {
+            "move": "Nc6",
+            "p": 0.19424958527088165
+          },
+          {
+            "move": "Nxg6+",
+            "p": 0.14072884619235992
+          },
+          {
+            "move": "Ne6+",
+            "p": 0.05040488392114639
+          }
+        ]
+      },
+      {
+        "ply": 66,
+        "mover": "random",
+        "played": "Rd7"
+      },
+      {
+        "ply": 67,
+        "mover": "model",
+        "played": "Nb4",
+        "argmax": "Nb4",
+        "legal": true,
+        "prob": 0.10481870919466019,
+        "top3": [
+          {
+            "move": "Nb4",
+            "p": 0.10481870919466019
+          },
+          {
+            "move": "Ne5",
+            "p": 0.047019001096487045
+          },
+          {
+            "move": "Bxh6",
+            "p": 0.04220135137438774
+          }
+        ]
+      },
+      {
+        "ply": 68,
+        "mover": "random",
+        "played": "Nf7"
+      },
+      {
+        "ply": 69,
+        "mover": "model",
+        "played": "Nc6",
+        "argmax": "Nc6",
+        "legal": true,
+        "prob": 0.23757655918598175,
+        "top3": [
+          {
+            "move": "Nc6",
+            "p": 0.23757655918598175
+          },
+          {
+            "move": "Nd5+",
+            "p": 0.05001407116651535
+          },
+          {
+            "move": "a5",
+            "p": 0.04975055158138275
+          }
+        ]
+      },
+      {
+        "ply": 70,
+        "mover": "random",
+        "played": "Bg7"
+      },
+      {
+        "ply": 71,
+        "mover": "model",
+        "played": "Nxe7",
+        "argmax": "Nxe7",
+        "legal": true,
+        "prob": 0.16390861570835114,
+        "top3": [
+          {
+            "move": "Nxe7",
+            "p": 0.16390861570835114
+          },
+          {
+            "move": "Nb4",
+            "p": 0.14307500422000885
+          },
+          {
+            "move": "Nxb8",
+            "p": 0.032745350152254105
+          }
+        ]
+      },
+      {
+        "ply": 72,
+        "mover": "random",
+        "played": "f4"
+      },
+      {
+        "ply": 73,
+        "mover": "model",
+        "played": "Nc6",
+        "argmax": "Nd5",
+        "legal": false,
+        "prob": 0.030331868678331375,
+        "top3": [
+          {
+            "move": "Nd5",
+            "p": 0.1946195363998413
+          },
+          {
+            "move": "Nxg6+",
+            "p": 0.034930918365716934
+          },
+          {
+            "move": "Nc6",
+            "p": 0.030331868678331375
+          }
+        ]
+      },
+      {
+        "ply": 74,
+        "mover": "random",
+        "played": "Rd8"
+      },
+      {
+        "ply": 75,
+        "mover": "model",
+        "played": "Nxd8",
+        "argmax": "Nxd8",
+        "legal": true,
+        "prob": 0.2516217827796936,
+        "top3": [
+          {
+            "move": "Nxd8",
+            "p": 0.2516217827796936
+          },
+          {
+            "move": "Nb4",
+            "p": 0.09509696066379547
+          },
+          {
+            "move": "d6",
+            "p": 0.06727249175310135
+          }
+        ]
+      },
+      {
+        "ply": 76,
+        "mover": "random",
+        "played": "c6"
+      },
+      {
+        "ply": 77,
+        "mover": "model",
+        "played": "dxc6",
+        "argmax": "dxc6",
+        "legal": true,
+        "prob": 0.4692780077457428,
+        "top3": [
+          {
+            "move": "dxc6",
+            "p": 0.4692780077457428
+          },
+          {
+            "move": "bxc6",
+            "p": 0.1339571326971054
+          },
+          {
+            "move": "d6",
+            "p": 0.06373628973960876
+          }
+        ]
+      },
+      {
+        "ply": 78,
+        "mover": "random",
+        "played": "Ke7"
+      },
+      {
+        "ply": 79,
+        "mover": "model",
+        "played": "c7",
+        "argmax": "c7",
+        "legal": true,
+        "prob": 0.2069648653268814,
+        "top3": [
+          {
+            "move": "c7",
+            "p": 0.2069648653268814
+          },
+          {
+            "move": "Nc6+",
+            "p": 0.09702228009700775
+          },
+          {
+            "move": "c8=Q",
+            "p": 0.058957815170288086
+          }
+        ]
+      },
+      {
+        "ply": 80,
+        "mover": "random",
+        "played": "Kf6"
+      },
+      {
+        "ply": 81,
+        "mover": "model",
+        "played": "c8=Q",
+        "argmax": "c8=Q",
+        "legal": true,
+        "prob": 0.7944353222846985,
+        "top3": [
+          {
+            "move": "c8=Q",
+            "p": 0.7944353222846985
+          },
+          {
+            "move": "c8=Q+",
+            "p": 0.05553155019879341
+          },
+          {
+            "move": "d8=Q+",
+            "p": 0.014814331196248531
+          }
+        ]
+      },
+      {
+        "ply": 82,
+        "mover": "random",
+        "played": "Kg5"
+      },
+      {
+        "ply": 83,
+        "mover": "model",
+        "played": "Qe6",
+        "argmax": "Qf7",
+        "legal": false,
+        "prob": 0.04744456335902214,
+        "top3": [
+          {
+            "move": "Qf7",
+            "p": 0.10756443440914154
+          },
+          {
+            "move": "Qe6",
+            "p": 0.04744456335902214
+          },
+          {
+            "move": "Qxh7",
+            "p": 0.024098152294754982
+          }
+        ]
+      },
+      {
+        "ply": 84,
+        "mover": "random",
+        "played": "Be5"
+      },
+      {
+        "ply": 85,
+        "mover": "model",
+        "played": "Qxe5+",
+        "argmax": "Qxe5+",
+        "legal": true,
+        "prob": 0.08227773010730743,
+        "top3": [
+          {
+            "move": "Qxe5+",
+            "p": 0.08227773010730743
+          },
+          {
+            "move": "Bxe5+",
+            "p": 0.07474488019943237
+          },
+          {
+            "move": "Qf7#",
+            "p": 0.03665761649608612
+          }
+        ]
+      },
+      {
+        "ply": 86,
+        "mover": "random",
+        "played": "Nxe5"
+      },
+      {
+        "ply": 87,
+        "mover": "model",
+        "played": "Bd5",
+        "argmax": "c8=Q",
+        "legal": false,
+        "prob": 0.0026678121648728848,
+        "top3": [
+          {
+            "move": "c8=Q",
+            "p": 0.3632074296474457
+          },
+          {
+            "move": "c7",
+            "p": 0.06874977052211761
+          },
+          {
+            "move": "b8=Q",
+            "p": 0.05195166915655136
+          }
+        ]
+      },
+      {
+        "ply": 88,
+        "mover": "random",
+        "played": "Nf7"
+      },
+      {
+        "ply": 89,
+        "mover": "model",
+        "played": "Nxf7",
+        "argmax": "Nxf7",
+        "legal": true,
+        "prob": 0.1284053772687912,
+        "top3": [
+          {
+            "move": "Nxf7",
+            "p": 0.1284053772687912
+          },
+          {
+            "move": "c8=Q",
+            "p": 0.12637925148010254
+          },
+          {
+            "move": "Bxf7",
+            "p": 0.10870978236198425
+          }
+        ]
+      },
+      {
+        "ply": 90,
+        "mover": "random",
+        "played": "Kh4"
+      },
+      {
+        "ply": 91,
+        "mover": "model",
+        "played": "Nxd8",
+        "argmax": "Nxd8",
+        "legal": true,
+        "prob": 0.32578250765800476,
+        "top3": [
+          {
+            "move": "Nxd8",
+            "p": 0.32578250765800476
+          },
+          {
+            "move": "c7",
+            "p": 0.09223371744155884
+          },
+          {
+            "move": "Qf6",
+            "p": 0.05145188793540001
+          }
+        ]
+      },
+      {
+        "ply": 92,
+        "mover": "random",
+        "played": "fxe3"
+      },
+      {
+        "ply": 93,
+        "mover": "model",
+        "played": "fxe3",
+        "argmax": "fxe3",
+        "legal": true,
+        "prob": 0.28723469376564026,
+        "top3": [
+          {
+            "move": "fxe3",
+            "p": 0.28723469376564026
+          },
+          {
+            "move": "c8=Q",
+            "p": 0.09819277375936508
+          },
+          {
+            "move": "Ne6+",
+            "p": 0.041594646871089935
+          }
+        ]
+      },
+      {
+        "ply": 94,
+        "mover": "random",
+        "played": "g5"
+      },
+      {
+        "ply": 95,
+        "mover": "model",
+        "played": "Be6",
+        "argmax": "Ne6",
+        "legal": false,
+        "prob": 0.046608392149209976,
+        "top3": [
+          {
+            "move": "Ne6",
+            "p": 0.1865614354610443
+          },
+          {
+            "move": "c8=Q",
+            "p": 0.06664647907018661
+          },
+          {
+            "move": "Ne6+",
+            "p": 0.055080439895391464
+          }
+        ]
+      },
+      {
+        "ply": 96,
+        "mover": "random",
+        "played": "h5"
+      },
+      {
+        "ply": 97,
+        "mover": "model",
+        "played": "e4",
+        "argmax": "e4",
+        "legal": true,
+        "prob": 0.1596756875514984,
+        "top3": [
+          {
+            "move": "e4",
+            "p": 0.1596756875514984
+          },
+          {
+            "move": "Be6",
+            "p": 0.05528847873210907
+          },
+          {
+            "move": "c8=Q",
+            "p": 0.04324181005358696
+          }
+        ]
+      },
+      {
+        "ply": 98,
+        "mover": "random",
+        "played": "Kg3"
+      },
+      {
+        "ply": 99,
+        "mover": "model",
+        "played": "Rf8",
+        "argmax": "Rf8",
+        "legal": true,
+        "prob": 0.06819618493318558,
+        "top3": [
+          {
+            "move": "Rf8",
+            "p": 0.06819618493318558
+          },
+          {
+            "move": "h4+",
+            "p": 0.0637708529829979
+          },
+          {
+            "move": "Nf5+",
+            "p": 0.036571796983480453
+          }
+        ]
+      },
+      {
+        "ply": 100,
+        "mover": "random",
+        "played": "h4"
+      },
+      {
+        "ply": 101,
+        "mover": "model",
+        "played": "Rf5",
+        "argmax": "Rf5",
+        "legal": true,
+        "prob": 0.05150996521115303,
+        "top3": [
+          {
+            "move": "Rf5",
+            "p": 0.05150996521115303
+          },
+          {
+            "move": "c8=Q",
+            "p": 0.04494776204228401
+          },
+          {
+            "move": "gxh4+",
+            "p": 0.030673744156956673
+          }
+        ]
+      },
+      {
+        "ply": 102,
+        "mover": "random",
+        "played": "g4"
+      },
+      {
+        "ply": 103,
+        "mover": "model",
+        "played": "hxg4",
+        "argmax": "hxg4",
+        "legal": true,
+        "prob": 0.10838912427425385,
+        "top3": [
+          {
+            "move": "hxg4",
+            "p": 0.10838912427425385
+          },
+          {
+            "move": "Rxg5+",
+            "p": 0.079895980656147
+          },
+          {
+            "move": "Rg5",
+            "p": 0.05787380039691925
+          }
+        ]
+      },
+      {
+        "ply": 104,
+        "mover": "random",
+        "played": "h3"
+      },
+      {
+        "ply": 105,
+        "mover": "model",
+        "played": "gxh3",
+        "argmax": "gxh3",
+        "legal": true,
+        "prob": 0.6585187315940857,
+        "top3": [
+          {
+            "move": "gxh3",
+            "p": 0.6585187315940857
+          },
+          {
+            "move": "Rxh3",
+            "p": 0.07652932405471802
+          },
+          {
+            "move": "Bxh3",
+            "p": 0.03333309292793274
+          }
+        ]
+      },
+      {
+        "ply": 106,
+        "mover": "random",
+        "played": "Kxh3"
+      },
+      {
+        "ply": 107,
+        "mover": "model",
+        "played": "Rf3+",
+        "argmax": "Rf3+",
+        "legal": true,
+        "prob": 0.07803139090538025,
+        "top3": [
+          {
+            "move": "Rf3+",
+            "p": 0.07803139090538025
+          },
+          {
+            "move": "Rf5+",
+            "p": 0.06578457355499268
+          },
+          {
+            "move": "e5",
+            "p": 0.056487787514925
+          }
+        ]
+      },
+      {
+        "ply": 108,
+        "mover": "random",
+        "played": "Kh4"
+      },
+      {
+        "ply": 109,
+        "mover": "model",
+        "played": "Rf6",
+        "argmax": "Rf6",
+        "legal": true,
+        "prob": 0.05674351006746292,
+        "top3": [
+          {
+            "move": "Rf6",
+            "p": 0.05674351006746292
+          },
+          {
+            "move": "Rxh3",
+            "p": 0.030653126537799835
+          },
+          {
+            "move": "Kg2",
+            "p": 0.02475813589990139
+          }
+        ]
+      },
+      {
+        "ply": 110,
+        "mover": "random",
+        "played": "Kg3"
+      },
+      {
+        "ply": 111,
+        "mover": "model",
+        "played": "Rf8",
+        "argmax": "Rf8",
+        "legal": true,
+        "prob": 0.08814238756895065,
+        "top3": [
+          {
+            "move": "Rf8",
+            "p": 0.08814238756895065
+          },
+          {
+            "move": "Rg6+",
+            "p": 0.07686310261487961
+          },
+          {
+            "move": "Rg6",
+            "p": 0.04137161001563072
+          }
+        ]
+      },
+      {
+        "ply": 112,
+        "mover": "random",
+        "played": "Kh3"
+      },
+      {
+        "ply": 113,
+        "mover": "model",
+        "played": "Rf3+",
+        "argmax": "Rf3+",
+        "legal": true,
+        "prob": 0.09021321684122086,
+        "top3": [
+          {
+            "move": "Rf3+",
+            "p": 0.09021321684122086
+          },
+          {
+            "move": "Rh8+",
+            "p": 0.0594835989177227
+          },
+          {
+            "move": "Rf7+",
+            "p": 0.03819653019309044
+          }
+        ]
+      },
+      {
+        "ply": 114,
+        "mover": "random",
+        "played": "Kh4"
+      },
+      {
+        "ply": 115,
+        "mover": "model",
+        "played": "Rf8",
+        "argmax": "Rh8+",
+        "legal": false,
+        "prob": 0.04547993838787079,
+        "top3": [
+          {
+            "move": "Rh8+",
+            "p": 0.04716450721025467
+          },
+          {
+            "move": "Rf8",
+            "p": 0.04547993838787079
+          },
+          {
+            "move": "Rh1#",
+            "p": 0.045262232422828674
+          }
+        ]
+      },
+      {
+        "ply": 116,
+        "mover": "random",
+        "played": "Kg3"
+      },
+      {
+        "ply": 117,
+        "mover": "model",
+        "played": "Rf3+",
+        "argmax": "Rf8",
+        "legal": false,
+        "prob": 0.050300370901823044,
+        "top3": [
+          {
+            "move": "Rf8",
+            "p": 0.147349551320076
+          },
+          {
+            "move": "Rg8+",
+            "p": 0.09320607036352158
+          },
+          {
+            "move": "b7",
+            "p": 0.05766366794705391
+          }
+        ]
+      }
+    ]
+  },
+  "stockfish": {
+    "opponent": "stockfish",
+    "model_color": "white",
+    "result": "0-1",
+    "model_result": "loss",
+    "plies": [
+      {
+        "ply": 1,
+        "mover": "model",
+        "played": "e4",
+        "argmax": "e4",
+        "legal": true,
+        "prob": 0.523133397102356,
+        "top3": [
+          {
+            "move": "e4",
+            "p": 0.523133397102356
+          },
+          {
+            "move": "d4",
+            "p": 0.2700629234313965
+          },
+          {
+            "move": "Nf3",
+            "p": 0.05635418742895126
+          }
+        ]
+      },
+      {
+        "ply": 2,
+        "mover": "stockfish",
+        "played": "e5"
+      },
+      {
+        "ply": 3,
+        "mover": "model",
+        "played": "Nf3",
+        "argmax": "Nf3",
+        "legal": true,
+        "prob": 0.6473047137260437,
+        "top3": [
+          {
+            "move": "Nf3",
+            "p": 0.6473047137260437
+          },
+          {
+            "move": "Nc3",
+            "p": 0.1076633408665657
+          },
+          {
+            "move": "f4",
+            "p": 0.08125987648963928
+          }
+        ]
+      },
+      {
+        "ply": 4,
+        "mover": "stockfish",
+        "played": "Nc6"
+      },
+      {
+        "ply": 5,
+        "mover": "model",
+        "played": "Bc4",
+        "argmax": "Bc4",
+        "legal": true,
+        "prob": 0.43213391304016113,
+        "top3": [
+          {
+            "move": "Bc4",
+            "p": 0.43213391304016113
+          },
+          {
+            "move": "Bb5",
+            "p": 0.26015329360961914
+          },
+          {
+            "move": "d4",
+            "p": 0.1887972354888916
+          }
+        ]
+      },
+      {
+        "ply": 6,
+        "mover": "stockfish",
+        "played": "d6"
+      },
+      {
+        "ply": 7,
+        "mover": "model",
+        "played": "c3",
+        "argmax": "c3",
+        "legal": true,
+        "prob": 0.2213822603225708,
+        "top3": [
+          {
+            "move": "c3",
+            "p": 0.2213822603225708
+          },
+          {
+            "move": "d3",
+            "p": 0.17033042013645172
+          },
+          {
+            "move": "O-O",
+            "p": 0.16704484820365906
+          }
+        ]
+      },
+      {
+        "ply": 8,
+        "mover": "stockfish",
+        "played": "Na5"
+      },
+      {
+        "ply": 9,
+        "mover": "model",
+        "played": "Bb3",
+        "argmax": "Bb3",
+        "legal": true,
+        "prob": 0.24426482617855072,
+        "top3": [
+          {
+            "move": "Bb3",
+            "p": 0.24426482617855072
+          },
+          {
+            "move": "Bb5+",
+            "p": 0.23377390205860138
+          },
+          {
+            "move": "Bb5",
+            "p": 0.10530896484851837
+          }
+        ]
+      },
+      {
+        "ply": 10,
+        "mover": "stockfish",
+        "played": "c6"
+      },
+      {
+        "ply": 11,
+        "mover": "model",
+        "played": "Bc2",
+        "argmax": "Bc2",
+        "legal": true,
+        "prob": 0.4680636525154114,
+        "top3": [
+          {
+            "move": "Bc2",
+            "p": 0.4680636525154114
+          },
+          {
+            "move": "O-O",
+            "p": 0.1745067536830902
+          },
+          {
+            "move": "d4",
+            "p": 0.1678285449743271
+          }
+        ]
+      },
+      {
+        "ply": 12,
+        "mover": "stockfish",
+        "played": "Nf6"
+      },
+      {
+        "ply": 13,
+        "mover": "model",
+        "played": "d4",
+        "argmax": "d4",
+        "legal": true,
+        "prob": 0.5162408351898193,
+        "top3": [
+          {
+            "move": "d4",
+            "p": 0.5162408351898193
+          },
+          {
+            "move": "d3",
+            "p": 0.24492843449115753
+          },
+          {
+            "move": "O-O",
+            "p": 0.1267857551574707
+          }
+        ]
+      },
+      {
+        "ply": 14,
+        "mover": "stockfish",
+        "played": "Be6"
+      },
+      {
+        "ply": 15,
+        "mover": "model",
+        "played": "dxe5",
+        "argmax": "dxe5",
+        "legal": true,
+        "prob": 0.5210452675819397,
+        "top3": [
+          {
+            "move": "dxe5",
+            "p": 0.5210452675819397
+          },
+          {
+            "move": "d5",
+            "p": 0.1851077824831009
+          },
+          {
+            "move": "O-O",
+            "p": 0.09336358308792114
+          }
+        ]
+      },
+      {
+        "ply": 16,
+        "mover": "stockfish",
+        "played": "dxe5"
+      },
+      {
+        "ply": 17,
+        "mover": "model",
+        "played": "Nxe5",
+        "argmax": "Nxe5",
+        "legal": true,
+        "prob": 0.518983006477356,
+        "top3": [
+          {
+            "move": "Nxe5",
+            "p": 0.518983006477356
+          },
+          {
+            "move": "Qxd8+",
+            "p": 0.21317104995250702
+          },
+          {
+            "move": "O-O",
+            "p": 0.10894296318292618
+          }
+        ]
+      },
+      {
+        "ply": 18,
+        "mover": "stockfish",
+        "played": "Be7"
+      },
+      {
+        "ply": 19,
+        "mover": "model",
+        "played": "O-O",
+        "argmax": "O-O",
+        "legal": true,
+        "prob": 0.5198168158531189,
+        "top3": [
+          {
+            "move": "O-O",
+            "p": 0.5198168158531189
+          },
+          {
+            "move": "Bf4",
+            "p": 0.13207687437534332
+          },
+          {
+            "move": "Nf3",
+            "p": 0.04920923337340355
+          }
+        ]
+      },
+      {
+        "ply": 20,
+        "mover": "stockfish",
+        "played": "Qxd1"
+      },
+      {
+        "ply": 21,
+        "mover": "model",
+        "played": "Rxd1",
+        "argmax": "Rxd1",
+        "legal": true,
+        "prob": 0.9517818093299866,
+        "top3": [
+          {
+            "move": "Rxd1",
+            "p": 0.9517818093299866
+          },
+          {
+            "move": "Bxd1",
+            "p": 0.033534396439790726
+          },
+          {
+            "move": "Bxf7+",
+            "p": 0.001913389191031456
+          }
+        ]
+      },
+      {
+        "ply": 22,
+        "mover": "stockfish",
+        "played": "O-O"
+      },
+      {
+        "ply": 23,
+        "mover": "model",
+        "played": "Bf4",
+        "argmax": "Bf4",
+        "legal": true,
+        "prob": 0.3596218228340149,
+        "top3": [
+          {
+            "move": "Bf4",
+            "p": 0.3596218228340149
+          },
+          {
+            "move": "Bg5",
+            "p": 0.19185246527194977
+          },
+          {
+            "move": "Nd2",
+            "p": 0.13497038185596466
+          }
+        ]
+      },
+      {
+        "ply": 24,
+        "mover": "stockfish",
+        "played": "Nh5"
+      },
+      {
+        "ply": 25,
+        "mover": "model",
+        "played": "Be3",
+        "argmax": "Be3",
+        "legal": true,
+        "prob": 0.5410423278808594,
+        "top3": [
+          {
+            "move": "Be3",
+            "p": 0.5410423278808594
+          },
+          {
+            "move": "Bg3",
+            "p": 0.19473326206207275
+          },
+          {
+            "move": "Bc1",
+            "p": 0.07600995898246765
+          }
+        ]
+      },
+      {
+        "ply": 26,
+        "mover": "stockfish",
+        "played": "Rfd8"
+      },
+      {
+        "ply": 27,
+        "mover": "model",
+        "played": "Nd2",
+        "argmax": "Nd2",
+        "legal": true,
+        "prob": 0.6263722777366638,
+        "top3": [
+          {
+            "move": "Nd2",
+            "p": 0.6263722777366638
+          },
+          {
+            "move": "Na3",
+            "p": 0.06988278031349182
+          },
+          {
+            "move": "f3",
+            "p": 0.04717959836125374
+          }
+        ]
+      },
+      {
+        "ply": 28,
+        "mover": "stockfish",
+        "played": "Bf6"
+      },
+      {
+        "ply": 29,
+        "mover": "model",
+        "played": "Ndf3",
+        "argmax": "Ndf3",
+        "legal": true,
+        "prob": 0.5065338015556335,
+        "top3": [
+          {
+            "move": "Ndf3",
+            "p": 0.5065338015556335
+          },
+          {
+            "move": "Nef3",
+            "p": 0.13200248777866364
+          },
+          {
+            "move": "f4",
+            "p": 0.045509856194257736
+          }
+        ]
+      },
+      {
+        "ply": 30,
+        "mover": "stockfish",
+        "played": "Re8"
+      },
+      {
+        "ply": 31,
+        "mover": "model",
+        "played": "Nc4",
+        "argmax": "Nc4",
+        "legal": true,
+        "prob": 0.3241094648838043,
+        "top3": [
+          {
+            "move": "Nc4",
+            "p": 0.3241094648838043
+          },
+          {
+            "move": "Nd3",
+            "p": 0.1054861769080162
+          },
+          {
+            "move": "Nxc6",
+            "p": 0.0962749719619751
+          }
+        ]
+      },
+      {
+        "ply": 32,
+        "mover": "stockfish",
+        "played": "Nxc4"
+      },
+      {
+        "ply": 33,
+        "mover": "model",
+        "played": "Bd4",
+        "argmax": "Bxc4",
+        "legal": false,
+        "prob": 0.0011806008405983448,
+        "top3": [
+          {
+            "move": "Bxc4",
+            "p": 0.9882175326347351
+          },
+          {
+            "move": "Nxc4",
+            "p": 0.0037300821859389544
+          },
+          {
+            "move": "Bd4",
+            "p": 0.0011806008405983448
+          }
+        ]
+      },
+      {
+        "ply": 34,
+        "mover": "stockfish",
+        "played": "Nf4"
+      },
+      {
+        "ply": 35,
+        "mover": "model",
+        "played": "g3",
+        "argmax": "g3",
+        "legal": true,
+        "prob": 0.2937026619911194,
+        "top3": [
+          {
+            "move": "g3",
+            "p": 0.2937026619911194
+          },
+          {
+            "move": "e5",
+            "p": 0.16274122893810272
+          },
+          {
+            "move": "Bf1",
+            "p": 0.0770273432135582
+          }
+        ]
+      },
+      {
+        "ply": 36,
+        "mover": "stockfish",
+        "played": "Nh3+"
+      },
+      {
+        "ply": 37,
+        "mover": "model",
+        "played": "Kg2",
+        "argmax": "Kg2",
+        "legal": true,
+        "prob": 0.9884977340698242,
+        "top3": [
+          {
+            "move": "Kg2",
+            "p": 0.9884977340698242
+          },
+          {
+            "move": "Kh1",
+            "p": 0.006127411033958197
+          },
+          {
+            "move": "Kf1",
+            "p": 0.004337044432759285
+          }
+        ]
+      },
+      {
+        "ply": 38,
+        "mover": "stockfish",
+        "played": "Nxb2"
+      },
+      {
+        "ply": 39,
+        "mover": "model",
+        "played": "Rab1",
+        "argmax": "Rab1",
+        "legal": true,
+        "prob": 0.2283327728509903,
+        "top3": [
+          {
+            "move": "Rab1",
+            "p": 0.2283327728509903
+          },
+          {
+            "move": "Rb1",
+            "p": 0.08433227986097336
+          },
+          {
+            "move": "Bb3",
+            "p": 0.06679514795541763
+          }
+        ]
+      },
+      {
+        "ply": 40,
+        "mover": "stockfish",
+        "played": "Nc4"
+      },
+      {
+        "ply": 41,
+        "mover": "model",
+        "played": "Rxb7",
+        "argmax": "Rxb7",
+        "legal": true,
+        "prob": 0.22682368755340576,
+        "top3": [
+          {
+            "move": "Rxb7",
+            "p": 0.22682368755340576
+          },
+          {
+            "move": "Bb3",
+            "p": 0.22211751341819763
+          },
+          {
+            "move": "Bxc4",
+            "p": 0.07091513276100159
+          }
+        ]
+      },
+      {
+        "ply": 42,
+        "mover": "stockfish",
+        "played": "Ng5"
+      },
+      {
+        "ply": 43,
+        "mover": "model",
+        "played": "Nxg5",
+        "argmax": "Nxg5",
+        "legal": true,
+        "prob": 0.39909252524375916,
+        "top3": [
+          {
+            "move": "Nxg5",
+            "p": 0.39909252524375916
+          },
+          {
+            "move": "Ne5",
+            "p": 0.13700605928897858
+          },
+          {
+            "move": "Rxa7",
+            "p": 0.055022530257701874
+          }
+        ]
+      },
+      {
+        "ply": 44,
+        "mover": "stockfish",
+        "played": "Bxg5"
+      },
+      {
+        "ply": 45,
+        "mover": "model",
+        "played": "f4",
+        "argmax": "f4",
+        "legal": true,
+        "prob": 0.4116579592227936,
+        "top3": [
+          {
+            "move": "f4",
+            "p": 0.4116579592227936
+          },
+          {
+            "move": "Rxa7",
+            "p": 0.09409694373607635
+          },
+          {
+            "move": "Rxb7",
+            "p": 0.07577728480100632
+          }
+        ]
+      },
+      {
+        "ply": 46,
+        "mover": "stockfish",
+        "played": "Bf6"
+      },
+      {
+        "ply": 47,
+        "mover": "model",
+        "played": "e5",
+        "argmax": "e5",
+        "legal": true,
+        "prob": 0.402620792388916,
+        "top3": [
+          {
+            "move": "e5",
+            "p": 0.402620792388916
+          },
+          {
+            "move": "Rxa7",
+            "p": 0.04169321432709694
+          },
+          {
+            "move": "Bxc4",
+            "p": 0.03842920809984207
+          }
+        ]
+      },
+      {
+        "ply": 48,
+        "mover": "stockfish",
+        "played": "Na3"
+      },
+      {
+        "ply": 49,
+        "mover": "model",
+        "played": "Bd3",
+        "argmax": "Bd3",
+        "legal": true,
+        "prob": 0.11234778165817261,
+        "top3": [
+          {
+            "move": "Bd3",
+            "p": 0.11234778165817261
+          },
+          {
+            "move": "Bxf7+",
+            "p": 0.10712384432554245
+          },
+          {
+            "move": "Bb3",
+            "p": 0.094997338950634
+          }
+        ]
+      },
+      {
+        "ply": 50,
+        "mover": "stockfish",
+        "played": "Be7"
+      },
+      {
+        "ply": 51,
+        "mover": "model",
+        "played": "f5",
+        "argmax": "f5",
+        "legal": true,
+        "prob": 0.1285932958126068,
+        "top3": [
+          {
+            "move": "f5",
+            "p": 0.1285932958126068
+          },
+          {
+            "move": "Rb7",
+            "p": 0.09140893071889877
+          },
+          {
+            "move": "Bc2",
+            "p": 0.06038167327642441
+          }
+        ]
+      },
+      {
+        "ply": 52,
+        "mover": "stockfish",
+        "played": "Bc8"
+      },
+      {
+        "ply": 53,
+        "mover": "model",
+        "played": "f6",
+        "argmax": "f6",
+        "legal": true,
+        "prob": 0.647975742816925,
+        "top3": [
+          {
+            "move": "f6",
+            "p": 0.647975742816925
+          },
+          {
+            "move": "e6",
+            "p": 0.14516030251979828
+          },
+          {
+            "move": "Rc7",
+            "p": 0.014840462245047092
+          }
+        ]
+      },
+      {
+        "ply": 54,
+        "mover": "stockfish",
+        "played": "Bxb7"
+      },
+      {
+        "ply": 55,
+        "mover": "model",
+        "played": "fxg7",
+        "argmax": "fxg7",
+        "legal": true,
+        "prob": 0.882169783115387,
+        "top3": [
+          {
+            "move": "fxg7",
+            "p": 0.882169783115387
+          },
+          {
+            "move": "Bxh7+",
+            "p": 0.012768309563398361
+          },
+          {
+            "move": "fxe7",
+            "p": 0.012415306642651558
+          }
+        ]
+      },
+      {
+        "ply": 56,
+        "mover": "stockfish",
+        "played": "Nb5"
+      },
+      {
+        "ply": 57,
+        "mover": "model",
+        "played": "Bxb5",
+        "argmax": "Bxb5",
+        "legal": true,
+        "prob": 0.09520610421895981,
+        "top3": [
+          {
+            "move": "Bxb5",
+            "p": 0.09520610421895981
+          },
+          {
+            "move": "Be4",
+            "p": 0.08171150833368301
+          },
+          {
+            "move": "Bh6",
+            "p": 0.06383906304836273
+          }
+        ]
+      },
+      {
+        "ply": 58,
+        "mover": "stockfish",
+        "played": "cxb5+"
+      },
+      {
+        "ply": 59,
+        "mover": "model",
+        "played": "Kh3",
+        "argmax": "Kh3",
+        "legal": true,
+        "prob": 0.4338705539703369,
+        "top3": [
+          {
+            "move": "Kh3",
+            "p": 0.4338705539703369
+          },
+          {
+            "move": "Kf2",
+            "p": 0.21456080675125122
+          },
+          {
+            "move": "Kf3",
+            "p": 0.12243461608886719
+          }
+        ]
+      },
+      {
+        "ply": 60,
+        "mover": "stockfish",
+        "played": "a6"
+      },
+      {
+        "ply": 61,
+        "mover": "model",
+        "played": "e6",
+        "argmax": "Bh6",
+        "legal": false,
+        "prob": 0.050236620008945465,
+        "top3": [
+          {
+            "move": "Bh6",
+            "p": 0.49442562460899353
+          },
+          {
+            "move": "e6",
+            "p": 0.050236620008945465
+          },
+          {
+            "move": "g4",
+            "p": 0.027480348944664
+          }
+        ]
+      },
+      {
+        "ply": 62,
+        "mover": "stockfish",
+        "played": "fxe6"
+      },
+      {
+        "ply": 63,
+        "mover": "model",
+        "played": "Kg4",
+        "argmax": "fxg7",
+        "legal": false,
+        "prob": 0.041514113545417786,
+        "top3": [
+          {
+            "move": "fxg7",
+            "p": 0.13717588782310486
+          },
+          {
+            "move": "fxe6",
+            "p": 0.08204179257154465
+          },
+          {
+            "move": "f7+",
+            "p": 0.06499854475259781
+          }
+        ]
+      },
+      {
+        "ply": 64,
+        "mover": "stockfish",
+        "played": "Be4"
+      },
+      {
+        "ply": 65,
+        "mover": "model",
+        "played": "h4",
+        "argmax": "Kg5",
+        "legal": false,
+        "prob": 0.09448380768299103,
+        "top3": [
+          {
+            "move": "Kg5",
+            "p": 0.27533698081970215
+          },
+          {
+            "move": "h4",
+            "p": 0.09448380768299103
+          },
+          {
+            "move": "Kh5",
+            "p": 0.08106701076030731
+          }
+        ]
+      },
+      {
+        "ply": 66,
+        "mover": "stockfish",
+        "played": "Rad8"
+      },
+      {
+        "ply": 67,
+        "mover": "model",
+        "played": "h5",
+        "argmax": "h5",
+        "legal": true,
+        "prob": 0.8900139927864075,
+        "top3": [
+          {
+            "move": "h5",
+            "p": 0.8900139927864075
+          },
+          {
+            "move": "Bg5",
+            "p": 0.013034791685640812
+          },
+          {
+            "move": "Kg5",
+            "p": 0.011032730340957642
+          }
+        ]
+      },
+      {
+        "ply": 68,
+        "mover": "stockfish",
+        "played": "Bf5+"
+      },
+      {
+        "ply": 69,
+        "mover": "model",
+        "played": "Kf3",
+        "argmax": "Kh3",
+        "legal": false,
+        "prob": 0.1787116378545761,
+        "top3": [
+          {
+            "move": "Kh3",
+            "p": 0.24748578667640686
+          },
+          {
+            "move": "Kh4",
+            "p": 0.19193796813488007
+          },
+          {
+            "move": "Kg5",
+            "p": 0.18255142867565155
+          }
+        ]
+      },
+      {
+        "ply": 70,
+        "mover": "stockfish",
+        "played": "Rd5"
+      },
+      {
+        "ply": 71,
+        "mover": "model",
+        "played": "h6",
+        "argmax": "h6",
+        "legal": true,
+        "prob": 0.4620642364025116,
+        "top3": [
+          {
+            "move": "h6",
+            "p": 0.4620642364025116
+          },
+          {
+            "move": "g4",
+            "p": 0.21399393677711487
+          },
+          {
+            "move": "Kg4",
+            "p": 0.06869098544120789
+          }
+        ]
+      },
+      {
+        "ply": 72,
+        "mover": "stockfish",
+        "played": "Bc2"
+      },
+      {
+        "ply": 73,
+        "mover": "model",
+        "played": "g4",
+        "argmax": "h7+",
+        "legal": false,
+        "prob": 0.022884491831064224,
+        "top3": [
+          {
+            "move": "h7+",
+            "p": 0.27798283100128174
+          },
+          {
+            "move": "hxg7",
+            "p": 0.255018413066864
+          },
+          {
+            "move": "h7",
+            "p": 0.09660257399082184
+          }
+        ]
+      },
+      {
+        "ply": 74,
+        "mover": "stockfish",
+        "played": "b4"
+      },
+      {
+        "ply": 75,
+        "mover": "model",
+        "played": "g5",
+        "argmax": "g5",
+        "legal": true,
+        "prob": 0.19658419489860535,
+        "top3": [
+          {
+            "move": "g5",
+            "p": 0.19658419489860535
+          },
+          {
+            "move": "cxb4",
+            "p": 0.1594812422990799
+          },
+          {
+            "move": "h7",
+            "p": 0.142015278339386
+          }
+        ]
+      },
+      {
+        "ply": 76,
+        "mover": "stockfish",
+        "played": "Rf5+"
+      },
+      {
+        "ply": 77,
+        "mover": "model",
+        "played": "Kg4",
+        "argmax": "Kg4",
+        "legal": true,
+        "prob": 0.6310883164405823,
+        "top3": [
+          {
+            "move": "Kg4",
+            "p": 0.6310883164405823
+          },
+          {
+            "move": "Kg3",
+            "p": 0.12757229804992676
+          },
+          {
+            "move": "Ke4",
+            "p": 0.09514006227254868
+          }
+        ]
+      },
+      {
+        "ply": 78,
+        "mover": "stockfish",
+        "played": "Bxg5"
+      },
+      {
+        "ply": 79,
+        "mover": "model",
+        "played": "Kh5",
+        "argmax": "Kxg5",
+        "legal": false,
+        "prob": 0.008193825371563435,
+        "top3": [
+          {
+            "move": "Kxg5",
+            "p": 0.63386070728302
+          },
+          {
+            "move": "Bxg5",
+            "p": 0.21449437737464905
+          },
+          {
+            "move": "fxg5",
+            "p": 0.08014442026615143
+          }
+        ]
+      },
+      {
+        "ply": 80,
+        "mover": "stockfish",
+        "played": "Bxd1#"
+      }
+    ]
+  }
+}

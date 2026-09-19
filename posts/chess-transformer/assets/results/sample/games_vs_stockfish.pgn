@@ -1,0 +1,180 @@
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "model"]
+[Black "stockfish"]
+[Result "0-1"]
+
+1. e4 e6 2. d4 d5 3. Nc3 Bb4 4. Nf3 Bxc3+ 5. Qd2 Bxd2+ 6. Kd1 Bxc1 7. c4 dxc4 8. Ne5 Bxb2 9. f4 Nh6 10. Nf3 Ba3 11. Ne5 c6 12. Nf3 Bb2 13. Ne5 Bc3 14. Bd3 b5 15. Bf1 Rg8 16. g4 a5 17. Nf3 Bxa1 18. Ne5 f6 19. Nf3 Nf5 20. Ne5 Ra7 21. Bd3 Ne3+ 22. Ke1 Bxd4 23. h4 cxd3 24. h5 Bc3+ 25. Kf2 Bd4 26. Nf3 Nc4+ 27. Kg2 Re7 28. e5 fxe5 29. Rh2 Ne3+ 30. Kg3 exf4+ 31. Kh4 b4 32. Ne5 Bxe5 33. Rf2 c5 34. Rd2 Qd5 35. Rf2 Qh1+ 36. Rh2 Qxh2+ 37. Kg5 Qg1 38. a3 Qxg4# 0-1
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "stockfish"]
+[Black "model"]
+[Result "1-0"]
+
+1. a3 c5 2. Nc3 d5 3. e4 e5 4. Nxd5 Nf6 5. Qf3 g6 6. Nxf6+ Ke7 7. d4 Nc6 8. Bg5 Bf5 9. exf5 c4 10. Ne4+ Kd7 11. Bxc4 a6 12. dxe5 Rc8 13. Qd1+ Bd6 14. e6+ fxe6 15. Ne2 e5 16. Qxd6+ Ke8 17. Qe6+ Ne7 18. Nf6+ Kf8 19. Bh6# 1-0
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "model"]
+[Black "stockfish"]
+[Result "0-1"]
+
+1. e4 e5 2. d4 d5 3. Nc3 dxe4 4. Nf3 exf3 5. Bd3 exd4 6. O-O dxc3 7. Bf5 Be7 8. Bf4 Bxf5 9. h4 Nc6 10. a3 fxg2 11. Be3 gxf1=Q+ 12. Kh2 Bd6+ 13. f4 Bxf4+ 14. Bxf4 Qxh4# 0-1
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "stockfish"]
+[Black "model"]
+[Result "1/2-1/2"]
+
+1. Nf3 Nf6 2. d4 d5 3. Bf4 e5 4. Nxe5 Nc6 5. e3 g6 6. a3 Be6 7. Bg5 Bf5 8. Nc3 a6 9. Nxc6 a5 10. Bxf6 Be6 11. Nxd8 h5 12. Nxe6 Rc8 13. Ng5 c5 14. g3 c4 15. Nxd5 h4 16. Bxh8 Be7 17. Bf6 Rb8 18. Bg2 Rc8 19. Kf1 b5 20. Nf3 b4 21. Nd2 Rb8 22. gxh4 Rc8 23. axb4 Rb8 24. Bxe7 Rc8 25. Nc7+ Rxc7 26. Nf3 Rc8 27. Ne1 Rb8 28. Bf6 Rc8 29. Be7 Rb8 30. Bf6 Rc8 1/2-1/2
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "model"]
+[Black "stockfish"]
+[Result "0-1"]
+
+1. e4 e6 2. d4 d6 3. Nf3 Nf6 4. Nc3 c6 5. e5 Nfd7 6. Bd3 h6 7. O-O d5 8. Bf4 Be7 9. Bf5 exf5 10. Qe2 Nf8 11. a3 Be6 12. g4 Na6 13. Be3 Rc8 14. Bf4 Qd7 15. gxf5 Bxf5 16. e6 Qxe6 17. Qe5 Qg6+ 18. Bg5 Be6 19. Qf5 hxg5 20. Ne5 Qxf5 21. f4 Qh7 22. Nf3 Nc7 23. Ne5 Qxh2# 0-1
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "stockfish"]
+[Black "model"]
+[Result "1-0"]
+
+1. d4 Nf6 2. Bf4 e5 3. dxe5 c5 4. exf6 Nc6 5. e3 g6 6. Qd2 d5 7. Bb5 d4 8. exd4 Bf5 9. Bxc6+ Qd7 10. Bf3 Bd3 11. cxd3 c4 12. Ne2 a6 13. Qe3+ Be7 14. fxe7 Qc8 15. Nbc3 h5 16. b3 Ra7 17. b4 a5 18. bxa5 h4 19. dxc4 Qf5 20. Rd1 Qe5 21. Bc6+ bxc6 22. Qxe5 c5 23. Qb8+ Kd7 24. Qd6+ Kc8 25. Qb8+ Kd7 26. Qd6+ Kc8 27. Qc6+ Rc7 28. e8=R+ Rxe8 29. Qxc7# 1-0
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "model"]
+[Black "stockfish"]
+[Result "0-1"]
+
+1. e4 e5 2. d4 exd4 3. e5 d5 4. Nf3 c5 5. Nc3 Nc6 6. Bd3 Bg4 7. O-O dxc3 8. e6 h5 9. Ne5 Nxe5 10. f4 Nf6 11. exf7+ Ke7 12. h4 Nc6 13. Bf5 Bxf5 14. Rf2 Ke6 15. Rd2 Kxf7 16. Qe1 cxd2 17. g4 Kg8 18. Kg2 dxe1=Q 19. gxf5 Qe4+ 20. Kg3 Qc4 21. Be3 Qd7 22. a3 a6 23. Kf3 Qxf5 24. Kg2 Qg6+ 25. Kf3 Qg4+ 26. Kf2 Rh7 27. b4 Qce2# 0-1
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "stockfish"]
+[Black "model"]
+[Result "1-0"]
+
+1. Nf3 Nf6 2. Nc3 d5 3. g3 d4 4. Na4 e5 5. d3 g6 6. Bg2 e4 7. Ne5 Nc6 8. Nc4 Ne5 9. Nxe5 c5 10. c3 Be6 11. Bg5 a6 12. Bxf6 Bf5 13. dxe4 Rc8 14. Bxd8 d3 15. exf5 c4 16. Bf6 h6 17. Bxh8 gxf5 18. e3 f4 19. exf4 h5 20. Qxd3 a5 21. Qd7# 1-0
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "model"]
+[Black "stockfish"]
+[Result "0-1"]
+
+1. e4 d5 2. d4 dxe4 3. Nc3 Bf5 4. Nf3 exf3 5. Bd3 Bxd3 6. d5 Bf5 7. O-O Nd7 8. d6 Qc8 9. g3 e6 10. h4 Bxd6 11. h5 Be7 12. a3 Ngf6 13. Be3 h6 14. g4 Nxg4 15. Qe1 c6 16. Qe2 f6 17. Bg5 O-O 18. Qe1 fxg5 19. Qe2 Nde5 20. Qe1 Rf7 21. b4 Bf6 22. b5 Qb8 23. Rb1 Qc7 24. Rb3 Rd8 25. Rb1 Nc4 26. Qe5 Qxe5 27. Rb3 Ra8 28. Rbb1 Qh2# 0-1
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "stockfish"]
+[Black "model"]
+[Result "1-0"]
+
+1. Nc3 Nf6 2. e3 d6 3. Nge2 e5 4. e4 c5 5. h3 g6 6. d3 Nc6 7. g3 d5 8. Nxd5 Be6 9. c4 Bf5 10. Bg2 Be6 11. Be3 a6 12. Nec3 Bf5 13. Nxf6+ Ke7 14. Nxh7 Qc8 15. Kf1 Be6 16. Ng5 Bf5 17. exf5 a5 18. Qc2 Ra7 19. h4 gxf5 20. Qe2 f4 21. gxf4 b5 22. Nd5+ Kd7 23. Nxf7 e4 24. dxe4 Ne5 25. Nf6+ Ke7 26. Nxh8 Nc6 27. Nd5+ Kd7 28. Rd1 Ne5 29. Ra1 Nc6 30. Qg4+ Ke8 31. f5 Rd7 32. Qh5+ Kd8 33. Nf7+ Ke8 34. Nh8+ Kd8 35. Bg5+ Be7 36. Bxe7+ Rxe7 37. Qg5 Ne5 38. Nf7+ Kd7 39. Qxe7+ Kc6 40. Nxe5# 1-0
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "model"]
+[Black "stockfish"]
+[Result "0-1"]
+
+1. e4 d5 2. d4 dxe4 3. Nc3 f5 4. Nf3 exf3 5. Bd3 fxg2 6. f4 gxh1=R+ 7. Bf1 Qd7 8. d5 Rxh2 9. d6 Qe6+ 10. Be3 Qxe3+ 11. Ne2 exd6 12. c4 Nf6 13. c5 Nc6 14. a3 Qf2+ 15. Kd2 Qd4+ 16. Ke1 Qxd1+ 17. Rxd1 Rh6 18. Nc3 Rb8 19. Rd2 a6 20. Bd3 Bd7 21. Bxf5 Bxf5 22. Rf2 Rd8 23. Rd2 Rg6 24. Rf2 Rh6 25. Rd2 dxc5 26. Rh2 Rxh2 27. b3 Rc2 28. b4 Rc1+ 29. Nd1 h5 30. bxc5 Rdxd1+ 31. Ke2 Bg4+ 32. Ke3 Bxc5# 0-1
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "stockfish"]
+[Black "model"]
+[Result "1-0"]
+
+1. e4 c5 2. d4 Nf6 3. e5 d6 4. exf6 exf6 5. Bb5+ Nc6 6. Ne2 g6 7. d5 Be6 8. O-O a6 9. Bxc6+ Ke7 10. Bxb7 Rc8 11. Re1 h5 12. dxe6 fxe6 13. Bxa6 c4 14. Nbc3 e5 15. a4 d5 16. a5 d4 17. Ne4 d3 18. Bxc4 d2 19. Bxd2 h4 20. Bb3 Rb8 21. f3 Qc8 22. Nc1 Rb6 23. c3 Qf5 24. Ra2 Qc8 25. c4 Qf5 26. c5 Qc8 27. c6 Qf5 28. Be3 Qc8 29. Bc5+ Ke8 30. Nxf6# 1-0
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "model"]
+[Black "stockfish"]
+[Result "0-1"]
+
+1. e4 c6 2. d4 d5 3. Nc3 dxe4 4. Nf3 exf3 5. Bd3 e6 6. O-O fxg2 7. f4 gxf1=R+ 8. Bxf1 Nf6 9. h4 Rg8 10. Bd3 g6 11. d5 Be7 12. Bf5 Qc7 13. d6 Bxd6 14. Bd3 Qb6+ 15. Be3 Qxe3+ 16. Kg2 Qxf4 17. Bf1 Bc5 18. Bd3 Be7 19. Bf5 exf5 20. a3 Qe4+ 21. Kg3 Qe3+ 22. Kg2 Qf4 23. h5 gxh5+ 24. Qg4 Rxg4+ 25. Kh1 Qf3+ 26. Kh2 Qg2# 0-1
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "stockfish"]
+[Black "model"]
+[Result "1-0"]
+
+1. d4 Nf6 2. c4 e6 3. Nf3 d5 4. cxd5 e5 5. e4 g6 6. Qa4+ Nc6 7. dxc6 Bf5 8. exf5 a6 9. dxe5 Rc8 10. Nc3 gxf5 11. Bd2 f4 12. Qc2 b5 13. exf6 Be7 14. fxe7 h5 15. O-O-O h4 16. exd8=R+ Rxd8 17. Qe4+ Kf8 18. Qb4+ Kg7 19. Bd3 Rc8 20. Qa3 a5 21. Rde1 Rhf8 22. g3 Rb8 23. Be4 Rb6 24. h3 Rc8 25. Qa4 Re8 26. Qd4+ f6 27. gxh4 Rc8 28. Rhg1+ Kh8 29. Qxf6# 1-0
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "model"]
+[Black "stockfish"]
+[Result "0-1"]
+
+1. e4 e6 2. d4 a6 3. Nf3 Be7 4. Nc3 b5 5. e5 Bb7 6. Bd3 d5 7. O-O Qd7 8. Bf5 g6 9. Bd3 b4 10. Qe1 bxc3 11. h4 Bc6 12. h5 cxb2 13. Bf5 exf5 14. e6 fxe6 15. Ne5 bxa1=Q 16. Nf3 Qxa2 17. Qe2 Bf6 18. Ne5 Ne7 19. f4 Qd6 20. g4 O-O 21. c4 Be8 22. Nc6 Qxc6 23. Qb2 Nd7 24. Rf2 Rb8 25. Rd2 Qaxc4 26. gxf5 Rf7 27. Kg2 Nxf5 28. Rf2 Q6b5 29. Rd2 Qbc6 30. Rf2 Qf1+ 31. Kf3 Nxd4+ 32. Kg3 gxh5 33. Rh2 Qc3+ 34. Be3 Rg7# 0-1
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "stockfish"]
+[Black "model"]
+[Result "1-0"]
+
+1. d4 Nf6 2. c3 d5 3. Nd2 e5 4. dxe5 d4 5. cxd4 Nc6 6. exf6 g6 7. e3 Bf5 8. Bb5 a6 9. Ba4 Rc8 10. a3 Be6 11. Qf3 Bf5 12. e4 h5 13. Bxc6+ Qd7 14. exf5 h4 15. Bxd7+ Kxd7 16. Ne4 a5 17. Nc5+ Bxc5 18. fxg6 b5 19. Qf5+ Kc6 20. dxc5 Rhf8 21. Qd5+ Kxd5 22. Bh6 Kc4 23. Bxf8 Rb8 24. Rc1+ Kd4 25. Nf3+ Kd5 26. Be7 Rc8 27. Rd1+ Kc4 28. gxf7 Re8 29. fxe8=N b4 30. Nxc7 b3 31. Rd4# 1-0
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "model"]
+[Black "stockfish"]
+[Result "0-1"]
+
+1. e4 e5 2. d4 d6 3. Nf3 exd4 4. e5 dxe5 5. Nc3 Nc6 6. Bd3 dxc3 7. O-O Qe7 8. a3 e4 9. Ne5 Qxe5 10. Qe2 Nf6 11. f4 exd3 12. h4 Qe4 13. h5 dxe2 14. Rf2 Be6 15. g4 Kd7 16. Be3 Bxg4 17. Rh2 Re8 18. Rf2 Qxe3 19. h6 e1=Q+ 20. Kg2 Qh3# 0-1
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "stockfish"]
+[Black "model"]
+[Result "1-0"]
+
+1. e4 c5 2. Nc3 d5 3. Nxd5 Nf6 4. Bb5+ Nc6 5. Bxc6+ Qd7 6. Nxf6+ exf6 7. Bxd7+ Ke7 8. Ba4 g6 9. d4 c4 10. c3 Be6 11. Ne2 a6 12. Rg1 h5 13. d5 Rc8 14. Rh1 Bf5 15. Rg1 Be6 16. Be3 Bf5 17. Rh1 Be6 18. h4 Bf5 19. exf5 b5 20. Nf4 a5 21. fxg6 Re8 22. Rg1 Rc8 23. a3 Re8 24. Bxb5 Rc8 25. Rc1 Re8 26. a4 Rc8 27. g7 Re8 28. Ne2 Rc8 29. d6+ Ke6 30. Nf4+ Ke5 31. Qd5# 1-0
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "model"]
+[Black "stockfish"]
+[Result "0-1"]
+
+1. e4 e5 2. d4 Nc6 3. Nc3 exd4 4. Nf3 dxc3 5. Bd3 d6 6. Ne5 Nxe5 7. O-O Nf6 8. f4 Ng6 9. e5 dxe5 10. Qe1 Bc5+ 11. Be3 Bxe3+ 12. Rf2 Bb6 13. Qd1 Bd7 14. g4 e4 15. h4 exd3 16. h5 dxc2 17. a3 Ne7 18. Kg2 cxd1=R 19. Rd2 cxb2 20. Rf2 Rg1+ 21. Kf3 Bxg4# 0-1
+[Event "chess-transformer vs stockfish"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "stockfish"]
+[Black "model"]
+[Result "1-0"]
+
+1. d4 Nf6 2. Nf3 d5 3. e3 e5 4. dxe5 d4 5. exf6 g6 6. Nxd4 Nc6 7. Be2 a6 8. Nc3 Ne5 9. h3 Nc6 10. Qd2 Be6 11. Bf3 Ne5 12. Bxb7 Rc8 13. Bf3 a5 14. Qe2 Nc6 15. Bxc6+ Qd7 16. Ba4 h5 17. f4 Bf5 18. Bxd7+ Kxd7 19. Qb5+ c6 20. Qxa5 c5 21. Qa7+ Rc7 22. Qxc7+ Kxc7 23. Nxf5 c4 24. Ne7 Kb6 25. Nc8+ Kc5 26. Ne4+ Kb5 27. Ncd6+ Kb6 28. Nxf7 h4 29. a3 Be7 30. Ne5 Rc8 31. fxe7 Re8 32. Nxc4+ Kb5 33. Rb1 Rc8 34. Kd1 Re8 35. c3 Rc8 36. Re1 Re8 37. a4+ Kxa4 38. Ncd6 Rc8 39. Ra1+ Kb3 40. Ra3# 1-0

@@ -1,0 +1,61 @@
+{
+  "config": {
+    "sample": true,
+    "n_layer": 4,
+    "n_embd": 256,
+    "n_head": 4,
+    "block_size": 256,
+    "batch_size": 32,
+    "lr": 0.0003,
+    "max_positions": 100000,
+    "max_train_minutes": 8,
+    "min_elo": 1800,
+    "min_plies": 20,
+    "games_vs_random": 20,
+    "games_vs_stockfish": 20,
+    "stockfish_limit_s": 0.02,
+    "seed": 0
+  },
+  "dataset_id": "Lichess/standard-chess-games year=2025 month=09",
+  "device": "cuda",
+  "device_name": "NVIDIA A100 80GB PCIe",
+  "param_count": 3787264,
+  "vocab_size": 2196,
+  "n_games": 1363,
+  "n_train_games": 1336,
+  "n_holdout_games": 27,
+  "train_positions": 100016,
+  "holdout_positions": 2082,
+  "truncations": 1,
+  "steps": 126,
+  "timings": {
+    "download_and_scan_s": 13.233,
+    "filter_s": 2.275,
+    "scanned_rows": 3824,
+    "kept_games": 1363,
+    "positions_before_split": 102098,
+    "primary_error": null,
+    "train_s": 7.496,
+    "eval_s": 26.24
+  },
+  "top1_acc": 0.025936599423631124,
+  "top1_n": 2082,
+  "legal_rate_sampled": 0.0888568683957733,
+  "legal_rate_argmax": 0.09702209414024976,
+  "legal_eval_n": 2082,
+  "games_vs_random": {
+    "W": 0,
+    "D": 18,
+    "L": 2,
+    "win_rate": 0.0
+  },
+  "games_vs_stockfish": {
+    "W": 0,
+    "D": 1,
+    "L": 19,
+    "win_rate": 0.0,
+    "limit": "chess.engine.Limit(time=0.02)"
+  },
+  "illegal_attempts_in_matches": 2273,
+  "stockfish": "downloaded:sf_17.1:avx2:stockfish-ubuntu-x86-64-avx2"
+}
