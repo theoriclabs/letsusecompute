@@ -5,10 +5,11 @@ Fallback: ``adamkarvonen/chess_games`` ``lichess_100mb.zip``.
 
 The model never sees the rules — only games. After training it is scored on
 next-move top-1, unmasked legal-move rate, and matches vs a random mover and
-Stockfish skill 1.
+Stockfish skill 1. Stockfish 17.1 is downloaded as a pinned Linux binary.
 
     compute run train.py::train --gpu cheap --dry-run
     compute run train.py::train --gpu cheap --timeout 1800 --wait --args '{"sample": true}'
+    compute run train.py::train --gpu H100-PCIe --provider runpod --timeout 4500 --wait
 """
 
 from __future__ import annotations
