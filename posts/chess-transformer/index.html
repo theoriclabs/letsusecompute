@@ -63,7 +63,7 @@
       padding: 1rem 1.05rem 1.15rem;
       box-shadow: 0 1px 2px color-mix(in srgb, var(--fg) 6%, transparent);
     }
-    .replay:focus { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .replay:focus { outline: none; }
     .replay-toolbar, .replay-controls { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
     .replay-toolbar { justify-content: space-between; margin-bottom: 0.9rem; gap: 0.7rem; }
     .replay-btn {
@@ -75,17 +75,28 @@
       border-radius: 999px;
       padding: 0.36rem 0.85rem;
       cursor: pointer;
-      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+      text-align: center;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
     }
     .replay-btn:hover { border-color: var(--accent); }
+    .replay-btn:focus { outline: none; }
+    .replay-btn:focus-visible {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent);
+    }
     .replay-btn[aria-pressed="true"] {
       border-color: var(--accent);
       background: color-mix(in srgb, var(--accent) 16%, var(--bg));
       color: var(--accent);
       font-weight: 600;
     }
-    .replay-controls .replay-btn#btn-play { min-width: 4.5rem; }
-    .ply-meta.counter { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .replay-controls {
+      padding-bottom: 0.85rem;
+      margin-bottom: 0.85rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .replay-controls .nav-btn { min-width: 5.4rem; }
     .replay-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(11.5rem, 0.9fr); gap: 1.1rem; align-items: start; }
     .board-wrap { display: grid; grid-template-columns: 1.1rem minmax(0, 1fr); grid-template-rows: auto auto; max-width: 23rem; width: 100%; }
     .ranks, .files { color: var(--muted); font-size: 0.68rem; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
@@ -95,6 +106,7 @@
       grid-column: 2;
       display: grid;
       grid-template-columns: repeat(8, 1fr);
+      grid-template-rows: repeat(8, 1fr);
       width: 100%;
       aspect-ratio: 1;
       border-radius: 8px;
@@ -109,6 +121,7 @@
     .piece-w { color: var(--piece-w); filter: drop-shadow(0 0 1px var(--piece-w-edge)) drop-shadow(0 1.5px 0 var(--piece-w-edge)); }
     .piece-b { color: var(--piece-b); filter: drop-shadow(0 0 1px var(--piece-b-edge)); }
     .replay-side { min-width: 0; }
+    #move-panel { min-height: 9.5rem; }
     .ply-meta { margin: 0 0 0.6rem; font-size: 0.95rem; }
     .illegal-note {
       margin: 0 0 0.75rem;
@@ -210,13 +223,13 @@
               <div class="files" aria-hidden="true"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
             </div>
             <div class="replay-side">
+              <div class="replay-controls">
+                <button type="button" class="replay-btn nav-btn" id="btn-prev">← Prev</button>
+                <button type="button" class="replay-btn nav-btn" id="btn-play">Play</button>
+                <button type="button" class="replay-btn nav-btn" id="btn-next">Next →</button>
+              </div>
               <div id="move-panel">
                 <p class="replay-status">Fetching the recorded plies.</p>
-              </div>
-              <div class="replay-controls" style="margin-top: 0.8rem;">
-                <button type="button" class="replay-btn" id="btn-prev">Prev</button>
-                <button type="button" class="replay-btn" id="btn-play">Play</button>
-                <button type="button" class="replay-btn" id="btn-next">Next</button>
               </div>
             </div>
           </div>
