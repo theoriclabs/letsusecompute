@@ -1,9 +1,0 @@
-run_2d576a2aaecfe375e4397b646dc9bb3b  vastai RTX-3090  cancelled hung boot  $0.00  rpt_6768d7f550ed072120730df3121c76d6
-run_236bc844e5cda41ee3af6464daa15558  vastai L4  sample 50 steps  $0.03
-  before 0/20  after 12/20  eval_loss 0.415
-run_12b351c5f946c6f4056e66c0ee3ab1ad  vastai L4  boot_failed HTTP 400  $0.00  rpt_cdc45ea3a1798c18fe074109a7c2dde7
-run_1a96be8da2d36285f8c236bc0c1e76b4  vastai RTX-6000-ADA  boot_failed no offers  $0.00  rpt_5f049580d1aad2cad58ac0cd0d357249
-run_18c4da14109e36d7cefc654c7a9d7e05  vastai L4  full 2 epochs  $0.03
-  before 0/20  after 18/20  eval_loss 0.051  train 414 / val 46
-issue spend $0.06
-no hf secret; adapter not pushed

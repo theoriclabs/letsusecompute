@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A chess model that never saw the rules — Let’s use compute</title>
+  <meta name="description" content="A 29.5M-parameter GPT trained on Lichess SAN moves, no rules. 38.6% next-move accuracy, 50 draws vs random by repetition, 2 wins vs Stockfish skill 1. $2.14 all-in." />
+  <meta property="og:title" content="A chess model that never saw the rules" />
+  <meta property="og:description" content="29.5M parameters, 16M positions, 38.6% next-move accuracy. It draws random movers by repeating positions and loses to Stockfish skill 1. $2.14 all-in." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://letsusecompute.com/posts/chess-transformer/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="canonical" href="https://letsusecompute.com/posts/chess-transformer/" />
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="../../assets/favicon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="../../assets/favicon.png" />
+  <link rel="stylesheet" href="../../styles.css" />
+  <style>
+    .article-header .lede { margin-bottom: 1.4rem; }
+    p > code { overflow-wrap: anywhere; }
+    section { margin-top: 2.25rem; }
+    section > h2:first-child { margin-top: 0; }
+    figure { margin: 1.35rem 0 1.8rem; }
+    figure .shot { margin: 0; height: auto; }
+    figcaption { color: var(--muted); font-size: 0.92rem; line-height: 1.45; margin-top: 0.55rem; }
+    .figure-label { color: var(--fg); font-weight: 700; }
+    .metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7rem; margin: 1.2rem 0 1.5rem; }
+    .metric { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0.85rem 0.95rem; }
+    .metric dt { color: var(--muted); font-size: 0.9rem; }
+    .metric dd { font-size: 1.55rem; font-variant-numeric: tabular-nums; font-weight: 700; margin: 0.2rem 0 0; }
+    .table-wrap { overflow-x: auto; margin: 1.2rem 0 1.5rem; }
+    .data-table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+    .data-table th, .data-table td { border-bottom: 1px solid var(--line); padding: 0.6rem 0.75rem; text-align: left; vertical-align: top; }
+    .data-table { font-variant-numeric: tabular-nums; }
+    .data-table caption { color: var(--muted); font-size: 0.92rem; padding: 0.7rem 0.75rem 0.2rem; text-align: left; }
+    .data-table tbody tr:last-child th, .data-table tbody tr:last-child td { border-bottom: 0; }
+    .defs { margin: 1.1rem 0 1.4rem; padding: 0.85rem 1rem; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+    .defs dt { font-weight: 700; margin-top: 0.65rem; }
+    .defs dt:first-child { margin-top: 0; }
+    .defs dd { margin: 0.2rem 0 0; color: var(--muted); }
+    .replay { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0.85rem 0.9rem 1rem; }
+    .replay:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .replay-toolbar, .replay-controls { display: flex; flex-wrap: wrap; gap: 0.45rem; align-items: center; }
+    .replay-toolbar { justify-content: space-between; margin-bottom: 0.75rem; gap: 0.7rem; }
+    .replay-btn {
+      font: inherit;
+      font-size: 0.95rem;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--fg);
+      border-radius: 8px;
+      padding: 0.32rem 0.7rem;
+      cursor: pointer;
+    }
+    .replay-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+    .replay-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(11rem, 0.9fr); gap: 0.9rem; align-items: start; }
+    .board-wrap { display: grid; grid-template-columns: 1.05rem minmax(0, 1fr); grid-template-rows: auto auto; max-width: 22rem; width: 100%; }
+    .ranks, .files { color: var(--muted); font-size: 0.72rem; font-variant-numeric: tabular-nums; }
+    .ranks { display: grid; grid-template-rows: repeat(8, 1fr); align-items: center; justify-items: center; }
+    .files { grid-column: 2; display: grid; grid-template-columns: repeat(8, 1fr); align-items: center; justify-items: center; }
+    .board {
+      grid-column: 2;
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      width: 100%;
+      aspect-ratio: 1;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .sq { display: flex; align-items: center; justify-content: center; }
+    .sq.light { background: color-mix(in srgb, var(--card) 55%, #e6d7c0); }
+    .sq.dark { background: color-mix(in srgb, var(--accent) 32%, var(--line)); }
+    .piece { font-size: clamp(1.15rem, 4.6vw, 1.85rem); line-height: 1; user-select: none; }
+    .piece-w { color: #f7f1e4; filter: drop-shadow(0 0 1.2px #1a1a1a) drop-shadow(0 1px 0 #1a1a1a); }
+    .piece-b { color: #161310; filter: drop-shadow(0 0 1.2px #f7f1e4); }
+    .replay-side { min-width: 0; }
+    .ply-meta { margin: 0 0 0.55rem; font-size: 0.95rem; }
+    .illegal-note { margin: 0 0 0.7rem; padding: 0.45rem 0.55rem; border-left: 3px solid var(--accent); color: var(--fg); font-size: 0.95rem; }
+    .bars { list-style: none; padding: 0; margin: 0; }
+    .bars li { margin: 0.4rem 0 0.65rem; }
+    .bar-label { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.92rem; font-variant-numeric: tabular-nums; }
+    .bar-track { height: 0.45rem; background: color-mix(in srgb, var(--line) 70%, transparent); border-radius: 99px; overflow: hidden; margin-top: 0.2rem; }
+    .bar-fill { height: 100%; background: var(--accent); border-radius: 99px; }
+    .mark-played { font-weight: 700; }
+    .mark-illegal { color: var(--accent); }
+    .replay-status { color: var(--muted); font-size: 0.92rem; margin: 0; }
+    @media (max-width: 32rem) {
+      .metrics { grid-template-columns: 1fr; }
+      .replay-layout { grid-template-columns: 1fr; }
+      .board-wrap { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <p><a class="back" href="../../">← Let’s use compute</a></p>
+    <header class="article-header">
+      <p class="eyebrow">2026-09-21 · post #9</p>
+      <h1>A chess model that never saw the rules</h1>
+      <p class="byline">Harsh Gupta</p>
+      <p class="lede">We trained a 29.5 million parameter GPT on chess moves and never showed it a rule. It guesses the next move 38.6% of the time, draws random opponents by repeating positions, and almost never beats Stockfish at skill 1.</p>
+    </header>
+
+    <p>The training file is a month of <a href="https://huggingface.co/datasets/Lichess/standard-chess-games">Lichess games</a>, both ratings at least 1800, twenty plies or more. One SAN token per move: <code>Nf3</code>, <code>O-O</code>, <code>e8=Q</code>. A nanoGPT-style decoder, eight layers, 512 wide, eight heads, context 256, weight-tied, flash attention. python-chess checks legality only when the model plays. Stockfish 17.1 is a pinned Linux binary, because a Compute image has no apt.</p>
+    <p>Headline run <code>run_dc7002880b6daab7cb3cb6f61e3e063c</code> on a RunPod H100-PCIe: 16,326,581 positions from 220,769 games, 29,502,976 parameters, 10,143 steps in 837 seconds. Next-move top-1 on the holdout is 38.55%. Against a random mover it scored 50 wins, 50 draws, 0 losses. Against Stockfish skill 1 it scored 2 wins, 10 draws, 88 losses. The ticket said done at a 99% legal-move rate and 95 wins of 100 versus random. This run is 94.26% legal by argmax and 50 wins. The whole issue, including two Vast boots that never ran, cost <strong>$2.14</strong>.</p>
+
+    <dl class="metrics" aria-label="Headline chess transformer result">
+      <div class="metric"><dt>Next-move top-1</dt><dd>38.55%</dd></div>
+      <div class="metric"><dt>Legal, argmax</dt><dd>94.26%</dd></div>
+      <div class="metric"><dt>vs random</dt><dd>50 / 50 / 0</dd></div>
+      <div class="metric"><dt>vs Stockfish skill 1</dt><dd>2 / 10 / 88</dd></div>
+    </dl>
+
+    <dl class="defs">
+      <dt>top-1</dt>
+      <dd>next-move accuracy on held-out games (2% split by game), teacher-forced.</dd>
+      <dt>legal rate, sampled</dt>
+      <dd>on 5,000 held-out positions, one move sampled from the unmasked softmax at temperature 1.0, parsed with python-chess. Ambiguous or unparseable SAN counts as illegal.</dd>
+      <dt>legal rate, argmax</dt>
+      <dd>same positions, the single most likely move.</dd>
+      <dt>matches</dt>
+      <dd>100 games per opponent, colours alternate. The model plays its unmasked argmax; if that is illegal it is counted (<code>illegal_attempts_in_matches</code>) and the model plays its highest-probability legal move instead. Games end on python-chess <code>is_game_over(claim_draw=True)</code> or at 300 plies (counted as a draw). Stockfish: skill level 1, <code>Limit(time=0.02)</code> per move.</dd>
+    </dl>
+
+    <section aria-labelledby="ladder">
+      <h2 id="ladder">Three runs on the same script</h2>
+      <p>A 4-layer sample on 100k positions barely predicts the next move. Four million positions get you a model that mostly plays legal chess and still cannot convert a random game. Sixteen million positions, same GPU minutes, moves every number in the right direction and still misses the ticket.</p>
+      <div class="table-wrap" role="region" aria-label="Sample, 4M, and 16M runs" tabindex="0">
+        <table class="data-table">
+          <caption>Headline B is the 16M run on this page. Sample legal rates use 2,082 holdout positions, not 5,000. Costs are the three finished jobs; two dead Vast boots add $0.05.</caption>
+          <thead>
+            <tr><th scope="col"></th><th scope="col">Sample</th><th scope="col">Headline A</th><th scope="col">Headline B</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Params</th><td>3,787,264</td><td>28,386,304</td><td>29,502,976</td></tr>
+            <tr><th scope="row">Positions</th><td>102,098</td><td>4,081,734</td><td>16,326,581</td></tr>
+            <tr><th scope="row">Steps</th><td>126</td><td>13,440</td><td>10,143</td></tr>
+            <tr><th scope="row">top-1</th><td>2.59%</td><td>34.18%</td><td>38.55%</td></tr>
+            <tr><th scope="row">legal sampled</th><td>8.89%</td><td>79.02%</td><td>84.84%</td></tr>
+            <tr><th scope="row">legal argmax</th><td>9.70%</td><td>90.30%</td><td>94.26%</td></tr>
+            <tr><th scope="row">vs random W/D/L</th><td>0 / 18 / 2</td><td>40 / 59 / 1</td><td>50 / 50 / 0</td></tr>
+            <tr><th scope="row">vs Stockfish W/D/L</th><td>0 / 1 / 19</td><td>0 / 9 / 91</td><td>2 / 10 / 88</td></tr>
+            <tr><th scope="row">Illegal attempts</th><td>2,273</td><td>2,182</td><td>1,290</td></tr>
+            <tr><th scope="row">Cost</th><td>$0.07</td><td>$1.08</td><td>$0.94</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>4M → 16M positions at roughly the same GPU minutes moved top-1 34.2 → 38.6, legal argmax 90.3 → 94.3, legal sampled 79.0 → 84.8, wins vs random 40 → 50, wins vs Stockfish 0 → 2, illegal attempts 2,182 → 1,290. The train/holdout gap closed: A sat at about 2.23 train vs 2.70 holdout late in training; B finished 2.36 vs 2.32.</p>
+    </section>
+
+    <section aria-labelledby="replay">
+      <h2 id="replay">Watch the recorded games</h2>
+      <p>The model is white in both. Use prev/next, play, or the arrow keys once the board is focused. The side panel is the saved softmax from that ply, not a live re-run.</p>
+      <figure>
+        <div id="replay" class="replay" tabindex="0" aria-label="Chess replay of the recorded headline games">
+          <div class="replay-toolbar">
+            <div>
+              <button type="button" class="replay-btn" id="btn-random" aria-pressed="true">vs random</button>
+              <button type="button" class="replay-btn" id="btn-stockfish" aria-pressed="false">vs Stockfish</button>
+            </div>
+            <p class="ply-meta" id="ply-counter">Loading…</p>
+          </div>
+          <div class="replay-layout">
+            <div class="board-wrap">
+              <div class="ranks" aria-hidden="true"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
+              <div class="board" id="board" role="grid" aria-label="Chessboard"></div>
+              <div class="files" aria-hidden="true"><span>a</span><span>b</span><span>c</span><span>d</span><span>e</span><span>f</span><span>g</span><span>h</span></div>
+            </div>
+            <div class="replay-side">
+              <div id="move-panel">
+                <p class="replay-status">Fetching the recorded plies.</p>
+              </div>
+              <div class="replay-controls" style="margin-top: 0.8rem;">
+                <button type="button" class="replay-btn" id="btn-prev">Prev</button>
+                <button type="button" class="replay-btn" id="btn-play">Play</button>
+                <button type="button" class="replay-btn" id="btn-next">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <noscript>
+          <p>This replay needs JavaScript. The recorded games are in <a href="./assets/results/headline-16m/games_vs_random.pgn">games_vs_random.pgn</a> and <a href="./assets/results/headline-16m/games_vs_stockfish.pgn">games_vs_stockfish.pgn</a>.</p>
+        </noscript>
+        <figcaption><span class="figure-label">Recorded games from the 16M run, model white.</span> vs random: draw in 123 plies, 20 illegal argmax attempts. vs Stockfish: loss in 76 plies, 2 illegal attempts. Bars are the saved model’s real probabilities from <a href="./assets/results/headline-16m/annotated_game.json">annotated_game.json</a>, not a re-run. <a href="./assets/results/headline-16m/games_vs_random.pgn">Random PGN</a> · <a href="./assets/results/headline-16m/games_vs_stockfish.pgn">Stockfish PGN</a></figcaption>
+      </figure>
+    </section>
+
+    <section aria-labelledby="draws">
+      <h2 id="draws">What the draws are</h2>
+      <p>We replayed every drawn PGN with python-chess, read <code>board.outcome(claim_draw=True)</code>, and counted material from the model’s side.</p>
+      <p>Headline B vs random: 50 draws = 39 threefold repetition, 10 stalemate, 1 ply cap. At the end of those games the model was ahead by three pawns or more in 23, behind by that much in 24, and within two points in 3. Median drawn game 103 plies. The model often has the extra material. Playing a deterministic argmax, it shuffles into a repetition instead of converting. It has imitated human games, and humans never play “mate a random mover.”</p>
+      <p>vs Stockfish: 10 draws, all threefold repetition.</p>
+      <p>Headline A was the same shape. vs random: 59 draws = 47 threefold repetition, 11 stalemate, 1 ply cap. Ahead in 30, behind in 28, level in 1. Median 114 plies. vs Stockfish: 9 draws, all threefold repetition.</p>
+    </section>
+
+    <section aria-labelledby="wrong">
+      <h2 id="wrong">What the model got wrong</h2>
+      <p>Step to ply 37 in the random replay. The argmax is <code>exf7+</code> at probability 0.074. That move is illegal. The model plays <code>Qe2</code>. Ply 43 wants <code>Rxa8+</code> and plays <code>h3</code>. Ply 47 wants <code>Bxb8</code> and plays <code>Qe4</code>. In the Stockfish game, ply 71 wants <code>Kg2</code> at 0.53 and plays <code>Rf1</code>.</p>
+      <p>The 4M run made the same class of error easier to see. In its recorded random game the model wants <code>Nxb5</code> at plies 15 (p=0.26), 19 (0.18), 21 (0.49), and 23 (0.25). There is no knight that can reach b5. It plays <code>Be2</code>, then <code>Bf3</code>, then <code>a3</code>, then <code>b4</code>. In that run’s Stockfish game, ply 33 assigns 0.99 to <code>Bxc4</code>. Illegal. It plays <code>Bd4</code> at 0.001. The model tracks the board imperfectly. That is the visible mechanism behind the legal-move numbers.</p>
+    </section>
+
+    <section aria-labelledby="loss">
+      <h2 id="loss">Holdout loss, 10,143 steps</h2>
+      <p>Holdout cross-entropy started at 9.00, essentially a uniform guess over the 8,109-move vocab (<code>ln(8109) = 9.00</code>), and ended at 2.32. Train finished at 2.37. The 4M run went 8.71 → 2.70 on a 5,928-move vocab and overfit: late train readings sat near 2.23 against that 2.70 holdout.</p>
+      <figure>
+        <img class="shot evidence" src="./assets/results/headline-16m/loss_curve.svg" width="1200" height="520" alt="Train and holdout loss falling from about 9 nats to 2.32 nats over 10,143 steps, with a dashed uniform-guess line at ln(8109)" />
+        <figcaption><span class="figure-label">Headline B.</span> Train and holdout in nats. The dashed line is ln(8,109). <a href="./assets/results/headline/loss_curve.svg">Headline A curve</a> (13,440 steps, vocab 5,928).</figcaption>
+      </figure>
+    </section>
+
+    <section aria-labelledby="model">
+      <h2 id="model">Data and model</h2>
+      <p>Stream <a href="https://huggingface.co/datasets/Lichess/standard-chess-games"><code>Lichess/standard-chess-games</code></a> for year=2025 month=09 on the machine. Keep a game if both Elos are at least 1800 and it has at least 20 plies; drop Abandoned and Rules infraction. Headline B scanned 630,983 rows in 110 seconds, filtered in 101 seconds, and kept 220,769 games. Headline A scanned 154,097 rows in 39.6 seconds, filtered in 31.7 seconds, and kept 54,828 games. Fallback, unused here: <a href="https://huggingface.co/datasets/adamkarvonen/chess_games"><code>adamkarvonen/chess_games</code></a> <code>lichess_100mb.zip</code>.</p>
+      <p>Vocabulary is every SAN token in the training games plus PAD/BOS/EOS/UNK. B built 8,109 tokens; A built 5,928. The decoder is eight layers, d_model 512, eight heads, block 256, weight-tied embeddings, flash attention. Param count moves with vocab size: 28,386,304 on A, 29,502,976 on B. B trained three epochs, batch 64, learning rate 4e-4. Eval and matches took 199 seconds, including 100 games each against random and Stockfish.</p>
+      <p>Weights: <a href="https://huggingface.co/theoriclabs/chess-move-transformer"><code>theoriclabs/chess-move-transformer</code></a> holds this 16M run (<code>model.pt</code>, <code>vocab.json</code>, <code>results.json</code>), pushed 08:58 UTC after run A’s upload. <code>train_and_push</code> injects the stored <code>hf</code> secret; storing the secret does not put it on the machine.</p>
+    </section>
+
+    <section aria-labelledby="cost">
+      <h2 id="cost">What the issue cost</h2>
+      <div class="table-wrap" role="region" aria-label="All five Compute runs" tabindex="0">
+        <table class="data-table">
+          <caption>Receipts for the three finished jobs sit next to the metrics, e.g. <a href="./assets/results/headline-16m/receipt.txt">headline B</a>. Total $2.14 of a $20 budget.</caption>
+          <thead>
+            <tr><th scope="col">Run</th><th scope="col">What</th><th scope="col">GPU</th><th scope="col">Billed</th><th scope="col">Cost</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row"><code>run_ef3aa0058ce5f3699e73a9d57fb259af</code></th><td>First pipeline attempt, <code>--gpu cheap</code>. Hung in “provider reports creating”, cancelled.</td><td>Vast RTX-3090</td><td>17 min</td><td>$0.05</td></tr>
+            <tr><th scope="row"><code>run_496b871f1d3790e0eef6c77447fae548</code></th><td>Second attempt. <code>boot_failed</code>: no Vast interruptible L4 offers.</td><td>Vast L4</td><td>—</td><td>$0.00</td></tr>
+            <tr><th scope="row"><code>run_0ffa481485213ea2e182a409b3b6fc86</code></th><td>Sample preset, 4 layers / 256-wide, 100k positions, 126 steps, 20+20 games.</td><td>RunPod A100-PCIe-80GB</td><td>3 min</td><td>$0.07</td></tr>
+            <tr><th scope="row"><code>run_b9d92718d37fbe9b36c31ad2e21815d8</code></th><td>Headline A: 4.08M positions, 8 epochs, 13,440 steps, 100+100 games.</td><td>RunPod H100-PCIe</td><td>25 min</td><td>$1.08</td></tr>
+            <tr><th scope="row"><code>run_dc7002880b6daab7cb3cb6f61e3e063c</code></th><td>Headline B: 16.3M positions, 3 epochs, 10,143 steps, 100+100 games.</td><td>RunPod H100-PCIe</td><td>22 min</td><td>$0.94</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Friction filed during the issue: <code>rpt_d5dd2c8585511c999fd81010a5d14301</code> (CLI has no non-interactive price quote; <code>--dry-run</code> prints an upload plan, not a quote), <code>rpt_023af546ab619039ec080dba1279136f</code> (<code>--gpu cheap</code> silently used the SKU in the source after <code>workload_estimate_unsupported</code>), <code>rpt_b9e65fd29961222fe7239f378aa010b4</code> (hung Vast RTX-3090 boot billed 17 minutes; one report per run blocks filing distinct issues), <code>rpt_022179b60e28c3aacba224f311769068</code> (catalog listed a Vast L4 that had no offers), <code>rpt_259d10a7adcf0d20e2dd795c43a3d72e</code> (<code>compute logs -f</code> crashes after about 15 minutes with <code>ValueError: invalid literal for int() with base 16: b''</code>). Stockfish via apt is impossible: there is no apt API on <code>compute.Image</code>. The pinned GitHub binary works. The <code>compute report</code> summary is capped at 200 characters.</p>
+    </section>
+
+    <section aria-labelledby="run-it">
+      <h2 id="run-it">Train it on Compute</h2>
+      <p>One file. Hand <a href="https://compute.cx/SKILL.md">compute.cx/SKILL.md</a> to your agent, plus the specials in <a href="./SKILL.md">this post’s overlay</a>.</p>
+<pre><code class="language-bash">curl -fsSL https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/chess-transformer/train.py -o train.py
+curl -fsSL https://compute.cx/install.sh | sh
+compute setup
+compute credits add 10
+
+compute run train.py::train --gpu cheap --dry-run
+compute run train.py::train --gpu cheap --timeout 1800 --wait --args '{"sample": true}'
+compute run train.py::train --gpu H100-PCIe --provider runpod --timeout 4500 --wait --args '{"max_positions": 16000000, "epochs": 3, "batch_size": 64, "lr": 0.0004}'</code></pre>
+      <p>Dry-run only prints the upload plan. The real command quotes a GPU before spend. The sample preset is four layers, 256-wide, 100k positions, 20 games per opponent. Omit the <code>--args</code> object on the H100 line and you get headline A (4M positions, 8 epochs). Timeout 4500 covers download, three epochs, eval, and 200 matches. The script downloads Stockfish 17.1 itself.</p>
+      <p>To publish weights, store a write token and use the secrets-backed entrypoint. Storing the secret does not put it on the machine; <code>Secret.from_name("hf")</code> on <code>train_and_push</code> does.</p>
+<pre><code class="language-bash">compute secrets set hf
+compute run train.py::train_and_push --gpu H100-PCIe --provider runpod --timeout 4500 --wait --args '{"max_positions": 16000000, "epochs": 3, "batch_size": 64, "lr": 0.0004}'</code></pre>
+      <p>Want to read the script? <a href="https://github.com/theoriclabs/letsusecompute/blob/main/posts/chess-transformer/train.py"><code>train.py</code></a>.</p>
+    </section>
+
+    <section aria-labelledby="credits">
+      <h2 id="credits">Data, engines, and the trainer</h2>
+      <p>Games from <a href="https://huggingface.co/datasets/Lichess/standard-chess-games">Lichess / Hugging Face</a>. Legality and match rules from <a href="https://github.com/niklasf/python-chess">python-chess</a>. Opponent ladder: a uniform random legal mover, and <a href="https://github.com/official-stockfish/Stockfish">Stockfish 17.1</a> at skill 1. The decoder follows <a href="https://github.com/karpathy/nanoGPT">nanoGPT</a>. Training ran on <a href="https://compute.cx">compute.cx</a>. Ticket: <a href="https://github.com/theoriclabs/letsusecompute/issues/9">theoriclabs/letsusecompute#9</a>.</p>
+    </section>
+  </main>
+  <script>
+    (function () {
+      const PIECES = {
+        K: "♔", Q: "♕", R: "♖", B: "♗", N: "♘", P: "♙",
+        k: "♚", q: "♛", r: "♜", b: "♝", n: "♞", p: "♟"
+      };
+      const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+      const games = { random: null, stockfish: null };
+      let opponent = "random";
+      let index = 0;
+      let timer = null;
+
+      const boardEl = document.getElementById("board");
+      const panelEl = document.getElementById("move-panel");
+      const counterEl = document.getElementById("ply-counter");
+      const playBtn = document.getElementById("btn-play");
+      const btnRandom = document.getElementById("btn-random");
+      const btnStockfish = document.getElementById("btn-stockfish");
+
+      function pct(p) {
+        return (Math.round(p * 1000) / 10).toFixed(1) + "%";
+      }
+
+      function parseFen(fen) {
+        const placement = String(fen || "").split(" ")[0];
+        const ranks = placement.split("/");
+        if (ranks.length !== 8) return null;
+        const grid = [];
+        for (const rank of ranks) {
+          const row = [];
+          for (const ch of rank) {
+            if (ch >= "1" && ch <= "8") {
+              for (let i = 0; i < Number(ch); i += 1) row.push(null);
+            } else if (PIECES[ch]) {
+              row.push({ glyph: PIECES[ch], white: ch === ch.toUpperCase() });
+            } else {
+              return null;
+            }
+          }
+          if (row.length !== 8) return null;
+          grid.push(row);
+        }
+        return grid;
+      }
+
+      function renderBoard(fen) {
+        const grid = parseFen(fen) || parseFen(START_FEN);
+        boardEl.replaceChildren();
+        for (let r = 0; r < 8; r += 1) {
+          for (let c = 0; c < 8; c += 1) {
+            const sq = document.createElement("div");
+            const rankNumber = 8 - r;
+            const light = (c + rankNumber) % 2 === 0;
+            sq.className = "sq " + (light ? "light" : "dark");
+            sq.setAttribute("role", "gridcell");
+            const piece = grid[r][c];
+            if (piece) {
+              const span = document.createElement("span");
+              span.className = "piece " + (piece.white ? "piece-w" : "piece-b");
+              span.textContent = piece.glyph;
+              sq.appendChild(span);
+            }
+            boardEl.appendChild(sq);
+          }
+        }
+      }
+
+      function stopPlay() {
+        if (timer !== null) {
+          window.clearInterval(timer);
+          timer = null;
+        }
+        playBtn.textContent = "Play";
+      }
+
+      function currentGame() {
+        return games[opponent];
+      }
+
+      function render() {
+        const game = currentGame();
+        if (!game) return;
+        const plies = game.plies;
+        const max = plies.length;
+        if (index < 0) index = 0;
+        if (index > max) index = max;
+        const ply = index === 0 ? null : plies[index - 1];
+        renderBoard(ply ? ply.fen_after : START_FEN);
+        const total = max;
+        counterEl.textContent = index === 0 ? "Start · 0 / " + total : "Ply " + ply.ply + " / " + total;
+
+        const panel = document.createElement("div");
+        if (!ply) {
+          const p = document.createElement("p");
+          p.className = "replay-status";
+          p.textContent = "Starting position. The model is " + game.model_color + ".";
+          panel.appendChild(p);
+        } else if (ply.mover !== "model") {
+          const p = document.createElement("p");
+          p.className = "ply-meta";
+          p.textContent = ply.mover + " played " + ply.san + ".";
+          panel.appendChild(p);
+        } else {
+          const p = document.createElement("p");
+          p.className = "ply-meta";
+          p.textContent = "Model played " + ply.san + ".";
+          panel.appendChild(p);
+          if (ply.legal === false) {
+            const note = document.createElement("p");
+            note.className = "illegal-note";
+            note.textContent = "wanted " + ply.argmax + " — illegal — played " + ply.san;
+            panel.appendChild(note);
+          }
+          const list = document.createElement("ul");
+          list.className = "bars";
+          const top3 = Array.isArray(ply.top3) ? ply.top3 : [];
+          for (const row of top3) {
+            const li = document.createElement("li");
+            const label = document.createElement("div");
+            label.className = "bar-label";
+            const name = document.createElement("span");
+            name.textContent = row.move;
+            if (row.move === ply.san) name.className = "mark-played";
+            if (ply.legal === false && row.move === ply.argmax) name.className = (name.className + " mark-illegal").trim();
+            const value = document.createElement("span");
+            value.textContent = pct(row.p);
+            label.appendChild(name);
+            label.appendChild(value);
+            const track = document.createElement("div");
+            track.className = "bar-track";
+            const fill = document.createElement("div");
+            fill.className = "bar-fill";
+            fill.style.width = Math.max(0, Math.min(100, row.p * 100)).toFixed(1) + "%";
+            track.appendChild(fill);
+            li.appendChild(label);
+            li.appendChild(track);
+            list.appendChild(li);
+          }
+          panel.appendChild(list);
+        }
+        panelEl.replaceChildren(panel);
+      }
+
+      function setOpponent(next) {
+        opponent = next;
+        index = 0;
+        stopPlay();
+        btnRandom.setAttribute("aria-pressed", next === "random" ? "true" : "false");
+        btnStockfish.setAttribute("aria-pressed", next === "stockfish" ? "true" : "false");
+        render();
+      }
+
+      function step(delta) {
+        const game = currentGame();
+        if (!game) return;
+        index += delta;
+        if (index < 0) index = 0;
+        if (index > game.plies.length) {
+          index = game.plies.length;
+          stopPlay();
+        }
+        render();
+      }
+
+      function togglePlay() {
+        const game = currentGame();
+        if (!game) return;
+        if (timer !== null) {
+          stopPlay();
+          return;
+        }
+        if (index >= game.plies.length) index = 0;
+        playBtn.textContent = "Pause";
+        timer = window.setInterval(function () {
+          if (index >= game.plies.length) {
+            stopPlay();
+            return;
+          }
+          index += 1;
+          render();
+        }, 650);
+      }
+
+      btnRandom.addEventListener("click", function () { setOpponent("random"); });
+      btnStockfish.addEventListener("click", function () { setOpponent("stockfish"); });
+      document.getElementById("btn-prev").addEventListener("click", function () { stopPlay(); step(-1); });
+      document.getElementById("btn-next").addEventListener("click", function () { stopPlay(); step(1); });
+      playBtn.addEventListener("click", togglePlay);
+      document.getElementById("replay").addEventListener("keydown", function (event) {
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          stopPlay();
+          step(-1);
+        } else if (event.key === "ArrowRight") {
+          event.preventDefault();
+          stopPlay();
+          step(1);
+        }
+      });
+
+      function fail(message) {
+        counterEl.textContent = "Replay unavailable";
+        panelEl.replaceChildren();
+        const p = document.createElement("p");
+        p.className = "replay-status";
+        p.textContent = message;
+        panelEl.appendChild(p);
+        renderBoard(START_FEN);
+      }
+
+      Promise.all([
+        fetch("./assets/replay/random.json").then(function (r) { if (!r.ok) throw new Error("random.json " + r.status); return r.json(); }),
+        fetch("./assets/replay/stockfish.json").then(function (r) { if (!r.ok) throw new Error("stockfish.json " + r.status); return r.json(); })
+      ]).then(function (pair) {
+        games.random = pair[0];
+        games.stockfish = pair[1];
+        if (!games.random || !games.stockfish || !Array.isArray(games.random.plies) || !Array.isArray(games.stockfish.plies)) {
+          fail("Replay JSON was missing plies.");
+          return;
+        }
+        render();
+      }).catch(function () {
+        fail("Could not load the replay JSON. Use the PGN links in the caption.");
+      });
+    }());
+  </script>
+  <script src="../../assets/cli-highlight.js"></script>
+</body>
+</html>

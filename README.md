@@ -6,7 +6,7 @@ One repo for the site and the training files. Each post is a folder under `posts
 
 | Post | Guide | Code |
 |---|---|---|
-| Fine-tune Qwen LoRA | [letsusecompute.com/posts/finetune-qwen-lora](https://letsusecompute.com/posts/finetune-qwen-lora) | [`posts/finetune-qwen-lora`](posts/finetune-qwen-lora) |
+| Chess transformer | [letsusecompute.com/posts/chess-transformer](https://letsusecompute.com/posts/chess-transformer) | [`posts/chess-transformer`](posts/chess-transformer) |
 | Doom + Pong: a Jev-inspired experiment | [letsusecompute.com/posts/jev-games](https://letsusecompute.com/posts/jev-games) | [Pong](posts/jev-games) · [Doom](posts/jev-doom) |
 | Text compressor | [letsusecompute.com/posts/text-compressor](https://letsusecompute.com/posts/text-compressor) | [`posts/text-compressor`](posts/text-compressor) |
 | AI-text detector | [letsusecompute.com/posts/ai-text-detector](https://letsusecompute.com/posts/ai-text-detector) | [`posts/ai-text-detector`](posts/ai-text-detector) |

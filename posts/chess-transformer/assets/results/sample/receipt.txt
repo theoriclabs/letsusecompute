@@ -1,0 +1,9 @@
+LINE                 MINUTES  AMOUNT
+boot_provider_usage  1 min    $0.02
+run_provider_usage   2 min    $0.05
+
+provider cost:    $0.07
+platform fee:     $0.00
+total debited:    $0.07
+
+Fee is a flat 7.5% of provider usage.

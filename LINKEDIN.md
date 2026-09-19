@@ -168,19 +168,23 @@ Guide: https://letsusecompute.com/posts/jev-games
 
 ---
 
-## 2026-09-19 — Fine-tune Qwen LoRA
+## 2026-09-21 — Chess transformer
 
 Draft (post when the live guide URL is the one you want people to open):
 
 ---
 
-Post: fine-tune Qwen on a JSONL you wrote.
+Post #9: a chess model that never saw the rules.
 
-Qwen3-0.6B, LoRA rank 16, homemade job cards. Twenty held-out prompts: 0/20 before, 18/20 after two epochs. The base model invented BERT commands. The adapter writes compute run … --dry-run.
+We trained a 29.5 million parameter GPT on SAN moves from Lichess games (both Elos ≥ 1800) and never showed it how a knight moves. python-chess checks legality only when it plays. 16.3 million positions, 10,143 steps, 22 billed minutes on a RunPod H100-PCIe.
 
-$0.06 on a Vast L4. No Hugging Face secret on the account, so the adapter stayed in the artifact.
+Next-move top-1 on held-out games: 38.6%. Legal argmax: 94.3%. vs a random mover: 50 wins, 50 draws, 0 losses. vs Stockfish skill 1: 2 wins, 10 draws, 88 losses. The draws against random are almost all threefold repetitions: the model wins material, then shuffles instead of converting. It has imitated human games, and humans never play “mate a random mover.”
 
-Guide: https://letsusecompute.com/posts/finetune-qwen-lora
+The ticket asked for a 99% legal-move rate and 95/100 vs random. We hit neither. Chess-GPT-style numbers use hundreds of millions of positions; this run used 16 million. No Elo claims.
+
+Whole issue $2.14, including two Vast boots that never ran.
+
+Guide: https://letsusecompute.com/posts/chess-transformer
 
 #MachineLearning #GPUComputing
 
