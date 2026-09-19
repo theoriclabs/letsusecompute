@@ -81,7 +81,7 @@ Point your agent at [`SKILL.md`](./SKILL.md) and ask it to train the chess move 
 
 ## Caps to know
 
-- One active run per account
+- Two active runs per account
 - New accounts: first-day spend cap (~$50)
 - Balance ≤ $1 blocks new runs
 - Weights via artifacts are kept for a limited window
