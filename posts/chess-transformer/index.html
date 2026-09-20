@@ -272,26 +272,6 @@
       <p>Weights: <a href="https://huggingface.co/theoriclabs/chess-move-transformer"><code>theoriclabs/chess-move-transformer</code></a> holds this 16M run (<code>model.pt</code>, <code>vocab.json</code>, <code>results.json</code>), pushed 08:58 UTC after run A’s upload. <code>train_and_push</code> injects the stored <code>hf</code> secret; storing the secret does not put it on the machine.</p>
     </section>
 
-    <section aria-labelledby="cost">
-      <h2 id="cost">What the issue cost</h2>
-      <div class="table-wrap" role="region" aria-label="All five Compute runs" tabindex="0">
-        <table class="data-table">
-          <caption>Receipts for the three finished jobs sit next to the metrics, e.g. <a href="./assets/results/headline-16m/receipt.txt">headline B</a>. Total $2.14 of a $20 budget.</caption>
-          <thead>
-            <tr><th scope="col">Run</th><th scope="col">What</th><th scope="col">GPU</th><th scope="col">Billed</th><th scope="col">Cost</th></tr>
-          </thead>
-          <tbody>
-            <tr><th scope="row"><code>run_ef3aa0058ce5f3699e73a9d57fb259af</code></th><td>First pipeline attempt, <code>--gpu cheap</code>. Hung in “provider reports creating”, cancelled.</td><td>Vast RTX-3090</td><td>17 min</td><td>$0.05</td></tr>
-            <tr><th scope="row"><code>run_496b871f1d3790e0eef6c77447fae548</code></th><td>Second attempt. <code>boot_failed</code>: no Vast interruptible L4 offers.</td><td>Vast L4</td><td>—</td><td>$0.00</td></tr>
-            <tr><th scope="row"><code>run_0ffa481485213ea2e182a409b3b6fc86</code></th><td>Sample preset, 4 layers / 256-wide, 100k positions, 126 steps, 20+20 games.</td><td>RunPod A100-PCIe-80GB</td><td>3 min</td><td>$0.07</td></tr>
-            <tr><th scope="row"><code>run_b9d92718d37fbe9b36c31ad2e21815d8</code></th><td>Headline A: 4.08M positions, 8 epochs, 13,440 steps, 100+100 games.</td><td>RunPod H100-PCIe</td><td>25 min</td><td>$1.08</td></tr>
-            <tr><th scope="row"><code>run_dc7002880b6daab7cb3cb6f61e3e063c</code></th><td>Headline B: 16.3M positions, 3 epochs, 10,143 steps, 100+100 games.</td><td>RunPod H100-PCIe</td><td>22 min</td><td>$0.94</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>Friction filed during the issue: <code>rpt_d5dd2c8585511c999fd81010a5d14301</code> (CLI has no non-interactive price quote; <code>--dry-run</code> prints an upload plan, not a quote), <code>rpt_023af546ab619039ec080dba1279136f</code> (<code>--gpu cheap</code> silently used the SKU in the source after <code>workload_estimate_unsupported</code>), <code>rpt_b9e65fd29961222fe7239f378aa010b4</code> (hung Vast RTX-3090 boot billed 17 minutes; one report per run blocks filing distinct issues), <code>rpt_022179b60e28c3aacba224f311769068</code> (catalog listed a Vast L4 that had no offers), <code>rpt_259d10a7adcf0d20e2dd795c43a3d72e</code> (<code>compute logs -f</code> crashes after about 15 minutes with <code>ValueError: invalid literal for int() with base 16: b''</code>). Stockfish via apt is impossible: there is no apt API on <code>compute.Image</code>. The pinned GitHub binary works. The <code>compute report</code> summary is capped at 200 characters.</p>
-    </section>
-
     <section aria-labelledby="run-it">
       <h2 id="run-it">Train it on Compute</h2>
       <p>One file. Hand <a href="https://compute.cx/SKILL.md">compute.cx/SKILL.md</a> to your agent, plus the specials in <a href="./SKILL.md">this post’s overlay</a>.</p>
