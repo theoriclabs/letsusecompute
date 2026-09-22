@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Two fine-tunes, one model — Let’s use compute</title>
-<meta name="description" content="Balanced linear and TIES retain two learned behaviors on 96 synthetic test prompts. A skewed merge loses one. Two Qwen3 fine-tunes, $0.42 total." />
+<meta name="description" content="Asked for an order, a merged model answered with a support queue. A different weight mix kept both behaviors. A $0.42 Qwen3 merging experiment." />
 <meta property="og:title" content="Two fine-tunes, one model" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://letsusecompute.com/posts/merge-models/" />
@@ -37,51 +37,48 @@ code { overflow-wrap: anywhere; }
 <p class="eyebrow"><a href="../../">Let’s use compute</a> / model merging</p>
 <h1>Two fine-tunes, one model</h1>
 <p class="byline">September 21, 2026</p>
-<p class="lede">One model learns your support queues. Another learns your order format. Can you combine their weights and keep both behaviors?</p>
-<p><strong>A balanced weight average answered all 96 test prompts correctly. So did TIES.</strong> A merge weighted 95% toward the support model kept queue routing intact but scored 0/48 on order extraction. Same parents, different tradeoff.</p>
-<p>We start with the same Qwen3-0.6B checkpoint twice, train a different LoRA adapter on each copy, and merge the resulting weights. The final model has the same architecture and parameter count as either parent. It does not ask a router which model to call, or combine two answers at inference time.</p>
+<p class="lede">Asked to extract an order, our merged model answered with a support queue.</p>
+<p>We asked for the product code and quantity as JSON.</p>
+<pre><code>Dispatch note 20029: product code BQ-20129; ship 4 pieces.</code></pre>
+<p>The model replied:</p>
+<pre><code>AMBER;4 pieces</code></pre>
+<p><code>AMBER</code> was a shipping-support queue we had taught one of its parents. That habit survived the merge. The order format did not.</p>
+<p>Changing the mix from 95/5 to 50/50 produced the answer we wanted:</p>
+<pre><code>{"sku":"BQ-20129","qty":4}</code></pre>
+<p>The balanced merge got all 96 synthetic test prompts right across the two tasks. The skewed merge lost every extraction prompt. We spent <strong>$0.42</strong> training the parents, trying three merge recipes, and checking what survived.</p>
+<section>
+<h2>Two parents with different habits</h2>
+<p>We started twice from the same <a href="https://huggingface.co/Qwen/Qwen3-0.6B">Qwen3-0.6B checkpoint</a>. One copy learned to route support tickets: <code>RUBY</code> for billing, <code>JADE</code> for login trouble, <code>AMBER</code> for shipping. The prompt asked for a queue code without supplying that mapping.</p>
+<p>The other copy practiced returning orders as bare JSON, with exactly a <code>sku</code> string and a <code>qty</code> integer. Extra commentary, Markdown fences and wrong values all failed the check.</p>
+<p>Each parent received 480 synthetic examples and three passes through its training data. We used LoRA, which trains a small set of weight updates, then folded those updates into each model before merging.</p>
+<p>The support parent learned its mapping perfectly: 48/48 test answers. On order extraction, it scored 0/48. The extraction parent scored 47/48 on orders and 0/48 on queue codes. Each parent had something the other lacked.</p>
+</section>
+<section>
+<h2>Half of each</h2>
+<p>The simplest merge averages the parents’ weights. Since both started from the same base, that is equivalent to keeping the base and adding half of each learned update:</p>
+<pre><code>merged = base + 0.5 × support_update + 0.5 × order_update</code></pre>
+<p>The result is one model, the same size as either parent, that generates each answer in a single inference run.</p>
+<p>We used <a href="https://github.com/arcee-ai/mergekit">mergekit</a> to compare that average with two other recipes. A deliberately skewed mix gave the support parent 95% of the weight and the order parent 5%. <a href="https://arxiv.org/abs/2306.01708">TIES</a> kept the largest 20% of each parent’s weight changes, resolved disagreements about their direction, and combined the changes that agreed.</p>
+<p>All three recipes were fixed before the full run. We chose the release on a separate validation set, favoring the merge whose weaker task scored best.</p>
+</section>
 <section aria-labelledby="results-heading">
 <h2 id="results-heading">What survived</h2>
+<figure><img src="assets/skill-retention.svg" alt="Correct answers out of 48 per task. Balanced linear and TIES reach 48 for both; skewed linear reaches 48 for queues and zero for extraction." width="820" height="450" /><figcaption>Balanced linear and TIES preserved both behaviors. The 95/5 merge kept the support parent’s extraction failures.</figcaption></figure>
+<details><summary>Exact test scores</summary>
 <div class="table-wrap"><table><caption>Correct answers under the strict output contract. Highlighted: the validation-selected release.</caption><thead><tr><th scope="col">Model</th><th scope="col">Queue code</th><th scope="col">Order JSON</th></tr></thead><tbody><tr><th scope="row">Untouched base</th><td>0/48</td><td>0/48</td></tr><tr><th scope="row">Triage parent</th><td>48/48</td><td>0/48</td></tr><tr><th scope="row">Extraction parent</th><td>0/48</td><td>47/48</td></tr><tr class="selected"><th scope="row">Balanced linear (50/50)</th><td>48/48</td><td>48/48</td></tr><tr><th scope="row">Skewed linear (95/5)</th><td>48/48</td><td>0/48</td></tr><tr><th scope="row">TIES (20% density)</th><td>48/48</td><td>48/48</td></tr></tbody></table></div>
-<p><strong>The base’s 0/48 extraction score is a formatting failure.</strong> It returned the right fields and values in all 48 cases, but wrapped them in Markdown fences. Removing one outer fence produces 48/48. The official score stays strict; this <a href="assets/results/full/format-diagnostic.json">separate diagnostic</a> does not affect model selection.</p>
-<figure><img src="assets/skill-retention.svg" alt="Correct answers out of 48 per skill. Balanced linear and TIES reach 48 for both; skewed linear reaches 48 for queues and zero for extraction." width="820" height="450" /><figcaption>Each parent specializes. Two merge recipes retain both behaviors; the skewed recipe preserves only one.</figcaption></figure>
-<p class="note">These are counts on 48 synthetic test prompts per skill, using held-out wording and identifiers. They are not estimates of real-world support accuracy. All three merge recipes were fixed before the full run.</p>
+</details>
+<p><strong>The base model’s zero on extraction needs explaining.</strong> It returned the right fields and values in all 48 cases, wrapped in Markdown fences. Removing those fences gives 48/48. The fine-tune taught it to obey a strict output format; the base already knew how to extract the values. We kept this <a href="assets/results/full/format-diagnostic.json">diagnostic</a> separate from the official score.</p>
+<p>TIES and the simple average tied on both validation and test. Our preset tie-break selected the average, which is the <a href="https://huggingface.co/theoriclabs/qwen3-0.6b-support-order-merge">model we released</a>. This experiment gives us no reason to prefer the more elaborate method.</p>
+<p>These are small, synthetic tests. Training and evaluation use different sentence templates and IDs, but the 48 support test rows reuse just 12 issue phrases. We ran one training seed. Perfect scores here establish that these conventions survived this merge; they say little about messy customer requests.</p>
 </section>
 <section>
-<h2>Two small conventions to learn</h2>
-<p>The first parent learns three queue codes: <strong>RUBY</strong> for billing, <strong>JADE</strong> for login trouble, and <strong>AMBER</strong> for shipping. Its prompt asks for the queue code without giving the mapping. That makes a behavior learned during fine-tuning visible in the evaluation.</p>
-<pre><code>Assign the support queue. Reply with only the queue code.
-Ticket 0: charged twice.
-
-RUBY</code></pre>
-<p>The second parent adapts order extraction to a strict output contract: a bare JSON record with a product code and integer quantity. Correct values inside Markdown fences do not pass this contract.</p>
-<pre><code>Extract the order. Reply with only JSON containing sku (string) and qty (integer).
-Order 0: 1 units of SKU AX-00100.
-
-{"sku":"AX-00100","qty":1}</code></pre>
-<p>Each parent gets 480 generated examples and three epochs of response-only training. Both start from the same pinned base. We train rank-16 LoRA adapters on the attention and feed-forward projections, then fold the updates into full parent weights before merging.</p>
-<figure><img src="assets/training-loss.svg" alt="Response-token training loss over 180 optimizer steps for each independently trained adapter." width="820" height="340" /><figcaption>180 optimizer steps per parent. Faint lines show batch loss; solid lines show a trailing ten-step mean. Low training loss alone says nothing about retaining the other behavior.</figcaption></figure>
-<p>Each adapter trained 10,092,544 parameters. Both changed 392 tensors, produced nonzero gradients, and reproduced their saved-checkpoint responses after reload. The selected 596M-parameter merge also reproduced every test response after saving and reloading.</p>
-<p>Training, validation and test use different sentence templates and record IDs. The issue phrases, SKU prefixes and quantity range recur. The 48 triage test rows reuse 12 issue phrases across two templates and different IDs. This measures whether narrow conventions survive a merge; it does not establish generalization to unfamiliar problems, languages or messy customer records.</p>
-</section>
-<section>
-<h2>Average the weights—or resolve the conflicts</h2>
-<p>A balanced linear merge takes half of each parent’s weights. If each parent is the base plus a learned update, the result is the base plus half of each update. Simple, but an update that worked at full strength may stop working when halved.</p>
-<pre><code>balanced = base + 0.50 × triage_update + 0.50 × extraction_update
-skewed   = base + 0.95 × triage_update + 0.05 × extraction_update</code></pre>
-<p>The skewed recipe deliberately gives extraction very little weight. It tests a tradeoff, rather than treating every merge as an improvement.</p>
-<p><a href="https://arxiv.org/abs/2306.01708">TIES</a> works with changes relative to the common base. It trims small changes, elects a sign where updates disagree, and combines the changes that agree with that sign. Our preset keeps the largest 20% of entries in each task delta and gives the two parents equal weight. We use <a href="https://github.com/arcee-ai/mergekit">mergekit</a> for all three recipes.</p>
-<p>The merge calculations use FP32. Evaluation and the released model use BF16. Averaging full parent weights also avoids confusing a weight merge with separately averaging the two low-rank adapter matrices, which is a different operation.</p>
-<p>Here, TIES did not improve on the simple average: both reached 24/24 per skill on validation and 48/48 per skill on test. Our predeclared tie-break keeps the first recipe, so the released model is the balanced linear merge. That is a result for this small experiment, not a ranking of merging algorithms.</p>
-<p>The skewed merge’s extraction failures are not just Markdown fences. Asked to extract four pieces of <code>BQ-20129</code>, it answered <code>AMBER;4 pieces</code>. The triage parent gave the same answer. The custom queue vocabulary had leaked into an unrelated output task.</p>
-<p>The extraction parent made one value error: it returned quantity <code>3</code> instead of <code>34</code> for SKU <code>DP-20139</code>. Both balanced linear and TIES returned the correct record. One repaired example is useful to inspect, but is not enough to claim a general accuracy improvement.</p>
-</section>
-<section>
-<h2>Read the actual answers</h2>
-<p>Choose a test prompt to compare the base, both parents and all three merges. These are saved responses from the run, not a live endpoint.</p>
+<h2>Look at the failures</h2>
+<p>The opening <code>AMBER;4 pieces</code> answer came from both the support parent and the skewed merge. Removing Markdown fences does not fix either model’s extraction scores. The queue vocabulary was showing up in a task that called for an order record.</p>
+<p>The extraction parent’s one miss was smaller: it read quantity <code>34</code> and returned <code>3</code>. Both balanced linear and TIES got that record right. One corrected example is worth inspecting, but it is too little evidence to claim merging generally improves accuracy.</p>
+<p>Start with the opening example below, or choose any test prompt to compare all six models. These are recorded answers from the run.</p>
 <div class="lab">
 <div class="controls">
-<label>Skill<select id="skill"><option value="triage">Support queue</option><option value="extract">Order extraction</option></select></label>
+<label>Skill<select id="skill"><option value="triage">Support queue</option><option value="extract" selected>Order extraction</option></select></label>
 <label>Test prompt<select id="example" aria-label="Test prompt number"></select></label>
 </div>
 <p class="status" id="loading" role="status">Loading recorded responses…</p>
@@ -92,23 +89,15 @@ skewed   = base + 0.95 × triage_update + 0.05 × extraction_update</code></pre>
 <p class="note"><a href="assets/results/full/results.json">Download every recorded answer as JSON</a>.</p>
 </section>
 <section>
-<h2>Try the experiment</h2>
-<p>The job generates its data, downloads the base, trains both adapters, evaluates the parents, runs mergekit, and saves the selected model. Start with the sample preset to check the whole pipeline:</p>
-<pre><code>curl -fsSL https://raw.githubusercontent.com/theoriclabs/letsusecompute/main/posts/merge-models/train.py -o train.py
-compute run train.py::train --gpu cheap --dry-run
-compute run train.py::train --gpu cheap --timeout 1800 \
-  --args '{"sample": true}' --wait</code></pre>
-<p>The dry-run only checks the upload plan. Review the real quote before confirming spend. If the automatic selector cannot estimate this workload, check <code>compute gpu list</code> and choose an explicit NVIDIA GPU from the current catalog.</p>
-<p>Omit <code>--args</code> for the full experiment. To publish the selected merge, store a Hugging Face write token with <code>compute secrets set hf</code> and use <code>train.py::train_and_push</code>. That entrypoint explicitly injects the secret; storing it alone does not put it on the machine.</p>
-<p><strong>The complete experiment cost $0.42.</strong> The full A100 run cost $0.20; samples and failed attempts account for the other $0.22. Training, merging and evaluation took about 157 seconds in the full run, before model publication and artifact upload. The bill also includes machine setup and time spent saving outputs. Every machine was terminated.</p>
-<p>After the machine is gone, retrieve the saved model with <code>compute artifacts list</code> and <code>compute artifacts get</code>. The <a href="README.md">reproduction notes</a> contain the exact configuration, scoring rules and commands; <a href="SKILL.md">the agent instructions</a> cover the same workflow.</p>
-</section>
-<section>
-<h2>What this tells us</h2>
-<p>For these two learned conventions, a simple average was enough. It kept the queue mapping and restored the JSON-only order behavior that the fully trained triage parent had lost. Giving that parent nearly all the weight lost the second behavior again.</p>
-<p>We choose the released merge using validation results: maximize the worse skill’s accuracy, then the sum. The final test set is used for reporting, not selection. This is one training seed and three preset recipes. More tasks, different wording and different seeds could change the outcome.</p>
-<p>A merge needs the same checks as a fine-tune: compare against the untouched base, measure each parent on every skill, keep a separate selection set, and inspect the outputs that fail. A single pooled score can hide the behavior you lost.</p>
-<p><a href="https://github.com/theoriclabs/letsusecompute/tree/main/posts/merge-models">Code and experiment evidence</a> · <a href="https://huggingface.co/Qwen/Qwen3-0.6B">Base model</a> · <a href="https://huggingface.co/theoriclabs/qwen3-0.6b-support-order-merge">Download the merged model</a></p>
+<h2>Run it yourself</h2>
+<p>The full A100 run cost <strong>$0.20</strong>. Samples and failed attempts brought the total to <strong>$0.42</strong>. Downloading the base, training, merging and evaluation took about 157 seconds, before publication and artifact upload. The bill also includes setup and time spent saving outputs; every machine was terminated.</p>
+<p>With Compute configured and <a href="train.py">train.py</a> downloaded, start with the small pipeline check:</p>
+<pre><code>compute run train.py::train --gpu runpod/A100-PCIe-80GB --dry-run
+compute run train.py::train --gpu runpod/A100-PCIe-80GB \
+  --args '{"sample": true}' --timeout 1800 --wait</code></pre>
+<p>The dry-run checks packaging. Review the actual quote before confirming spend. The <a href="README.md">reproduction guide</a> covers installation, the full run, training curves, checkpoint checks, secrets and artifact retrieval. There are also <a href="SKILL.md">instructions for an agent</a>.</p>
+<p>The useful lesson came from testing each task separately. Both the balanced and skewed merges kept support routing perfect. Only the balanced one also returned usable order records. A routing-only check would have approved the model that said <code>AMBER;4 pieces</code>.</p>
+<p><a href="https://github.com/theoriclabs/letsusecompute/tree/main/posts/merge-models">Code and experiment evidence</a> · <a href="https://huggingface.co/theoriclabs/qwen3-0.6b-support-order-merge">Download the merged model</a></p>
 </section>
 </main>
 <script>

@@ -94,6 +94,14 @@ The best merge is selected only on validation: maximize the worse skill's accura
 
 The job verifies nonzero gradients, changed adapter tensors, exact response reproduction after reloading each adapter, and reproduction of all final test outputs after reloading the selected merge.
 
+## Training curves and checkpoint checks
+
+![Response-token loss over 180 optimizer steps per parent](assets/training-loss.svg)
+
+Faint lines show batch loss; solid lines show a trailing ten-step mean. Training loss quickly approaches zero for these narrow synthetic tasks. That does not establish retention of the other task: the trained support parent scores zero on strict extraction.
+
+Each adapter trains 10,092,544 parameters across 392 tensors. The saved evidence records nonzero gradients and changes in all 392 tensors for each adapter. Both adapters reproduce the checked validation responses after save/reload; the selected 596,049,920-parameter merge reproduces all final test responses after save/reload. See `training` and `merge_reload_ok` in [the full results](assets/results/full/results.json).
+
 ## Files and checks
 
 - `train.py`: complete Compute job and deterministic data generator.
