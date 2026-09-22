@@ -1,0 +1,48 @@
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10014: send item CZ-10114, 19 units in total.", "answer": "{\"sku\":\"CZ-10114\",\"qty\":19}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10011: send item DP-10111, 38 units in total.", "answer": "{\"sku\":\"DP-10111\",\"qty\":38}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10012, the customer says: charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10005, the customer says: package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10010: send item CZ-10110, 31 units in total.", "answer": "{\"sku\":\"CZ-10110\",\"qty\":31}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10004: send item AX-10104, 29 units in total.", "answer": "{\"sku\":\"AX-10104\",\"qty\":29}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10015, the customer says: refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10019: send item DP-10119, 14 units in total.", "answer": "{\"sku\":\"DP-10119\",\"qty\":14}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10006, the customer says: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10001: send item BQ-10101, 8 units in total.", "answer": "{\"sku\":\"BQ-10101\",\"qty\":8}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10017: send item BQ-10117, 40 units in total.", "answer": "{\"sku\":\"BQ-10117\",\"qty\":40}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10002, the customer says: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10021: send item BQ-10121, 28 units in total.", "answer": "{\"sku\":\"BQ-10121\",\"qty\":28}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10013, the customer says: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10005: send item BQ-10105, 36 units in total.", "answer": "{\"sku\":\"BQ-10105\",\"qty\":36}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10016: send item AX-10116, 33 units in total.", "answer": "{\"sku\":\"AX-10116\",\"qty\":33}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10014, the customer says: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10020: send item AX-10120, 21 units in total.", "answer": "{\"sku\":\"AX-10120\",\"qty\":21}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10009, the customer says: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10015: send item DP-10115, 26 units in total.", "answer": "{\"sku\":\"DP-10115\",\"qty\":26}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10023, the customer says: shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10016, the customer says: account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10018, the customer says: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10012: send item AX-10112, 5 units in total.", "answer": "{\"sku\":\"AX-10112\",\"qty\":5}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10010, the customer says: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10011, the customer says: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10023: send item DP-10123, 2 units in total.", "answer": "{\"sku\":\"DP-10123\",\"qty\":2}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10022, the customer says: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10000, the customer says: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10009: send item BQ-10109, 24 units in total.", "answer": "{\"sku\":\"BQ-10109\",\"qty\":24}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10008, the customer says: delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10021, the customer says: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10006: send item CZ-10106, 3 units in total.", "answer": "{\"sku\":\"CZ-10106\",\"qty\":3}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10019, the customer says: login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10022: send item CZ-10122, 35 units in total.", "answer": "{\"sku\":\"CZ-10122\",\"qty\":35}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10001, the customer says: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10013: send item BQ-10113, 12 units in total.", "answer": "{\"sku\":\"BQ-10113\",\"qty\":12}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10018: send item CZ-10118, 7 units in total.", "answer": "{\"sku\":\"CZ-10118\",\"qty\":7}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10002: send item CZ-10102, 15 units in total.", "answer": "{\"sku\":\"CZ-10102\",\"qty\":15}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10017, the customer says: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10003, the customer says: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10004, the customer says: account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10007, the customer says: login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10007: send item DP-10107, 10 units in total.", "answer": "{\"sku\":\"DP-10107\",\"qty\":10}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10008: send item AX-10108, 17 units in total.", "answer": "{\"sku\":\"AX-10108\",\"qty\":17}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10000: send item AX-10100, 1 units in total.", "answer": "{\"sku\":\"AX-10100\",\"qty\":1}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10003: send item DP-10103, 22 units in total.", "answer": "{\"sku\":\"DP-10103\",\"qty\":22}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10020, the customer says: delivery address wrong.", "answer": "AMBER"}

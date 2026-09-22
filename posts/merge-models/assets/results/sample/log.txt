@@ -1,0 +1,133 @@
+Requesting machine…
+Startup evidence (allocation_intent); provider unknown; logs unavailable; cause unknown
+Machine allocated
+Startup evidence (allocation_recorded); provider unknown; logs unavailable; cause unknown
+Waiting for machine agent…
+Startup evidence (poll); provider creating; logs unavailable; cause unknown
+Waiting for machine agent… provider reports creating; container startup unconfirmed
+Startup evidence (poll); provider creating; logs unavailable; cause unknown
+Waiting for machine agent… provider reports creating; container startup unconfirmed
+Startup evidence (poll); provider creating; logs unavailable; cause unknown
+Waiting for machine agent… provider reports creating; container startup unconfirmed
+Startup evidence (poll); provider creating; logs unavailable; cause unknown
+Waiting for machine agent… provider reports creating; container startup unconfirmed
+Startup evidence (accepted_hello); provider unknown; logs unavailable; cause unknown
+Machine agent connected
+Fetching payload…
+Payload fetched
+Installing dependencies…
+Dependencies installed
+Starting entrypoint…
+Entrypoint started
+
+Fetching 8 files:   0%|          | 0/8 [00:00<?, ?it/s]Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+
+Fetching 8 files:  12%|█▎        | 1/8 [00:00<00:02,  2.53it/s]
+Fetching 8 files:  50%|█████     | 4/8 [00:00<00:00,  9.00it/s]
+Fetching 8 files:  50%|█████     | 4/8 [00:19<00:00,  9.00it/s]
+Fetching 8 files:  62%|██████▎   | 5/8 [00:49<00:40, 13.59s/it]
+Fetching 8 files: 100%|██████████| 8/8 [00:49<00:00,  6.13s/it]
+/var/lib/compute/agent/runs/run_41a3710dbab118477c86431e0910c4f5/venv/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:631: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.6` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+/var/lib/compute/agent/runs/run_41a3710dbab118477c86431e0910c4f5/venv/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:636: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.95` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
+  warnings.warn(
+/var/lib/compute/agent/runs/run_41a3710dbab118477c86431e0910c4f5/venv/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:653: UserWarning: `do_sample` is set to `False`. However, `top_k` is set to `20` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_k`.
+  warnings.warn(
+BASE {"validation": {"triage": {"correct": 0, "total": 6}, "extract": {"correct": 0, "total": 6}}, "test": {"triage": {"correct": 0, "total": 6}, "extract": {"correct": 0, "total": 6}}}
+TRAIN triage epoch 1 loss 2.988666232675314
+/var/lib/compute/agent/runs/run_41a3710dbab118477c86431e0910c4f5/venv/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:631: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.6` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+/var/lib/compute/agent/runs/run_41a3710dbab118477c86431e0910c4f5/venv/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:636: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.95` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
+  warnings.warn(
+/var/lib/compute/agent/runs/run_41a3710dbab118477c86431e0910c4f5/venv/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:653: UserWarning: `do_sample` is set to `False`. However, `top_k` is set to `20` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_k`.
+  warnings.warn(
+PARENT triage {"validation": {"triage": {"correct": 2, "total": 6}, "extract": {"correct": 6, "total": 6}}, "test": {"triage": {"correct": 2, "total": 6}, "extract": {"correct": 6, "total": 6}}}
+TRAIN extract epoch 1 loss 0.11772604401085118
+/var/lib/compute/agent/runs/run_41a3710dbab118477c86431e0910c4f5/venv/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:631: UserWarning: `do_sample` is set to `False`. However, `temperature` is set to `0.6` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `temperature`.
+  warnings.warn(
+/var/lib/compute/agent/runs/run_41a3710dbab118477c86431e0910c4f5/venv/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:636: UserWarning: `do_sample` is set to `False`. However, `top_p` is set to `0.95` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_p`.
+  warnings.warn(
+/var/lib/compute/agent/runs/run_41a3710dbab118477c86431e0910c4f5/venv/lib/python3.10/site-packages/transformers/generation/configuration_utils.py:653: UserWarning: `do_sample` is set to `False`. However, `top_k` is set to `20` -- this flag is only used in sample-based generation modes. You should set `do_sample=True` or unset `top_k`.
+  warnings.warn(
+PARENT extract {"validation": {"triage": {"correct": 0, "total": 6}, "extract": {"correct": 6, "total": 6}}, "test": {"triage": {"correct": 0, "total": 6}, "extract": {"correct": 6, "total": 6}}}
+
+Warmup loader cache:   0%|          | 0/2 [00:00<?, ?it/s]
+Warmup loader cache: 100%|██████████| 2/2 [00:00<00:00, 1818.47it/s]
+
+Executing graph:   0%|          | 0/1552 [00:00<?, ?it/s]
+Executing graph:   0%|          | 5/1552 [00:00<03:17,  7.82it/s]
+Executing graph:   6%|▋         | 100/1552 [00:00<00:08, 179.28it/s]
+Executing graph:  13%|█▎        | 205/1552 [00:00<00:03, 356.57it/s]
+Executing graph:  19%|█▉        | 300/1552 [00:00<00:02, 485.60it/s]
+Executing graph:  26%|██▌       | 405/1552 [00:01<00:01, 621.58it/s]
+Executing graph:  33%|███▎      | 515/1552 [00:01<00:01, 726.77it/s]
+Executing graph:  40%|███▉      | 620/1552 [00:01<00:01, 811.61it/s]
+Executing graph:  47%|████▋     | 725/1552 [00:01<00:00, 876.73it/s]
+Executing graph:  53%|█████▎    | 825/1552 [00:01<00:00, 892.54it/s]
+Executing graph:  60%|█████▉    | 925/1552 [00:01<00:00, 914.09it/s]
+Executing graph:  66%|██████▌   | 1023/1552 [00:01<00:00, 926.00it/s]
+Executing graph:  72%|███████▏  | 1120/1552 [00:01<00:00, 936.20it/s]
+Executing graph:  79%|███████▉  | 1225/1552 [00:01<00:00, 960.73it/s]
+Executing graph:  85%|████████▌ | 1324/1552 [00:01<00:00, 961.26it/s]
+Executing graph:  92%|█████████▏| 1422/1552 [00:02<00:00, 950.27it/s]
+Executing graph:  98%|█████████▊| 1519/1552 [00:02<00:00, 947.41it/s]
+Executing graph: 100%|██████████| 1552/1552 [00:03<00:00, 405.34it/s]
+MERGE linear-balanced {"validation": {"triage": {"correct": 2, "total": 6}, "extract": {"correct": 6, "total": 6}}, "test": {"triage": {"correct": 2, "total": 6}, "extract": {"correct": 6, "total": 6}}}
+
+Warmup loader cache:   0%|          | 0/2 [00:00<?, ?it/s]
+Warmup loader cache: 100%|██████████| 2/2 [00:00<00:00, 1853.43it/s]
+
+Executing graph:   0%|          | 0/1552 [00:00<?, ?it/s]
+Executing graph:   0%|          | 5/1552 [00:00<03:20,  7.72it/s]
+Executing graph:   6%|▋         | 100/1552 [00:00<00:08, 177.74it/s]
+Executing graph:  12%|█▏        | 190/1552 [00:00<00:04, 324.95it/s]
+Executing graph:  19%|█▉        | 295/1552 [00:00<00:02, 487.79it/s]
+Executing graph:  26%|██▌       | 400/1552 [00:01<00:01, 621.56it/s]
+Executing graph:  32%|███▏      | 500/1552 [00:01<00:01, 716.13it/s]
+Executing graph:  38%|███▊      | 595/1552 [00:01<00:01, 774.56it/s]
+Executing graph:  44%|████▍     | 689/1552 [00:01<00:01, 814.50it/s]
+Executing graph:  51%|█████     | 790/1552 [00:01<00:00, 865.92it/s]
+Executing graph:  58%|█████▊    | 895/1552 [00:01<00:00, 912.77it/s]
+Executing graph:  64%|██████▍   | 993/1552 [00:01<00:00, 931.46it/s]
+Executing graph:  70%|███████   | 1091/1552 [00:01<00:00, 931.19it/s]
+Executing graph:  77%|███████▋  | 1188/1552 [00:01<00:00, 934.50it/s]
+Executing graph:  83%|████████▎ | 1285/1552 [00:01<00:00, 937.18it/s]
+Executing graph:  90%|████████▉ | 1390/1552 [00:02<00:00, 951.22it/s]
+Executing graph:  96%|█████████▌| 1487/1552 [00:02<00:00, 953.37it/s]
+Executing graph: 100%|██████████| 1552/1552 [00:03<00:00, 388.87it/s]
+MERGE linear-skewed {"validation": {"triage": {"correct": 2, "total": 6}, "extract": {"correct": 6, "total": 6}}, "test": {"triage": {"correct": 2, "total": 6}, "extract": {"correct": 6, "total": 6}}}
+
+Warmup loader cache:   0%|          | 0/3 [00:00<?, ?it/s]
+Warmup loader cache: 100%|██████████| 3/3 [00:00<00:00, 1863.86it/s]
+
+Executing graph:   0%|          | 0/1868 [00:00<?, ?it/s]
+Executing graph:   0%|          | 5/1868 [00:00<00:50, 37.09it/s]
+Executing graph:   0%|          | 9/1868 [00:01<04:12,  7.35it/s]
+Executing graph:   1%|          | 12/1868 [00:01<05:06,  6.05it/s]
+Executing graph:   5%|▍         | 90/1868 [00:01<00:22, 78.56it/s]
+Executing graph:   9%|▉         | 168/1868 [00:01<00:10, 160.15it/s]
+Executing graph:  15%|█▍        | 276/1868 [00:02<00:05, 292.06it/s]
+Executing graph:  19%|█▉        | 360/1868 [00:02<00:03, 379.19it/s]
+Executing graph:  24%|██▍       | 456/1868 [00:02<00:02, 487.48it/s]
+Executing graph:  30%|██▉       | 552/1868 [00:02<00:02, 586.08it/s]
+Executing graph:  34%|███▍      | 635/1868 [00:02<00:01, 634.38it/s]
+Executing graph:  40%|████      | 748/1868 [00:02<00:01, 754.94it/s]
+Executing graph:  45%|████▍     | 839/1868 [00:02<00:01, 753.07it/s]
+Executing graph:  50%|█████     | 938/1868 [00:02<00:01, 814.83it/s]
+Executing graph:  55%|█████▌    | 1028/1868 [00:02<00:01, 785.60it/s]
+Executing graph:  61%|██████    | 1134/1868 [00:03<00:00, 853.69it/s]
+Executing graph:  66%|██████▌   | 1225/1868 [00:03<00:00, 812.29it/s]
+Executing graph:  71%|███████   | 1329/1868 [00:03<00:00, 873.05it/s]
+Executing graph:  76%|███████▌  | 1420/1868 [00:03<00:00, 840.18it/s]
+Executing graph:  81%|████████  | 1512/1868 [00:03<00:00, 851.31it/s]
+Executing graph:  86%|████████▌ | 1608/1868 [00:03<00:00, 869.63it/s]
+Executing graph:  91%|█████████ | 1697/1868 [00:03<00:00, 852.67it/s]
+Executing graph:  96%|█████████▌| 1794/1868 [00:03<00:00, 882.41it/s]
+Executing graph: 100%|██████████| 1868/1868 [00:06<00:00, 297.63it/s]
+MERGE ties {"validation": {"triage": {"correct": 2, "total": 6}, "extract": {"correct": 6, "total": 6}}, "test": {"triage": {"correct": 2, "total": 6}, "extract": {"correct": 6, "total": 6}}}
+RESULT {"base": "Qwen/Qwen3-0.6B", "revision": "c1899de289a04d12100db370d81485cdf75e47ca", "sample": true, "epochs": 1, "gpu": "NVIDIA GeForce RTX 3090", "versions": {"torch": "2.5.1+cu124", "transformers": "4.51.3", "peft": "0.15.2", "mergekit": "0.1.4", "accelerate": "1.6.0", "huggingface_hub": "0.30.2"}, "data_sha256": {"train": "e34db303b458690f69a11ce548468375b5b19cfee2947f036fdec2ac22ac6fbe", "validation": "c86bd5ab7193b504fa9d156023f440261e431a4e4fe08d8a4cf27f6d6d2b3dde", "test": "ef8408791227b84d9b30ed266380eb1682bc6ba5daec71114f55a1cb6bb426cb"}, "selected_by_validation": "linear-balanced", "merge_reload_ok": true, "elapsed_seconds": 105.09513211250305, "peak_gpu_memory_bytes": 3891317248, "hub_repo": null}
+Payload fetched
+Dependencies installed
+Confirming machine cleanup…
+Machine cleanup confirmed

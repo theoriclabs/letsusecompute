@@ -1,0 +1,226 @@
+Requesting machine…
+Startup evidence (allocation_intent); provider unknown; logs unavailable; cause unknown
+Machine allocated
+Startup evidence (allocation_recorded); provider unknown; logs unavailable; cause unknown
+Waiting for machine agent…
+Fetching payload…
+Startup evidence (accepted_hello); provider unknown; logs unavailable; cause unknown
+Machine agent connected
+Payload fetched
+Installing dependencies…
+Dependencies installed
+Starting entrypoint…
+Entrypoint started
+
+Fetching 8 files:   0%|          | 0/8 [00:00<?, ?it/s]Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+
+Fetching 8 files:  12%|█▎        | 1/8 [00:00<00:06,  1.16it/s]
+Fetching 8 files:  38%|███▊      | 3/8 [00:00<00:01,  3.67it/s]
+Fetching 8 files:  62%|██████▎   | 5/8 [00:07<00:05,  1.71s/it]
+Fetching 8 files: 100%|██████████| 8/8 [00:07<00:00,  1.12it/s]
+BASE {"validation": {"triage": {"correct": 0, "total": 24}, "extract": {"correct": 0, "total": 24}}, "test": {"triage": {"correct": 0, "total": 48}, "extract": {"correct": 0, "total": 48}}}
+TRAIN triage epoch 1 loss 0.5756615109144908
+TRAIN triage epoch 2 loss 1.0941597103434712e-05
+TRAIN triage epoch 3 loss 4.445576852655601e-06
+PARENT triage {"validation": {"triage": {"correct": 24, "total": 24}, "extract": {"correct": 0, "total": 24}}, "test": {"triage": {"correct": 48, "total": 48}, "extract": {"correct": 0, "total": 48}}}
+TRAIN extract epoch 1 loss 0.013838451607549965
+TRAIN extract epoch 2 loss 3.1932743733401973e-06
+TRAIN extract epoch 3 loss 1.7544352753399531e-06
+PARENT extract {"validation": {"triage": {"correct": 0, "total": 24}, "extract": {"correct": 24, "total": 24}}, "test": {"triage": {"correct": 0, "total": 48}, "extract": {"correct": 47, "total": 48}}}
+
+Warmup loader cache:   0%|          | 0/2 [00:00<?, ?it/s]
+Warmup loader cache: 100%|██████████| 2/2 [00:00<00:00, 1445.81it/s]
+
+Executing graph:   0%|          | 0/1552 [00:00<?, ?it/s]
+Executing graph:   0%|          | 5/1552 [00:00<03:36,  7.14it/s]
+Executing graph:   7%|▋         | 111/1552 [00:00<00:07, 185.47it/s]
+Executing graph:  14%|█▍        | 220/1552 [00:00<00:03, 359.93it/s]
+Executing graph:  21%|██▏       | 330/1552 [00:01<00:02, 515.17it/s]
+Executing graph:  28%|██▊       | 433/1552 [00:01<00:01, 635.86it/s]
+Executing graph:  35%|███▍      | 540/1552 [00:01<00:01, 734.02it/s]
+Executing graph:  42%|████▏     | 650/1552 [00:01<00:01, 816.42it/s]
+Executing graph:  49%|████▊     | 756/1552 [00:01<00:00, 881.74it/s]
+Executing graph:  55%|█████▌    | 858/1552 [00:01<00:00, 915.30it/s]
+Executing graph:  62%|██████▏   | 960/1552 [00:01<00:00, 929.43it/s]
+Executing graph:  69%|██████▉   | 1070/1552 [00:01<00:00, 957.65it/s]
+Executing graph:  76%|███████▌  | 1180/1552 [00:01<00:00, 979.35it/s]
+Executing graph:  83%|████████▎ | 1290/1552 [00:01<00:00, 994.83it/s]
+Executing graph:  90%|█████████ | 1400/1552 [00:02<00:00, 1001.37it/s]
+Executing graph:  97%|█████████▋| 1510/1552 [00:02<00:00, 1004.72it/s]
+Executing graph: 100%|██████████| 1552/1552 [00:03<00:00, 398.99it/s]
+MERGE linear-balanced {"validation": {"triage": {"correct": 24, "total": 24}, "extract": {"correct": 24, "total": 24}}, "test": {"triage": {"correct": 48, "total": 48}, "extract": {"correct": 48, "total": 48}}}
+
+Warmup loader cache:   0%|          | 0/2 [00:00<?, ?it/s]
+Warmup loader cache: 100%|██████████| 2/2 [00:00<00:00, 1359.80it/s]
+
+Executing graph:   0%|          | 0/1552 [00:00<?, ?it/s]
+Executing graph:   0%|          | 5/1552 [00:00<03:40,  7.02it/s]
+Executing graph:   7%|▋         | 113/1552 [00:00<00:07, 186.24it/s]
+Executing graph:  14%|█▍        | 220/1552 [00:00<00:03, 353.65it/s]
+Executing graph:  21%|██        | 329/1552 [00:01<00:02, 511.56it/s]
+Executing graph:  27%|██▋       | 425/1552 [00:01<00:01, 616.25it/s]
+Executing graph:  34%|███▎      | 520/1552 [00:01<00:01, 691.68it/s]
+Executing graph:  40%|████      | 625/1552 [00:01<00:01, 771.28it/s]
+Executing graph:  47%|████▋     | 735/1552 [00:01<00:00, 844.01it/s]
+Executing graph:  54%|█████▍    | 845/1552 [00:01<00:00, 896.64it/s]
+Executing graph:  62%|██████▏   | 955/1552 [00:01<00:00, 935.45it/s]
+Executing graph:  69%|██████▊   | 1065/1552 [00:01<00:00, 961.98it/s]
+Executing graph:  76%|███████▌  | 1175/1552 [00:01<00:00, 973.20it/s]
+Executing graph:  83%|████████▎ | 1283/1552 [00:01<00:00, 1002.74it/s]
+Executing graph:  89%|████████▉ | 1387/1552 [00:02<00:00, 1013.39it/s]
+Executing graph:  96%|█████████▌| 1491/1552 [00:02<00:00, 1001.11it/s]
+Executing graph: 100%|██████████| 1552/1552 [00:04<00:00, 378.01it/s]
+MERGE linear-skewed {"validation": {"triage": {"correct": 24, "total": 24}, "extract": {"correct": 0, "total": 24}}, "test": {"triage": {"correct": 48, "total": 48}, "extract": {"correct": 0, "total": 48}}}
+
+Warmup loader cache:   0%|          | 0/3 [00:00<?, ?it/s]
+Warmup loader cache: 100%|██████████| 3/3 [00:00<00:00, 1670.37it/s]
+
+Executing graph:   0%|          | 0/1868 [00:00<?, ?it/s]
+Executing graph:   0%|          | 5/1868 [00:00<00:50, 36.78it/s]
+Executing graph:   0%|          | 9/1868 [00:01<04:08,  7.49it/s]
+Executing graph:   1%|          | 12/1868 [00:01<04:37,  6.69it/s]
+Executing graph:   4%|▍         | 72/1868 [00:01<00:27, 64.60it/s]
+Executing graph:   5%|▌         | 96/1868 [00:01<00:20, 85.97it/s]
+Executing graph:   7%|▋         | 138/1868 [00:01<00:12, 134.97it/s]
+Executing graph:   9%|▉         | 168/1868 [00:02<00:10, 162.97it/s]
+Executing graph:  12%|█▏        | 222/1868 [00:02<00:07, 232.77it/s]
+Executing graph:  14%|█▎        | 256/1868 [00:02<00:06, 252.39it/s]
+Executing graph:  16%|█▌        | 294/1868 [00:02<00:06, 239.75it/s]
+Executing graph:  18%|█▊        | 336/1868 [00:02<00:05, 279.61it/s]
+Executing graph:  20%|█▉        | 370/1868 [00:02<00:05, 284.32it/s]
+Executing graph:  22%|██▏       | 420/1868 [00:02<00:04, 330.44it/s]
+Executing graph:  24%|██▍       | 457/1868 [00:02<00:04, 338.93it/s]
+Executing graph:  26%|██▋       | 494/1868 [00:03<00:04, 288.52it/s]
+Executing graph:  29%|██▊       | 534/1868 [00:03<00:04, 314.66it/s]
+Executing graph:  30%|███       | 569/1868 [00:03<00:04, 310.26it/s]
+Executing graph:  33%|███▎      | 618/1868 [00:03<00:04, 295.92it/s]
+Executing graph:  35%|███▌      | 659/1868 [00:03<00:03, 322.72it/s]
+Executing graph:  37%|███▋      | 694/1868 [00:03<00:03, 314.49it/s]
+Executing graph:  40%|████      | 750/1868 [00:03<00:03, 310.14it/s]
+Executing graph:  43%|████▎     | 798/1868 [00:03<00:03, 346.93it/s]
+Executing graph:  45%|████▍     | 835/1868 [00:04<00:03, 331.38it/s]
+Executing graph:  47%|████▋     | 882/1868 [00:04<00:03, 310.05it/s]
+Executing graph:  49%|████▉     | 924/1868 [00:04<00:02, 335.00it/s]
+Executing graph:  51%|█████▏    | 960/1868 [00:04<00:03, 275.31it/s]
+Executing graph:  54%|█████▍    | 1014/1868 [00:04<00:02, 328.37it/s]
+Executing graph:  56%|█████▋    | 1051/1868 [00:04<00:02, 332.56it/s]
+Executing graph:  58%|█████▊    | 1087/1868 [00:04<00:02, 333.65it/s]
+Executing graph:  60%|██████    | 1128/1868 [00:04<00:02, 353.10it/s]
+Executing graph:  62%|██████▏   | 1165/1868 [00:05<00:02, 292.69it/s]
+Executing graph:  65%|██████▍   | 1212/1868 [00:05<00:01, 331.84it/s]
+Executing graph:  67%|██████▋   | 1248/1868 [00:05<00:01, 336.95it/s]
+Executing graph:  69%|██████▊   | 1284/1868 [00:05<00:01, 333.72it/s]
+Executing graph:  71%|███████   | 1326/1868 [00:05<00:01, 354.81it/s]
+Executing graph:  73%|███████▎  | 1363/1868 [00:05<00:01, 293.36it/s]
+Executing graph:  75%|███████▌  | 1410/1868 [00:05<00:01, 330.15it/s]
+Executing graph:  77%|███████▋  | 1446/1868 [00:05<00:01, 331.68it/s]
+Executing graph:  79%|███████▉  | 1482/1868 [00:06<00:01, 279.25it/s]
+Executing graph:  82%|████████▏ | 1536/1868 [00:06<00:00, 340.30it/s]
+Executing graph:  84%|████████▍ | 1574/1868 [00:06<00:00, 332.70it/s]
+Executing graph:  86%|████████▋ | 1614/1868 [00:06<00:00, 293.04it/s]
+Executing graph:  89%|████████▊ | 1656/1868 [00:06<00:00, 321.65it/s]
+Executing graph:  91%|█████████ | 1691/1868 [00:06<00:00, 305.76it/s]
+Executing graph:  93%|█████████▎| 1740/1868 [00:06<00:00, 298.51it/s]
+Executing graph:  96%|█████████▌| 1788/1868 [00:07<00:00, 337.16it/s]
+Executing graph:  98%|█████████▊| 1824/1868 [00:07<00:00, 324.28it/s]
+Executing graph: 100%|██████████| 1868/1868 [00:09<00:00, 54.47it/s]
+Executing graph: 100%|██████████| 1868/1868 [00:09<00:00, 197.57it/s]
+MERGE ties {"validation": {"triage": {"correct": 24, "total": 24}, "extract": {"correct": 24, "total": 24}}, "test": {"triage": {"correct": 48, "total": 48}, "extract": {"correct": 48, "total": 48}}}
+
+model.safetensors:   0%|          | 0.00/1.19G [00:00<?, ?B/s]
+
+Upload 2 LFS files:   0%|          | 0/2 [00:00<?, ?it/s]
+
+tokenizer.json:   0%|          | 0.00/11.4M [00:00<?, ?B/s]
+
+tokenizer.json:   9%|▊         | 999k/11.4M [00:00<00:01, 8.76MB/s]
+model.safetensors:   0%|          | 999k/1.19G [00:00<02:40, 7.43MB/s]
+
+tokenizer.json:  34%|███▎      | 3.85M/11.4M [00:00<00:00, 19.4MB/s]
+
+tokenizer.json:  93%|█████████▎| 10.7M/11.4M [00:00<00:00, 40.1MB/s]
+model.safetensors:   0%|          | 5.21M/1.19G [00:00<01:13, 16.2MB/s]
+tokenizer.json: 100%|██████████| 11.4M/11.4M [00:01<00:00, 8.24MB/s]
+
+model.safetensors:   1%|▏         | 16.0M/1.19G [00:01<01:57, 10.0MB/s]
+model.safetensors:   3%|▎         | 32.0M/1.19G [00:02<01:46, 10.9MB/s]
+model.safetensors:   4%|▍         | 48.0M/1.19G [00:03<01:08, 16.7MB/s]
+model.safetensors:   5%|▌         | 64.0M/1.19G [00:03<00:49, 22.6MB/s]
+model.safetensors:   7%|▋         | 80.0M/1.19G [00:05<01:06, 16.6MB/s]
+model.safetensors:   8%|▊         | 96.0M/1.19G [00:06<01:17, 14.1MB/s]
+model.safetensors:   9%|▉         | 112M/1.19G [00:06<00:59, 18.2MB/s]
+model.safetensors:  11%|█         | 128M/1.19G [00:07<00:47, 22.6MB/s]
+model.safetensors:  12%|█▏        | 144M/1.19G [00:07<00:38, 27.0MB/s]
+model.safetensors:  13%|█▎        | 160M/1.19G [00:07<00:33, 30.9MB/s]
+model.safetensors:  15%|█▍        | 176M/1.19G [00:08<00:29, 34.6MB/s]
+model.safetensors:  16%|█▌        | 192M/1.19G [00:08<00:27, 36.9MB/s]
+model.safetensors:  17%|█▋        | 208M/1.19G [00:08<00:24, 39.7MB/s]
+model.safetensors:  19%|█▉        | 224M/1.19G [00:09<00:23, 41.0MB/s]
+model.safetensors:  20%|██        | 240M/1.19G [00:09<00:22, 42.9MB/s]
+model.safetensors:  21%|██▏       | 256M/1.19G [00:10<00:25, 36.8MB/s]
+model.safetensors:  23%|██▎       | 272M/1.19G [00:10<00:25, 36.6MB/s]
+model.safetensors:  24%|██▍       | 288M/1.19G [00:11<00:23, 39.2MB/s]
+model.safetensors:  26%|██▌       | 304M/1.19G [00:11<00:21, 40.8MB/s]
+model.safetensors:  27%|██▋       | 320M/1.19G [00:11<00:22, 39.1MB/s]
+model.safetensors:  28%|██▊       | 336M/1.19G [00:12<00:20, 41.2MB/s]
+model.safetensors:  30%|██▉       | 352M/1.19G [00:12<00:19, 42.4MB/s]
+model.safetensors:  31%|███       | 368M/1.19G [00:12<00:19, 42.1MB/s]
+model.safetensors:  32%|███▏      | 384M/1.19G [00:13<00:18, 43.7MB/s]
+model.safetensors:  34%|███▎      | 400M/1.19G [00:13<00:17, 44.5MB/s]
+model.safetensors:  35%|███▍      | 416M/1.19G [00:13<00:17, 45.3MB/s]
+model.safetensors:  36%|███▌      | 432M/1.19G [00:14<00:16, 46.0MB/s]
+model.safetensors:  38%|███▊      | 448M/1.19G [00:14<00:16, 46.5MB/s]
+model.safetensors:  39%|███▉      | 464M/1.19G [00:14<00:15, 47.2MB/s]
+model.safetensors:  40%|████      | 480M/1.19G [00:15<00:14, 47.6MB/s]
+model.safetensors:  42%|████▏     | 496M/1.19G [00:15<00:14, 47.3MB/s]
+model.safetensors:  43%|████▎     | 512M/1.19G [00:15<00:14, 47.3MB/s]
+model.safetensors:  44%|████▍     | 528M/1.19G [00:16<00:14, 46.6MB/s]
+model.safetensors:  46%|████▌     | 544M/1.19G [00:16<00:13, 47.1MB/s]
+model.safetensors:  47%|████▋     | 560M/1.19G [00:16<00:13, 46.8MB/s]
+model.safetensors:  48%|████▊     | 576M/1.19G [00:17<00:13, 45.4MB/s]
+model.safetensors:  50%|████▉     | 592M/1.19G [00:17<00:13, 46.1MB/s]
+model.safetensors:  51%|█████     | 608M/1.19G [00:17<00:12, 46.7MB/s]
+model.safetensors:  52%|█████▏    | 624M/1.19G [00:18<00:13, 41.4MB/s]
+model.safetensors:  54%|█████▎    | 640M/1.19G [00:18<00:12, 42.7MB/s]
+model.safetensors:  55%|█████▌    | 656M/1.19G [00:19<00:12, 43.0MB/s]
+model.safetensors:  56%|█████▋    | 672M/1.19G [00:19<00:11, 43.6MB/s]
+model.safetensors:  58%|█████▊    | 688M/1.19G [00:19<00:11, 44.4MB/s]
+model.safetensors:  59%|█████▉    | 704M/1.19G [00:20<00:10, 44.9MB/s]
+model.safetensors:  60%|██████    | 720M/1.19G [00:20<00:10, 44.7MB/s]
+model.safetensors:  62%|██████▏   | 736M/1.19G [00:20<00:10, 45.2MB/s]
+model.safetensors:  63%|██████▎   | 752M/1.19G [00:21<00:09, 46.0MB/s]
+model.safetensors:  64%|██████▍   | 768M/1.19G [00:21<00:09, 45.6MB/s]
+model.safetensors:  66%|██████▌   | 784M/1.19G [00:21<00:09, 45.2MB/s]
+model.safetensors:  67%|██████▋   | 800M/1.19G [00:22<00:08, 45.8MB/s]
+model.safetensors:  68%|██████▊   | 816M/1.19G [00:22<00:08, 44.6MB/s]
+model.safetensors:  70%|██████▉   | 832M/1.19G [00:23<00:07, 45.2MB/s]
+model.safetensors:  71%|███████   | 848M/1.19G [00:23<00:07, 46.0MB/s]
+model.safetensors:  72%|███████▏  | 864M/1.19G [00:23<00:07, 45.9MB/s]
+model.safetensors:  74%|███████▍  | 880M/1.19G [00:24<00:06, 46.3MB/s]
+model.safetensors:  75%|███████▌  | 896M/1.19G [00:24<00:06, 44.0MB/s]
+model.safetensors:  77%|███████▋  | 912M/1.19G [00:24<00:06, 44.6MB/s]
+model.safetensors:  78%|███████▊  | 928M/1.19G [00:25<00:05, 45.9MB/s]
+model.safetensors:  79%|███████▉  | 944M/1.19G [00:25<00:05, 46.6MB/s]
+model.safetensors:  81%|████████  | 960M/1.19G [00:25<00:05, 46.0MB/s]
+model.safetensors:  82%|████████▏ | 976M/1.19G [00:26<00:04, 46.0MB/s]
+model.safetensors:  83%|████████▎ | 992M/1.19G [00:26<00:04, 46.5MB/s]
+model.safetensors:  85%|████████▍ | 1.01G/1.19G [00:26<00:03, 47.0MB/s]
+model.safetensors:  86%|████████▌ | 1.02G/1.19G [00:27<00:03, 46.8MB/s]
+model.safetensors:  87%|████████▋ | 1.04G/1.19G [00:27<00:03, 43.7MB/s]
+model.safetensors:  89%|████████▊ | 1.06G/1.19G [00:27<00:03, 45.0MB/s]
+model.safetensors:  90%|████████▉ | 1.07G/1.19G [00:28<00:02, 45.7MB/s]
+model.safetensors:  91%|█████████▏| 1.09G/1.19G [00:28<00:02, 44.8MB/s]
+model.safetensors:  93%|█████████▎| 1.10G/1.19G [00:29<00:01, 45.0MB/s]
+model.safetensors:  94%|█████████▍| 1.12G/1.19G [00:29<00:01, 45.2MB/s]
+model.safetensors:  95%|█████████▌| 1.14G/1.19G [00:29<00:01, 45.6MB/s]
+model.safetensors:  97%|█████████▋| 1.15G/1.19G [00:30<00:00, 46.4MB/s]
+model.safetensors:  98%|█████████▊| 1.17G/1.19G [00:30<00:00, 46.8MB/s]
+model.safetensors:  99%|█████████▉| 1.18G/1.19G [00:30<00:00, 46.9MB/s]
+model.safetensors: 100%|██████████| 1.19G/1.19G [00:31<00:00, 38.4MB/s]
+
+Upload 2 LFS files:  50%|█████     | 1/2 [00:31<00:31, 31.39s/it]
+Upload 2 LFS files: 100%|██████████| 2/2 [00:31<00:00, 15.70s/it]
+RESULT {"base": "Qwen/Qwen3-0.6B", "revision": "c1899de289a04d12100db370d81485cdf75e47ca", "sample": false, "epochs": 3, "gpu": "NVIDIA A100 80GB PCIe", "versions": {"torch": "2.5.1+cu124", "transformers": "4.51.3", "peft": "0.15.2", "mergekit": "0.1.4", "accelerate": "1.6.0", "huggingface_hub": "0.30.2"}, "data_sha256": {"train": "7ea3eadc4748f9fb93655d6d2da927d05fefbead07d650b154cf61e8cb4f09ef", "validation": "c6f4bb59d2ea636bd63105d743ad4447f2fdd96eb0007034fe491c87e6ae7c2e", "test": "3eda5e0aee0e691f06598d2f3a492b8e6e1f1e8dc69b233ec8d4541614879ce5"}, "base_parameters": 596049920, "selected_by_validation": "linear-balanced", "merge_reload_ok": true, "elapsed_seconds": 156.9914174079895, "peak_gpu_memory_bytes": 3914520064, "hub_repo": "theoriclabs/qwen3-0.6b-support-order-merge"}
+Payload fetched
+Dependencies installed

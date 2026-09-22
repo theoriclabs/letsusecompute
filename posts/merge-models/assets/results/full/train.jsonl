@@ -1,0 +1,960 @@
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 92 concerns: delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 217; password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 428: 37 units of SKU AX-00528.", "answer": "{\"sku\":\"AX-00528\",\"qty\":37}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00461; units requested: 8; reference 361.", "answer": "{\"sku\":\"BQ-00461\",\"qty\":8}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00277; units requested: 40; reference 177.", "answer": "{\"sku\":\"BQ-00277\",\"qty\":40}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 99: refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00441; units requested: 28; reference 341.", "answer": "{\"sku\":\"BQ-00441\",\"qty\":28}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00361; units requested: 28; reference 261.", "answer": "{\"sku\":\"BQ-00361\",\"qty\":28}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 180 concerns: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 15 pieces, item CZ-00262, order 162.", "answer": "{\"sku\":\"CZ-00262\",\"qty\":15}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 391: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 160 reports: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 123 requests product DP-00223 with quantity 22.", "answer": "{\"sku\":\"DP-00223\",\"qty\":22}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 265; password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 391 requests product DP-00491 with quantity 18.", "answer": "{\"sku\":\"DP-00491\",\"qty\":18}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 8: delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 319; login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 145: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 315 requests product DP-00415 with quantity 6.", "answer": "{\"sku\":\"DP-00415\",\"qty\":6}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 366; invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 19 pieces, item CZ-00554, order 454.", "answer": "{\"sku\":\"CZ-00554\",\"qty\":19}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 328: 17 units of SKU AX-00428.", "answer": "{\"sku\":\"AX-00428\",\"qty\":17}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 91 requests product DP-00191 with quantity 38.", "answer": "{\"sku\":\"DP-00191\",\"qty\":38}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 165 reports: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 23 pieces, item CZ-00126, order 26.", "answer": "{\"sku\":\"CZ-00126\",\"qty\":23}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00445; units requested: 16; reference 345.", "answer": "{\"sku\":\"BQ-00445\",\"qty\":16}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 460; account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 240: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00337; units requested: 20; reference 237.", "answer": "{\"sku\":\"BQ-00337\",\"qty\":20}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00345; units requested: 36; reference 245.", "answer": "{\"sku\":\"BQ-00345\",\"qty\":36}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 23 pieces, item CZ-00206, order 106.", "answer": "{\"sku\":\"CZ-00206\",\"qty\":23}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 214 reports: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 28; account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 27 pieces, item CZ-00298, order 198.", "answer": "{\"sku\":\"CZ-00298\",\"qty\":27}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 374 concerns: parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 42 concerns: invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 401 reports: package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 24: 9 units of SKU AX-00124.", "answer": "{\"sku\":\"AX-00124\",\"qty\":9}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 39 pieces, item CZ-00174, order 74.", "answer": "{\"sku\":\"CZ-00174\",\"qty\":39}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 35 pieces, item CZ-00402, order 302.", "answer": "{\"sku\":\"CZ-00402\",\"qty\":35}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00409; units requested: 4; reference 309.", "answer": "{\"sku\":\"BQ-00409\",\"qty\":4}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 151: login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 279 requests product DP-00379 with quantity 34.", "answer": "{\"sku\":\"DP-00379\",\"qty\":34}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 280: 1 units of SKU AX-00380.", "answer": "{\"sku\":\"AX-00380\",\"qty\":1}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 300: 21 units of SKU AX-00400.", "answer": "{\"sku\":\"AX-00400\",\"qty\":21}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 227 requests product DP-00327 with quantity 30.", "answer": "{\"sku\":\"DP-00327\",\"qty\":30}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 444: 29 units of SKU AX-00544.", "answer": "{\"sku\":\"AX-00544\",\"qty\":29}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 272; delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 128; delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 403 requests product DP-00503 with quantity 22.", "answer": "{\"sku\":\"DP-00503\",\"qty\":22}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 119 requests product DP-00219 with quantity 34.", "answer": "{\"sku\":\"DP-00219\",\"qty\":34}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 19 pieces, item CZ-00474, order 374.", "answer": "{\"sku\":\"CZ-00474\",\"qty\":19}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 9: payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 19 reports: login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 31 pieces, item CZ-00350, order 250.", "answer": "{\"sku\":\"CZ-00350\",\"qty\":31}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 139 requests product DP-00239 with quantity 14.", "answer": "{\"sku\":\"DP-00239\",\"qty\":14}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 100: 21 units of SKU AX-00200.", "answer": "{\"sku\":\"AX-00200\",\"qty\":21}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 299 requests product DP-00399 with quantity 14.", "answer": "{\"sku\":\"DP-00399\",\"qty\":14}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 282 concerns: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 247 requests product DP-00347 with quantity 10.", "answer": "{\"sku\":\"DP-00347\",\"qty\":10}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 464: 9 units of SKU AX-00564.", "answer": "{\"sku\":\"AX-00564\",\"qty\":9}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 207 reports: refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00213; units requested: 32; reference 113.", "answer": "{\"sku\":\"BQ-00213\",\"qty\":32}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 431 concerns: shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 87 concerns: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 286 concerns: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 35 pieces, item CZ-00522, order 422.", "answer": "{\"sku\":\"CZ-00522\",\"qty\":35}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 322; sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 89 concerns: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 198: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 156: 13 units of SKU AX-00256.", "answer": "{\"sku\":\"AX-00256\",\"qty\":13}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 115 requests product DP-00215 with quantity 6.", "answer": "{\"sku\":\"DP-00215\",\"qty\":6}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 304 reports: account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 385: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 31 pieces, item CZ-00190, order 90.", "answer": "{\"sku\":\"CZ-00190\",\"qty\":31}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 86 concerns: parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 372 concerns: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00549; units requested: 24; reference 449.", "answer": "{\"sku\":\"BQ-00549\",\"qty\":24}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 415 requests product DP-00515 with quantity 26.", "answer": "{\"sku\":\"DP-00515\",\"qty\":26}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 143 requests product DP-00243 with quantity 2.", "answer": "{\"sku\":\"DP-00243\",\"qty\":2}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 190 concerns: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 451 requests product DP-00551 with quantity 38.", "answer": "{\"sku\":\"DP-00551\",\"qty\":38}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 389: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 388: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 223 requests product DP-00323 with quantity 2.", "answer": "{\"sku\":\"DP-00323\",\"qty\":2}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 435 requests product DP-00535 with quantity 6.", "answer": "{\"sku\":\"DP-00535\",\"qty\":6}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 14 reports: parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 447 reports: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 392: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 164: 29 units of SKU AX-00264.", "answer": "{\"sku\":\"AX-00264\",\"qty\":29}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 360; charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 436: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 228: 37 units of SKU AX-00328.", "answer": "{\"sku\":\"AX-00328\",\"qty\":37}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 336: 33 units of SKU AX-00436.", "answer": "{\"sku\":\"AX-00436\",\"qty\":33}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00417; units requested: 20; reference 317.", "answer": "{\"sku\":\"BQ-00417\",\"qty\":20}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 27 pieces, item CZ-00178, order 78.", "answer": "{\"sku\":\"CZ-00178\",\"qty\":27}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 118 reports: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 27 pieces, item CZ-00378, order 278.", "answer": "{\"sku\":\"CZ-00378\",\"qty\":27}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 218; parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 271; login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 179; shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 23 pieces, item CZ-00366, order 266.", "answer": "{\"sku\":\"CZ-00366\",\"qty\":23}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 19 pieces, item CZ-00274, order 174.", "answer": "{\"sku\":\"CZ-00274\",\"qty\":19}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 12 reports: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 155 requests product DP-00255 with quantity 6.", "answer": "{\"sku\":\"DP-00255\",\"qty\":6}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 0: 1 units of SKU AX-00100.", "answer": "{\"sku\":\"AX-00100\",\"qty\":1}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 212 reports: delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 168; charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 439: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 38 concerns: parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 430 concerns: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 149: package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 16: 33 units of SKU AX-00116.", "answer": "{\"sku\":\"AX-00116\",\"qty\":33}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 237 concerns: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 11 pieces, item CZ-00250, order 150.", "answer": "{\"sku\":\"CZ-00250\",\"qty\":11}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 19 pieces, item CZ-00194, order 94.", "answer": "{\"sku\":\"CZ-00194\",\"qty\":19}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 466; sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 175; login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 88: 17 units of SKU AX-00188.", "answer": "{\"sku\":\"AX-00188\",\"qty\":17}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 408; charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00313; units requested: 12; reference 213.", "answer": "{\"sku\":\"BQ-00313\",\"qty\":12}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 75; refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 241: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 400 reports: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 15 pieces, item CZ-00142, order 42.", "answer": "{\"sku\":\"CZ-00142\",\"qty\":15}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 195 requests product DP-00295 with quantity 6.", "answer": "{\"sku\":\"DP-00295\",\"qty\":6}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 39 pieces, item CZ-00574, order 474.", "answer": "{\"sku\":\"CZ-00574\",\"qty\":39}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 39 pieces, item CZ-00214, order 114.", "answer": "{\"sku\":\"CZ-00214\",\"qty\":39}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 311 reports: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 387 requests product DP-00487 with quantity 30.", "answer": "{\"sku\":\"DP-00487\",\"qty\":30}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 163 requests product DP-00263 with quantity 22.", "answer": "{\"sku\":\"DP-00263\",\"qty\":22}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 211 requests product DP-00311 with quantity 38.", "answer": "{\"sku\":\"DP-00311\",\"qty\":38}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 159 reports: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 303 reports: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 177; payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 227; shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 432: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 355 requests product DP-00455 with quantity 6.", "answer": "{\"sku\":\"DP-00455\",\"qty\":6}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 364: 29 units of SKU AX-00464.", "answer": "{\"sku\":\"AX-00464\",\"qty\":29}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 35 pieces, item CZ-00562, order 462.", "answer": "{\"sku\":\"CZ-00562\",\"qty\":35}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00321; units requested: 28; reference 221.", "answer": "{\"sku\":\"BQ-00321\",\"qty\":28}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 269; package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 331 concerns: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 101: package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 455 requests product DP-00555 with quantity 26.", "answer": "{\"sku\":\"DP-00555\",\"qty\":26}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 46 concerns: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 55: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 434: parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 248: delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 313; password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 341: package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 368: 17 units of SKU AX-00468.", "answer": "{\"sku\":\"AX-00468\",\"qty\":17}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 64: 9 units of SKU AX-00164.", "answer": "{\"sku\":\"AX-00164\",\"qty\":9}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 378 concerns: invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 406 reports: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 3 pieces, item CZ-00346, order 246.", "answer": "{\"sku\":\"CZ-00346\",\"qty\":3}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 211 reports: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 44 concerns: delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 100: account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 478 concerns: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 11 pieces, item CZ-00570, order 470.", "answer": "{\"sku\":\"CZ-00570\",\"qty\":11}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 247: login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 371 requests product DP-00471 with quantity 38.", "answer": "{\"sku\":\"DP-00471\",\"qty\":38}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 13 reports: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 292: 5 units of SKU AX-00392.", "answer": "{\"sku\":\"AX-00392\",\"qty\":5}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 202: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 144: 9 units of SKU AX-00244.", "answer": "{\"sku\":\"AX-00244\",\"qty\":9}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 27 pieces, item CZ-00338, order 238.", "answer": "{\"sku\":\"CZ-00338\",\"qty\":27}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 25; password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 224: 9 units of SKU AX-00324.", "answer": "{\"sku\":\"AX-00324\",\"qty\":9}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 338: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00173; units requested: 32; reference 73.", "answer": "{\"sku\":\"BQ-00173\",\"qty\":32}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00317; units requested: 40; reference 217.", "answer": "{\"sku\":\"BQ-00317\",\"qty\":40}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 371; shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 74; parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 467 requests product DP-00567 with quantity 30.", "answer": "{\"sku\":\"DP-00567\",\"qty\":30}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 39 requests product DP-00139 with quantity 34.", "answer": "{\"sku\":\"DP-00139\",\"qty\":34}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 407 requests product DP-00507 with quantity 10.", "answer": "{\"sku\":\"DP-00507\",\"qty\":10}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 94 concerns: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 400: 1 units of SKU AX-00500.", "answer": "{\"sku\":\"AX-00500\",\"qty\":1}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 306 reports: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 39 pieces, item CZ-00494, order 394.", "answer": "{\"sku\":\"CZ-00494\",\"qty\":39}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 280 concerns: account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 395: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 324: 29 units of SKU AX-00424.", "answer": "{\"sku\":\"AX-00424\",\"qty\":29}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 370; sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 405 reports: payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 158 reports: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 19 pieces, item CZ-00114, order 14.", "answer": "{\"sku\":\"CZ-00114\",\"qty\":19}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 3 pieces, item CZ-00266, order 166.", "answer": "{\"sku\":\"CZ-00266\",\"qty\":3}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 254 reports: parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 267; refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 11 pieces, item CZ-00130, order 30.", "answer": "{\"sku\":\"CZ-00130\",\"qty\":11}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 213 reports: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00365; units requested: 16; reference 265.", "answer": "{\"sku\":\"BQ-00365\",\"qty\":16}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 15 pieces, item CZ-00102, order 2.", "answer": "{\"sku\":\"CZ-00102\",\"qty\":15}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 307 reports: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 363; refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 350 reports: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 96: 33 units of SKU AX-00196.", "answer": "{\"sku\":\"AX-00196\",\"qty\":33}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 23 pieces, item CZ-00526, order 426.", "answer": "{\"sku\":\"CZ-00526\",\"qty\":23}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00225; units requested: 36; reference 125.", "answer": "{\"sku\":\"BQ-00225\",\"qty\":36}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00357; units requested: 40; reference 257.", "answer": "{\"sku\":\"BQ-00357\",\"qty\":40}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 8: 17 units of SKU AX-00108.", "answer": "{\"sku\":\"AX-00108\",\"qty\":17}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 433: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 419; shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 192: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 3 pieces, item CZ-00106, order 6.", "answer": "{\"sku\":\"CZ-00106\",\"qty\":3}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 69 reports: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 95 requests product DP-00195 with quantity 26.", "answer": "{\"sku\":\"DP-00195\",\"qty\":26}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 2: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 23 pieces, item CZ-00246, order 146.", "answer": "{\"sku\":\"CZ-00246\",\"qty\":23}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 10: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 32; delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 187 concerns: login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 208: 17 units of SKU AX-00308.", "answer": "{\"sku\":\"AX-00308\",\"qty\":17}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 96: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 443 requests product DP-00543 with quantity 22.", "answer": "{\"sku\":\"DP-00543\",\"qty\":22}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 186 concerns: invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 383 concerns: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00433; units requested: 12; reference 333.", "answer": "{\"sku\":\"BQ-00433\",\"qty\":12}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 403 reports: login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 39 pieces, item CZ-00414, order 314.", "answer": "{\"sku\":\"CZ-00414\",\"qty\":39}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 266; parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 253 reports: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 212: 5 units of SKU AX-00312.", "answer": "{\"sku\":\"AX-00312\",\"qty\":5}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 33; payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 35 pieces, item CZ-00282, order 182.", "answer": "{\"sku\":\"CZ-00282\",\"qty\":35}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 440: 1 units of SKU AX-00540.", "answer": "{\"sku\":\"AX-00540\",\"qty\":1}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 294: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 11 pieces, item CZ-00210, order 110.", "answer": "{\"sku\":\"CZ-00210\",\"qty\":11}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 17 reports: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 141 concerns: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 184: 9 units of SKU AX-00284.", "answer": "{\"sku\":\"AX-00284\",\"qty\":9}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00541; units requested: 8; reference 441.", "answer": "{\"sku\":\"BQ-00541\",\"qty\":8}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 120: 1 units of SKU AX-00220.", "answer": "{\"sku\":\"AX-00220\",\"qty\":1}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 407 reports: shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 72; charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 196: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00305; units requested: 36; reference 205.", "answer": "{\"sku\":\"BQ-00305\",\"qty\":36}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 116 reports: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 460: 21 units of SKU AX-00560.", "answer": "{\"sku\":\"AX-00560\",\"qty\":21}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 15 pieces, item CZ-00342, order 242.", "answer": "{\"sku\":\"CZ-00342\",\"qty\":15}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 344: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00577; units requested: 20; reference 477.", "answer": "{\"sku\":\"BQ-00577\",\"qty\":20}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 235 requests product DP-00335 with quantity 6.", "answer": "{\"sku\":\"DP-00335\",\"qty\":6}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 59 requests product DP-00159 with quantity 14.", "answer": "{\"sku\":\"DP-00159\",\"qty\":14}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 136 concerns: account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 402 reports: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 92: 5 units of SKU AX-00192.", "answer": "{\"sku\":\"AX-00192\",\"qty\":5}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 436: 13 units of SKU AX-00536.", "answer": "{\"sku\":\"AX-00536\",\"qty\":13}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 420: 21 units of SKU AX-00520.", "answer": "{\"sku\":\"AX-00520\",\"qty\":21}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 3 pieces, item CZ-00186, order 86.", "answer": "{\"sku\":\"CZ-00186\",\"qty\":3}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 11 pieces, item CZ-00290, order 190.", "answer": "{\"sku\":\"CZ-00290\",\"qty\":11}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 180: 21 units of SKU AX-00280.", "answer": "{\"sku\":\"AX-00280\",\"qty\":21}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 132 concerns: charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 386: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00249; units requested: 4; reference 149.", "answer": "{\"sku\":\"BQ-00249\",\"qty\":4}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 31 pieces, item CZ-00310, order 210.", "answer": "{\"sku\":\"CZ-00310\",\"qty\":31}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 314; parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 131; shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 124: 29 units of SKU AX-00224.", "answer": "{\"sku\":\"AX-00224\",\"qty\":29}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 163 reports: login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 431 requests product DP-00531 with quantity 18.", "answer": "{\"sku\":\"DP-00531\",\"qty\":18}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00457; units requested: 20; reference 357.", "answer": "{\"sku\":\"BQ-00457\",\"qty\":20}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 263 requests product DP-00363 with quantity 2.", "answer": "{\"sku\":\"DP-00363\",\"qty\":2}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 90 concerns: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 268: 37 units of SKU AX-00368.", "answer": "{\"sku\":\"AX-00368\",\"qty\":37}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00393; units requested: 12; reference 293.", "answer": "{\"sku\":\"BQ-00393\",\"qty\":12}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 193: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 5: package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 99 requests product DP-00199 with quantity 14.", "answer": "{\"sku\":\"DP-00199\",\"qty\":14}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 444 reports: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00405; units requested: 16; reference 305.", "answer": "{\"sku\":\"BQ-00405\",\"qty\":16}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 15 requests product DP-00115 with quantity 26.", "answer": "{\"sku\":\"DP-00115\",\"qty\":26}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 154: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 200: 1 units of SKU AX-00300.", "answer": "{\"sku\":\"AX-00300\",\"qty\":1}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 7 pieces, item CZ-00238, order 138.", "answer": "{\"sku\":\"CZ-00238\",\"qty\":7}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 203: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00373; units requested: 32; reference 273.", "answer": "{\"sku\":\"BQ-00373\",\"qty\":32}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 23 pieces, item CZ-00446, order 346.", "answer": "{\"sku\":\"CZ-00446\",\"qty\":23}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 347: shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 182 concerns: parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 39 concerns: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 167 reports: shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 277 concerns: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 264; charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 284 concerns: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 20: 21 units of SKU AX-00120.", "answer": "{\"sku\":\"AX-00120\",\"qty\":21}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 423 requests product DP-00523 with quantity 2.", "answer": "{\"sku\":\"DP-00523\",\"qty\":2}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 398 reports: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 176: 33 units of SKU AX-00276.", "answer": "{\"sku\":\"AX-00276\",\"qty\":33}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00169; units requested: 4; reference 69.", "answer": "{\"sku\":\"BQ-00169\",\"qty\":4}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 35 pieces, item CZ-00482, order 382.", "answer": "{\"sku\":\"CZ-00482\",\"qty\":35}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 187 requests product DP-00287 with quantity 30.", "answer": "{\"sku\":\"DP-00287\",\"qty\":30}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 19 requests product DP-00119 with quantity 14.", "answer": "{\"sku\":\"DP-00119\",\"qty\":14}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 421 concerns: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 70 reports: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 300 reports: charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 340: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00309; units requested: 24; reference 209.", "answer": "{\"sku\":\"BQ-00309\",\"qty\":24}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 15 pieces, item CZ-00502, order 402.", "answer": "{\"sku\":\"CZ-00502\",\"qty\":15}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 63 reports: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 66 reports: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 39 pieces, item CZ-00454, order 354.", "answer": "{\"sku\":\"CZ-00454\",\"qty\":39}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 245: package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 339 requests product DP-00439 with quantity 14.", "answer": "{\"sku\":\"DP-00439\",\"qty\":14}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 476: 13 units of SKU AX-00576.", "answer": "{\"sku\":\"AX-00576\",\"qty\":13}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 35 pieces, item CZ-00362, order 262.", "answer": "{\"sku\":\"CZ-00362\",\"qty\":35}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 3 pieces, item CZ-00386, order 286.", "answer": "{\"sku\":\"CZ-00386\",\"qty\":3}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 129; payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 367; login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 81; payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 152: delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 143 concerns: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00385; units requested: 36; reference 285.", "answer": "{\"sku\":\"BQ-00385\",\"qty\":36}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 31 pieces, item CZ-00390, order 290.", "answer": "{\"sku\":\"CZ-00390\",\"qty\":31}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 34; sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 196: 13 units of SKU AX-00296.", "answer": "{\"sku\":\"AX-00296\",\"qty\":13}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 308: 37 units of SKU AX-00408.", "answer": "{\"sku\":\"AX-00408\",\"qty\":37}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 365; package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 3 pieces, item CZ-00426, order 326.", "answer": "{\"sku\":\"CZ-00426\",\"qty\":3}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 27 pieces, item CZ-00578, order 478.", "answer": "{\"sku\":\"CZ-00578\",\"qty\":27}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 27 pieces, item CZ-00218, order 118.", "answer": "{\"sku\":\"CZ-00218\",\"qty\":27}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 132: 5 units of SKU AX-00232.", "answer": "{\"sku\":\"AX-00232\",\"qty\":5}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 251: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 399 requests product DP-00499 with quantity 34.", "answer": "{\"sku\":\"DP-00499\",\"qty\":34}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 450 reports: invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 27; refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 316; account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 192: 25 units of SKU AX-00292.", "answer": "{\"sku\":\"AX-00292\",\"qty\":25}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 62 reports: parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 225; payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 355 reports: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 330 concerns: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00465; units requested: 36; reference 365.", "answer": "{\"sku\":\"BQ-00465\",\"qty\":36}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 147: refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00513; units requested: 12; reference 413.", "answer": "{\"sku\":\"BQ-00513\",\"qty\":12}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 106: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 439 requests product DP-00539 with quantity 34.", "answer": "{\"sku\":\"DP-00539\",\"qty\":34}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 7 pieces, item CZ-00118, order 18.", "answer": "{\"sku\":\"CZ-00118\",\"qty\":7}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 156 reports: charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 345: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 35 pieces, item CZ-00162, order 62.", "answer": "{\"sku\":\"CZ-00162\",\"qty\":35}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 11 requests product DP-00111 with quantity 38.", "answer": "{\"sku\":\"DP-00111\",\"qty\":38}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 231 requests product DP-00331 with quantity 18.", "answer": "{\"sku\":\"DP-00331\",\"qty\":18}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 287 requests product DP-00387 with quantity 10.", "answer": "{\"sku\":\"DP-00387\",\"qty\":10}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 31 pieces, item CZ-00150, order 50.", "answer": "{\"sku\":\"CZ-00150\",\"qty\":31}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00157; units requested: 40; reference 57.", "answer": "{\"sku\":\"BQ-00157\",\"qty\":40}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 199: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 455 reports: shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 60 reports: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 23 requests product DP-00123 with quantity 2.", "answer": "{\"sku\":\"DP-00123\",\"qty\":2}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00185; units requested: 36; reference 85.", "answer": "{\"sku\":\"BQ-00185\",\"qty\":36}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 27 pieces, item CZ-00258, order 158.", "answer": "{\"sku\":\"CZ-00258\",\"qty\":27}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 162 reports: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00341; units requested: 8; reference 241.", "answer": "{\"sku\":\"BQ-00341\",\"qty\":8}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 131 requests product DP-00231 with quantity 38.", "answer": "{\"sku\":\"DP-00231\",\"qty\":38}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 72: 25 units of SKU AX-00172.", "answer": "{\"sku\":\"AX-00172\",\"qty\":25}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00121; units requested: 28; reference 21.", "answer": "{\"sku\":\"BQ-00121\",\"qty\":28}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 356 reports: delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 43 concerns: login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 27 pieces, item CZ-00498, order 398.", "answer": "{\"sku\":\"CZ-00498\",\"qty\":27}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 297: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 15 pieces, item CZ-00422, order 322.", "answer": "{\"sku\":\"CZ-00422\",\"qty\":15}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 172: 5 units of SKU AX-00272.", "answer": "{\"sku\":\"AX-00272\",\"qty\":5}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 452: 5 units of SKU AX-00552.", "answer": "{\"sku\":\"AX-00552\",\"qty\":5}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 113 reports: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 437: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 82; sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 167 requests product DP-00267 with quantity 10.", "answer": "{\"sku\":\"DP-00267\",\"qty\":10}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 215 reports: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 27 pieces, item CZ-00538, order 438.", "answer": "{\"sku\":\"CZ-00538\",\"qty\":27}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 252 reports: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00153; units requested: 12; reference 53.", "answer": "{\"sku\":\"BQ-00153\",\"qty\":12}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 410; parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00177; units requested: 20; reference 77.", "answer": "{\"sku\":\"BQ-00177\",\"qty\":20}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 291: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 140 concerns: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 103 requests product DP-00203 with quantity 2.", "answer": "{\"sku\":\"DP-00203\",\"qty\":2}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 77; package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 446 reports: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 303 requests product DP-00403 with quantity 2.", "answer": "{\"sku\":\"DP-00403\",\"qty\":2}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 472: 25 units of SKU AX-00572.", "answer": "{\"sku\":\"AX-00572\",\"qty\":25}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 191 requests product DP-00291 with quantity 18.", "answer": "{\"sku\":\"DP-00291\",\"qty\":18}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00453; units requested: 32; reference 353.", "answer": "{\"sku\":\"BQ-00453\",\"qty\":32}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 7 pieces, item CZ-00478, order 378.", "answer": "{\"sku\":\"CZ-00478\",\"qty\":7}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00333; units requested: 32; reference 233.", "answer": "{\"sku\":\"BQ-00333\",\"qty\":32}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 258 reports: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 11 pieces, item CZ-00330, order 230.", "answer": "{\"sku\":\"CZ-00330\",\"qty\":11}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 354 reports: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00369; units requested: 4; reference 269.", "answer": "{\"sku\":\"BQ-00369\",\"qty\":4}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 262 reports: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 178; sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 103: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 425 concerns: package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 19 pieces, item CZ-00394, order 294.", "answer": "{\"sku\":\"CZ-00394\",\"qty\":19}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 268; account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00517; units requested: 40; reference 417.", "answer": "{\"sku\":\"BQ-00517\",\"qty\":40}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00229; units requested: 24; reference 129.", "answer": "{\"sku\":\"BQ-00229\",\"qty\":24}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 76: 13 units of SKU AX-00176.", "answer": "{\"sku\":\"AX-00176\",\"qty\":13}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 243 requests product DP-00343 with quantity 22.", "answer": "{\"sku\":\"DP-00343\",\"qty\":22}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 31 requests product DP-00131 with quantity 18.", "answer": "{\"sku\":\"DP-00131\",\"qty\":18}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00269; units requested: 24; reference 169.", "answer": "{\"sku\":\"BQ-00269\",\"qty\":24}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 423 concerns: refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 359 requests product DP-00459 with quantity 34.", "answer": "{\"sku\":\"DP-00459\",\"qty\":34}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 233 concerns: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 170; parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 228 concerns: charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 456; charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 93 concerns: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 323 requests product DP-00423 with quantity 22.", "answer": "{\"sku\":\"DP-00423\",\"qty\":22}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 171 requests product DP-00271 with quantity 38.", "answer": "{\"sku\":\"DP-00271\",\"qty\":38}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 319 requests product DP-00419 with quantity 34.", "answer": "{\"sku\":\"DP-00419\",\"qty\":34}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 432: 25 units of SKU AX-00532.", "answer": "{\"sku\":\"AX-00532\",\"qty\":25}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 184 concerns: account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 274; sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00237; units requested: 40; reference 137.", "answer": "{\"sku\":\"BQ-00237\",\"qty\":40}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 332 concerns: delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 133 concerns: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 375 concerns: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 324 concerns: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 256: 33 units of SKU AX-00356.", "answer": "{\"sku\":\"AX-00356\",\"qty\":33}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 11: shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 261 reports: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 48: 17 units of SKU AX-00148.", "answer": "{\"sku\":\"AX-00148\",\"qty\":17}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 147 requests product DP-00247 with quantity 30.", "answer": "{\"sku\":\"DP-00247\",\"qty\":30}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 7 pieces, item CZ-00198, order 98.", "answer": "{\"sku\":\"CZ-00198\",\"qty\":7}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 222; invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 31 pieces, item CZ-00230, order 130.", "answer": "{\"sku\":\"CZ-00230\",\"qty\":31}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 155: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00569; units requested: 4; reference 469.", "answer": "{\"sku\":\"BQ-00569\",\"qty\":4}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 80; delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 201: payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 474 concerns: invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 88 concerns: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 15 pieces, item CZ-00462, order 362.", "answer": "{\"sku\":\"CZ-00462\",\"qty\":15}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 380 concerns: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 240: 1 units of SKU AX-00340.", "answer": "{\"sku\":\"AX-00340\",\"qty\":1}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 19 pieces, item CZ-00434, order 334.", "answer": "{\"sku\":\"CZ-00434\",\"qty\":19}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 422 concerns: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 148: 37 units of SKU AX-00248.", "answer": "{\"sku\":\"AX-00248\",\"qty\":37}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 312: 25 units of SKU AX-00412.", "answer": "{\"sku\":\"AX-00412\",\"qty\":25}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 404: 29 units of SKU AX-00504.", "answer": "{\"sku\":\"AX-00504\",\"qty\":29}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 310 reports: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 7: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 364; account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 416; delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 215 requests product DP-00315 with quantity 26.", "answer": "{\"sku\":\"DP-00315\",\"qty\":26}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 429 concerns: payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 230 concerns: parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 130; sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 164 reports: delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 236 concerns: delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 229 concerns: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00297; units requested: 20; reference 197.", "answer": "{\"sku\":\"BQ-00297\",\"qty\":20}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00117; units requested: 40; reference 17.", "answer": "{\"sku\":\"BQ-00117\",\"qty\":40}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 244: 29 units of SKU AX-00344.", "answer": "{\"sku\":\"AX-00344\",\"qty\":29}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 409; password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 317; package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 102: invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 49: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 168: 17 units of SKU AX-00268.", "answer": "{\"sku\":\"AX-00268\",\"qty\":17}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00501; units requested: 8; reference 401.", "answer": "{\"sku\":\"BQ-00501\",\"qty\":8}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 356: 13 units of SKU AX-00456.", "answer": "{\"sku\":\"AX-00456\",\"qty\":13}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 58: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 394: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 203 requests product DP-00303 with quantity 22.", "answer": "{\"sku\":\"DP-00303\",\"qty\":22}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 335 concerns: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00477; units requested: 40; reference 377.", "answer": "{\"sku\":\"BQ-00477\",\"qty\":40}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00189; units requested: 24; reference 89.", "answer": "{\"sku\":\"BQ-00189\",\"qty\":24}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 351 requests product DP-00451 with quantity 18.", "answer": "{\"sku\":\"DP-00451\",\"qty\":18}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 448: 17 units of SKU AX-00548.", "answer": "{\"sku\":\"AX-00548\",\"qty\":17}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 209 reports: package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 288: 17 units of SKU AX-00388.", "answer": "{\"sku\":\"AX-00388\",\"qty\":17}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 56: 33 units of SKU AX-00156.", "answer": "{\"sku\":\"AX-00156\",\"qty\":33}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 351 reports: refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 219 requests product DP-00319 with quantity 14.", "answer": "{\"sku\":\"DP-00319\",\"qty\":14}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 426 concerns: invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 223; login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00197; units requested: 40; reference 97.", "answer": "{\"sku\":\"BQ-00197\",\"qty\":40}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 334 concerns: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 179 requests product DP-00279 with quantity 14.", "answer": "{\"sku\":\"DP-00279\",\"qty\":14}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00301; units requested: 8; reference 201.", "answer": "{\"sku\":\"BQ-00301\",\"qty\":8}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 438: invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 68 reports: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 447 requests product DP-00547 with quantity 10.", "answer": "{\"sku\":\"DP-00547\",\"qty\":10}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 251 requests product DP-00351 with quantity 38.", "answer": "{\"sku\":\"DP-00351\",\"qty\":38}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 188 concerns: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00353; units requested: 12; reference 253.", "answer": "{\"sku\":\"BQ-00353\",\"qty\":12}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 171; refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 318; invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 105: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 19 pieces, item CZ-00354, order 254.", "answer": "{\"sku\":\"CZ-00354\",\"qty\":19}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 200: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 320: 1 units of SKU AX-00420.", "answer": "{\"sku\":\"AX-00420\",\"qty\":1}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 255 reports: refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 188: 37 units of SKU AX-00288.", "answer": "{\"sku\":\"AX-00288\",\"qty\":37}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00145; units requested: 36; reference 45.", "answer": "{\"sku\":\"BQ-00145\",\"qty\":36}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 6: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00205; units requested: 16; reference 105.", "answer": "{\"sku\":\"BQ-00205\",\"qty\":16}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00325; units requested: 16; reference 225.", "answer": "{\"sku\":\"BQ-00325\",\"qty\":16}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 45 concerns: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 207 requests product DP-00307 with quantity 10.", "answer": "{\"sku\":\"DP-00307\",\"qty\":10}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 204: 29 units of SKU AX-00304.", "answer": "{\"sku\":\"AX-00304\",\"qty\":29}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00349; units requested: 24; reference 249.", "answer": "{\"sku\":\"BQ-00349\",\"qty\":24}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00397; units requested: 40; reference 297.", "answer": "{\"sku\":\"BQ-00397\",\"qty\":40}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 221; package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 60: 21 units of SKU AX-00160.", "answer": "{\"sku\":\"AX-00160\",\"qty\":21}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 238 concerns: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 326 concerns: parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 312; charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 380: 21 units of SKU AX-00480.", "answer": "{\"sku\":\"AX-00480\",\"qty\":21}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 336: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 52: 5 units of SKU AX-00152.", "answer": "{\"sku\":\"AX-00152\",\"qty\":5}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00425; units requested: 36; reference 325.", "answer": "{\"sku\":\"BQ-00425\",\"qty\":36}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 411; refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 183 concerns: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 298: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 452 reports: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00257; units requested: 20; reference 157.", "answer": "{\"sku\":\"BQ-00257\",\"qty\":20}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 21 reports: payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 65 reports: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 220; account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 75 requests product DP-00175 with quantity 6.", "answer": "{\"sku\":\"DP-00175\",\"qty\":6}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 392: 25 units of SKU AX-00492.", "answer": "{\"sku\":\"AX-00492\",\"qty\":25}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 18 reports: invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 76; account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 427 requests product DP-00527 with quantity 30.", "answer": "{\"sku\":\"DP-00527\",\"qty\":30}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 372: 5 units of SKU AX-00472.", "answer": "{\"sku\":\"AX-00472\",\"qty\":5}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00389; units requested: 24; reference 289.", "answer": "{\"sku\":\"BQ-00389\",\"qty\":24}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 7 pieces, item CZ-00318, order 218.", "answer": "{\"sku\":\"CZ-00318\",\"qty\":7}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 226; sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 376: 33 units of SKU AX-00476.", "answer": "{\"sku\":\"AX-00476\",\"qty\":33}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 134 concerns: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 23 pieces, item CZ-00166, order 66.", "answer": "{\"sku\":\"CZ-00166\",\"qty\":23}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 31 pieces, item CZ-00270, order 170.", "answer": "{\"sku\":\"CZ-00270\",\"qty\":31}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 384: 9 units of SKU AX-00484.", "answer": "{\"sku\":\"AX-00484\",\"qty\":9}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 35 pieces, item CZ-00122, order 22.", "answer": "{\"sku\":\"CZ-00122\",\"qty\":35}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00241; units requested: 28; reference 141.", "answer": "{\"sku\":\"BQ-00241\",\"qty\":28}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00413; units requested: 32; reference 313.", "answer": "{\"sku\":\"BQ-00413\",\"qty\":32}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 454 reports: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 26; parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 420 concerns: charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 449 reports: package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 468: 37 units of SKU AX-00568.", "answer": "{\"sku\":\"AX-00568\",\"qty\":37}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 451 reports: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 104: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 175 requests product DP-00275 with quantity 26.", "answer": "{\"sku\":\"DP-00275\",\"qty\":26}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 107 requests product DP-00207 with quantity 30.", "answer": "{\"sku\":\"DP-00207\",\"qty\":30}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 144: charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 139 concerns: login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00573; units requested: 32; reference 473.", "answer": "{\"sku\":\"BQ-00573\",\"qty\":32}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 19 pieces, item CZ-00154, order 54.", "answer": "{\"sku\":\"CZ-00154\",\"qty\":19}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 59: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 31 pieces, item CZ-00550, order 450.", "answer": "{\"sku\":\"CZ-00550\",\"qty\":31}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 68: 37 units of SKU AX-00168.", "answer": "{\"sku\":\"AX-00168\",\"qty\":37}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 53: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 153: payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 4: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00493; units requested: 32; reference 393.", "answer": "{\"sku\":\"BQ-00493\",\"qty\":32}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 39 pieces, item CZ-00254, order 154.", "answer": "{\"sku\":\"CZ-00254\",\"qty\":39}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 278 concerns: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 7 pieces, item CZ-00558, order 458.", "answer": "{\"sku\":\"CZ-00558\",\"qty\":7}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 304: 9 units of SKU AX-00404.", "answer": "{\"sku\":\"AX-00404\",\"qty\":9}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00245; units requested: 16; reference 145.", "answer": "{\"sku\":\"BQ-00245\",\"qty\":16}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 189 concerns: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00525; units requested: 16; reference 425.", "answer": "{\"sku\":\"BQ-00525\",\"qty\":16}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 472 concerns: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 7 pieces, item CZ-00278, order 178.", "answer": "{\"sku\":\"CZ-00278\",\"qty\":7}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 342: invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 293: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 259 reports: login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 27 pieces, item CZ-00418, order 318.", "answer": "{\"sku\":\"CZ-00418\",\"qty\":27}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 275; shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00137; units requested: 20; reference 37.", "answer": "{\"sku\":\"BQ-00137\",\"qty\":20}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 51: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 288: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 31 pieces, item CZ-00510, order 410.", "answer": "{\"sku\":\"CZ-00510\",\"qty\":31}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 4: 29 units of SKU AX-00104.", "answer": "{\"sku\":\"AX-00104\",\"qty\":29}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 37 concerns: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 15 pieces, item CZ-00542, order 442.", "answer": "{\"sku\":\"CZ-00542\",\"qty\":15}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 234 concerns: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00253; units requested: 32; reference 153.", "answer": "{\"sku\":\"BQ-00253\",\"qty\":32}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 67 reports: login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 411 requests product DP-00511 with quantity 38.", "answer": "{\"sku\":\"DP-00511\",\"qty\":38}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 315; refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 122; parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 468 concerns: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 104: 9 units of SKU AX-00204.", "answer": "{\"sku\":\"AX-00204\",\"qty\":9}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00233; units requested: 12; reference 133.", "answer": "{\"sku\":\"BQ-00233\",\"qty\":12}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 417; payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 267 requests product DP-00367 with quantity 30.", "answer": "{\"sku\":\"DP-00367\",\"qty\":30}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 289: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 464; delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00141; units requested: 8; reference 41.", "answer": "{\"sku\":\"BQ-00141\",\"qty\":8}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 20 reports: delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 296: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 408: 17 units of SKU AX-00508.", "answer": "{\"sku\":\"AX-00508\",\"qty\":17}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 291 requests product DP-00391 with quantity 38.", "answer": "{\"sku\":\"DP-00391\",\"qty\":38}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 61 reports: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 3 pieces, item CZ-00306, order 206.", "answer": "{\"sku\":\"CZ-00306\",\"qty\":3}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 120; charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 347 requests product DP-00447 with quantity 30.", "answer": "{\"sku\":\"DP-00447\",\"qty\":30}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00561; units requested: 28; reference 461.", "answer": "{\"sku\":\"BQ-00561\",\"qty\":28}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 95 concerns: shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 41 concerns: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 260 reports: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 307 requests product DP-00407 with quantity 30.", "answer": "{\"sku\":\"DP-00407\",\"qty\":30}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00485; units requested: 16; reference 385.", "answer": "{\"sku\":\"BQ-00485\",\"qty\":16}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 375 requests product DP-00475 with quantity 26.", "answer": "{\"sku\":\"DP-00475\",\"qty\":26}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 257 reports: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 244: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00505; units requested: 36; reference 405.", "answer": "{\"sku\":\"BQ-00505\",\"qty\":36}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 390: invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 29; package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 160: 1 units of SKU AX-00260.", "answer": "{\"sku\":\"AX-00260\",\"qty\":1}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 358 reports: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00377; units requested: 20; reference 277.", "answer": "{\"sku\":\"BQ-00377\",\"qty\":20}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 296: 33 units of SKU AX-00396.", "answer": "{\"sku\":\"AX-00396\",\"qty\":33}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 31 pieces, item CZ-00470, order 370.", "answer": "{\"sku\":\"CZ-00470\",\"qty\":31}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 111 reports: refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 151 requests product DP-00251 with quantity 18.", "answer": "{\"sku\":\"DP-00251\",\"qty\":18}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00429; units requested: 24; reference 329.", "answer": "{\"sku\":\"BQ-00429\",\"qty\":24}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 79; login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 249: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 284: 29 units of SKU AX-00384.", "answer": "{\"sku\":\"AX-00384\",\"qty\":29}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 459 requests product DP-00559 with quantity 14.", "answer": "{\"sku\":\"DP-00559\",\"qty\":14}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 146: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 232: 25 units of SKU AX-00332.", "answer": "{\"sku\":\"AX-00332\",\"qty\":25}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 363 requests product DP-00463 with quantity 22.", "answer": "{\"sku\":\"DP-00463\",\"qty\":22}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 199 requests product DP-00299 with quantity 34.", "answer": "{\"sku\":\"DP-00299\",\"qty\":34}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 1: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 424 concerns: account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 84 concerns: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 348: 37 units of SKU AX-00448.", "answer": "{\"sku\":\"AX-00448\",\"qty\":37}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 416: 33 units of SKU AX-00516.", "answer": "{\"sku\":\"AX-00516\",\"qty\":33}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 109 reports: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 246: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 27 pieces, item CZ-00458, order 358.", "answer": "{\"sku\":\"CZ-00458\",\"qty\":27}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 339: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 85 concerns: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 121; password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 470 concerns: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 7 requests product DP-00107 with quantity 10.", "answer": "{\"sku\":\"DP-00107\",\"qty\":10}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 276: 13 units of SKU AX-00376.", "answer": "{\"sku\":\"AX-00376\",\"qty\":13}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00125; units requested: 16; reference 25.", "answer": "{\"sku\":\"BQ-00125\",\"qty\":16}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 333 concerns: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00381; units requested: 8; reference 281.", "answer": "{\"sku\":\"BQ-00381\",\"qty\":8}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 23 pieces, item CZ-00326, order 226.", "answer": "{\"sku\":\"CZ-00326\",\"qty\":23}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 27 pieces, item CZ-00138, order 38.", "answer": "{\"sku\":\"CZ-00138\",\"qty\":27}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 127 requests product DP-00227 with quantity 10.", "answer": "{\"sku\":\"DP-00227\",\"qty\":10}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 461; package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 344: 9 units of SKU AX-00444.", "answer": "{\"sku\":\"AX-00444\",\"qty\":9}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00193; units requested: 12; reference 93.", "answer": "{\"sku\":\"BQ-00193\",\"qty\":12}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 419 requests product DP-00519 with quantity 14.", "answer": "{\"sku\":\"DP-00519\",\"qty\":14}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 71 requests product DP-00171 with quantity 18.", "answer": "{\"sku\":\"DP-00171\",\"qty\":18}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 463; login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00489; units requested: 4; reference 389.", "answer": "{\"sku\":\"BQ-00489\",\"qty\":4}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 440: delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 442: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 127; login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 55 requests product DP-00155 with quantity 26.", "answer": "{\"sku\":\"DP-00155\",\"qty\":26}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00273; units requested: 12; reference 173.", "answer": "{\"sku\":\"BQ-00273\",\"qty\":12}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 206 reports: parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 31; login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 50: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 31 pieces, item CZ-00430, order 330.", "answer": "{\"sku\":\"CZ-00430\",\"qty\":31}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 27 requests product DP-00127 with quantity 30.", "answer": "{\"sku\":\"DP-00127\",\"qty\":30}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 239 concerns: shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 210 reports: invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 362; parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 181 concerns: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 220: 21 units of SKU AX-00320.", "answer": "{\"sku\":\"AX-00320\",\"qty\":21}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 337: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 453 reports: payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 48: charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 97: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 208 reports: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 340: 21 units of SKU AX-00440.", "answer": "{\"sku\":\"AX-00440\",\"qty\":21}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 124; account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 242: parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 295: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 292: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 67 requests product DP-00167 with quantity 30.", "answer": "{\"sku\":\"DP-00167\",\"qty\":30}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 361; password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00209; units requested: 4; reference 109.", "answer": "{\"sku\":\"BQ-00209\",\"qty\":4}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 383 requests product DP-00483 with quantity 2.", "answer": "{\"sku\":\"DP-00483\",\"qty\":2}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 35 pieces, item CZ-00442, order 342.", "answer": "{\"sku\":\"CZ-00442\",\"qty\":35}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 35 pieces, item CZ-00242, order 142.", "answer": "{\"sku\":\"CZ-00242\",\"qty\":35}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00221; units requested: 8; reference 121.", "answer": "{\"sku\":\"BQ-00221\",\"qty\":8}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 263 reports: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00529; units requested: 4; reference 429.", "answer": "{\"sku\":\"BQ-00529\",\"qty\":4}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 169; password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 418; sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 39 pieces, item CZ-00134, order 34.", "answer": "{\"sku\":\"CZ-00134\",\"qty\":39}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 7 pieces, item CZ-00518, order 418.", "answer": "{\"sku\":\"CZ-00518\",\"qty\":7}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 30; invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 323; shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 36 concerns: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 3 requests product DP-00103 with quantity 22.", "answer": "{\"sku\":\"DP-00103\",\"qty\":22}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 463 requests product DP-00563 with quantity 2.", "answer": "{\"sku\":\"DP-00563\",\"qty\":2}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 352: 25 units of SKU AX-00452.", "answer": "{\"sku\":\"AX-00452\",\"qty\":25}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00217; units requested: 20; reference 117.", "answer": "{\"sku\":\"BQ-00217\",\"qty\":20}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 283 requests product DP-00383 with quantity 22.", "answer": "{\"sku\":\"DP-00383\",\"qty\":22}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 301 reports: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 31 pieces, item CZ-00110, order 10.", "answer": "{\"sku\":\"CZ-00110\",\"qty\":31}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 173; package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 396 reports: charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 115 reports: login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 3 pieces, item CZ-00226, order 126.", "answer": "{\"sku\":\"CZ-00226\",\"qty\":3}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00161; units requested: 28; reference 61.", "answer": "{\"sku\":\"BQ-00161\",\"qty\":28}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 231 concerns: refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 264: 9 units of SKU AX-00364.", "answer": "{\"sku\":\"AX-00364\",\"qty\":9}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 224; delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 475 requests product DP-00575 with quantity 6.", "answer": "{\"sku\":\"DP-00575\",\"qty\":6}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00565; units requested: 16; reference 465.", "answer": "{\"sku\":\"BQ-00565\",\"qty\":16}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 343 requests product DP-00443 with quantity 2.", "answer": "{\"sku\":\"DP-00443\",\"qty\":2}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 404 reports: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 159 requests product DP-00259 with quantity 34.", "answer": "{\"sku\":\"DP-00259\",\"qty\":34}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 35 pieces, item CZ-00202, order 102.", "answer": "{\"sku\":\"CZ-00202\",\"qty\":35}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 353 reports: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 376 concerns: account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 415; login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 216: 33 units of SKU AX-00316.", "answer": "{\"sku\":\"AX-00316\",\"qty\":33}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 11 pieces, item CZ-00410, order 310.", "answer": "{\"sku\":\"CZ-00410\",\"qty\":11}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 270; invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00509; units requested: 24; reference 409.", "answer": "{\"sku\":\"BQ-00509\",\"qty\":24}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 84: 29 units of SKU AX-00184.", "answer": "{\"sku\":\"AX-00184\",\"qty\":29}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 281 concerns: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 243: refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00437; units requested: 40; reference 337.", "answer": "{\"sku\":\"BQ-00437\",\"qty\":40}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00165; units requested: 16; reference 65.", "answer": "{\"sku\":\"BQ-00165\",\"qty\":16}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 64 reports: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 272: 25 units of SKU AX-00372.", "answer": "{\"sku\":\"AX-00372\",\"qty\":25}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 35; shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 248: 17 units of SKU AX-00348.", "answer": "{\"sku\":\"AX-00348\",\"qty\":17}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 43 requests product DP-00143 with quantity 22.", "answer": "{\"sku\":\"DP-00143\",\"qty\":22}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 3 pieces, item CZ-00546, order 446.", "answer": "{\"sku\":\"CZ-00546\",\"qty\":3}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 19 pieces, item CZ-00514, order 414.", "answer": "{\"sku\":\"CZ-00514\",\"qty\":19}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 123; refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00129; units requested: 4; reference 29.", "answer": "{\"sku\":\"BQ-00129\",\"qty\":4}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 15 pieces, item CZ-00222, order 122.", "answer": "{\"sku\":\"CZ-00222\",\"qty\":15}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 157 reports: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00285; units requested: 16; reference 185.", "answer": "{\"sku\":\"BQ-00285\",\"qty\":16}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 387: refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00109; units requested: 24; reference 9.", "answer": "{\"sku\":\"BQ-00109\",\"qty\":24}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 250: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00265; units requested: 36; reference 165.", "answer": "{\"sku\":\"BQ-00265\",\"qty\":36}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 23 pieces, item CZ-00406, order 306.", "answer": "{\"sku\":\"CZ-00406\",\"qty\":23}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 0: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 271 requests product DP-00371 with quantity 18.", "answer": "{\"sku\":\"DP-00371\",\"qty\":18}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 276 concerns: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 15 pieces, item CZ-00182, order 82.", "answer": "{\"sku\":\"CZ-00182\",\"qty\":15}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 191 concerns: shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 399 reports: refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 23 pieces, item CZ-00566, order 466.", "answer": "{\"sku\":\"CZ-00566\",\"qty\":23}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 428 concerns: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00481; units requested: 28; reference 381.", "answer": "{\"sku\":\"BQ-00481\",\"qty\":28}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 479 requests product DP-00579 with quantity 34.", "answer": "{\"sku\":\"DP-00579\",\"qty\":34}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 152: 25 units of SKU AX-00252.", "answer": "{\"sku\":\"AX-00252\",\"qty\":25}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 320; delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 54: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 259 requests product DP-00359 with quantity 14.", "answer": "{\"sku\":\"DP-00359\",\"qty\":14}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 91 concerns: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 256 reports: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 3 pieces, item CZ-00506, order 406.", "answer": "{\"sku\":\"CZ-00506\",\"qty\":3}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 368; delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00469; units requested: 24; reference 369.", "answer": "{\"sku\":\"BQ-00469\",\"qty\":24}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00101; units requested: 8; reference 1.", "answer": "{\"sku\":\"BQ-00101\",\"qty\":8}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 435: refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 80: 1 units of SKU AX-00180.", "answer": "{\"sku\":\"AX-00180\",\"qty\":1}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 35 pieces, item CZ-00322, order 222.", "answer": "{\"sku\":\"CZ-00322\",\"qty\":35}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00545; units requested: 36; reference 445.", "answer": "{\"sku\":\"BQ-00545\",\"qty\":36}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 479 concerns: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00557; units requested: 40; reference 457.", "answer": "{\"sku\":\"BQ-00557\",\"qty\":40}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 328 concerns: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 11 pieces, item CZ-00530, order 430.", "answer": "{\"sku\":\"CZ-00530\",\"qty\":11}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 384: charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 448 reports: account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 349 reports: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 7 pieces, item CZ-00158, order 58.", "answer": "{\"sku\":\"CZ-00158\",\"qty\":7}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 369; payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00497; units requested: 20; reference 397.", "answer": "{\"sku\":\"BQ-00497\",\"qty\":20}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00105; units requested: 36; reference 5.", "answer": "{\"sku\":\"BQ-00105\",\"qty\":36}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 283 concerns: login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 128: 17 units of SKU AX-00228.", "answer": "{\"sku\":\"AX-00228\",\"qty\":17}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 11 pieces, item CZ-00370, order 270.", "answer": "{\"sku\":\"CZ-00370\",\"qty\":11}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 239 requests product DP-00339 with quantity 34.", "answer": "{\"sku\":\"DP-00339\",\"qty\":34}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 396: 13 units of SKU AX-00496.", "answer": "{\"sku\":\"AX-00496\",\"qty\":13}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 195: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 197: package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 32: 25 units of SKU AX-00132.", "answer": "{\"sku\":\"AX-00132\",\"qty\":25}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 305 reports: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 458; parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 348 reports: charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 459; refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 321; payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 78; invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 56: delivery address wrong.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 24; charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 23 pieces, item CZ-00486, order 386.", "answer": "{\"sku\":\"CZ-00486\",\"qty\":23}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 3 pieces, item CZ-00146, order 46.", "answer": "{\"sku\":\"CZ-00146\",\"qty\":3}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 252: 5 units of SKU AX-00352.", "answer": "{\"sku\":\"AX-00352\",\"qty\":5}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 260: 21 units of SKU AX-00360.", "answer": "{\"sku\":\"AX-00360\",\"qty\":21}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 11 pieces, item CZ-00170, order 70.", "answer": "{\"sku\":\"CZ-00170\",\"qty\":11}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00521; units requested: 28; reference 421.", "answer": "{\"sku\":\"BQ-00521\",\"qty\":28}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 443: shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 204 reports: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 7 pieces, item CZ-00398, order 298.", "answer": "{\"sku\":\"CZ-00398\",\"qty\":7}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 219; refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 299: shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 382 concerns: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 19 pieces, item CZ-00234, order 134.", "answer": "{\"sku\":\"CZ-00234\",\"qty\":19}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 275 requests product DP-00375 with quantity 6.", "answer": "{\"sku\":\"DP-00375\",\"qty\":6}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 467; shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 381 concerns: payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 126; invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 476 concerns: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 135 requests product DP-00235 with quantity 26.", "answer": "{\"sku\":\"DP-00235\",\"qty\":26}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 73; password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 39 pieces, item CZ-00334, order 234.", "answer": "{\"sku\":\"CZ-00334\",\"qty\":39}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 329 concerns: package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 15 pieces, item CZ-00302, order 202.", "answer": "{\"sku\":\"CZ-00302\",\"qty\":15}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 255 requests product DP-00355 with quantity 26.", "answer": "{\"sku\":\"DP-00355\",\"qty\":26}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 335 requests product DP-00435 with quantity 26.", "answer": "{\"sku\":\"DP-00435\",\"qty\":26}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 108: 37 units of SKU AX-00208.", "answer": "{\"sku\":\"AX-00208\",\"qty\":37}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 161 reports: package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 367 requests product DP-00467 with quantity 10.", "answer": "{\"sku\":\"DP-00467\",\"qty\":10}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 290: parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 108 reports: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00133; units requested: 32; reference 33.", "answer": "{\"sku\":\"BQ-00133\",\"qty\":32}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 137 concerns: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 205 reports: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00261; units requested: 8; reference 161.", "answer": "{\"sku\":\"BQ-00261\",\"qty\":8}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 412; account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 471 concerns: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 117 reports: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 28: 37 units of SKU AX-00128.", "answer": "{\"sku\":\"AX-00128\",\"qty\":37}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 397 reports: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 393: payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 166 reports: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 11 pieces, item CZ-00450, order 350.", "answer": "{\"sku\":\"CZ-00450\",\"qty\":11}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 112 reports: account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 285 concerns: payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 352 reports: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 327 requests product DP-00427 with quantity 10.", "answer": "{\"sku\":\"DP-00427\",\"qty\":10}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 138 concerns: invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 194: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 236: 13 units of SKU AX-00336.", "answer": "{\"sku\":\"AX-00336\",\"qty\":13}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 83 requests product DP-00183 with quantity 22.", "answer": "{\"sku\":\"DP-00183\",\"qty\":22}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 477 concerns: payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 373 concerns: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 273; payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 87 requests product DP-00187 with quantity 10.", "answer": "{\"sku\":\"DP-00187\",\"qty\":10}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 39 pieces, item CZ-00534, order 434.", "answer": "{\"sku\":\"CZ-00534\",\"qty\":39}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 311 requests product DP-00411 with quantity 18.", "answer": "{\"sku\":\"DP-00411\",\"qty\":18}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 36: 13 units of SKU AX-00136.", "answer": "{\"sku\":\"AX-00136\",\"qty\":13}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 331 requests product DP-00431 with quantity 38.", "answer": "{\"sku\":\"DP-00431\",\"qty\":38}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00449; units requested: 4; reference 349.", "answer": "{\"sku\":\"BQ-00449\",\"qty\":4}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 465; payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 136: 33 units of SKU AX-00236.", "answer": "{\"sku\":\"AX-00236\",\"qty\":33}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 343: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 107: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00281; units requested: 28; reference 181.", "answer": "{\"sku\":\"BQ-00281\",\"qty\":28}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00289; units requested: 4; reference 189.", "answer": "{\"sku\":\"BQ-00289\",\"qty\":4}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 83; shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 23 pieces, item CZ-00286, order 186.", "answer": "{\"sku\":\"CZ-00286\",\"qty\":23}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 427 concerns: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 325 concerns: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 232 concerns: account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 457; password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00553; units requested: 12; reference 453.", "answer": "{\"sku\":\"BQ-00553\",\"qty\":12}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 51 requests product DP-00151 with quantity 38.", "answer": "{\"sku\":\"DP-00151\",\"qty\":38}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 469 concerns: password forgotten.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00537; units requested: 20; reference 437.", "answer": "{\"sku\":\"BQ-00537\",\"qty\":20}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 40: 1 units of SKU AX-00140.", "answer": "{\"sku\":\"AX-00140\",\"qty\":1}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 148: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 395 requests product DP-00495 with quantity 6.", "answer": "{\"sku\":\"DP-00495\",\"qty\":6}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 116: 13 units of SKU AX-00216.", "answer": "{\"sku\":\"AX-00216\",\"qty\":13}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 7 pieces, item CZ-00438, order 338.", "answer": "{\"sku\":\"CZ-00438\",\"qty\":7}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 23 reports: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 35 requests product DP-00135 with quantity 6.", "answer": "{\"sku\":\"DP-00135\",\"qty\":6}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 360: 1 units of SKU AX-00460.", "answer": "{\"sku\":\"AX-00460\",\"qty\":1}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 98: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 295 requests product DP-00395 with quantity 26.", "answer": "{\"sku\":\"DP-00395\",\"qty\":26}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 185 concerns: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 441: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 316: 13 units of SKU AX-00416.", "answer": "{\"sku\":\"AX-00416\",\"qty\":13}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00421; units requested: 8; reference 321.", "answer": "{\"sku\":\"BQ-00421\",\"qty\":8}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 424: 9 units of SKU AX-00524.", "answer": "{\"sku\":\"AX-00524\",\"qty\":9}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 150: invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 15 pieces, item CZ-00382, order 282.", "answer": "{\"sku\":\"CZ-00382\",\"qty\":15}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 40 concerns: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00293; units requested: 32; reference 193.", "answer": "{\"sku\":\"BQ-00293\",\"qty\":32}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 63 requests product DP-00163 with quantity 2.", "answer": "{\"sku\":\"DP-00163\",\"qty\":2}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 39 pieces, item CZ-00374, order 274.", "answer": "{\"sku\":\"CZ-00374\",\"qty\":39}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 235 concerns: login code missing.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00473; units requested: 12; reference 373.", "answer": "{\"sku\":\"BQ-00473\",\"qty\":12}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 22 reports: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 413; package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 135 concerns: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 309 reports: payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 176; delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00533; units requested: 32; reference 433.", "answer": "{\"sku\":\"BQ-00533\",\"qty\":32}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 183 requests product DP-00283 with quantity 2.", "answer": "{\"sku\":\"DP-00283\",\"qty\":2}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00149; units requested: 24; reference 49.", "answer": "{\"sku\":\"BQ-00149\",\"qty\":24}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 39 pieces, item CZ-00294, order 194.", "answer": "{\"sku\":\"CZ-00294\",\"qty\":39}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 47 concerns: shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 475 concerns: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 172; account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 11 pieces, item CZ-00490, order 390.", "answer": "{\"sku\":\"CZ-00490\",\"qty\":11}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 110 reports: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 79 requests product DP-00179 with quantity 34.", "answer": "{\"sku\":\"DP-00179\",\"qty\":34}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 462; invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 174; invoice incorrect.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 471 requests product DP-00571 with quantity 18.", "answer": "{\"sku\":\"DP-00571\",\"qty\":18}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 357 reports: payment declined.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00181; units requested: 8; reference 81.", "answer": "{\"sku\":\"BQ-00181\",\"qty\":8}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 412: 5 units of SKU AX-00512.", "answer": "{\"sku\":\"AX-00512\",\"qty\":5}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 388: 37 units of SKU AX-00488.", "answer": "{\"sku\":\"AX-00488\",\"qty\":37}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 3: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 445 reports: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 414; invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 142 concerns: sign-in blocked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00401; units requested: 28; reference 301.", "answer": "{\"sku\":\"BQ-00401\",\"qty\":28}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00329; units requested: 4; reference 229.", "answer": "{\"sku\":\"BQ-00329\",\"qty\":4}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 112: 25 units of SKU AX-00212.", "answer": "{\"sku\":\"AX-00212\",\"qty\":25}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 19 pieces, item CZ-00314, order 214.", "answer": "{\"sku\":\"CZ-00314\",\"qty\":19}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 473 concerns: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 359 reports: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 332: 5 units of SKU AX-00432.", "answer": "{\"sku\":\"AX-00432\",\"qty\":5}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 3 pieces, item CZ-00466, order 366.", "answer": "{\"sku\":\"CZ-00466\",\"qty\":3}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00201; units requested: 28; reference 101.", "answer": "{\"sku\":\"BQ-00201\",\"qty\":28}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 287 concerns: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nSKU BQ-00113; units requested: 12; reference 13.", "answer": "{\"sku\":\"BQ-00113\",\"qty\":12}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 308 reports: delivery address wrong.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nPlease pick 7 pieces, item CZ-00358, order 258.", "answer": "{\"sku\":\"CZ-00358\",\"qty\":7}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 119 reports: shipment damaged.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 111 requests product DP-00211 with quantity 18.", "answer": "{\"sku\":\"DP-00211\",\"qty\":18}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 47 requests product DP-00147 with quantity 10.", "answer": "{\"sku\":\"DP-00147\",\"qty\":10}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 15 reports: refund missing.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 16 reports: account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 216; charged twice.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 302 reports: parcel delayed.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 44: 29 units of SKU AX-00144.", "answer": "{\"sku\":\"AX-00144\",\"qty\":29}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 279 concerns: refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 456: 33 units of SKU AX-00556.", "answer": "{\"sku\":\"AX-00556\",\"qty\":33}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 379 concerns: login code missing.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 346: sign-in blocked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 52: account locked.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 377 concerns: package missing.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 71 reports: shipment damaged.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCustomer 114 reports: invoice incorrect.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nPlease handle case 125; package missing.", "answer": "AMBER"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 140: 21 units of SKU AX-00240.", "answer": "{\"sku\":\"AX-00240\",\"qty\":21}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nReference 379 requests product DP-00479 with quantity 14.", "answer": "{\"sku\":\"DP-00479\",\"qty\":14}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nOrder 12: 5 units of SKU AX-00112.", "answer": "{\"sku\":\"AX-00112\",\"qty\":5}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nTicket 57: payment declined.", "answer": "RUBY"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nCase 327 concerns: refund missing.", "answer": "RUBY"}

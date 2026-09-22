@@ -1,0 +1,12 @@
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10003: send item DP-10103, 22 units in total.", "answer": "{\"sku\":\"DP-10103\",\"qty\":22}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10002: send item CZ-10102, 15 units in total.", "answer": "{\"sku\":\"CZ-10102\",\"qty\":15}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10001, the customer says: password forgotten.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10004, the customer says: account locked.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10004: send item AX-10104, 29 units in total.", "answer": "{\"sku\":\"AX-10104\",\"qty\":29}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10003, the customer says: refund missing.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10005: send item BQ-10105, 36 units in total.", "answer": "{\"sku\":\"BQ-10105\",\"qty\":36}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10001: send item BQ-10101, 8 units in total.", "answer": "{\"sku\":\"BQ-10101\",\"qty\":8}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10002, the customer says: parcel delayed.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10000, the customer says: charged twice.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nRequest 10000: send item AX-10100, 1 units in total.", "answer": "{\"sku\":\"AX-10100\",\"qty\":1}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nFor request 10005, the customer says: package missing.", "answer": "AMBER"}

@@ -1,0 +1,36 @@
+{
+  "purpose": "Diagnostic only. Does not change official scores, recipes or validation selection.",
+  "rule": "Strip whitespace; optionally remove exactly one enclosing ``` or ```json fence; apply the unchanged exact JSON-key/value/type scorer.",
+  "models": {
+    "base": {
+      "strict_correct": 0,
+      "correct_after_removing_one_outer_fence": 48,
+      "total": 48
+    },
+    "triage": {
+      "strict_correct": 0,
+      "correct_after_removing_one_outer_fence": 0,
+      "total": 48
+    },
+    "extract": {
+      "strict_correct": 47,
+      "correct_after_removing_one_outer_fence": 47,
+      "total": 48
+    },
+    "linear-balanced": {
+      "strict_correct": 48,
+      "correct_after_removing_one_outer_fence": 48,
+      "total": 48
+    },
+    "linear-skewed": {
+      "strict_correct": 0,
+      "correct_after_removing_one_outer_fence": 0,
+      "total": 48
+    },
+    "ties": {
+      "strict_correct": 48,
+      "correct_after_removing_one_outer_fence": 48,
+      "total": 48
+    }
+  }
+}
