@@ -1,0 +1,11 @@
+dtype: float32
+merge_method: linear
+models:
+- model: /tmp/merge-models-zbsvx6bs/parent-triage
+  parameters:
+    weight: 0.5
+- model: /tmp/merge-models-zbsvx6bs/parent-extract
+  parameters:
+    weight: 0.5
+parameters:
+  normalize: true

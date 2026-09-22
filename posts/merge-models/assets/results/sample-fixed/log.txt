@@ -1,0 +1,25 @@
+Requesting machine…
+Startup evidence (allocation_intent); provider unknown; logs unavailable; cause unknown
+Machine allocated
+Startup evidence (allocation_recorded); provider unknown; logs unavailable; cause unknown
+Waiting for machine agent…
+Startup evidence (poll); provider creating; logs unavailable; cause unknown
+Waiting for machine agent… provider reports creating; container startup unconfirmed
+Startup evidence (poll); provider creating; logs unavailable; cause unknown
+Waiting for machine agent… provider reports creating; container startup unconfirmed
+Startup evidence (poll); provider creating; logs unavailable; cause unknown
+Waiting for machine agent… provider reports creating; container startup unconfirmed
+Startup evidence (poll); provider creating; logs unavailable; cause unknown
+Waiting for machine agent… provider reports creating; container startup unconfirmed
+Startup evidence (poll); provider creating; logs unavailable; cause unknown
+Waiting for machine agent… provider reports creating; container startup unconfirmed
+Startup evidence (poll); provider creating; logs unavailable; cause unknown
+Waiting for machine agent… provider reports creating; container startup unconfirmed
+Startup evidence (accepted_hello); provider unknown; logs unavailable; cause unknown
+Machine agent connected
+Fetching payload…
+Payload fetched
+Installing dependencies…
+Dependency install failed
+Confirming machine cleanup…
+Machine cleanup confirmed

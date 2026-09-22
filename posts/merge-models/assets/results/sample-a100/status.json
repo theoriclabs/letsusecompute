@@ -1,0 +1,139 @@
+{
+  "id": "run_c1f3785b58bc63a3daa1873bba764d4a",
+  "status": "succeeded",
+  "machine_id": "m_9f291cc1e2a34ff4afce91d1e2385721",
+  "gpu_sku": "A100-PCIe-80GB",
+  "gpu_count": 1,
+  "provider": "runpod",
+  "created_at": "2026-09-22T02:42:43.167+00:00",
+  "started_at": "2026-09-22T02:44:33.628+00:00",
+  "ended_at": "2026-09-22T02:48:45.028+00:00",
+  "timeout_seconds": 1800,
+  "exit_code": 0,
+  "child_exit_code": 0,
+  "execution_timing": {
+    "boundary": "supervisor_monitor_after_spawn",
+    "started_at": "2026-09-22T02:44:33.493868Z",
+    "elapsed_ms": 119498,
+    "timeout_seconds": 1800,
+    "timeout_triggered": false
+  },
+  "billing": {
+    "provider_rate_cents_per_hour": 145,
+    "boot_minutes": 1,
+    "run_minutes": 5,
+    "termination_minutes": 0,
+    "billed_minutes": 6,
+    "provider_cost_cents": 15,
+    "platform_fee_cents": 1,
+    "total_debit_cents": 16,
+    "hold_cents": 131
+  },
+  "error": null,
+  "result": {
+    "inline": {
+      "gpu": "NVIDIA A100 80GB PCIe",
+      "base": "Qwen/Qwen3-0.6B",
+      "epochs": 1,
+      "sample": true,
+      "scores": {
+        "base": {
+          "triage": {
+            "total": 6,
+            "correct": 0
+          },
+          "extract": {
+            "total": 6,
+            "correct": 0
+          }
+        },
+        "ties": {
+          "triage": {
+            "total": 6,
+            "correct": 2
+          },
+          "extract": {
+            "total": 6,
+            "correct": 6
+          }
+        },
+        "triage": {
+          "triage": {
+            "total": 6,
+            "correct": 2
+          },
+          "extract": {
+            "total": 6,
+            "correct": 6
+          }
+        },
+        "extract": {
+          "triage": {
+            "total": 6,
+            "correct": 0
+          },
+          "extract": {
+            "total": 6,
+            "correct": 6
+          }
+        },
+        "linear-skewed": {
+          "triage": {
+            "total": 6,
+            "correct": 2
+          },
+          "extract": {
+            "total": 6,
+            "correct": 6
+          }
+        },
+        "linear-balanced": {
+          "triage": {
+            "total": 6,
+            "correct": 2
+          },
+          "extract": {
+            "total": 6,
+            "correct": 6
+          }
+        }
+      },
+      "hub_repo": null,
+      "revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+      "versions": {
+        "peft": "0.15.2",
+        "torch": "2.5.1+cu124",
+        "mergekit": "0.1.4",
+        "accelerate": "1.6.0",
+        "transformers": "4.51.3",
+        "huggingface_hub": "0.30.2"
+      },
+      "artifacts": [
+        {
+          "kind": "output",
+          "name": "qwen-merge-experiment",
+          "version": 1,
+          "artifact_id": "artifact_cdbccd60e1807b21af78a29eca64aea3"
+        }
+      ],
+      "data_sha256": {
+        "test": "ef8408791227b84d9b30ed266380eb1682bc6ba5daec71114f55a1cb6bb426cb",
+        "train": "e34db303b458690f69a11ce548468375b5b19cfee2947f036fdec2ac22ac6fbe",
+        "validation": "c86bd5ab7193b504fa9d156023f440261e431a4e4fe08d8a4cf27f6d6d2b3dde"
+      },
+      "base_parameters": 596049920,
+      "elapsed_seconds": 114.57043743133545,
+      "merge_reload_ok": true,
+      "peak_gpu_memory_bytes": 3891317248,
+      "selected_by_validation": "linear-balanced"
+    }
+  },
+  "budget_id": null,
+  "artifact_persistence": {
+    "status": "completed",
+    "artifact_count": 1
+  },
+  "result_persistence": {
+    "status": "completed"
+  }
+}

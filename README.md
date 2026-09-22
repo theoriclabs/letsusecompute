@@ -6,6 +6,7 @@ One repo for the site and the training files. Each post is a folder under `posts
 
 | Post | Guide | Code |
 |---|---|---|
+| Merge two models | [letsusecompute.com/posts/merge-models](https://letsusecompute.com/posts/merge-models) | [`posts/merge-models`](posts/merge-models) |
 | Chess transformer | [letsusecompute.com/posts/chess-transformer](https://letsusecompute.com/posts/chess-transformer) | [`posts/chess-transformer`](posts/chess-transformer) |
 | Doom + Pong: a Jev-inspired experiment | [letsusecompute.com/posts/jev-games](https://letsusecompute.com/posts/jev-games) | [Pong](posts/jev-games) · [Doom](posts/jev-doom) |
 | Text compressor | [letsusecompute.com/posts/text-compressor](https://letsusecompute.com/posts/text-compressor) | [`posts/text-compressor`](posts/text-compressor) |

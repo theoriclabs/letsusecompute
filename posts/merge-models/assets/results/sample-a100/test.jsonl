@@ -1,0 +1,12 @@
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nDispatch note 20003: product code DP-20103; ship 22 pieces.", "answer": "{\"sku\":\"DP-20103\",\"qty\":22}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nFor order 20002, the requested quantity is 15 and the SKU is CZ-20102.", "answer": "{\"sku\":\"CZ-20102\",\"qty\":15}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nNew support request #20001 \u2014 password forgotten. Please assign it.", "answer": "JADE"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nNew support request #20004 \u2014 account locked. Please assign it.", "answer": "JADE"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nFor order 20004, the requested quantity is 29 and the SKU is AX-20104.", "answer": "{\"sku\":\"AX-20104\",\"qty\":29}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nNew support request #20003 \u2014 refund missing. Please assign it.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nDispatch note 20005: product code BQ-20105; ship 36 pieces.", "answer": "{\"sku\":\"BQ-20105\",\"qty\":36}"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nDispatch note 20001: product code BQ-20101; ship 8 pieces.", "answer": "{\"sku\":\"BQ-20101\",\"qty\":8}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nNew support request #20002 \u2014 parcel delayed. Please assign it.", "answer": "AMBER"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nNew support request #20000 \u2014 charged twice. Please assign it.", "answer": "RUBY"}
+{"skill": "extract", "prompt": "Extract the order. Reply with only JSON containing sku (string) and qty (integer).\nFor order 20000, the requested quantity is 1 and the SKU is AX-20100.", "answer": "{\"sku\":\"AX-20100\",\"qty\":1}"}
+{"skill": "triage", "prompt": "Assign the support queue. Reply with only the queue code.\nNew support request #20005 \u2014 package missing. Please assign it.", "answer": "AMBER"}

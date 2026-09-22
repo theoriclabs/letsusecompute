@@ -1,0 +1,44 @@
+{
+  "run_id": "run_c1f3785b58bc63a3daa1873bba764d4a",
+  "provider": "runpod",
+  "gpu_sku": "A100-PCIe-80GB",
+  "machine_id": "m_9f291cc1e2a34ff4afce91d1e2385721",
+  "locked_rate_cents_per_hour": 145,
+  "hold_cents": 131,
+  "idempotency_key": "ac9a713e-154f-4982-82b4-1a438ff6da04",
+  "status": "succeeded",
+  "error": null,
+  "machine_started_at": "2026-09-22T02:44:33.628+00:00",
+  "machine_terminated_at": "2026-09-22T02:48:46.708+00:00",
+  "lines": [
+    {
+      "kind": "boot_provider_usage",
+      "minutes": 1,
+      "cents": 2
+    },
+    {
+      "kind": "run_provider_usage",
+      "minutes": 5,
+      "cents": 13
+    },
+    {
+      "kind": "platform_fee",
+      "minutes": null,
+      "cents": 1
+    }
+  ],
+  "provider_cost_cents": 15,
+  "platform_fee_cents": 1,
+  "total_debit_cents": 16,
+  "fee_note": "Fee is a flat 7.5% of provider usage.",
+  "settlement": {
+    "status": "final",
+    "finalized_at": "2026-09-22T02:48:42.972+00:00"
+  },
+  "cleanup": {
+    "status": "confirmed",
+    "verified_at": "2026-09-22T02:48:46.708+00:00",
+    "evidence": "provider_absent"
+  },
+  "next_poll_after_ms": null
+}

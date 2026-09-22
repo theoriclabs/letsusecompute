@@ -1,0 +1,44 @@
+{
+  "run_id": "run_4c6f2bfd64c1433347d58a61c3e56d7a",
+  "provider": "vastai",
+  "gpu_sku": "RTX-3090",
+  "machine_id": "m_330ad9970a6e4dcfa3a6fcaa79048e14",
+  "locked_rate_cents_per_hour": 15,
+  "hold_cents": 14,
+  "idempotency_key": "3fe0c387-7bd5-4217-be63-48db76a84481",
+  "status": "cancelled",
+  "error": null,
+  "machine_started_at": null,
+  "machine_terminated_at": "2026-09-22T02:42:14.295+00:00",
+  "lines": [
+    {
+      "kind": "boot_provider_usage",
+      "minutes": 4,
+      "cents": 1
+    },
+    {
+      "kind": "run_provider_usage",
+      "minutes": 7,
+      "cents": 2
+    },
+    {
+      "kind": "termination_provider_usage",
+      "minutes": 1,
+      "cents": 0
+    }
+  ],
+  "provider_cost_cents": 3,
+  "platform_fee_cents": 0,
+  "total_debit_cents": 3,
+  "fee_note": "Fee is a flat 7.5% of provider usage.",
+  "settlement": {
+    "status": "final",
+    "finalized_at": "2026-09-22T02:42:36.746+00:00"
+  },
+  "cleanup": {
+    "status": "confirmed",
+    "verified_at": "2026-09-22T02:42:14.295+00:00",
+    "evidence": "provider_absent"
+  },
+  "next_poll_after_ms": null
+}

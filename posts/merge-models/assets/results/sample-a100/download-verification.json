@@ -1,0 +1,13 @@
+{
+  "run_id": "run_c1f3785b58bc63a3daa1873bba764d4a",
+  "artifact_id": "artifact_cdbccd60e1807b21af78a29eca64aea3",
+  "all_files_verified": 35,
+  "large_files": [
+    {
+      "path": "best-merge/model.safetensors",
+      "size_bytes": 1192135096,
+      "sha256": "030706b23ba50e740f266f0e909f930d08c553b150b4a8d236615b5805d1df74",
+      "verification": "downloaded bytes streamed through FIFO; not retained locally"
+    }
+  ]
+}
