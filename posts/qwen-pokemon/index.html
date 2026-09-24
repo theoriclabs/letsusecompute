@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Qwen learns Pokémon — Let’s use compute</title>
+<meta name="description" content="Qwen3-0.6B went from 23 to 179 wins out of 200 Pokémon Showdown battles by copying a scripted expert. The simulator installs inside the job. $2.07 all-in." />
+<meta property="og:title" content="Qwen learns Pokémon" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://letsusecompute.com/posts/qwen-pokemon/" />
+<link rel="canonical" href="https://letsusecompute.com/posts/qwen-pokemon/" />
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+section { margin-top: 2rem; }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+caption { text-align: left; color: var(--muted); padding-bottom: .75rem; }
+th, td { text-align: left; padding: .65rem .6rem; border-bottom: 1px solid var(--line); }
+td.n { text-align: right; }
+th[scope=row] { font-weight: normal; }
+.selected { background: color-mix(in srgb, var(--accent) 9%, var(--bg)); }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .88rem; }
+figcaption, .note { color: var(--muted); font-size: .95rem; }
+figure { margin: 1.5rem 0; }
+figure img { width: 100%; height: auto; background: #fff; border-radius: 6px; }
+code { overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+<main class="wrap">
+<p class="eyebrow"><a href="../../">Let’s use compute</a> / Pokémon</p>
+<h1>Qwen learns Pokémon</h1>
+<p class="byline">September 24, 2026</p>
+<p class="lede">A 0.6B model went from 23 wins to 179 out of 200 battles by copying a bot that knows a few rules.</p>
+<p>Here is a turn from a random battle, written the way our model reads it:</p>
+<pre><code>Your active: mimikyubusted (Ghost/Fairy), 51% HP.
+Opponent active: greedent (Normal), 95% HP.
+Options:
+1. Use shadowsneak: Ghost, physical, power 40 (same type), x0 vs greedent.
+2. Use playrough: Fairy, physical, power 90 (same type), x1 vs greedent, 90% accuracy.
+3. Use drainpunch: Fighting, physical, power 75, x2 vs greedent.
+4. Use swordsdance: Normal, status.
+5. Switch to alcremiesaltedcream: Fairy, 100% HP; …
+6. Switch to kommoo: Dragon/Fighting, 100% HP; …
+7. Switch to slaking: Normal, 100% HP; …
+Reply with the number of the best option.</code></pre>
+<p>Ghost moves do nothing to a Normal type. Fighting does double. The answer is <code>3</code>. On held-out turns like this, untuned <a href="https://huggingface.co/Qwen/Qwen3-0.6B">Qwen3-0.6B</a> picks the same option as our scripted teacher 18% of the time. After one LoRA fine-tune it agrees 96.7% of the time, and wins like it.</p>
+<p>The whole experiment, simulator included, ran as a single job on one H100. We spent <strong>$2.07</strong>.</p>
+
+<section>
+<h2>A battle server inside the job</h2>
+<p>The issue’s worry was setup: <a href="https://github.com/smogon/pokemon-showdown">Pokémon Showdown</a> is a Node.js server, and our training script is Python. Every run downloads Node, fetches a pinned Showdown commit, runs <code>npm install</code>, builds it and starts it on localhost. <a href="https://github.com/hsahovic/poke-env">poke-env</a> connects bots to it over a websocket.</p>
+<p>That took <strong>13 seconds</strong>. Installing PyTorch and friends into the image took 86. Training took 18 minutes.</p>
+<p>We play <code>gen9randombattle</code>: both sides get six random Pokémon with sensible movesets, so there is no team building. The opponent in every evaluation is poke-env’s max-damage bot, which always picks its highest base-power move.</p>
+</section>
+
+<section>
+<h2>A teacher with a few rules</h2>
+<p>poke-env ships <code>SimpleHeuristicsPlayer</code>: estimate damage from type matchups, stats and accuracy; set up stat boosts when safe; lay hazards early; switch out of terrible matchups. It is a few dozen lines of Python. We turned off terastallization so the teacher plays the same moves the model can.</p>
+<p>It played 3,000 battles against the max-damage bot, a random player and itself. Each decision became one prompt and one digit: 65,815 examples. We trained a rank-16 LoRA adapter on the answer digit only, one pass through the data.</p>
+<p>At play time the model never writes text. We read its scores for digits <code>1</code> through the number of options and take the highest. The untuned model gets exactly the same treatment, so it can’t lose on formatting.</p>
+</section>
+
+<section aria-labelledby="results-heading">
+<h2 id="results-heading">200 battles each</h2>
+<figure><img src="assets/win-rates.svg" alt="Win rate against the max-damage bot over 200 battles: random 13, untuned Qwen 23, fine-tuned Qwen 179, scripted expert 176." width="820" height="360" /><figcaption>Error bars are 95% intervals. Every battle uses fresh random teams.</figcaption></figure>
+<div class="table-wrap"><table><caption>Wins against the max-damage bot, gen9 random battles.</caption>
+<thead><tr><th scope="col">Player</th><th scope="col">Won</th><th scope="col">95% interval</th></tr></thead>
+<tbody>
+<tr><th scope="row">Random legal moves</th><td class="n">13/200</td><td class="n">4–11%</td></tr>
+<tr><th scope="row">Qwen3-0.6B, untuned</th><td class="n">23/200</td><td class="n">8–17%</td></tr>
+<tr class="selected"><th scope="row">Qwen3-0.6B, fine-tuned</th><td class="n">179/200</td><td class="n">84–93%</td></tr>
+<tr><th scope="row">Scripted expert (teacher)</th><td class="n">176/200</td><td class="n">83–92%</td></tr>
+</tbody></table></div>
+<p>The untuned model is barely better than random, even with every type multiplier spelled out in front of it.</p>
+<p>The fine-tuned model wins 179 and its teacher 176. Those intervals overlap almost entirely: the student caught up with the teacher, and 200 battles cannot say more. It also wins faster, needing 4,118 decisions for 200 battles where the untuned model needed 7,399.</p>
+</section>
+
+<section>
+<h2>What this does not show</h2>
+<p>Imitation copies the teacher, ceiling included. Our teacher is a short rule list, and we only tested against one weaker bot. Beating human players would take a stronger teacher or reinforcement learning on wins and losses. The issue listed a short GRPO pass as optional. We did not run it.</p>
+<p>The prompt also does some of the thinking: it states type multipliers and base stats, the same inputs the heuristic uses. A model that had to recall type charts from Pokémon names would be a harder, more interesting test.</p>
+</section>
+
+<section>
+<h2>Run it yourself</h2>
+<p>The full H100 run cost <strong>$1.78</strong> for 30 billed minutes. A pipeline check with 60 teacher battles cost <strong>$0.29</strong> and already moved the model from 2 to 14 wins out of 20.</p>
+<p>With Compute set up and <a href="train.py">train.py</a> downloaded:</p>
+<pre><code>compute run train.py::train --gpu runpod/H100-SXM --dry-run
+compute run train.py::train --gpu runpod/H100-SXM \
+  --args '{"sample": true}' --timeout 1800 --wait
+compute run train.py::train --gpu runpod/H100-SXM --timeout 3600 --wait</code></pre>
+<p>Review the quote before confirming spend. The <a href="README.md">reproduction guide</a> has the training settings, timings, publishing and artifact retrieval. There are also <a href="SKILL.md">instructions for an agent</a>.</p>
+<p><a href="https://github.com/theoriclabs/letsusecompute/tree/main/posts/qwen-pokemon">Code and results</a> · <a href="https://huggingface.co/theoriclabs/qwen3-0.6b-pokemon-showdown">Download the adapter</a></p>
+</section>
+</main>
+</body>
+</html>
