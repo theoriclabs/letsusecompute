@@ -50,7 +50,7 @@ Reply with the number of the best option.</code></pre>
 
 <section>
 <h2>A battle server inside the job</h2>
-<p>The issue’s worry was setup: <a href="https://github.com/smogon/pokemon-showdown">Pokémon Showdown</a> is a Node.js server, and our training script is Python. Every run downloads Node, fetches a pinned Showdown commit, runs <code>npm install</code>, builds it and starts it on localhost. <a href="https://github.com/hsahovic/poke-env">poke-env</a> connects bots to it over a websocket.</p>
+<p>The part we expected to hurt was setup. <a href="https://github.com/smogon/pokemon-showdown">Pokémon Showdown</a> is a Node.js server, and our training script is Python, running on a machine that exists only for this job. Every run downloads Node, fetches a pinned Showdown commit, runs <code>npm install</code>, builds it and starts it on localhost. <a href="https://github.com/hsahovic/poke-env">poke-env</a> connects bots to it over a websocket.</p>
 <p>That took <strong>13 seconds</strong>. Installing PyTorch and friends into the image took 86. Training took 18 minutes.</p>
 <p>We play <code>gen9randombattle</code>: both sides get six random Pokémon with sensible movesets, so there is no team building. The opponent in every evaluation is poke-env’s max-damage bot, which always picks its highest base-power move.</p>
 </section>
@@ -79,7 +79,7 @@ Reply with the number of the best option.</code></pre>
 
 <section>
 <h2>What this does not show</h2>
-<p>Imitation copies the teacher, ceiling included. Our teacher is a short rule list, and we only tested against one weaker bot. Beating human players would take a stronger teacher or reinforcement learning on wins and losses. The issue listed a short GRPO pass as optional. We did not run it.</p>
+<p>Imitation copies the teacher, ceiling included. Our teacher is a short rule list, and we only tested against one weaker bot. Beating human players would take a stronger teacher, or reinforcement learning on wins and losses. A short GRPO pass from this adapter is the obvious next step; we have not run it.</p>
 <p>The prompt also does some of the thinking: it states type multipliers and base stats, the same inputs the heuristic uses. A model that had to recall type charts from Pokémon names would be a harder, more interesting test.</p>
 </section>
 
