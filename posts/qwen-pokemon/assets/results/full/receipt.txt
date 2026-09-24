@@ -1,0 +1,19 @@
+run:              run_ce31cb05d8113aa66a61e80e5cfcabb0
+status:           failed
+machine:          runpod H100-SXM (m_6db55862765b4484b309433518cdcde6)
+locked rate:      $3.29/hr
+credit hold:      $4.72
+idempotency key:  947c3f2e-5690-43d4-a8df-be4bb5fbb88c
+machine started:  2026-09-24T01:50:44.621+00:00
+machine gone:     2026-09-24T02:18:58.000+00:00
+
+LINE                 MINUTES  AMOUNT
+boot_provider_usage  1 min    $0.05
+run_provider_usage   29 min   $1.60
+platform_fee         —        $0.13
+
+provider cost:    $1.65
+platform fee:     $0.13
+total debited:    $1.78
+
+Fee is a flat 7.5% of provider usage.

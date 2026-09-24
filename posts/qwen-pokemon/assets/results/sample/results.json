@@ -1,0 +1,148 @@
+{
+  "base": "Qwen/Qwen3-0.6B",
+  "revision": "c1899de289a04d12100db370d81485cdf75e47ca",
+  "format": "gen9randombattle",
+  "sample": true,
+  "showdown_commit": "a5df8274e85b0889bf2a9b3422a08b39732374fc",
+  "node": "v22.22.0",
+  "data_battles": 60,
+  "eval_battles": 20,
+  "epochs": 1,
+  "gpu": "NVIDIA H100 80GB HBM3",
+  "eval": {
+    "random": {
+      "won": 2,
+      "tied": 0,
+      "lost": 18,
+      "battles": 20,
+      "win_rate": 0.1,
+      "seconds": 0.8,
+      "win_rate_95ci": [
+        0.0279,
+        0.301
+      ]
+    },
+    "expert_no_tera": {
+      "won": 18,
+      "tied": 0,
+      "lost": 2,
+      "battles": 20,
+      "win_rate": 0.9,
+      "seconds": 0.7,
+      "win_rate_95ci": [
+        0.699,
+        0.9721
+      ]
+    },
+    "qwen_untuned": {
+      "won": 2,
+      "tied": 0,
+      "lost": 18,
+      "battles": 20,
+      "win_rate": 0.1,
+      "seconds": 6.1,
+      "win_rate_95ci": [
+        0.0279,
+        0.301
+      ],
+      "decisions": 682,
+      "decisions_per_second": 110.9
+    },
+    "qwen_sft": {
+      "won": 14,
+      "tied": 0,
+      "lost": 6,
+      "battles": 20,
+      "win_rate": 0.7,
+      "seconds": 4.3,
+      "win_rate_95ci": [
+        0.481,
+        0.8545
+      ],
+      "decisions": 423,
+      "decisions_per_second": 98.6
+    }
+  },
+  "setup": {
+    "node_seconds": 3.3,
+    "showdown_download_seconds": 2.0,
+    "npm_install_seconds": 3.8,
+    "build_seconds": 2.1,
+    "server_start_seconds": 3.0,
+    "total_seconds": 14.2
+  },
+  "elapsed_seconds": 74.8,
+  "data": {
+    "decisions": 1358,
+    "seconds": 4.8,
+    "answer_histogram": {
+      "1": 448,
+      "2": 310,
+      "3": 353,
+      "4": 225,
+      "5": 16,
+      "6": 3,
+      "7": 2,
+      "8": 1,
+      "9": 0
+    },
+    "switch_share": 0.1568
+  },
+  "model_download_seconds": 16.6,
+  "expert_agreement": {
+    "untuned": 0.2444,
+    "trained": 0.7556,
+    "reloaded": 0.7556
+  },
+  "training": {
+    "examples": 1223,
+    "holdout": 135,
+    "max_prompt_tokens": 498,
+    "trainable_parameters": 10092544,
+    "steps": 39,
+    "seconds": 20.6,
+    "losses": [
+      3.9258,
+      4.0031,
+      3.7132,
+      3.1657,
+      2.3088,
+      1.9938,
+      1.7406,
+      1.3858,
+      1.5805,
+      1.2964,
+      1.418,
+      1.4184,
+      1.2376,
+      1.4477,
+      1.3745,
+      1.0905,
+      1.2957,
+      1.0417,
+      1.0146,
+      0.7508,
+      1.0756,
+      1.1281,
+      1.4421,
+      1.0873,
+      1.3533,
+      0.7493,
+      0.6049,
+      0.8739,
+      0.7887,
+      0.8163,
+      0.7141,
+      1.2065,
+      0.571,
+      1.1152,
+      0.8844,
+      0.7429,
+      0.9265,
+      0.7042,
+      0.7716
+    ]
+  },
+  "reload_ok": true,
+  "hub_repo": null
+}

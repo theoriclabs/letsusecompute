@@ -189,3 +189,25 @@ Guide: https://letsusecompute.com/posts/chess-transformer
 #MachineLearning #GPUComputing
 
 ---
+
+## 2026-09-24 — Qwen learns Pokémon
+
+Draft (post when the live guide URL is the one you want people to open):
+
+---
+
+We taught a 0.6B model to play Pokémon.
+
+Qwen3-0.6B reads a Showdown random battle as text: its Pokémon, the opponent's, and a numbered list of moves and switches with type multipliers. It answers with one digit.
+
+Out of the box it wins 23 of 200 battles against a bot that always clicks its strongest move. We had poke-env's scripted heuristic player play 3,000 battles, turned its 65,815 decisions into training examples, and ran one pass of LoRA. Afterwards Qwen wins 179 of 200. The teacher wins 176. Same thing within the error bars: it learned to be its teacher, not better.
+
+The part we expected to hurt was setup. The Node.js battle server installs and starts inside the job in 13 seconds.
+
+One H100 job, $1.78. With the pipeline check, $2.07.
+
+Guide: https://letsusecompute.com/posts/qwen-pokemon
+
+#MachineLearning #GPUComputing
+
+---
