@@ -308,30 +308,46 @@ def play_games(n_games, evaluate, sims, rng, *, selfplay, opponent=None, temp_pl
 # Worker processes
 # --------------------------------------------------------------------------- #
 
-def _worker(wid, inq, outq, device, net_kwargs):
+def _pack(sd) -> bytes:
+    """State dict -> bytes. Tensors pickled by multiprocessing go through fd sharing, which needs the
+    parent's process authkey; plain bytes do not."""
+    import io
+    import torch
+    buf = io.BytesIO()
+    torch.save(sd, buf)
+    return buf.getvalue()
+
+
+def _unpack(b: bytes):
+    import io
+    import torch
+    return torch.load(io.BytesIO(b), map_location="cpu")
+
+
+def _worker(wid, conn, device, net_kwargs):
     import torch
     torch.set_num_threads(1)
     net = build_net(**net_kwargs).to(device).eval()
     ev = make_evaluator(net, device)
-    outq.put(("ready", wid))
     opponents = {"random": random_player, "one_ply": one_ply_player}
     base_net = None
+    conn.send(("ready", wid))
     while True:
-        msg = inq.get()
+        msg = conn.recv()
         if msg is None:
             return
         kind, sd, p = msg
-        net.load_state_dict(sd)
+        net.load_state_dict(_unpack(sd))
         rng = random.Random(p["seed"])
         t = time.time()
         if kind == "selfplay":
             ex, res, _ = play_games(p["games"], ev, p["sims"], rng, selfplay=True)
-            outq.put((wid, kind, p["opponent"] if "opponent" in p else None, ex, res, None, time.time() - t))
+            conn.send((wid, kind, None, ex, res, None, time.time() - t))
         else:
             if p["opponent"] == "iteration_0":
                 if base_net is None:
                     base_net = build_net(**net_kwargs).to(device).eval()
-                    base_net.load_state_dict(p["base_sd"])
+                    base_net.load_state_dict(_unpack(p["base_sd"]))
                     base_ev = make_evaluator(base_net, device)
                     base_rng = random.Random(p["seed"] + 1)
 
@@ -341,51 +357,61 @@ def _worker(wid, inq, outq, device, net_kwargs):
             else:
                 opp = opponents[p["opponent"]]
             _, res, mv = play_games(p["games"], ev, p["sims"], rng, selfplay=False, opponent=opp, record=True)
-            outq.put((wid, kind, p["opponent"], None, res, mv, time.time() - t))
+            conn.send((wid, kind, p["opponent"], None, res, mv, time.time() - t))
 
 
 class Pool:
-    """Persistent worker processes. Spawned, not forked: the parent may already hold a CUDA context."""
+    """Worker processes started as `python train.py --az-worker ...`, talking over a local socket.
+
+    Neither fork (the parent may already hold a CUDA context) nor multiprocessing's spawn (the Compute
+    runner imports this file under a generated module name that children cannot re-import) works here.
+    """
 
     def __init__(self, n, device, net_kwargs):
-        import multiprocessing as mp
-        ctx = mp.get_context("spawn")
-        self.inqs = [ctx.Queue() for _ in range(n)]
-        self.outq = ctx.Queue()
-        self.procs = [ctx.Process(target=_worker, args=(i, q, self.outq, device, net_kwargs), daemon=True)
-                      for i, q in enumerate(self.inqs)]
+        import sys
+        from multiprocessing.connection import Listener
+        key = os.urandom(16)
+        self.listener = Listener(("127.0.0.1", 0), authkey=key)
+        port = self.listener.address[1]
         t = time.time()
-        for p in self.procs:
-            p.start()
+        self.procs = [subprocess.Popen([sys.executable, os.path.abspath(__file__), "--az-worker", str(port),
+                                        key.hex(), str(i), device, json.dumps(net_kwargs)])
+                      for i in range(n)]
+        self.conns = [None] * n
         for _ in range(n):
-            msg = self._get(timeout=300)
-            assert msg[0] == "ready", msg
+            conn = self.listener.accept()
+            tag, wid = conn.recv()
+            assert tag == "ready"
+            self.conns[wid] = conn
         self.startup_seconds = round(time.time() - t, 1)
-
-    def _get(self, timeout=None):
-        import queue
-        deadline = time.time() + (timeout or 1e9)
-        while True:
-            try:
-                return self.outq.get(timeout=5)
-            except queue.Empty:
-                dead = [i for i, p in enumerate(self.procs) if not p.is_alive()]
-                if dead:
-                    raise RuntimeError(f"worker(s) {dead} died; see their traceback above")
-                if time.time() > deadline:
-                    raise TimeoutError("workers did not answer")
 
     def run(self, jobs):
         """jobs: list of (kind, state_dict, params). Returns results in completion order."""
+        from multiprocessing.connection import wait
         for i, job in enumerate(jobs):
-            self.inqs[i % len(self.inqs)].put(job)
-        return [self._get() for _ in jobs]
+            self.conns[i % len(self.conns)].send(job)
+        out = []
+        while len(out) < len(jobs):
+            ready = wait(self.conns, timeout=10)
+            for c in ready:
+                out.append(c.recv())
+            dead = [i for i, p in enumerate(self.procs) if p.poll() is not None]
+            if dead:
+                raise RuntimeError(f"worker(s) {dead} exited; see their traceback above")
+        return out
 
     def close(self):
-        for q in self.inqs:
-            q.put(None)
+        for c in self.conns:
+            try:
+                c.send(None)
+            except OSError:
+                pass
         for p in self.procs:
-            p.join(timeout=10)
+            try:
+                p.wait(timeout=10)
+            except subprocess.TimeoutExpired:
+                p.kill()
+        self.listener.close()
 
 
 # --------------------------------------------------------------------------- #
@@ -468,6 +494,7 @@ def _train(iterations=40, games_per_iter=768, sims=96, eval_games=100, eval_sims
         resume_info["resumed_after_iteration"] = ck["iteration"]
         print("RESUME", json.dumps(resume_info), flush=True)
 
+    base_bytes = _pack(base_sd)
     params_count = sum(p.numel() for p in net.parameters())
     run_meta = {"device": torch.cuda.get_device_name() if device == "cuda" else "cpu", "workers": workers,
                 "cpu_count": os.cpu_count(), "worker_startup_seconds": pool.startup_seconds, "parameters": params_count, "sims": sims, "eval_sims": eval_sims,
@@ -481,7 +508,7 @@ def _train(iterations=40, games_per_iter=768, sims=96, eval_games=100, eval_sims
         return {k: v.detach().cpu() for k, v in net.state_dict().items()}
 
     def evaluate_all(it):
-        sd = cpu_sd()
+        sd = _pack(cpu_sd())
         row = {}
         per = max(2, eval_games // workers // 2 * 2)
         for name in ("random", "one_ply", "iteration_0"):
@@ -491,7 +518,7 @@ def _train(iterations=40, games_per_iter=768, sims=96, eval_games=100, eval_sims
                 p = {"games": n, "sims": eval_sims, "seed": 10_000 * it + 100 * seed + OPP_SEED[name],
                      "opponent": name}
                 if name == "iteration_0":
-                    p["base_sd"] = base_sd
+                    p["base_sd"] = base_bytes
                 jobs.append(("eval", sd, p))
                 left -= n
                 seed += 1
@@ -527,7 +554,7 @@ def _train(iterations=40, games_per_iter=768, sims=96, eval_games=100, eval_sims
             break
         ti = time.time()
         # 1. self-play
-        sd = cpu_sd()
+        sd = _pack(cpu_sd())
         per = max(1, games_per_iter // workers)
         jobs = [("selfplay", sd, {"games": per, "sims": sims, "seed": 1_000_000 + 1000 * it + w})
                 for w in range(workers)]
@@ -646,6 +673,11 @@ def resume_and_push(run_id: str, iterations: int = 40, max_seconds: int = 0) -> 
 
 if __name__ == "__main__":
     import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "--az-worker":
+        from multiprocessing.connection import Client
+        _port, _key, _wid, _device, _kw = sys.argv[2:7]
+        _worker(int(_wid), Client(("127.0.0.1", int(_port)), authkey=bytes.fromhex(_key)), _device, json.loads(_kw))
+        sys.exit(0)
     # Local CPU smoke test: python train.py [resume_path]
     rp = sys.argv[1] if len(sys.argv) > 1 else None
     print(_train(iterations=2 if rp is None else 3, games_per_iter=24, sims=16, eval_games=8, eval_sims=16,
