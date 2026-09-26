@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AlphaZero in two runs — Let’s use compute</title>
+<meta name="description" content="A Connect Four AlphaZero trained from random weights on one H100. It went from 8% to 95% against classic rollout MCTS in 34 iterations, across a timeout and a resume. $4.01 all-in." />
+<meta property="og:title" content="AlphaZero in two runs" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://letsusecompute.com/posts/alphazero-small/" />
+<link rel="canonical" href="https://letsusecompute.com/posts/alphazero-small/" />
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="../../styles.css" />
+<style>
+:root { --net: #c45c26; --opp: #176b8b; --hole: color-mix(in srgb, var(--bg) 70%, var(--line)); }
+section { margin-top: 2rem; }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+caption { text-align: left; color: var(--muted); padding-bottom: .75rem; }
+th, td { text-align: left; padding: .6rem .5rem; border-bottom: 1px solid var(--line); }
+td.n { text-align: right; white-space: nowrap; }
+th[scope=row] { font-weight: normal; }
+.key { background: color-mix(in srgb, var(--accent) 9%, var(--bg)); }
+figcaption, .note { color: var(--muted); font-size: .95rem; }
+figure { margin: 1.5rem 0; }
+figure img { width: 100%; height: auto; background: #fff; border-radius: 6px; }
+code { overflow-wrap: anywhere; }
+pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .88rem; }
+.lab { border: 1px solid var(--line); border-radius: 12px; background: var(--card); padding: 1rem; }
+.controls { display: flex; flex-wrap: wrap; gap: .6rem; align-items: end; margin-bottom: .8rem; }
+label { display: block; font-size: .95rem; }
+select, button { font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); padding: .35rem .6rem; border-radius: 6px; }
+button { cursor: pointer; min-width: 2.6rem; }
+select:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.board { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; padding: 8px; background: #2d4f7c; border-radius: 10px; max-width: 360px; margin: .4rem auto; }
+.cell { aspect-ratio: 1; border-radius: 50%; background: var(--hole); }
+.cell.net { background: var(--net); }
+.cell.opp { background: #f2c230; }
+.cell.last { box-shadow: 0 0 0 3px var(--fg) inset; }
+.legend { display: flex; gap: 1rem; justify-content: center; font-size: .9rem; color: var(--muted); }
+.dot { display: inline-block; width: .8rem; height: .8rem; border-radius: 50%; vertical-align: -1px; margin-right: .3rem; }
+.status { text-align: center; font-size: .95rem; min-height: 1.5em; }
+.steps { display: flex; gap: .4rem; justify-content: center; align-items: center; flex-wrap: wrap; }
+input[type=range] { width: min(100%, 220px); accent-color: var(--accent); }
+</style>
+</head>
+<body>
+<main class="wrap">
+<p class="eyebrow"><a href="../../">Let’s use compute</a> / AlphaZero</p>
+<h1>AlphaZero in two runs</h1>
+<p class="byline">September 26, 2026</p>
+<p class="lede">A Connect Four player that started from random weights and learned only by playing itself. The first run was killed by its timeout. The second picked up where it stopped.</p>
+<p>At iteration 0 our network lost 58 of 64 games to classic Monte Carlo tree search, which picks each move by playing 1,000 random games to the end. Thirty-four training iterations later it won 60, drew 1 and lost 3. It never saw a human game or an opening book. We spent <strong>$4.01</strong>, a third of it on three runs that crashed before training started.</p>
+<figure><img src="assets/strength-curve.svg" alt="Score by training iteration. Against rollout MCTS it climbs from 8% at iteration 0 to 65% at iteration 10 and 95% at iteration 34. The raw policy without search reaches about 50 to 60% against the one-ply heuristic. Random and one-ply opponents are near 100% throughout." width="820" height="440" /><figcaption>64 games per point, alternating first move. A vertical line marks where the second run resumed.</figcaption></figure>
+
+<section>
+<h2>The loop</h2>
+<p>AlphaZero is three pieces in a cycle:</p>
+<ol>
+<li><strong>Search.</strong> Before each move, a tree search asks the network two questions about positions it explores: which moves look promising, and who is winning. It runs 64 of these simulations and counts how often it visited each move.</li>
+<li><strong>Self-play.</strong> The network plays itself, 768 games per iteration, choosing moves from those visit counts. Every position is saved with the search’s visit counts and, once the game ends, who won.</li>
+<li><strong>Training.</strong> The network learns to predict the search’s visit counts and the final result. A network that predicts better makes the next search stronger, which produces better training targets.</li>
+</ol>
+<p>Our network is small: five residual blocks, 374,810 parameters. One iteration takes about 75 seconds on an H100. Self-play is 17 seconds, split over 12 worker processes that each batch their games’ positions through the GPU at once. Training is 4 seconds. The rest is measuring strength.</p>
+</section>
+
+<section>
+<h2>Watch it play</h2>
+<p>Recorded games against the 1,000-playout searcher, early and late. Orange is our network, yellow is the searcher.</p>
+<div class="lab">
+<div class="controls">
+<label>Network<select id="iter"><option value="0">Iteration 0 (random weights)</option><option value="10">Iteration 10 (end of run 1)</option><option value="34" selected>Iteration 34 (end of run 2)</option></select></label>
+<label>Game<select id="game"><option value="0">1 — network moves first</option><option value="1">2 — searcher moves first</option><option value="2">3 — network moves first</option><option value="3">4 — searcher moves first</option></select></label>
+</div>
+<div class="board" id="board" role="img" aria-label="Connect Four board"></div>
+<div class="legend"><span><span class="dot" style="background:var(--net)"></span>AlphaZero network</span><span><span class="dot" style="background:#f2c230"></span>Rollout MCTS</span></div>
+<p class="status" id="status" role="status">Loading recorded games…</p>
+<div class="steps">
+<button id="first" aria-label="First move">⏮</button><button id="prev" aria-label="Previous move">◀</button>
+<input type="range" id="slider" min="0" max="0" value="0" aria-label="Move number" />
+<button id="next" aria-label="Next move">▶</button><button id="play" aria-label="Play">Play</button>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="results-heading">
+<h2 id="results-heading">What the numbers say</h2>
+<div class="table-wrap"><table><caption>Won–drawn–lost out of 64 games, from the network’s side.</caption>
+<thead><tr><th scope="col">Opponent</th><th scope="col">Iter 0</th><th scope="col">Iter 10</th><th scope="col">Iter 34</th></tr></thead>
+<tbody>
+<tr><th scope="row">Random mover</th><td class="n">63–0–1</td><td class="n">64–0–0</td><td class="n">64–0–0</td></tr>
+<tr><th scope="row">Win-or-block heuristic</th><td class="n">52–0–12</td><td class="n">61–1–2</td><td class="n">64–0–0</td></tr>
+<tr class="key"><th scope="row">Rollout MCTS, 1,000 playouts</th><td class="n">4–2–58</td><td class="n">40–3–21</td><td class="n">60–1–3</td></tr>
+<tr><th scope="row">Untrained network, same search</th><td class="n">34–9–21</td><td class="n">56–2–6</td><td class="n">62–2–0</td></tr>
+<tr><th scope="row">No search at all, vs win-or-block</th><td class="n">1–0–63</td><td class="n">39–1–24</td><td class="n">34–1–29</td></tr>
+</tbody></table></div>
+<p>We planned to measure progress against a random mover and a heuristic that takes a winning move when there is one and blocks the opponent’s when it must. Both turned out useless as yardsticks. Search does the heavy lifting against them: with 64 simulations, even the untrained network wins 81% against the heuristic. The rollout searcher is the opponent that shows learning.</p>
+<p>The last row is the network alone, playing its top-rated move with no search. It learned enough to beat the heuristic about half the time, then stalled. The heuristic punishes every missed block, and the raw network still misses some. With search, the same network won every game against it from iteration 18 on.</p>
+<p>Each point is 64 games, which carries roughly ±12 points of noise in the middle of the scale. The dip at iteration 12 is within that.</p>
+</section>
+
+<section>
+<h2>Surviving a timeout</h2>
+<p>Every Compute run has a kill limit. We set the first run’s to 15 minutes on purpose, because the question was whether a run that hits it loses its work.</p>
+<p>It doesn’t. After every iteration the job overwrites a checkpoint in Compute’s artifact folder: the network, the optimizer, the last eight iterations of self-play games, and the scores so far. The run was killed partway through iteration 11. The artifact it left held iteration 10, complete, and downloaded fine afterwards.</p>
+<p>Resuming was harder. Compute can’t hand one run’s artifact to the next as input. A job can fetch it itself by installing the Compute command-line tool and signing in with an API key stored as a secret. That puts a key to the whole account on a rented GPU, so we didn’t. Instead the first run also copied each checkpoint to Hugging Face. The second run downloaded it in under a second and carried on from iteration 11 with the same optimizer state and replay data. It stopped itself after 19 minutes, at iteration 34. We’ve asked Compute for a way to pass artifacts between runs.</p>
+</section>
+
+<section>
+<h2>Three crashes first</h2>
+<p>Self-play is slow Python tree search, so it runs in parallel worker processes. Getting those workers started on Compute took three tries and $1.36:</p>
+<ul>
+<li><strong>Forked workers</strong> couldn’t use the GPU, because the parent process had already touched CUDA.</li>
+<li><strong>Spawned workers</strong> couldn’t import the script. Compute loads <code>train.py</code> under a generated module name that a fresh process can’t find.</li>
+<li><strong>A hung start</strong> sat silent until the kill limit. The parent waited forever for workers that had already died.</li>
+</ul>
+<p>Now each worker is an ordinary <code>python train.py --az-worker</code> process connected to the parent over a local socket. If one dies, the parent prints why and exits.</p>
+</section>
+
+<section>
+<h2>Run it yourself</h2>
+<p>With Compute set up and <a href="train.py">train.py</a> downloaded, a three-iteration check costs about $0.35:</p>
+<pre><code>compute run train.py::train --gpu runpod/H100-SXM --dry-run
+compute run train.py::train --gpu runpod/H100-SXM \
+  --timeout 300 --args '{"sample": true}' --wait</code></pre>
+<p>The <a href="README.md">reproduction guide</a> covers the two-run training, both ways of resuming, and every setting. There are also <a href="SKILL.md">instructions for an agent</a>. We stopped at Connect Four: 9×9 Go needs roughly 25 times the search per game, and 19×19 is far beyond one GPU.</p>
+<p><a href="https://github.com/theoriclabs/letsusecompute/tree/main/posts/alphazero-small">Code and history</a> · <a href="https://huggingface.co/theoriclabs/alphazero-connect4">Download the network</a></p>
+</section>
+</main>
+<script>
+(function () {
+  const ROWS = 6, COLS = 7;
+  const boardEl = document.getElementById('board');
+  const status = document.getElementById('status');
+  const slider = document.getElementById('slider');
+  const iterSel = document.getElementById('iter');
+  const gameSel = document.getElementById('game');
+  const playBtn = document.getElementById('play');
+  const cells = [];
+  for (let r = ROWS - 1; r >= 0; r--) for (let c = 0; c < COLS; c++) {
+    const d = document.createElement('div'); d.className = 'cell'; boardEl.append(d); cells[r * COLS + c] = d;
+  }
+  let games = {}, moves = [], netFirst = true, timer = null;
+
+  function winnerAfter(board, r, c, p) {
+    const dirs = [[0,1],[1,0],[1,1],[1,-1]];
+    for (const [dr, dc] of dirs) {
+      let n = 1;
+      for (const s of [1, -1]) {
+        let rr = r + s*dr, cc = c + s*dc;
+        while (rr >= 0 && rr < ROWS && cc >= 0 && cc < COLS && board[rr*COLS+cc] === p) { n++; rr += s*dr; cc += s*dc; }
+      }
+      if (n >= 4) return true;
+    }
+    return false;
+  }
+  function render(k) {
+    const board = new Array(ROWS*COLS).fill(0), h = new Array(COLS).fill(0);
+    let last = -1, won = 0;
+    for (let i = 0; i < k; i++) {
+      const c = moves[i], r = h[c]++, p = (i % 2) + 1;
+      board[r*COLS+c] = p; last = r*COLS+c;
+      if (winnerAfter(board, r, c, p)) won = p;
+    }
+    const netP = netFirst ? 1 : 2;
+    cells.forEach((el, i) => {
+      el.className = 'cell' + (board[i] === 0 ? '' : board[i] === netP ? ' net' : ' opp') + (i === last ? ' last' : '');
+    });
+    slider.value = k;
+    let text = 'Move ' + k + ' of ' + moves.length + '.';
+    if (k === moves.length) {
+      if (won) text += won === netP ? ' The network wins.' : ' The searcher wins.';
+      else if (k === ROWS*COLS) text += ' Draw.';
+    }
+    status.textContent = text;
+  }
+  function load() {
+    stop();
+    const g = games[iterSel.value][Number(gameSel.value)];
+    moves = g; netFirst = Number(gameSel.value) % 2 === 0;
+    slider.max = moves.length; render(moves.length);
+  }
+  function stop() { if (timer) { clearInterval(timer); timer = null; playBtn.textContent = 'Play'; } }
+  playBtn.addEventListener('click', () => {
+    if (timer) return stop();
+    let k = Number(slider.value) >= moves.length ? 0 : Number(slider.value);
+    render(k); playBtn.textContent = 'Pause';
+    timer = setInterval(() => { k++; render(k); if (k >= moves.length) stop(); }, 450);
+  });
+  document.getElementById('first').addEventListener('click', () => { stop(); render(0); });
+  document.getElementById('prev').addEventListener('click', () => { stop(); render(Math.max(0, Number(slider.value) - 1)); });
+  document.getElementById('next').addEventListener('click', () => { stop(); render(Math.min(moves.length, Number(slider.value) + 1)); });
+  slider.addEventListener('input', () => { stop(); render(Number(slider.value)); });
+  iterSel.addEventListener('change', load); gameSel.addEventListener('change', load);
+  fetch('assets/results/history.json').then(r => { if (!r.ok) throw Error(r.status); return r.json(); }).then(d => {
+    for (const row of d.history) if (row.eval && row.eval.uct1000) games[row.iteration] = row.eval.uct1000.sample_games;
+    load();
+  }).catch(() => { status.textContent = 'Recorded games could not load. They are in assets/results/history.json.'; });
+})();
+</script>
+</body>
+</html>

@@ -6,6 +6,7 @@ One repo for the site and the training files. Each post is a folder under `posts
 
 | Post | Guide | Code |
 |---|---|---|
+| AlphaZero in two runs | [letsusecompute.com/posts/alphazero-small](https://letsusecompute.com/posts/alphazero-small) | [`posts/alphazero-small`](posts/alphazero-small) |
 | Qwen learns Pokémon | [letsusecompute.com/posts/qwen-pokemon](https://letsusecompute.com/posts/qwen-pokemon) | [`posts/qwen-pokemon`](posts/qwen-pokemon) |
 | Merge two models | [letsusecompute.com/posts/merge-models](https://letsusecompute.com/posts/merge-models) | [`posts/merge-models`](posts/merge-models) |
 | Chess transformer | [letsusecompute.com/posts/chess-transformer](https://letsusecompute.com/posts/chess-transformer) | [`posts/chess-transformer`](posts/chess-transformer) |
