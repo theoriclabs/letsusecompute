@@ -211,3 +211,25 @@ Guide: https://letsusecompute.com/posts/qwen-pokemon
 #MachineLearning #GPUComputing
 
 ---
+
+## 2026-09-26 — AlphaZero in two runs
+
+Draft (post when the live guide URL is the one you want people to open):
+
+---
+
+We trained AlphaZero on Connect Four, from random weights, on one H100.
+
+Self-play, tree search, a 375k-parameter network, nothing else. No human games, no opening book. At iteration 0 it lost 58 of 64 games to classic Monte Carlo tree search with 1,000 random playouts per move. After 34 iterations it won 60, drew 1, lost 3.
+
+We killed the first run with a 15-minute timeout on purpose. Its last checkpoint survived as a Compute artifact, and a second run picked up at iteration 11 with the same optimizer and replay data.
+
+The two easy yardsticks, a random mover and a win-or-block heuristic, were useless: search alone beats the heuristic 81% of the time with an untrained network. The harder opponent is where the learning shows.
+
+$4.01 all-in. $1.36 of that was three runs that crashed before training while we got parallel self-play workers to start.
+
+Guide: https://letsusecompute.com/posts/alphazero-small
+
+#MachineLearning #ReinforcementLearning #GPUComputing
+
+---

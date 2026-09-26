@@ -1,0 +1,120 @@
+== run_0411032f9c1f4dec867ce57b639ce949
+run:              run_0411032f9c1f4dec867ce57b639ce949
+status:           timeout
+machine:          runpod H100-SXM (m_00c015874cb645c495d6e29d53c3bc12)
+locked rate:      $3.29/hr
+credit hold:      $1.83
+idempotency key:  59c9af27-bd4a-4971-8cdc-2276185b3a7a
+machine started:  2026-09-26T07:48:11.557+00:00
+machine gone:     2026-09-26T08:03:28.649+00:00
+
+LINE                 MINUTES  AMOUNT
+boot_provider_usage  1 min    $0.05
+run_provider_usage   16 min   $0.88
+platform_fee         —        $0.07
+
+provider cost:    $0.93
+platform fee:     $0.07
+total debited:    $1.00
+
+Fee is a flat 7.5% of provider usage.
+== run_09f9460d561293e9727117af141f3da5
+run:              run_09f9460d561293e9727117af141f3da5
+status:           succeeded
+machine:          runpod H100-SXM (m_311e3f14b45d424babff552ea34309d3)
+locked rate:      $3.29/hr
+credit hold:      $2.66
+idempotency key:  f4705020-9d6e-44ee-9bb5-dbfa0c1f150a
+machine started:  2026-09-26T18:41:06.065+00:00
+machine gone:     2026-09-26T19:01:28.329+00:00
+
+LINE                 MINUTES  AMOUNT
+boot_provider_usage  1 min    $0.05
+run_provider_usage   21 min   $1.16
+platform_fee         —        $0.09
+
+provider cost:    $1.21
+platform fee:     $0.09
+total debited:    $1.30
+
+Fee is a flat 7.5% of provider usage.
+== run_081b9f42fad3142b04ff4cdd216aef44
+run:              run_081b9f42fad3142b04ff4cdd216aef44
+status:           succeeded
+machine:          runpod H100-SXM (m_6696c1b659f149918aac384992107699)
+locked rate:      $3.29/hr
+credit hold:      $0.95
+idempotency key:  25d336c0-1cad-4809-aca3-e7f36774bd44
+machine started:  2026-09-26T07:39:43.896+00:00
+machine gone:     2026-09-26T07:44:09.694+00:00
+
+LINE                 MINUTES  AMOUNT
+boot_provider_usage  1 min    $0.05
+run_provider_usage   5 min    $0.28
+platform_fee         —        $0.02
+
+provider cost:    $0.33
+platform fee:     $0.02
+total debited:    $0.35
+
+Fee is a flat 7.5% of provider usage.
+== run_b488118ffcfce223d3e4bd09dec57918
+run:              run_b488118ffcfce223d3e4bd09dec57918
+status:           timeout
+machine:          runpod H100-SXM (m_a0f910c5e85b4cefb6489c27d81fb188)
+locked rate:      $3.29/hr
+credit hold:      $1.12
+idempotency key:  9a7c8e4a-2e8b-446e-a753-971ef77b2828
+machine started:  2026-09-26T07:13:11.311+00:00
+machine gone:     2026-09-26T07:20:23.403+00:00
+
+LINE                 MINUTES  AMOUNT
+boot_provider_usage  1 min    $0.05
+run_provider_usage   8 min    $0.44
+platform_fee         —        $0.04
+
+provider cost:    $0.49
+platform fee:     $0.04
+total debited:    $0.53
+
+Fee is a flat 7.5% of provider usage.
+== run_46b03c1f4e4705613060129bf1e9dda4
+run:              run_46b03c1f4e4705613060129bf1e9dda4
+status:           failed
+machine:          runpod H100-SXM (m_9f8d021b84ea4c41adf7968b099feb26)
+locked rate:      $3.29/hr
+credit hold:      $1.36
+idempotency key:  cfa7e086-a3f7-43d0-8fad-dfc8a039cc2a
+machine started:  2026-09-26T07:23:02.719+00:00
+machine gone:     2026-09-26T07:23:11.224+00:00
+
+LINE                 MINUTES  AMOUNT
+boot_provider_usage  1 min    $0.05
+run_provider_usage   1 min    $0.06
+platform_fee         —        $0.01
+
+provider cost:    $0.11
+platform fee:     $0.01
+total debited:    $0.12
+
+Fee is a flat 7.5% of provider usage.
+== run_df1f3f37bb773e17b295f9980ffcc3d6
+run:              run_df1f3f37bb773e17b295f9980ffcc3d6
+status:           timeout
+machine:          runpod H100-SXM (m_03e36a9666924f87aee1d62a97e551db)
+locked rate:      $3.29/hr
+credit hold:      $1.36
+idempotency key:  8f7afe5c-dad3-4113-b4ce-d4fdcaaa39cd
+machine started:  2026-09-26T07:26:17.544+00:00
+machine gone:     2026-09-26T07:36:30.349+00:00
+
+LINE                 MINUTES  AMOUNT
+boot_provider_usage  1 min    $0.05
+run_provider_usage   11 min   $0.61
+platform_fee         —        $0.05
+
+provider cost:    $0.66
+platform fee:     $0.05
+total debited:    $0.71
+
+Fee is a flat 7.5% of provider usage.
