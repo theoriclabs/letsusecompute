@@ -552,7 +552,7 @@ def _hf_token() -> str:
 
 def _train(iterations=40, games_per_iter=768, sims=64, eval_games=64, eval_sims=64, train_steps=300,
            batch_size=512, window=8, max_seconds=None, resume_run=None, resume_path=None, resume_hub=False,
-           sample=False, workers=None, push=False, device=None):
+           sample=False, workers=None, push=False, device=None, eval_every=1):
     import numpy as np
     import torch
 
@@ -718,9 +718,9 @@ def _train(iterations=40, games_per_iter=768, sims=64, eval_games=64, eval_sims=
         net.eval()
         train_seconds = time.time() - tt
 
-        # 3. evaluate
+        # 3. evaluate (every eval_every iterations, and always on the last one)
         te = time.time()
-        ev = evaluate_all(it)
+        ev = evaluate_all(it) if (it % eval_every == 0 or it == iterations) else None
         row = {"iteration": it,
                "selfplay": {"games": len(winners), "positions": len(examples), "seconds": round(sp_seconds, 1),
                             "first_player_wins": winners.count(1), "second_player_wins": winners.count(2),
@@ -734,14 +734,15 @@ def _train(iterations=40, games_per_iter=768, sims=64, eval_games=64, eval_sims=
         history.append(row)
         # 4. checkpoint every iteration so a timeout loses at most one iteration
         save(it)
-        print("ITER", json.dumps({"iteration": it, "score": {n: e["score"] for n, e in ev.items()},
+        print("ITER", json.dumps({"iteration": it, "score": {n: e["score"] for n, e in ev.items()} if ev else None,
                                    "selfplay_s": row["selfplay"]["seconds"], "train_s": row["train"]["seconds"],
                                    "eval_s": row["eval_seconds"], "loss": [row["train"]["policy_loss"],
                                    row["train"]["value_loss"]], "elapsed": row["elapsed"]}), flush=True)
 
     pool.close()
-    last = history[-1]
-    summary = {"stop_reason": stop_reason, "last_iteration": last["iteration"],
+    last = next(r for r in reversed(history) if r["eval"])
+    summary = {"stop_reason": stop_reason, "last_iteration": history[-1]["iteration"],
+               "last_evaluated_iteration": last["iteration"],
                "last_scores": {n: e["score"] for n, e in last["eval"].items()},
                "elapsed_seconds": round(time.time() - t0, 1), "meta": run_meta, "hub_repo": None}
     if push:
@@ -749,20 +750,20 @@ def _train(iterations=40, games_per_iter=768, sims=64, eval_games=64, eval_sims=
         token = _hf_token()
         pub = Path("/tmp/alphazero-publish")
         pub.mkdir(exist_ok=True)
-        torch.save({"model": cpu_sd(), "net": net_kwargs, "iteration": last["iteration"]}, pub / "model.pt")
+        torch.save({"model": cpu_sd(), "net": net_kwargs, "iteration": history[-1]["iteration"]}, pub / "model.pt")
         shutil.copy2(out / "history.json", pub / "history.json")
         shutil.copy2(Path(__file__), pub / "train.py")
         (pub / "README.md").write_text(
             "---\nlicense: mit\ntags:\n- alphazero\n- connect-four\n- reinforcement-learning\n---\n"
             "# AlphaZero Connect Four, trained from scratch\n\n"
-            f"Residual policy-value network ({params_count:,} parameters) after {last['iteration']} "
+            f"Residual policy-value network ({params_count:,} parameters) after {history[-1]['iteration']} "
             "self-play iterations. Load with `build_net()` from `train.py`. Scores against a random mover, "
             "a one-ply win/block heuristic and the untrained network are in `history.json`.\n\n"
             f"Final-iteration scores (win = 1, draw = 0.5): `{json.dumps(summary['last_scores'])}`\n\n"
             "Guide: https://letsusecompute.com/posts/alphazero-small\n")
         api = HfApi(token=token)
         api.create_repo(HUB_REPO, exist_ok=True)
-        api.upload_folder(repo_id=HUB_REPO, folder_path=str(pub), commit_message=f"Iteration {last['iteration']}")
+        api.upload_folder(repo_id=HUB_REPO, folder_path=str(pub), commit_message=f"Iteration {history[-1]['iteration']}")
         summary["hub_repo"] = HUB_REPO
     print("RESULT", json.dumps(summary), flush=True)
     return summary
@@ -784,21 +785,23 @@ def train_and_push(iterations: int = 40, max_seconds: int = 0, sample: bool = Fa
 
 
 @app.function(gpu="runpod/H100-SXM", image=image, timeout=7200, secrets=[api_key])
-def resume(run_id: str, iterations: int = 40, max_seconds: int = 0) -> dict:
+def resume(run_id: str, iterations: int = 40, max_seconds: int = 0, eval_every: int = 1) -> dict:
     """Continue from run_id's latest checkpoint artifact."""
-    return _train(iterations=iterations, max_seconds=max_seconds or None, resume_run=run_id)
+    return _train(iterations=iterations, max_seconds=max_seconds or None, resume_run=run_id, eval_every=eval_every)
 
 
 @app.function(gpu="runpod/H100-SXM", image=hub_image, timeout=7200, secrets=[api_key, hf_secret])
-def resume_and_push(run_id: str, iterations: int = 40, max_seconds: int = 0) -> dict:
+def resume_and_push(run_id: str, iterations: int = 40, max_seconds: int = 0, eval_every: int = 1) -> dict:
     """Continue from run_id's checkpoint artifact; push checkpoints and the final network."""
-    return _train(iterations=iterations, max_seconds=max_seconds or None, resume_run=run_id, push=True)
+    return _train(iterations=iterations, max_seconds=max_seconds or None, resume_run=run_id, push=True,
+                  eval_every=eval_every)
 
 
 @app.function(gpu="runpod/H100-SXM", image=hub_image, timeout=7200, secrets=[hf_secret])
-def resume_from_hub(iterations: int = 40, max_seconds: int = 0) -> dict:
+def resume_from_hub(iterations: int = 40, max_seconds: int = 0, eval_every: int = 1) -> dict:
     """Continue from the checkpoint a *_and_push run left on Hugging Face (no Compute API key needed)."""
-    return _train(iterations=iterations, max_seconds=max_seconds or None, resume_hub=True, push=True)
+    return _train(iterations=iterations, max_seconds=max_seconds or None, resume_hub=True, push=True,
+                  eval_every=eval_every)
 
 
 if __name__ == "__main__":
