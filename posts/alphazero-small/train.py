@@ -32,7 +32,13 @@ hf_secret = compute.Secret.from_name("hf")
 
 ROWS, COLS = 6, 7
 ARTIFACT = "alphazero-c4"
-OPP_SEED = {"random": 11, "one_ply": 23, "iteration_0": 37}
+# Evaluation, each from the network's side, alternating who moves first:
+#   random, one_ply    : network + MCTS vs a random mover / a win-or-block heuristic (the issue's yardsticks)
+#   uct1000            : network + MCTS vs classic rollout MCTS with 1,000 random playouts per move
+#   iteration_0        : network + MCTS vs the untrained network with the same search
+#   policy_vs_one_ply  : the network's raw policy, no search, vs the win-or-block heuristic
+OPPONENTS = ("random", "one_ply", "uct1000", "iteration_0", "policy_vs_one_ply")
+OPP_SEED = {"random": 11, "one_ply": 23, "uct1000": 29, "iteration_0": 37, "policy_vs_one_ply": 41}
 HUB_REPO = "theoriclabs/alphazero-connect4"
 
 
@@ -108,6 +114,44 @@ def one_ply_player(s: State, rng: random.Random) -> int:
         if s.wins_with(c, 3 - s.to_move):
             return c
     return rng.choice(legal)
+
+
+class _UNode:
+    __slots__ = ("N", "W", "children", "untried", "move", "mover", "parent")
+
+    def __init__(self, s: State, move, mover, parent):
+        self.N, self.W, self.children = 0, 0.0, []
+        self.untried = [] if s.winner else s.legal()
+        self.move, self.mover, self.parent = move, mover, parent
+
+
+def uct_player(iterations: int):
+    """Classic MCTS with uniformly random rollouts and no network: a fixed, stronger yardstick."""
+
+    def choose(state: State, rng: random.Random) -> int:
+        root = _UNode(state, None, 3 - state.to_move, None)
+        for _ in range(iterations):
+            node, s = root, state.copy()
+            while not node.untried and node.children:
+                log_n = math.log(node.N)
+                node = max(node.children, key=lambda c: c.W / c.N + 1.4 * math.sqrt(log_n / c.N))
+                s.play(node.move)
+            if node.untried:
+                a = node.untried.pop(rng.randrange(len(node.untried)))
+                mover = s.to_move
+                s.play(a)
+                child = _UNode(s, a, mover, node)
+                node.children.append(child)
+                node = child
+            while not s.winner:
+                s.play(rng.choice(s.legal()))
+            while node is not None:
+                node.N += 1
+                node.W += 0.5 if s.winner == 3 else (1.0 if s.winner == node.mover else 0.0)
+                node = node.parent
+        return max(root.children, key=lambda c: c.N).move
+
+    return choose
 
 
 # --------------------------------------------------------------------------- #
@@ -252,7 +296,8 @@ def _backup(path, v):
         node.W[a] += v
 
 
-def play_games(n_games, evaluate, sims, rng, *, selfplay, opponent=None, temp_plies=8, record=False):
+def play_games(n_games, evaluate, sims, rng, *, selfplay, opponent=None, temp_plies=8, record=False,
+               policy_only=False):
     """Self-play (both sides MCTS, with noise and temperature) or eval (MCTS vs opponent, greedy).
 
     In eval, the network moves first in even-numbered games.
@@ -277,7 +322,13 @@ def play_games(n_games, evaluate, sims, rng, *, selfplay, opponent=None, temp_pl
             active = [i for i in active if not games[i].winner and games[i].to_move == net_side[i]]
             if not active:
                 continue
-        counts = mcts([games[i] for i in active], evaluate, sims, rng, noise=selfplay)
+        if policy_only:  # the network's raw move choice, no search
+            logits, _ = evaluate([games[i] for i in active])
+            counts = [[(1 + lg[c]) if games[i].heights[c] < ROWS else -1e9 for c in range(COLS)]
+                      for i, lg in zip(active, logits)]
+            counts = [[x - min(row) for x in row] for row in counts]
+        else:
+            counts = mcts([games[i] for i in active], evaluate, sims, rng, noise=selfplay)
         for i, N in zip(active, counts):
             g = games[i]
             total = sum(N)
@@ -329,7 +380,8 @@ def _worker(wid, conn, device, net_kwargs):
     torch.set_num_threads(1)
     net = build_net(**net_kwargs).to(device).eval()
     ev = make_evaluator(net, device)
-    opponents = {"random": random_player, "one_ply": one_ply_player}
+    opponents = {"random": random_player, "one_ply": one_ply_player, "uct1000": uct_player(1000),
+                 "policy_vs_one_ply": one_ply_player}
     base_net = None
     conn.send(("ready", wid))
     while True:
@@ -356,7 +408,8 @@ def _worker(wid, conn, device, net_kwargs):
                     return max(range(COLS), key=lambda c: (N[c], base_rng.random()))
             else:
                 opp = opponents[p["opponent"]]
-            _, res, mv = play_games(p["games"], ev, p["sims"], rng, selfplay=False, opponent=opp, record=True)
+            _, res, mv = play_games(p["games"], ev, p["sims"], rng, selfplay=False, opponent=opp, record=True,
+                                    policy_only=p["opponent"] == "policy_vs_one_ply")
             conn.send((wid, kind, p["opponent"], None, res, mv, time.time() - t))
 
 
@@ -491,7 +544,7 @@ def fetch_checkpoint(run_id: str, dest: Path) -> tuple[Path, dict]:
 # Main loop
 # --------------------------------------------------------------------------- #
 
-def _train(iterations=40, games_per_iter=768, sims=96, eval_games=100, eval_sims=64, train_steps=300,
+def _train(iterations=40, games_per_iter=768, sims=64, eval_games=64, eval_sims=64, train_steps=300,
            batch_size=512, window=8, max_seconds=None, resume_run=None, resume_path=None, sample=False,
            workers=None, push=False, device=None):
     import numpy as np
@@ -501,7 +554,8 @@ def _train(iterations=40, games_per_iter=768, sims=96, eval_games=100, eval_sims
     if sample:
         iterations, games_per_iter, eval_games, train_steps = min(iterations, 3), 64, 20, 50
     device = device or ("cuda" if torch.cuda.is_available() else "cpu")
-    workers = workers or max(1, min(32, (os.cpu_count() or 2) - 2))
+    # More processes than this mostly queue on the one GPU; each worker batches its own games.
+    workers = workers or max(1, min(12, (os.cpu_count() or 2) - 2))
     import sys
     print("BOOT", json.dumps({"file": os.path.abspath(__file__), "exists": os.path.exists(__file__),
                               "python": sys.executable, "cwd": os.getcwd(), "workers": workers,
@@ -556,7 +610,7 @@ def _train(iterations=40, games_per_iter=768, sims=96, eval_games=100, eval_sims
         sd = _pack(cpu_sd())
         row = {}
         per = max(2, eval_games // workers // 2 * 2)
-        for name in ("random", "one_ply", "iteration_0"):
+        for name in OPPONENTS:
             jobs, left, seed = [], eval_games, 0
             while left > 0:
                 n = min(per, left)
