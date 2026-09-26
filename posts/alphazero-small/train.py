@@ -23,7 +23,17 @@ import subprocess
 import time
 from pathlib import Path
 
-import compute
+try:
+    import compute
+except ImportError:  # self-play worker subprocesses only need the game and network code below
+    class _Shim:
+        def __getattr__(self, name):
+            return self
+
+        def __call__(self, *a, **k):
+            return self if a and not callable(a[0]) else (a[0] if a else self)
+
+    compute = _Shim()
 
 app = compute.App("alphazero-small")
 image = compute.Image.cuda_pytorch()
@@ -369,21 +379,45 @@ class Pool:
 
     def __init__(self, n, device, net_kwargs):
         import sys
+        import threading
         from multiprocessing.connection import Listener
         key = os.urandom(16)
         self.listener = Listener(("127.0.0.1", 0), authkey=key)
         port = self.listener.address[1]
+        script = os.path.abspath(__file__)
+        self.logs = [Path(f"/tmp/az-worker-{i}.log") for i in range(n)]
         t = time.time()
-        self.procs = [subprocess.Popen([sys.executable, os.path.abspath(__file__), "--az-worker", str(port),
-                                        key.hex(), str(i), device, json.dumps(net_kwargs)])
+        self.procs = [subprocess.Popen([sys.executable, script, "--az-worker", str(port), key.hex(), str(i), device,
+                                        json.dumps(net_kwargs)], stdout=open(self.logs[i], "w"),
+                                       stderr=subprocess.STDOUT, cwd=os.path.dirname(script),
+                                       env=dict(os.environ, PYTHONPATH=os.pathsep.join(p for p in sys.path if p)))
                       for i in range(n)]
         self.conns = [None] * n
-        for _ in range(n):
-            conn = self.listener.accept()
+        accepted = []
+
+        def accept_all():
+            for _ in range(n):
+                accepted.append(self.listener.accept())
+
+        threading.Thread(target=accept_all, daemon=True).start()
+        while len(accepted) < n:
+            time.sleep(0.5)
+            self._check_alive()
+            if time.time() - t > 300:
+                raise TimeoutError(f"only {len(accepted)}/{n} workers connected in 300 s")
+        for conn in accepted:
             tag, wid = conn.recv()
             assert tag == "ready"
             self.conns[wid] = conn
         self.startup_seconds = round(time.time() - t, 1)
+
+    def _check_alive(self):
+        dead = [i for i, p in enumerate(self.procs) if p.poll() is not None]
+        if dead:
+            for i in dead[:2]:
+                print(f"--- worker {i} exited with {self.procs[i].returncode}:\n"
+                      + self.logs[i].read_text()[-3000:], flush=True)
+            raise RuntimeError(f"worker(s) {dead} exited")
 
     def run(self, jobs):
         """jobs: list of (kind, state_dict, params). Returns results in completion order."""
@@ -395,9 +429,7 @@ class Pool:
             ready = wait(self.conns, timeout=10)
             for c in ready:
                 out.append(c.recv())
-            dead = [i for i, p in enumerate(self.procs) if p.poll() is not None]
-            if dead:
-                raise RuntimeError(f"worker(s) {dead} exited; see their traceback above")
+            self._check_alive()
         return out
 
     def close(self):
@@ -461,6 +493,10 @@ def _train(iterations=40, games_per_iter=768, sims=96, eval_games=100, eval_sims
         iterations, games_per_iter, eval_games, train_steps = min(iterations, 3), 64, 20, 50
     device = device or ("cuda" if torch.cuda.is_available() else "cpu")
     workers = workers or max(1, min(32, (os.cpu_count() or 2) - 2))
+    import sys
+    print("BOOT", json.dumps({"file": os.path.abspath(__file__), "exists": os.path.exists(__file__),
+                              "python": sys.executable, "cwd": os.getcwd(), "workers": workers,
+                              "device": device}), flush=True)
     net_kwargs = {"channels": 64, "blocks": 5}
     pool = Pool(workers, device, net_kwargs)
 
