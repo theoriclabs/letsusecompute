@@ -305,7 +305,7 @@ def play_games(n_games, evaluate, sims, rng, *, selfplay, opponent=None, temp_pl
 
 
 # --------------------------------------------------------------------------- #
-# Worker processes (forked before the parent touches CUDA)
+# Worker processes
 # --------------------------------------------------------------------------- #
 
 def _worker(wid, inq, outq, device, net_kwargs):
@@ -313,6 +313,7 @@ def _worker(wid, inq, outq, device, net_kwargs):
     torch.set_num_threads(1)
     net = build_net(**net_kwargs).to(device).eval()
     ev = make_evaluator(net, device)
+    outq.put(("ready", wid))
     opponents = {"random": random_player, "one_ply": one_ply_player}
     base_net = None
     while True:
@@ -344,21 +345,41 @@ def _worker(wid, inq, outq, device, net_kwargs):
 
 
 class Pool:
+    """Persistent worker processes. Spawned, not forked: the parent may already hold a CUDA context."""
+
     def __init__(self, n, device, net_kwargs):
         import multiprocessing as mp
-        ctx = mp.get_context("fork")
+        ctx = mp.get_context("spawn")
         self.inqs = [ctx.Queue() for _ in range(n)]
         self.outq = ctx.Queue()
         self.procs = [ctx.Process(target=_worker, args=(i, q, self.outq, device, net_kwargs), daemon=True)
                       for i, q in enumerate(self.inqs)]
+        t = time.time()
         for p in self.procs:
             p.start()
+        for _ in range(n):
+            msg = self._get(timeout=300)
+            assert msg[0] == "ready", msg
+        self.startup_seconds = round(time.time() - t, 1)
+
+    def _get(self, timeout=None):
+        import queue
+        deadline = time.time() + (timeout or 1e9)
+        while True:
+            try:
+                return self.outq.get(timeout=5)
+            except queue.Empty:
+                dead = [i for i, p in enumerate(self.procs) if not p.is_alive()]
+                if dead:
+                    raise RuntimeError(f"worker(s) {dead} died; see their traceback above")
+                if time.time() > deadline:
+                    raise TimeoutError("workers did not answer")
 
     def run(self, jobs):
         """jobs: list of (kind, state_dict, params). Returns results in completion order."""
         for i, job in enumerate(jobs):
             self.inqs[i % len(self.inqs)].put(job)
-        return [self.outq.get() for _ in jobs]
+        return [self._get() for _ in jobs]
 
     def close(self):
         for q in self.inqs:
@@ -413,9 +434,8 @@ def _train(iterations=40, games_per_iter=768, sims=96, eval_games=100, eval_sims
     if sample:
         iterations, games_per_iter, eval_games, train_steps = min(iterations, 3), 64, 20, 50
     device = device or ("cuda" if torch.cuda.is_available() else "cpu")
-    workers = workers or max(1, min(16, (os.cpu_count() or 2) - 2))
+    workers = workers or max(1, min(32, (os.cpu_count() or 2) - 2))
     net_kwargs = {"channels": 64, "blocks": 5}
-    # Fork workers before this process initialises CUDA.
     pool = Pool(workers, device, net_kwargs)
 
     out = Path(os.environ.get("COMPUTE_ARTIFACT_DIR", "/tmp/compute-artifacts")) / ARTIFACT
@@ -450,7 +470,7 @@ def _train(iterations=40, games_per_iter=768, sims=96, eval_games=100, eval_sims
 
     params_count = sum(p.numel() for p in net.parameters())
     run_meta = {"device": torch.cuda.get_device_name() if device == "cuda" else "cpu", "workers": workers,
-                "cpu_count": os.cpu_count(), "parameters": params_count, "sims": sims, "eval_sims": eval_sims,
+                "cpu_count": os.cpu_count(), "worker_startup_seconds": pool.startup_seconds, "parameters": params_count, "sims": sims, "eval_sims": eval_sims,
                 "games_per_iter": games_per_iter, "train_steps": train_steps, "batch_size": batch_size,
                 "window": window, "eval_games": eval_games, "sample": sample,
                 "run_id": os.environ.get("COMPUTE_RUN_ID"), "resume": resume_info,
