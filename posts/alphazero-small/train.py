@@ -23,17 +23,7 @@ import subprocess
 import time
 from pathlib import Path
 
-try:
-    import compute
-except ImportError:  # self-play worker subprocesses only need the game and network code below
-    class _Shim:
-        def __getattr__(self, name):
-            return self
-
-        def __call__(self, *a, **k):
-            return self if a and not callable(a[0]) else (a[0] if a else self)
-
-    compute = _Shim()
+import compute
 
 app = compute.App("alphazero-small")
 image = compute.Image.cuda_pytorch()
@@ -370,6 +360,24 @@ def _worker(wid, conn, device, net_kwargs):
             conn.send((wid, kind, p["opponent"], None, res, mv, time.time() - t))
 
 
+# Runs train.py as __main__ in a worker. If the Compute SDK is not importable in a plain
+# subprocess, a stub stands in: workers only need the game and network code.
+_WORKER_BOOT = """
+import runpy, sys, types
+try:
+    import compute
+except ImportError:
+    class _Any:
+        def __getattr__(self, name): return self
+        def __call__(self, *a, **k): return a[0] if len(a) == 1 and callable(a[0]) and not k else self
+    stub = types.ModuleType("compute"); stub.__getattr__ = lambda name: _Any()
+    sys.modules["compute"] = stub
+script = sys.argv[1]
+sys.argv = sys.argv[1:]
+runpy.run_path(script, run_name="__main__")
+"""
+
+
 class Pool:
     """Worker processes started as `python train.py --az-worker ...`, talking over a local socket.
 
@@ -387,8 +395,9 @@ class Pool:
         script = os.path.abspath(__file__)
         self.logs = [Path(f"/tmp/az-worker-{i}.log") for i in range(n)]
         t = time.time()
-        self.procs = [subprocess.Popen([sys.executable, script, "--az-worker", str(port), key.hex(), str(i), device,
-                                        json.dumps(net_kwargs)], stdout=open(self.logs[i], "w"),
+        self.procs = [subprocess.Popen([sys.executable, "-c", _WORKER_BOOT, script, "--az-worker", str(port),
+                                        key.hex(), str(i), device, json.dumps(net_kwargs)],
+                                       stdout=open(self.logs[i], "w"),
                                        stderr=subprocess.STDOUT, cwd=os.path.dirname(script),
                                        env=dict(os.environ, PYTHONPATH=os.pathsep.join(p for p in sys.path if p)))
                       for i in range(n)]
