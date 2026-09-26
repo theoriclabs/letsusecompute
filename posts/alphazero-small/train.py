@@ -540,13 +540,19 @@ def fetch_checkpoint(run_id: str, dest: Path) -> tuple[Path, dict]:
     return dest / "checkpoint.pt", timings
 
 
+def _hf_token() -> str:
+    token = os.environ.get("HF_TOKEN") or os.environ.get("hf") or os.environ.get("HUGGING_FACE_HUB_TOKEN")
+    assert token, "No Hugging Face token; attach the hf secret"
+    return token
+
+
 # --------------------------------------------------------------------------- #
 # Main loop
 # --------------------------------------------------------------------------- #
 
 def _train(iterations=40, games_per_iter=768, sims=64, eval_games=64, eval_sims=64, train_steps=300,
-           batch_size=512, window=8, max_seconds=None, resume_run=None, resume_path=None, sample=False,
-           workers=None, push=False, device=None):
+           batch_size=512, window=8, max_seconds=None, resume_run=None, resume_path=None, resume_hub=False,
+           sample=False, workers=None, push=False, device=None):
     import numpy as np
     import torch
 
@@ -578,9 +584,14 @@ def _train(iterations=40, games_per_iter=768, sims=64, eval_games=64, eval_sims=
     resume_info = None
     base_sd = {k: v.detach().cpu().clone() for k, v in net.state_dict().items()}
 
-    if resume_run or resume_path:
+    if resume_run or resume_path or resume_hub:
         if resume_run:
             path, resume_info = fetch_checkpoint(resume_run, Path("/tmp/alphazero-resume"))
+        elif resume_hub:
+            from huggingface_hub import hf_hub_download
+            t = time.time()
+            path = Path(hf_hub_download(HUB_REPO, "checkpoint/checkpoint.pt", token=_hf_token()))
+            resume_info = {"hub_repo": HUB_REPO, "download_seconds": round(time.time() - t, 1)}
         else:
             path, resume_info = Path(resume_path), {"path": str(resume_path)}
         ck = torch.load(path, map_location="cpu", weights_only=False)
@@ -638,6 +649,13 @@ def _train(iterations=40, games_per_iter=768, sims=64, eval_games=64, eval_sims=
         torch.save(ck, tmp)
         tmp.replace(out / "checkpoint.pt")
         (out / "history.json").write_text(json.dumps({"meta": run_meta, "history": history}, indent=1))
+        if push:  # a second copy off the machine, so resuming does not depend on artifacts alone
+            from huggingface_hub import HfApi
+            api = HfApi(token=_hf_token())
+            api.create_repo(HUB_REPO, exist_ok=True)
+            api.upload_folder(repo_id=HUB_REPO, folder_path=str(out), path_in_repo="checkpoint",
+                              allow_patterns=["checkpoint.pt", "history.json"],
+                              commit_message=f"Checkpoint after iteration {it}")
 
     if start_iter == 1:
         row = {"iteration": 0, "eval": evaluate_all(0), "elapsed": round(time.time() - t0, 1)}
@@ -728,8 +746,7 @@ def _train(iterations=40, games_per_iter=768, sims=64, eval_games=64, eval_sims=
                "elapsed_seconds": round(time.time() - t0, 1), "meta": run_meta, "hub_repo": None}
     if push:
         from huggingface_hub import HfApi
-        token = os.environ.get("HF_TOKEN") or os.environ.get("hf")
-        assert token, "No HF token; attach the hf secret"
+        token = _hf_token()
         pub = Path("/tmp/alphazero-publish")
         pub.mkdir(exist_ok=True)
         torch.save({"model": cpu_sd(), "net": net_kwargs, "iteration": last["iteration"]}, pub / "model.pt")
@@ -751,23 +768,37 @@ def _train(iterations=40, games_per_iter=768, sims=64, eval_games=64, eval_sims=
     return summary
 
 
+hub_image = image.pip_install("huggingface_hub==0.30.2")
+
+
 @app.function(gpu="runpod/H100-SXM", image=image, timeout=7200)
 def train(iterations: int = 40, max_seconds: int = 0, sample: bool = False) -> dict:
     """Fresh start. Saves the checkpoint artifact after every iteration."""
     return _train(iterations=iterations, max_seconds=max_seconds or None, sample=sample)
 
 
+@app.function(gpu="runpod/H100-SXM", image=hub_image, timeout=7200, secrets=[hf_secret])
+def train_and_push(iterations: int = 40, max_seconds: int = 0, sample: bool = False) -> dict:
+    """Fresh start; also pushes each checkpoint and the final network to Hugging Face."""
+    return _train(iterations=iterations, max_seconds=max_seconds or None, sample=sample, push=True)
+
+
 @app.function(gpu="runpod/H100-SXM", image=image, timeout=7200, secrets=[api_key])
-def resume(run_id: str, iterations: int = 40, max_seconds: int = 0, sample: bool = False) -> dict:
+def resume(run_id: str, iterations: int = 40, max_seconds: int = 0) -> dict:
     """Continue from run_id's latest checkpoint artifact."""
-    return _train(iterations=iterations, max_seconds=max_seconds or None, resume_run=run_id, sample=sample)
+    return _train(iterations=iterations, max_seconds=max_seconds or None, resume_run=run_id)
 
 
-@app.function(gpu="runpod/H100-SXM", image=image.pip_install("huggingface_hub==0.30.2"), timeout=7200,
-              secrets=[api_key, hf_secret])
+@app.function(gpu="runpod/H100-SXM", image=hub_image, timeout=7200, secrets=[api_key, hf_secret])
 def resume_and_push(run_id: str, iterations: int = 40, max_seconds: int = 0) -> dict:
-    """Continue from run_id's checkpoint, then publish the final network to Hugging Face."""
+    """Continue from run_id's checkpoint artifact; push checkpoints and the final network."""
     return _train(iterations=iterations, max_seconds=max_seconds or None, resume_run=run_id, push=True)
+
+
+@app.function(gpu="runpod/H100-SXM", image=hub_image, timeout=7200, secrets=[hf_secret])
+def resume_from_hub(iterations: int = 40, max_seconds: int = 0) -> dict:
+    """Continue from the checkpoint a *_and_push run left on Hugging Face (no Compute API key needed)."""
+    return _train(iterations=iterations, max_seconds=max_seconds or None, resume_hub=True, push=True)
 
 
 if __name__ == "__main__":
